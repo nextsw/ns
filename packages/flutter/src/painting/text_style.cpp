@@ -1,7 +1,7 @@
 #include "text_style.hpp"
 TextStyleCls::TextStyleCls(Paint background, Color backgroundColor, Color color, String debugLabel, TextDecoration decoration, Color decorationColor, TextDecorationStyle decorationStyle, double decorationThickness, String fontFamily, List<String> fontFamilyFallback, List<FontFeature> fontFeatures, double fontSize, FontStyle fontStyle, List<FontVariation> fontVariations, FontWeight fontWeight, Paint foreground, double height, bool inherit, TextLeadingDistribution leadingDistribution, double letterSpacing, Locale locale, TextOverflow overflow, String package, List<Shadow> shadows, TextBaseline textBaseline, double wordSpacing) {
     {
-        fontFamily = package == nullptr? fontFamily : __s("packages/$package/$fontFamily");
+        fontFamily = package == nullptr? fontFamily : __s("packages/%s$%s,");
         _fontFamilyFallback = fontFamilyFallback;
         _package = package;
         assert(inherit != nullptr);
@@ -12,7 +12,7 @@ TextStyleCls::TextStyleCls(Paint background, Color backgroundColor, Color color,
 
 List<String> TextStyleCls::fontFamilyFallback() {
     return _package != nullptr && _fontFamilyFallback != nullptr? _fontFamilyFallback!->map([=] (String str) {
-        __s("packages/$_package/$str");
+        __s("packages/%s$%s)");
     })->toList() : _fontFamilyFallback;
 }
 
@@ -22,7 +22,7 @@ TextStyle TextStyleCls::copyWith(Paint background, Color backgroundColor, Color 
     String newDebugLabel;
     assert([=] () {
         if (this->debugLabel != nullptr) {
-            newDebugLabel = debugLabel | __s("(${this.debugLabel}).copyWith");
+            newDebugLabel = debugLabel | __s("(%s;");
         }
         return true;
     }());
@@ -49,7 +49,7 @@ TextStyle TextStyleCls::apply(Color backgroundColor, Color color, TextDecoration
     String modifiedDebugLabel;
     assert([=] () {
         if (debugLabel != nullptr) {
-            modifiedDebugLabel = __s("($debugLabel).apply");
+            modifiedDebugLabel = __s("(%s;");
         }
         return true;
     }());
@@ -66,7 +66,7 @@ TextStyle TextStyleCls::merge(TextStyle other) {
     String mergedDebugLabel;
     assert([=] () {
         if (other->debugLabel != nullptr || debugLabel != nullptr) {
-            mergedDebugLabel = __s("(${debugLabel ?? _kDefaultDebugLabel}).merge(${other.debugLabel ?? _kDefaultDebugLabel})");
+            mergedDebugLabel = __s("(%s$%s;");
         }
         return true;
     }());
@@ -81,7 +81,7 @@ TextStyle TextStyleCls::lerp(TextStyle a, TextStyle b, double t) {
     }
     String lerpDebugLabel;
     assert([=] () {
-        lerpDebugLabel = __s("lerp(${a?.debugLabel ?? _kDefaultDebugLabel} ⎯${t.toStringAsFixed(1)}→ ${b?.debugLabel ?? _kDefaultDebugLabel})");
+        lerpDebugLabel = __s("lerp(%s$%s$%s;");
         return true;
     }());
     if (a == nullptr) {
@@ -139,54 +139,54 @@ String TextStyleCls::toStringShort() {
 void TextStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties, String prefix) {
     super->debugFillProperties(properties);
     if (debugLabel != nullptr) {
-        properties->add(make<MessagePropertyCls>(__s("${prefix}debugLabel"), debugLabel!));
+        properties->add(make<MessagePropertyCls>(__s("%s,"), debugLabel!));
     }
     List<DiagnosticsNode> styles = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
     String weightDescription;
     if (fontWeight != nullptr) {
-        weightDescription = __s("${fontWeight!.index + 1}00");
+        weightDescription = __s("%s;");
     }
-    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("${prefix}weight"), fontWeight, weightDescription, nullptr));
-    styles->add(<FontStyle>make<EnumPropertyCls>(__s("${prefix}style"), fontStyle, nullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}letterSpacing"), letterSpacing, nullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}wordSpacing"), wordSpacing, nullptr));
-    styles->add(<TextBaseline>make<EnumPropertyCls>(__s("${prefix}baseline"), textBaseline, nullptr));
-    styles->add(make<DoublePropertyCls>(__s("${prefix}height"), height, __s("x"), nullptr));
-    styles->add(<TextLeadingDistribution>make<EnumPropertyCls>(__s("${prefix}leadingDistribution"), leadingDistribution, nullptr));
-    styles->add(<Locale>make<DiagnosticsPropertyCls>(__s("${prefix}locale"), locale, nullptr));
-    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("${prefix}foreground"), foreground, nullptr));
-    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("${prefix}background"), background, nullptr));
+    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("%s,"), fontWeight, weightDescription, nullptr));
+    styles->add(<FontStyle>make<EnumPropertyCls>(__s("%s,"), fontStyle, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("%s,"), letterSpacing, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("%s,"), wordSpacing, nullptr));
+    styles->add(<TextBaseline>make<EnumPropertyCls>(__s("%s,"), textBaseline, nullptr));
+    styles->add(make<DoublePropertyCls>(__s("%s,"), height, __s("x"), nullptr));
+    styles->add(<TextLeadingDistribution>make<EnumPropertyCls>(__s("%s,"), leadingDistribution, nullptr));
+    styles->add(<Locale>make<DiagnosticsPropertyCls>(__s("%s,"), locale, nullptr));
+    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("%s,"), foreground, nullptr));
+    styles->add(<Paint>make<DiagnosticsPropertyCls>(__s("%s,"), background, nullptr));
     if (decoration != nullptr || decorationColor != nullptr || decorationStyle != nullptr || decorationThickness != nullptr) {
         List<String> decorationDescription = makeList();
         if (decorationStyle != nullptr) {
             decorationDescription->add(decorationStyle!->name);
         }
-        styles->add(make<ColorPropertyCls>(__s("${prefix}decorationColor"), decorationColor, nullptr, DiagnosticLevelCls::fine));
+        styles->add(make<ColorPropertyCls>(__s("%s,"), decorationColor, nullptr, DiagnosticLevelCls::fine));
         if (decorationColor != nullptr) {
-            decorationDescription->add(__s("$decorationColor"));
+            decorationDescription->add(__s("%s)"));
         }
-        styles->add(<TextDecoration>make<DiagnosticsPropertyCls>(__s("${prefix}decoration"), decoration, nullptr, DiagnosticLevelCls::hidden));
+        styles->add(<TextDecoration>make<DiagnosticsPropertyCls>(__s("%s,"), decoration, nullptr, DiagnosticLevelCls::hidden));
         if (decoration != nullptr) {
-            decorationDescription->add(__s("$decoration"));
+            decorationDescription->add(__s("%s)"));
         }
         assert(decorationDescription->isNotEmpty());
-        styles->add(make<MessagePropertyCls>(__s("${prefix}decoration"), decorationDescription->join(__s(" "))));
-        styles->add(make<DoublePropertyCls>(__s("${prefix}decorationThickness"), decorationThickness, __s("x"), nullptr));
+        styles->add(make<MessagePropertyCls>(__s("%s,"), decorationDescription->join(__s(" "))));
+        styles->add(make<DoublePropertyCls>(__s("%s,"), decorationThickness, __s("x"), nullptr));
     }
     bool styleSpecified = styles->any([=] (DiagnosticsNode n) {
     !n->isFiltered(DiagnosticLevelCls::info);
 });
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("${prefix}inherit"), inherit, (!styleSpecified && inherit)? DiagnosticLevelCls::fine : DiagnosticLevelCls::info));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("%s,"), inherit, (!styleSpecified && inherit)? DiagnosticLevelCls::fine : DiagnosticLevelCls::info));
     styles->forEach(properties->add);
     if (!styleSpecified) {
-        properties->add(make<FlagPropertyCls>(__s("inherit"), inherit, __s("$prefix<all styles inherited>"), __s("$prefix<no style specified>")));
+        properties->add(make<FlagPropertyCls>(__s("inherit"), inherit, __s("%s,"), __s("%s)")));
     }
-    styles->add(<TextOverflow>make<EnumPropertyCls>(__s("${prefix}overflow"), overflow, nullptr));
+    styles->add(<TextOverflow>make<EnumPropertyCls>(__s("%s,"), overflow, nullptr));
 }
 
 String TextStyleCls::_fontFamily() {
     if (_package != nullptr && fontFamily != nullptr) {
-        String fontFamilyPrefix = __s("packages/$_package/");
+        String fontFamilyPrefix = __s("packages/%s;");
         assert(fontFamily!->startsWith(fontFamilyPrefix));
         return fontFamily!->substring(fontFamilyPrefix->length());
     }

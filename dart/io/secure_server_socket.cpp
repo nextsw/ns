@@ -20,7 +20,7 @@ InternetAddress SecureServerSocketCls::address() {
 }
 
 Future<SecureServerSocket> SecureServerSocketCls::close() {
-    return _socket->close()->then([=] () {
+    return _socket->close()->then([=] (Unknown  _) {
         this;
     });
 }
@@ -49,7 +49,7 @@ InternetAddress RawSecureServerSocketCls::address() {
 
 Future<RawSecureServerSocket> RawSecureServerSocketCls::close() {
     _closed = true;
-    return _socket->close()->then([=] () {
+    return _socket->close()->then([=] (Unknown  _) {
         this;
     });
 }

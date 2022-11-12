@@ -14,7 +14,7 @@
 
 class ImageIconCls : public StatelessWidgetCls {
 public:
-    ImageProvider image;
+    ImageProvider<any> image;
 
     double size;
 
@@ -23,7 +23,7 @@ public:
     String semanticLabel;
 
 
-     ImageIconCls(ImageProvider image, Color color, Key key, String semanticLabel, double size);
+     ImageIconCls(ImageProvider<any> image, Color color, Key key, String semanticLabel, double size);
     virtual Widget build(BuildContext context);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);

@@ -7,7 +7,7 @@ String JsonUnsupportedObjectErrorCls::toString() {
     } else {
         prefix = __s("Converting object did not return an encodable object:");
     }
-    return __s("$prefix $safeString");
+    return __s("%s$%s;");
 }
 
 JsonCyclicErrorCls::JsonCyclicErrorCls(Object object) : JsonUnsupportedObjectError(object) {

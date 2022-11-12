@@ -3,10 +3,10 @@ String TableRowCls::toString() {
     StringBuffer result = make<StringBufferCls>();
     result->write(__s("TableRow("));
     if (key != nullptr) {
-        result->write(__s("$key, "));
+        result->write(__s("%s)"));
     }
     if (decoration != nullptr) {
-        result->write(__s("$decoration, "));
+        result->write(__s("%s)"));
     }
     if (children == nullptr) {
         result->write(__s("child list is null"));
@@ -14,7 +14,7 @@ String TableRowCls::toString() {
         if (children!->isEmpty()) {
         result->write(__s("no children"));
     } else {
-        result->write(__s("$children"));
+        result->write(__s("%s)"));
     }
 ;
     }    result->write(__s(")"));

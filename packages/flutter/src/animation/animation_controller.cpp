@@ -180,9 +180,9 @@ void AnimationControllerCls::dispose() {
 String AnimationControllerCls::toStringDetails() {
     String paused = isAnimating()? __s("") : __s("; paused");
     String ticker = _ticker == nullptr? __s("; DISPOSED") : (_ticker!->muted()? __s("; silenced") : __s(""));
-    String label = debugLabel == nullptr? __s("") : __s("; for $debugLabel");
-    String more = __s("${super.toStringDetails()} ${value.toStringAsFixed(3)}");
-    return __s("$more$paused$ticker$label");
+    String label = debugLabel == nullptr? __s("") : __s("; for %s;");
+    String more = __s("%s$%s;");
+    return __s("%s$%s$%s$%s;");
 }
 
 void AnimationControllerCls::_internalSetValue(double newValue) {

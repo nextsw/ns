@@ -1,6 +1,6 @@
 #include "system_chrome.hpp"
 String SystemUiOverlayStyleCls::toString() {
-    return __s("${objectRuntimeType(this, 'SystemUiOverlayStyle')}(${_toMap()})");
+    return __s("%s$%s;");
 }
 
 SystemUiOverlayStyle SystemUiOverlayStyleCls::copyWith(Brightness statusBarBrightness, Color statusBarColor, Brightness statusBarIconBrightness, Color systemNavigationBarColor, bool systemNavigationBarContrastEnforced, Color systemNavigationBarDividerColor, Brightness systemNavigationBarIconBrightness, bool systemStatusBarContrastEnforced) {

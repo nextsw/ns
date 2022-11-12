@@ -106,13 +106,13 @@ String _TranspilerCls::resolveName(int id) {
     }
 ;
     };
-    }    return __s("i$id");
+    }    return __s("i%s;");
 }
 
 String _TranspilerCls::resolveType(int type) {
     _Type t = types[type];
     if (t == nullptr) {
-        throw failure(__s("The id "$type" has not been asgined a type"));
+        throw failure(__s("The id "%s)"));
     }
     return _typeName(t, target);
 }
@@ -199,7 +199,7 @@ void _TranspilerCls::opExtInstImport() {
     glslExtImport = readWord();
     String ext = readStringLiteral();
     if (ext != _glslStd450) {
-        throw failure(__s("only "$_glslStd450" is supported. Got "$ext"."));
+        throw failure(__s("only "%s$%s)"));
     }
 }
 
@@ -346,7 +346,7 @@ void _TranspilerCls::opTypePointer() {
     position++;
     _Type t = types[readWord()];
     if (t == nullptr) {
-        throw failure(__s("$t is not a registered type"));
+        throw failure(__s("%s)"));
     }
     types[id] = t;
 }
@@ -376,19 +376,19 @@ void _TranspilerCls::opConstant() {
     int type = readWord();
     String id = resolveName(readWord());
     int value = readWord();
-    String valueString = __s("$value");
+    String valueString = __s("%s;");
     if (types[type] == _TypeCls::float) {
         double v = Int32ListCls->fromList(makeList(ArrayItem))->buffer->asByteData()->getFloat32(0, EndianCls::little);
-        valueString = __s("$v");
+        valueString = __s("%s;");
     }
     String typeName = resolveType(type);
-    src->writeln(__s("const $typeName $id = $valueString;"));
+    src->writeln(__s("const %s$%s$%s)"));
 }
 
 void _TranspilerCls::opConstantComposite() {
     String type = resolveType(readWord());
     String id = resolveName(readWord());
-    src->write(__s("const $type $id = $type("));
+    src->write(__s("const %s$%s$%s)"));
     int count = nextPosition - position;
     for (;  < count; i++) {
         src->write(resolveName(readWord()));
@@ -406,10 +406,10 @@ void _TranspilerCls::opFunction() {
     int typeIndex = readWord();
     _FunctionType functionType = functionTypes[typeIndex];
     if (functionType == nullptr) {
-        throw failure(__s("$typeIndex is not a registered function type"));
+        throw failure(__s("%s)"));
     }
     if (returnType != functionType->returnType) {
-        throw failure(__s("function $id has return type mismatch"));
+        throw failure(__s("function %s)"));
     }
     _Function f = make<_FunctionCls>(this, functionType, id);
     functions[id] = f;
@@ -635,7 +635,7 @@ void _TranspilerCls::parseGLSLInst(int id, int type) {
     }
     String opName = _glslStd450OpNames[inst];
     if (opName == nullptr) {
-        throw failure(__s("$id is not a supported GLSL instruction."));
+        throw failure(__s("%s)"));
     }
     int argc = _glslStd450OpArgc[inst]!;
     List<int> args = <int>filled(argc, 0);

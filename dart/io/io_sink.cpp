@@ -27,7 +27,7 @@ Future<any> _StreamSinkImplCls<T>::addStream(Stream<T> stream) {
         return done();
     }
     _isBound = true;
-    auto future = _controllerCompleter == nullptr? _target->addStream(stream) : _controllerCompleter!->future()->then([=] () {
+    auto future = _controllerCompleter == nullptr? _target->addStream(stream) : _controllerCompleter!->future()->then([=] (Unknown  _) {
     _target->addStream(stream);
 });
     _controllerInstance?->close();
@@ -104,7 +104,7 @@ StreamController<T> _StreamSinkImplCls<T>::_controller() {
     if (_controllerInstance == nullptr) {
         _controllerInstance = <T>make<StreamControllerCls>(true);
         _controllerCompleter = make<CompleterCls>();
-        _target->addStream(_controller()->stream())->then([=] () {
+        _target->addStream(_controller()->stream())->then([=] (Unknown  _) {
             if (_isBound) {
                 _controllerCompleter!->complete(this);
                 _controllerCompleter = nullptr;
@@ -137,7 +137,7 @@ void _IOSinkImplCls::encoding(Encoding value) {
 }
 
 void _IOSinkImplCls::write(Object obj) {
-    String string = __s("$obj");
+    String string = __s("%s;");
     if (stringValue->isEmpty()) {
         return;
     }

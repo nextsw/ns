@@ -86,13 +86,13 @@ void HardwareKeyboardCls::_assertEventIsRegular(KeyEvent event) {
     assert([=] () {
         String common = __s("If this occurs in real application, please report this bug to Flutter. If this occurs in unit tests, please ensure that simulated events follow Flutter's event model as documented in `HardwareKeyboard`. This was the event: ");
         if (is<KeyDownEvent>(event)) {
-            assert(!_pressedKeys->containsKey(as<KeyDownEventCls>(event)->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is already pressed. $common$event"));
+            assert(!_pressedKeys->containsKey(as<KeyDownEventCls>(event)->physicalKey), __s("A %skey is already pressed. $%s$%s)"));
         } else {
             if (is<KeyRepeatEvent>(event) || is<KeyUpEvent>(event)) {
-            assert(_pressedKeys->containsKey(event->physicalKey), __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is not pressed. $common$event"));
-            assert(_pressedKeys[event->physicalKey] == event->logicalKey, __s("A ${event.runtimeType} is dispatched, but the state shows that the physical key is pressed on a different logical key. $common$event and the recorded logical key ${_pressedKeys[event.physicalKey]}"));
+            assert(_pressedKeys->containsKey(event->physicalKey), __s("A %skey is not pressed. $%s$%s)"));
+            assert(_pressedKeys[event->physicalKey] == event->logicalKey, __s("A %skey is pressed on a different logical key. $%s$%sand the recorded logical key $%s)"));
         } else {
-            assert(false, __s("Unexpected key event class ${event.runtimeType}"));
+            assert(false, __s("Unexpected key event class %s)"));
         }
 ;
         }        return true;
@@ -127,7 +127,7 @@ bool HardwareKeyboardCls::_dispatchKeyEvent(KeyEvent event) {
 }
 
 String KeyMessageCls::toString() {
-    return __s("KeyMessage($events)");
+    return __s("KeyMessage(%s;");
 }
 
 bool KeyEventManagerCls::handleKeyData(KeyData data) {
@@ -164,7 +164,7 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
             handled = _hardwareKeyboard->handleKeyEvent(event) || handled;
         }
         if (_transitMode == KeyDataTransitModeCls::rawKeyData) {
-            assert(setEquals(_rawKeyboard->physicalKeysPressed(), _hardwareKeyboard->physicalKeysPressed()), __s("RawKeyboard reported ${_rawKeyboard.physicalKeysPressed}, while HardwareKeyboard reported ${_hardwareKeyboard.physicalKeysPressed}"));
+            assert(setEquals(_rawKeyboard->physicalKeysPressed(), _hardwareKeyboard->physicalKeysPressed()), __s("RawKeyboard reported %swhile HardwareKeyboard reported $%s)"));
         }
         handled = _dispatchKeyMessage(_keyEventsSinceLastMessage, rawEvent) || handled;
         _keyEventsSinceLastMessage->clear();
@@ -218,7 +218,7 @@ void KeyEventManagerCls::_convertRawEventAndStore(RawKeyEvent rawEvent) {
             mainEvent = make<KeyRepeatEventCls>(physicalKey, recordedLogicalMain, character, timeStamp);
         }
     } else {
-        assert(is<RawKeyUpEvent>(rawEvent), __s("Unexpected subclass of RawKeyEvent: ${rawEvent.runtimeType}"));
+        assert(is<RawKeyUpEvent>(rawEvent), __s("Unexpected subclass of RawKeyEvent: %s)"));
         if (recordedLogicalMain == nullptr) {
             mainEvent = nullptr;
         } else {

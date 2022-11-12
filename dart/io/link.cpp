@@ -24,7 +24,7 @@ String _LinkCls::path() {
 }
 
 String _LinkCls::toString() {
-    return __s("Link: '$path'");
+    return __s("Link: '%s;");
 }
 
 Future<bool> _LinkCls::exists() {
@@ -41,11 +41,11 @@ Link _LinkCls::absolute() {
 
 Future<Link> _LinkCls::create(String target, bool recursive) {
     auto result = recursive? parent()->create(true) : FutureCls->value(nullptr);
-    return result->then([=] () {
+    return result->then([=] (Unknown  _) {
         _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot create link to target '$target'"), path());
+            throw _exceptionFromResponse(response, __s("Cannot create link to target '%s,"), path());
         }
         return this;
     });
@@ -65,7 +65,7 @@ void _LinkCls::updateSync(String target) {
 }
 
 Future<Link> _LinkCls::update(String target) {
-    return delete()-><Link>then([=] () {
+    return delete()-><Link>then([=] (Unknown  _) {
         create(target);
     });
 }
@@ -73,7 +73,7 @@ Future<Link> _LinkCls::update(String target) {
 Future<Link> _LinkCls::rename(String newPath) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileRenameLink, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot rename link to '$newPath'"), path());
+            throw _exceptionFromResponse(response, __s("Cannot rename link to '%s,"), path());
         }
         return make<LinkCls>(newPath);
     });
@@ -81,7 +81,7 @@ Future<Link> _LinkCls::rename(String newPath) {
 
 Link _LinkCls::renameSync(String newPath) {
     auto result = _FileCls->_renameLink(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot rename link '$path' to '$newPath'"));
+    throwIfError(result, __s("Cannot rename link '%s$%s)"));
     return make<LinkCls>(newPath);
 }
 
@@ -115,7 +115,7 @@ _LinkCls::_LinkCls(String path) {
 
 Future<Link> _LinkCls::_delete(bool recursive) {
     if (recursive) {
-        return DirectoryCls->fromRawPath(_rawPath)->delete(true)->then([=] () {
+        return DirectoryCls->fromRawPath(_rawPath)->delete(true)->then([=] (Unknown  _) {
             this;
         });
     }

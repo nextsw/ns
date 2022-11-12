@@ -67,7 +67,7 @@ int RoundedRectangleBorderCls::hashCode() {
 }
 
 String RoundedRectangleBorderCls::toString() {
-    return __s("${objectRuntimeType(this, 'RoundedRectangleBorder')}($side, $borderRadius)");
+    return __s("%s$%s$%s;");
 }
 
 EdgeInsetsGeometry _RoundedRectangleToCircleBorderCls::dimensions() {
@@ -136,7 +136,7 @@ int _RoundedRectangleToCircleBorderCls::hashCode() {
 }
 
 String _RoundedRectangleToCircleBorderCls::toString() {
-    return __s("RoundedRectangleBorder($side, $borderRadius, ${(circleness * 100).toStringAsFixed(1)}% of the way to being a CircleBorder)");
+    return __s("RoundedRectangleBorder(%s$%s$%s;");
 }
 
 _RoundedRectangleToCircleBorderCls::_RoundedRectangleToCircleBorderCls(BorderRadiusGeometry borderRadius, double circleness, BorderSide side) {

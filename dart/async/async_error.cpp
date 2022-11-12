@@ -17,5 +17,5 @@ StackTrace AsyncErrorCls::defaultStackTrace(Object error) {
 }
 
 String AsyncErrorCls::toString() {
-    return __s("$error");
+    return __s("%s;");
 }

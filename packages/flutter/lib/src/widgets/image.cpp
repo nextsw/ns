@@ -3,7 +3,7 @@ ImageConfiguration createLocalImageConfiguration(BuildContext context, Size size
     return make<ImageConfigurationCls>(DefaultAssetBundleCls->of(context), MediaQueryCls->maybeOf(context)?->devicePixelRatio | 1.0, LocalizationsCls->maybeLocaleOf(context), DirectionalityCls->maybeOf(context), size, defaultTargetPlatform);
 }
 
-Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageErrorListener onError, Size size) {
+Future<void> precacheImage(ImageProvider<any> provider, BuildContext context, ImageErrorListener onError, Size size) {
     ImageConfiguration config = createLocalImageConfiguration(context, size);
     Completer<void> completer = <void>make<CompleterCls>();
     ImageStream stream = provider->resolve(config);
@@ -30,7 +30,7 @@ Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageEr
     return completer->future();
 }
 
-ImageCls::ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, ImageProvider image, bool isAntiAlias, Key key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, String semanticLabel, double width) {
+ImageCls::ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, ImageProvider<any> image, bool isAntiAlias, Key key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, String semanticLabel, double width) {
     {
         assert(image != nullptr);
         assert(alignment != nullptr);
@@ -55,7 +55,7 @@ State<Image> ImageCls::createState() {
 
 void ImageCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<ImageProvider>make<DiagnosticsPropertyCls>(__s("image"), image));
+    properties->add(<ImageProvider<any>>make<DiagnosticsPropertyCls>(__s("image"), image));
     properties->add(<std::function<void ()>>make<DiagnosticsPropertyCls>(__s("frameBuilder"), frameBuilder));
     properties->add(<std::function<void ()>>make<DiagnosticsPropertyCls>(__s("loadingBuilder"), loadingBuilder));
     properties->add(make<DoublePropertyCls>(__s("width"), width, nullptr));

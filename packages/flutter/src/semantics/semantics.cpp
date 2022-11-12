@@ -1,6 +1,6 @@
 #include "semantics.hpp"
 String SemanticsTagCls::toString() {
-    return __s("${objectRuntimeType(this, 'SemanticsTag')}($name)");
+    return __s("%s$%s;");
 }
 
 CustomSemanticsActionCls::CustomSemanticsActionCls(String label) {
@@ -26,7 +26,7 @@ bool CustomSemanticsActionCls::==(Object other) {
 }
 
 String CustomSemanticsActionCls::toString() {
-    return __s("CustomSemanticsAction(${_ids[this]}, label:$label, hint:$hint, action:$action)");
+    return __s("CustomSemanticsAction(%s$%s$%s$%s;");
 }
 
 int CustomSemanticsActionCls::getIdentifier(CustomSemanticsAction action) {
@@ -48,7 +48,7 @@ AttributedStringCls::AttributedStringCls(String string, List<StringAttribute> at
         assert(stringValue->isNotEmpty() || attributes->isEmpty());
         assert([=] () {
             for (StringAttribute attribute : attributes) {
-                assert(stringValue->length() >= attribute->range->start && stringValue->length() >= attribute->range->end, __s("The range in $attribute is outside of the string $string"));
+                assert(stringValue->length() >= attribute->range->start && stringValue->length() >= attribute->range->end, __s("The range in %s$%s,"));
             }
             return true;
         }());
@@ -84,7 +84,7 @@ int AttributedStringCls::hashCode() {
 }
 
 String AttributedStringCls::toString() {
-    return __s("${objectRuntimeType(this, 'AttributedString')}('$string', attributes: $attributes)");
+    return __s("%s$%s$%s;");
 }
 
 AttributedStringPropertyCls::AttributedStringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, Unknown level, bool showName, bool showWhenEmpty) {
@@ -107,9 +107,9 @@ String AttributedStringPropertyCls::valueToString(TextTreeConfiguration parentCo
         text = text->replaceAll(__s("\n"), __s("\n"));
     }
     if (value()!->attributes->isEmpty) {
-        return __s(""$text"");
+        return __s(""%s;");
     }
-    return __s(""$text" ${value!.attributes}");
+    return __s(""%s$%s;");
 }
 
 SemanticsDataCls::SemanticsDataCls(int actions, AttributedString attributedDecreasedValue, AttributedString attributedHint, AttributedString attributedIncreasedValue, AttributedString attributedLabel, AttributedString attributedValue, int currentValueLength, List<int> customSemanticsActionIds, double elevation, int flags, int maxValueLength, int platformViewId, Rect rect, int scrollChildCount, double scrollExtentMax, double scrollExtentMin, int scrollIndex, double scrollPosition, Set<SemanticsTag> tags, TextDirection textDirection, TextSelection textSelection, double thickness, String tooltip, Matrix4 transform) {
@@ -121,12 +121,12 @@ SemanticsDataCls::SemanticsDataCls(int actions, AttributedString attributedDecre
         assert(attributedDecreasedValue != nullptr);
         assert(attributedIncreasedValue != nullptr);
         assert(attributedHint != nullptr);
-        assert(tooltip == __s("") || textDirection != nullptr, __s("A SemanticsData object with tooltip "$tooltip" had a null textDirection."));
-        assert(attributedLabel->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with label "${attributedLabel.string}" had a null textDirection."));
-        assert(attributedValue->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with value "${attributedValue.string}" had a null textDirection."));
-        assert(attributedDecreasedValue->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with decreasedValue "${attributedDecreasedValue.string}" had a null textDirection."));
-        assert(attributedIncreasedValue->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with increasedValue "${attributedIncreasedValue.string}" had a null textDirection."));
-        assert(attributedHint->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with hint "${attributedHint.string}" had a null textDirection."));
+        assert(tooltip == __s("") || textDirection != nullptr, __s("A SemanticsData object with tooltip "%s)"));
+        assert(attributedLabel->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with label "%s)"));
+        assert(attributedValue->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with value "%s)"));
+        assert(attributedDecreasedValue->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with decreasedValue "%s)"));
+        assert(attributedIncreasedValue->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with increasedValue "%s)"));
+        assert(attributedHint->stringValue == __s("") || textDirection != nullptr, __s("A SemanticsData object with hint "%s)"));
         assert(rect != nullptr);
     }
 }
@@ -185,7 +185,7 @@ void SemanticsDataCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(make<StringPropertyCls>(__s("tooltip"), tooltip, __s("")));
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), textDirection, nullptr));
     if (textSelection?->isValid() | false) {
-        properties->add(make<MessagePropertyCls>(__s("textSelection"), __s("[${textSelection!.start}, ${textSelection!.end}]")));
+        properties->add(make<MessagePropertyCls>(__s("textSelection"), __s("[%s$%s)")));
     }
     properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId, nullptr));
     properties->add(make<IntPropertyCls>(__s("maxValueLength"), maxValueLength, nullptr));
@@ -325,7 +325,7 @@ Rect SemanticsNodeCls::rect() {
 
 void SemanticsNodeCls::rect(Rect value) {
     assert(value != nullptr);
-    assert(value->isFinite(), __s("$this (with $owner) tried to set a non-finite rect."));
+    assert(value->isFinite(), __s("%s$%s)"));
     if (_rect != value) {
         _rect = value;
         _markDirty();
@@ -669,7 +669,7 @@ void SemanticsNodeCls::sendEvent(SemanticsEvent event) {
 }
 
 String SemanticsNodeCls::toStringShort() {
-    return __s("${objectRuntimeType(this, 'SemanticsNode')}#$id");
+    return __s("%s$%s;");
 }
 
 void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -690,13 +690,13 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
         double scale = transform() != nullptr? MatrixUtilsCls->getAsScale(transform()!) : nullptr;
         String description;
         if (scale != nullptr) {
-            description = __s("$rect scaled by ${scale.toStringAsFixed(1)}x");
+            description = __s("%s$%s;");
         } else {
             if (transform() != nullptr && !MatrixUtilsCls->isIdentity(transform()!)) {
             String matrix = transform()->toString()->split(__s("\n"))->take(4)-><String>map([=] (String line) {
     line->substring(4);
 })->join(__s("; "));
-            description = __s("$rect with transform [$matrix]");
+            description = __s("%s$%s;");
         }
 ;
         }        properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect(), description, false));
@@ -727,7 +727,7 @@ void SemanticsNodeCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(<TextDirection>make<EnumPropertyCls>(__s("textDirection"), _textDirection, nullptr));
     properties->add(<SemanticsSortKey>make<DiagnosticsPropertyCls>(__s("sortKey"), sortKey(), nullptr));
     if (_textSelection?->isValid() | false) {
-        properties->add(make<MessagePropertyCls>(__s("text selection"), __s("[${_textSelection!.start}, ${_textSelection!.end}]")));
+        properties->add(make<MessagePropertyCls>(__s("text selection"), __s("[%s$%s)")));
     }
     properties->add(make<IntPropertyCls>(__s("platformViewId"), platformViewId(), nullptr));
     properties->add(make<IntPropertyCls>(__s("maxValueLength"), maxValueLength(), nullptr));
@@ -777,14 +777,14 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
         if (identical(newChildren, _children)) {
             List<DiagnosticsNode> mutationErrors = makeList();
             if (newChildren->length() != _debugPreviousSnapshot->length()) {
-                mutationErrors->add(make<ErrorDescriptionCls>(__s("The list's length has changed from ${_debugPreviousSnapshot.length} to ${newChildren.length}.")));
+                mutationErrors->add(make<ErrorDescriptionCls>(__s("The list's length has changed from %sto $%s,")));
             } else {
                 for (;  < newChildren->length(); i++) {
                     if (!identical(newChildren[i], _debugPreviousSnapshot[i])) {
                         if (mutationErrors->isNotEmpty()) {
                             mutationErrors->add(make<ErrorSpacerCls>());
                         }
-                        mutationErrors->add(make<ErrorDescriptionCls>(__s("Child node at position $i was replaced:")));
+                        mutationErrors->add(make<ErrorDescriptionCls>(__s("Child node at position %s)")));
                         mutationErrors->add(newChildren[i]->toDiagnosticsNode(__s("Previous child"), DiagnosticsTreeStyleCls::singleLine));
                         mutationErrors->add(_debugPreviousSnapshot[i]->toDiagnosticsNode(__s("New child"), DiagnosticsTreeStyleCls::singleLine));
                     }
@@ -820,7 +820,7 @@ void SemanticsNodeCls::_replaceChildren(List<SemanticsNode> newChildren) {
         }
     }
     for (SemanticsNode child : newChildren) {
-        assert(!child->isInvisible, __s("Child $child is invisible and should not be added as a child of $this."));
+        assert(!child->isInvisible, __s("Child %s$%s)"));
         child->_dead = false;
     }
     bool sawChange = false;

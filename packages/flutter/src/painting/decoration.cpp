@@ -48,7 +48,7 @@ bool DecorationCls::hitTest(Size size, Offset position, TextDirection textDirect
 }
 
 Path DecorationCls::getClipPath(Rect rect, TextDirection textDirection) {
-    throw make<UnsupportedErrorCls>(__s("${objectRuntimeType(this, 'This Decoration subclass')} does not expect to be used for clipping."));
+    throw make<UnsupportedErrorCls>(__s("%s)"));
 }
 
 void BoxPainterCls::dispose() {

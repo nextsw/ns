@@ -47,6 +47,8 @@ template<typename A1, typename A2, typename A3>
 
 bool _isLoopback(String host);
 
+std::function<void(Uri )> _getHttpConnectionHookClosure(bool mayInsecurelyConnectToAllDomains);
+
 
 
 #endif

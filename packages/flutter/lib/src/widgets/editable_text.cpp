@@ -13,7 +13,7 @@ void TextEditingControllerCls::text(String newText) {
 }
 
 void TextEditingControllerCls::value(TextEditingValue newValue) {
-    assert(!newValue->composing->isValid() || newValue->isComposingRangeValid(), __s("New TextEditingValue $newValue has an invalid non-empty composing range ${newValue.composing}. It is recommended to use a valid composing range, even for readonly text fields"));
+    assert(!newValue->composing->isValid() || newValue->isComposingRangeValid(), __s("New TextEditingValue %s$%seven for readonly text fields,"));
     super->value = newValue;
 }
 
@@ -32,7 +32,7 @@ TextSelection TextEditingControllerCls::selection() {
 
 void TextEditingControllerCls::selection(TextSelection newSelection) {
     if (!isSelectionWithinTextBounds(newSelection)) {
-        throw make<FlutterErrorCls>(__s("invalid text selection: $newSelection"));
+        throw make<FlutterErrorCls>(__s("invalid text selection: %s)"));
     }
     TextRange newComposing = newSelection->isCollapsed() && _isSelectionWithinComposingRange(newSelection)? value->composing : TextRangeCls::empty;
     value = value->copyWith(newSelection, newComposing);
@@ -256,7 +256,7 @@ void EditableTextStateCls::cutSelection(SelectionChangedCause cause) {
     ClipboardCls->setData(make<ClipboardDataCls>(selection->textInside(text)));
     _replaceText(make<ReplaceTextIntentCls>(textEditingValue(), __s(""), selection, cause));
     if (cause == SelectionChangedCauseCls::toolbar) {
-        SchedulerBindingCls::instance->addPostFrameCallback([=] () {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Unknown  _) {
             if (mounted()) {
                 bringIntoView(textEditingValue()->selection->extent());
             }
@@ -283,7 +283,7 @@ Future<void> EditableTextStateCls::pasteText(SelectionChangedCause cause) {
     TextEditingValue collapsedTextEditingValue = textEditingValue()->copyWith(TextSelectionCls->collapsed(lastSelectionIndex));
     userUpdateTextEditingValue(collapsedTextEditingValue->replaced(selection, data->text!), cause);
     if (cause == SelectionChangedCauseCls::toolbar) {
-        SchedulerBindingCls::instance->addPostFrameCallback([=] () {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Unknown  _) {
             if (mounted()) {
                 bringIntoView(textEditingValue()->selection->extent());
             }
@@ -321,7 +321,7 @@ void EditableTextStateCls::didChangeDependencies() {
     }
     if (!_didAutoFocus && widget()->autofocus) {
         _didAutoFocus = true;
-        SchedulerBindingCls::instance->addPostFrameCallback([=] () {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Unknown  _) {
             if (mounted() && renderEditable()->hasSize()) {
                 FocusScopeCls->of(context())->autofocus(widget()->focusNode);
             }
@@ -425,7 +425,7 @@ void EditableTextStateCls::dispose() {
     _clipboardStatus?->dispose();
     _cursorVisibilityNotifier->dispose();
     super->dispose();
-    assert(_batchEditDepth <= 0, __s("unfinished batch edits: $_batchEditDepth"));
+    assert(_batchEditDepth <= 0, __s("unfinished batch edits: %s)"));
 }
 
 TextEditingValue EditableTextStateCls::currentTextEditingValue() {
@@ -607,7 +607,7 @@ void EditableTextStateCls::removeTextPlaceholder() {
 }
 
 String EditableTextStateCls::autofillId() {
-    return __s("EditableText-$hashCode");
+    return __s("EditableText-%s;");
 }
 
 TextInputConfiguration EditableTextStateCls::textInputConfiguration() {
@@ -729,7 +729,7 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
         try {
             widget()->onEditingComplete!();
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onEditingComplete for $action"))));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onEditingComplete for %s)"))));
         };
     } else {
         widget()->controller->clearComposing();
@@ -744,7 +744,7 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
     try {
         onSubmitted(_value()->text);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSubmitted for $action"))));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSubmitted for %s)"))));
     };
     if (shouldUnfocus) {
         _scheduleRestartConnection();
@@ -911,7 +911,7 @@ void EditableTextStateCls::_handleSelectionChanged(TextSelection selection, Sele
     try {
         widget()->onSelectionChanged?->call(selection, cause);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSelectionChanged for $cause"))));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSelectionChanged for %s)"))));
     };
     if (_cursorTimer != nullptr) {
         _stopCursorBlink(false);
@@ -1193,7 +1193,7 @@ void EditableTextStateCls::_updateCaretRectIfNeeded() {
 
 TextDirection EditableTextStateCls::_textDirection() {
     TextDirection result = widget()->textDirection | DirectionalityCls->of(context());
-    assert(result != nullptr, __s("$runtimeType created without a textDirection and with no ambient Directionality."));
+    assert(result != nullptr, __s("%s)"));
     return result;
 }
 
@@ -1840,7 +1840,7 @@ void _UndoStackCls<T>::clear() {
 
 template<typename T>
 String _UndoStackCls<T>::toString() {
-    return __s("_UndoStack $_list");
+    return __s("_UndoStack %s;");
 }
 
 template<typename T>

@@ -15,7 +15,7 @@ void ListCls<E>::copyRange(List<T> target, int at, List<T> source, int start, in
     }
     int length = end - start;
     if (target->length < at + length) {
-        throw ArgumentErrorCls->value(target, __s("target"), __s("Not big enough to hold $length elements at position $at"));
+        throw ArgumentErrorCls->value(target, __s("target"), __s("Not big enough to hold %s$%s)"));
     }
     if (!identical(source, target) || start >= at) {
         for (;  < length; i++) {

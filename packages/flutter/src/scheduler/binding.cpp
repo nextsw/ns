@@ -238,7 +238,7 @@ void SchedulerBindingCls::scheduleFrame() {
     }
     assert([=] () {
         if (debugPrintScheduleFrameStacks) {
-            debugPrintStack(__s("scheduleFrame() called. Current phase is $schedulerPhase."));
+            debugPrintStack(__s("scheduleFrame() called. Current phase is %s)"));
         }
         return true;
     }());
@@ -253,7 +253,7 @@ void SchedulerBindingCls::scheduleForcedFrame() {
     }
     assert([=] () {
         if (debugPrintScheduleFrameStacks) {
-            debugPrintStack(__s("scheduleForcedFrame() called. Current phase is $schedulerPhase."));
+            debugPrintStack(__s("scheduleForcedFrame() called. Current phase is %s)"));
         }
         return true;
     }());
@@ -319,7 +319,7 @@ void SchedulerBindingCls::handleBeginFrame(Duration rawTimeStamp) {
             } else {
                 frameTimeStampDescription->write(__s("(warm-up frame)"));
             }
-            _debugBanner = __s("▄▄▄▄▄▄▄▄ Frame ${_debugFrameNumber.toString().padRight(7)}   ${frameTimeStampDescription.toString().padLeft(18)} ▄▄▄▄▄▄▄▄");
+            _debugBanner = __s("▄▄▄▄▄▄▄▄ Frame %s$%s;");
             if (debugPrintBeginFrameBanner) {
                 debugPrint(_debugBanner);
             }
@@ -450,26 +450,26 @@ void SchedulerBindingCls::_handleDrawFrame() {
 }
 
 void SchedulerBindingCls::_profileFramePostEvent(FrameTiming frameTiming) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("number"), frameTiming->frameNumber);map1.set(__s("startTime"), frameTiming->timestampInMicroseconds(FramePhaseCls::buildStart));map1.set(__s("elapsed"), frameTiming->totalSpan->inMicroseconds);map1.set(__s("build"), frameTiming->buildDuration->inMicroseconds);map1.set(__s("raster"), frameTiming->rasterDuration->inMicroseconds);map1.set(__s("vsyncOverhead"), frameTiming->vsyncOverhead->inMicroseconds);postEvent(__s("Flutter.Frame"), list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("number"), frameTiming->frameNumber());map1.set(__s("startTime"), frameTiming->timestampInMicroseconds(FramePhaseCls::buildStart));map1.set(__s("elapsed"), frameTiming->totalSpan()->inMicroseconds());map1.set(__s("build"), frameTiming->buildDuration()->inMicroseconds());map1.set(__s("raster"), frameTiming->rasterDuration()->inMicroseconds());map1.set(__s("vsyncOverhead"), frameTiming->vsyncOverhead()->inMicroseconds());postEvent(__s("Flutter.Frame"), list1);
 }
 
 void SchedulerBindingCls::_debugDescribeTimeStamp(Duration timeStamp, StringBuffer buffer) {
     if (timeStamp->inDays() > 0) {
-        buffer->write(__s("${timeStamp.inDays}d "));
+        buffer->write(__s("%s)"));
     }
     if (timeStamp->inHours() > 0) {
-        buffer->write(__s("${timeStamp.inHours - timeStamp.inDays * Duration.hoursPerDay}h "));
+        buffer->write(__s("%s)"));
     }
     if (timeStamp->inMinutes() > 0) {
-        buffer->write(__s("${timeStamp.inMinutes - timeStamp.inHours * Duration.minutesPerHour}m "));
+        buffer->write(__s("%s)"));
     }
     if (timeStamp->inSeconds() > 0) {
-        buffer->write(__s("${timeStamp.inSeconds - timeStamp.inMinutes * Duration.secondsPerMinute}s "));
+        buffer->write(__s("%s)"));
     }
-    buffer->write(__s("${timeStamp.inMilliseconds - timeStamp.inSeconds * Duration.millisecondsPerSecond}"));
+    buffer->write(__s("%s)"));
     int microseconds = timeStamp->inMicroseconds() - timeStamp->inMilliseconds() * DurationCls::microsecondsPerMillisecond;
     if (microseconds > 0) {
-        buffer->write(__s(".${microseconds.toString().padLeft(3, "0")}"));
+        buffer->write(__s(".%s)"));
     }
     buffer->write(__s("ms"));
 }

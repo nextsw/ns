@@ -7,12 +7,12 @@ Future<ImmutableBuffer> AssetBundleCls::loadBuffer(String key) {
 Future<String> AssetBundleCls::loadString(String key, bool cache) {
     ByteData data = await load(key);
     if (data == nullptr) {
-        throw make<FlutterErrorCls>(__s("Unable to load asset: $key"));
+        throw make<FlutterErrorCls>(__s("Unable to load asset: %s)"));
     }
     if (data->lengthInBytes() < 50 * 1024) {
         return utf8->decode(data->buffer()->asUint8List());
     }
-    return compute(_utf8decode, data, __s("UTF8 decode for "$key""));
+    return compute(_utf8decode, data, __s("UTF8 decode for "%s)"));
 }
 
 void AssetBundleCls::evict(String key) {
@@ -22,7 +22,7 @@ void AssetBundleCls::clear() {
 }
 
 String AssetBundleCls::toString() {
-    return __s("${describeIdentity(this)}()");
+    return __s("%s;");
 }
 
 String AssetBundleCls::_utf8decode(ByteData data) {
@@ -54,7 +54,7 @@ Future<T> NetworkAssetBundleCls::loadStructuredData(String key, std::function<Fu
 }
 
 String NetworkAssetBundleCls::toString() {
-    return __s("${describeIdentity(this)}($_baseUrl)");
+    return __s("%s$%s;");
 }
 
 Uri NetworkAssetBundleCls::_urlFromKey(String key) {
@@ -113,7 +113,7 @@ Future<ByteData> PlatformAssetBundleCls::load(String key) {
     Uint8List encoded = utf8->encoder->convert(make<UriCls>(UriCls->encodeFull(key))->path);
     ByteData asset = await ServicesBindingCls::instance->defaultBinaryMessenger->send(__s("flutter/assets"), encoded->buffer->asByteData());
     if (asset == nullptr) {
-        throw make<FlutterErrorCls>(__s("Unable to load asset: $key"));
+        throw make<FlutterErrorCls>(__s("Unable to load asset: %s)"));
     }
     return asset;
 }
@@ -137,7 +137,7 @@ Future<ImmutableBuffer> PlatformAssetBundleCls::loadBuffer(String key) {
     try {
         return await ui->ImmutableBufferCls->fromAsset(key);
     } catch (Exception null) {
-        throw make<FlutterErrorCls>(__s("Unable to load asset: $key."));
+        throw make<FlutterErrorCls>(__s("Unable to load asset: %s)"));
     };
 }
 

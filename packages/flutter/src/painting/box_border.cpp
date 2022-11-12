@@ -33,12 +33,12 @@ BoxBorder BoxBorderCls::lerp(BoxBorder a, BoxBorder b, double t) {
 }
 
 Path BoxBorderCls::getInnerPath(Rect rect, TextDirection textDirection) {
-    assert(textDirection != nullptr, __s("The textDirection argument to $runtimeType.getInnerPath must not be null."));
+    assert(textDirection != nullptr, __s("The textDirection argument to %s)"));
     auto _c1 = make<PathCls>();_c1.addRect(dimensions()->resolve(textDirection)->deflateRect(rect));return _c1;
 }
 
 Path BoxBorderCls::getOuterPath(Rect rect, TextDirection textDirection) {
-    assert(textDirection != nullptr, __s("The textDirection argument to $runtimeType.getOuterPath must not be null."));
+    assert(textDirection != nullptr, __s("The textDirection argument to %s)"));
     auto _c1 = make<PathCls>();_c1.addRect(rect);return _c1;
 }
 
@@ -206,10 +206,10 @@ int BorderCls::hashCode() {
 
 String BorderCls::toString() {
     if (isUniform()) {
-        return __s("${objectRuntimeType(this, 'Border')}.all($top)");
+        return __s("%s$%s;");
     }
     List<String> list1 = make<ListCls<>>();if (top != BorderSideCls::none) {    list1.add(ArrayItem);}if (right != BorderSideCls::none) {    list1.add(ArrayItem);}if (bottom != BorderSideCls::none) {    list1.add(ArrayItem);}if (left != BorderSideCls::none) {    list1.add(ArrayItem);}List<String> arguments = list1;
-    return __s("${objectRuntimeType(this, 'Border')}(${arguments.join(", ")})");
+    return __s("%s$%s;");
 }
 
 bool BorderCls::_colorIsUniform() {
@@ -366,7 +366,7 @@ int BorderDirectionalCls::hashCode() {
 
 String BorderDirectionalCls::toString() {
     List<String> list1 = make<ListCls<>>();if (top != BorderSideCls::none) {    list1.add(ArrayItem);}if (start != BorderSideCls::none) {    list1.add(ArrayItem);}if (end != BorderSideCls::none) {    list1.add(ArrayItem);}if (bottom != BorderSideCls::none) {    list1.add(ArrayItem);}List<String> arguments = list1;
-    return __s("${objectRuntimeType(this, 'BorderDirectional')}(${arguments.join(", ")})");
+    return __s("%s$%s;");
 }
 
 bool BorderDirectionalCls::_strokeAlignIsUniform() {

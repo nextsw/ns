@@ -62,5 +62,215 @@ private:
 };
 using NullThrownError = std::shared_ptr<NullThrownErrorCls>;
 
+class ArgumentErrorCls : public ErrorCls {
+public:
+    dynamic invalidValue;
+
+    String name;
+
+    dynamic message;
+
+
+     ArgumentErrorCls(dynamic message, String name);
+
+    virtual void  value(value , String name, dynamic message);
+
+    virtual void  notNull(String name);
+
+    template<typename T>
+ static T checkNotNull(T argument, String name);
+
+    virtual String toString();
+
+private:
+    bool _hasValue;
+
+
+    virtual String _errorName();
+
+    virtual String _errorExplanation();
+
+};
+using ArgumentError = std::shared_ptr<ArgumentErrorCls>;
+
+class RangeErrorCls : public ArgumentErrorCls {
+public:
+    num start;
+
+    num end;
+
+
+     RangeErrorCls(auto message);
+
+    virtual void  value(num value, String name, String message);
+
+    virtual void  range(num invalidValue, int minValue, int maxValue, String name, String message);
+
+    virtual void  index(int index, dynamic indexable, String name, String message, int length);
+    static int checkValueInInterval(int value, int minValue, int maxValue, String name, String message);
+
+    static int checkValidIndex(int index, dynamic indexable, String name, int length, String message);
+
+    static int checkValidRange(int start, int end, int length, String startName, String endName, String message);
+
+    static int checkNotNegative(int value, String name, String message);
+
+private:
+
+    virtual String _errorName();
+
+    virtual String _errorExplanation();
+
+};
+using RangeError = std::shared_ptr<RangeErrorCls>;
+
+class IndexErrorCls : public ArgumentErrorCls {
+public:
+    auto  indexable;
+
+    int length;
+
+
+     IndexErrorCls(int invalidValue, dynamic indexable, String name, String message, int length);
+
+    virtual int start();
+
+    virtual int end();
+
+private:
+
+    virtual String _errorName();
+
+    virtual String _errorExplanation();
+
+};
+using IndexError = std::shared_ptr<IndexErrorCls>;
+
+class FallThroughErrorCls : public ErrorCls {
+public:
+
+     FallThroughErrorCls();
+    String toString();
+private:
+
+    void  _create(String url, int line);
+};
+using FallThroughError = std::shared_ptr<FallThroughErrorCls>;
+
+class AbstractClassInstantiationErrorCls : public ErrorCls {
+public:
+
+     AbstractClassInstantiationErrorCls(String className);
+
+    String toString();
+private:
+    String _className;
+
+
+};
+using AbstractClassInstantiationError = std::shared_ptr<AbstractClassInstantiationErrorCls>;
+
+class NoSuchMethodErrorCls : public ErrorCls {
+public:
+
+    void  withInvocation(Object receiver, Invocation invocation);
+     NoSuchMethodErrorCls(Object receiver, Symbol memberName, List<any> positionalArguments, Map<Symbol, dynamic> namedArguments);
+    String toString();
+private:
+
+};
+using NoSuchMethodError = std::shared_ptr<NoSuchMethodErrorCls>;
+
+class UnsupportedErrorCls : public ErrorCls {
+public:
+    String message;
+
+
+     UnsupportedErrorCls(String message);
+    virtual String toString();
+
+private:
+
+};
+using UnsupportedError = std::shared_ptr<UnsupportedErrorCls>;
+
+class UnimplementedErrorCls : public ErrorCls {
+public:
+    String message;
+
+
+     UnimplementedErrorCls(String message);
+    virtual String toString();
+
+private:
+
+};
+using UnimplementedError = std::shared_ptr<UnimplementedErrorCls>;
+
+class StateErrorCls : public ErrorCls {
+public:
+    String message;
+
+
+     StateErrorCls(String message);
+    virtual String toString();
+
+private:
+
+};
+using StateError = std::shared_ptr<StateErrorCls>;
+
+class ConcurrentModificationErrorCls : public ErrorCls {
+public:
+    Object modifiedObject;
+
+
+     ConcurrentModificationErrorCls(Object modifiedObject);
+    virtual String toString();
+
+private:
+
+};
+using ConcurrentModificationError = std::shared_ptr<ConcurrentModificationErrorCls>;
+
+class OutOfMemoryErrorCls : public ObjectCls {
+public:
+
+     OutOfMemoryErrorCls();
+    virtual String toString();
+
+    virtual StackTrace stackTrace();
+
+private:
+
+};
+using OutOfMemoryError = std::shared_ptr<OutOfMemoryErrorCls>;
+
+class StackOverflowErrorCls : public ObjectCls {
+public:
+
+     StackOverflowErrorCls();
+    virtual String toString();
+
+    virtual StackTrace stackTrace();
+
+private:
+
+};
+using StackOverflowError = std::shared_ptr<StackOverflowErrorCls>;
+
+class CyclicInitializationErrorCls : public ErrorCls {
+public:
+    String variableName;
+
+
+     CyclicInitializationErrorCls(String variableName);
+    virtual String toString();
+
+private:
+
+};
+using CyclicInitializationError = std::shared_ptr<CyclicInitializationErrorCls>;
+
 
 #endif

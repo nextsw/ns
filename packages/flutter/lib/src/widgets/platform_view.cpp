@@ -39,7 +39,7 @@ Widget HtmlElementViewCls::build(BuildContext context) {
 
 _HtmlElementViewController HtmlElementViewCls::_createHtmlElementView(PlatformViewCreationParams params) {
     _HtmlElementViewController controller = make<_HtmlElementViewControllerCls>(params->id, viewType);
-    controller->_initialize()->then([=] () {
+    controller->_initialize()->then([=] (Unknown  _) {
         params->onPlatformViewCreated(params->id);
         onPlatformViewCreated?->call(params->id);
     });
@@ -105,7 +105,7 @@ void _AndroidViewStateCls::_initializeOnce() {
     }
     _initialized = true;
     _createNewAndroidView();
-    _focusNode = make<FocusNodeCls>(__s("AndroidView(id: $_id)"));
+    _focusNode = make<FocusNodeCls>(__s("AndroidView(id: %s)"));
 }
 
 TextDirection _AndroidViewStateCls::_findLayoutDirection() {
@@ -208,7 +208,7 @@ Future<void> _UiKitViewStateCls::_createNewUiKitView() {
     widget()->onPlatformViewCreated?->call(id);
     setState([=] () {
         _controller = controller;
-        _focusNode = make<FocusNodeCls>(__s("UiKitView(id: $id)"));
+        _focusNode = make<FocusNodeCls>(__s("UiKitView(id: %s)"));
     });
 }
 
@@ -290,7 +290,7 @@ Widget _PlatformViewLinkStateCls::build(BuildContext context) {
 }
 
 void _PlatformViewLinkStateCls::initState() {
-    _focusNode = make<FocusNodeCls>(__s("PlatformView(id: $_id)"));
+    _focusNode = make<FocusNodeCls>(__s("PlatformView(id: %s)"));
     _initialize();
     super->initState();
 }

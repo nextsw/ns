@@ -47,24 +47,16 @@ void _SyncCompleterCls<T>::_completeError(Object error, StackTrace stackTrace) {
 }
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::then(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback){
-
-}
+void _FutureListenerCls<S, T>::then(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::thenAwait(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback){
-
-}
+void _FutureListenerCls<S, T>::thenAwait(_Future<T> result, std::function<FutureOr<T>(S )> onValue, std::function<void ()> errorCallback)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::catchError(_Future<T> result, std::function<void ()> errorCallback, std::function<void ()> callback){
-
-}
+void _FutureListenerCls<S, T>::catchError(_Future<T> result, std::function<void ()> errorCallback, std::function<void ()> callback)
 
 template<typename S, typename T>
-void _FutureListenerCls<S, T>::whenComplete(_Future<T> result, std::function<void ()> callback){
-    
-}
+void _FutureListenerCls<S, T>::whenComplete(_Future<T> result, std::function<void ()> callback)
 
 template<typename S, typename T>
 bool _FutureListenerCls<S, T>::handlesValue() {

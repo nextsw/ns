@@ -229,7 +229,7 @@ void _GlowControllerCls::paint(Canvas canvas, Size size) {
 }
 
 String _GlowControllerCls::toString() {
-    return __s("_GlowController(color: $color, axis: ${describeEnum(axis)})");
+    return __s("_GlowController(color: %s$%s;");
 }
 
 _GlowControllerCls::_GlowControllerCls(Axis axis, Color color, TickerProvider vsync) {
@@ -295,7 +295,7 @@ bool _GlowingOverscrollIndicatorPainterCls::shouldRepaint(_GlowingOverscrollIndi
 }
 
 String _GlowingOverscrollIndicatorPainterCls::toString() {
-    return __s("_GlowingOverscrollIndicatorPainter($leadingController, $trailingController)");
+    return __s("_GlowingOverscrollIndicatorPainter(%s$%s;");
 }
 
 void _GlowingOverscrollIndicatorPainterCls::_paintSide(Canvas canvas, Size size, _GlowController controller, AxisDirection axisDirection, GrowthDirection growthDirection) {
@@ -473,5 +473,5 @@ void OverscrollIndicatorNotificationCls::disallowIndicator() {
 
 void OverscrollIndicatorNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("side: ${leading ? "leading edge" : "trailing edge"}"));
+    description->add(__s("side: %s"));
 }

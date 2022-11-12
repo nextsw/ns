@@ -21,7 +21,7 @@ _Variable _FunctionCls::variable(int id) {
 void _FunctionCls::declareParam(int id, int paramType) {
     int i = declaredParams;
     if (paramType != type->params[i]) {
-        throw TranspileExceptionCls->_(_opFunctionParameter, __s("type mismatch for param $i of function $name"));
+        throw TranspileExceptionCls->_(_opFunctionParameter, __s("type mismatch for param %s$%s)"));
     }
     params[i] = id;
     declaredParams++;
@@ -41,25 +41,25 @@ List<_Variable> _FunctionCls::variableDeps(int id) {
 
 void _FunctionCls::write(StringBuffer out) {
     if (declaredParams != params->length()) {
-        throw transpiler->failure(__s("not all parameters declared for function $name"));
+        throw transpiler->failure(__s("not all parameters declared for function %s)"));
     }
     if (entry == nullptr) {
-        throw transpiler->failure(__s("function $name has no entry block"));
+        throw transpiler->failure(__s("function %s)"));
     }
     String returnTypeString = transpiler->resolveType(type->returnType);
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
         returnTypeString = __s("half4");
     }
     String nameString = transpiler->resolveName(name);
-    out->write(__s("$returnTypeString $nameString("));
+    out->write(__s("%s$%s)"));
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
-        String fragParam = __s("float2 $_fragParamName");
+        String fragParam = __s("float2 %s;");
         out->write(fragParam);
     }
     for (;  < params->length(); i++) {
         String typeString = transpiler->resolveType(type->params[i]);
         String nameString = transpiler->resolveName(params[i]);
-        out->write(__s("$typeString $nameString"));
+        out->write(__s("%s$%s)"));
         if ( < params->length() - 1) {
             out->write(__s(", "));
         }
@@ -68,14 +68,14 @@ void _FunctionCls::write(StringBuffer out) {
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
         if (transpiler->fragCoord > 0) {
             String fragName = transpiler->resolveName(transpiler->fragCoord);
-            out->writeln(__s("  float4 $fragName = float4($_fragParamName, 0, 0);"));
+            out->writeln(__s("  float4 %s$%s)"));
         }
-        out->writeln(__s("  float4 $_colorVariableName;"));
+        out->writeln(__s("  float4 %s)"));
     }
     entry?->_preprocess();
     entry?->write(make<_BlockContextCls>(out, 1));
     if (transpiler->target == TargetLanguageCls::sksl && name == transpiler->entryPoint) {
-        out->writeln(__s("  return $_colorVariableName;"));
+        out->writeln(__s("  return %s)"));
     }
     out->writeln(__s("}"));
     out->writeln();

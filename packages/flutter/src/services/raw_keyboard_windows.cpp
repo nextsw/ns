@@ -35,7 +35,7 @@ LogicalKeyboardKey RawKeyEventDataWindowsCls::logicalKey() {
 bool RawKeyEventDataWindowsCls::isModifierPressed(ModifierKey key, KeyboardSide side) {
     bool result;
     ;
-    assert(!result || getModifierSide(key) != nullptr, __s("$runtimeType thinks that a modifier is pressed, but can't figure out what side it's on."));
+    assert(!result || getModifierSide(key) != nullptr, __s("%s)"));
     return result;
 }
 

@@ -596,6 +596,9 @@ Future<void> loadFontFromList(Uint8List list, String fontFamily);
 
 ByteData _fontChangeMessage;
 
+FutureOr<void> _sendFontChangeMessage();
+
+void _loadFontFromList(Uint8List list, _Callback<void> callback, String fontFamily);
 
 
 #endif

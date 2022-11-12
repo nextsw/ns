@@ -11,7 +11,7 @@ int IconDataCls::hashCode() {
 }
 
 String IconDataCls::toString() {
-    return __s("IconData(U+${codePoint.toRadixString(16).toUpperCase().padLeft(5, '0')})");
+    return __s("IconData(U+%s;");
 }
 
 IconDataPropertyCls::IconDataPropertyCls(String name, Unknown value, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style) {

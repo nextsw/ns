@@ -116,10 +116,10 @@ int QueueListCls<E>::length() {
 template<typename E>
 void QueueListCls<E>::length(int value) {
     if ( < 0) {
-        throw make<RangeErrorCls>(__s("Length $value may not be negative."));
+        throw make<RangeErrorCls>(__s("Length %s)"));
     }
     if (value > length() && !is<E>(nullptr)) {
-        throw make<UnsupportedErrorCls>(__s("The length can only be increased when the element type is nullable, but the current element type is `$E`."));
+        throw make<UnsupportedErrorCls>(__s("The length can only be increased when the element type is nullable, but the current element type is `%s)"));
     }
     auto delta = value - length();
     if (delta >= 0) {
@@ -143,7 +143,7 @@ void QueueListCls<E>::length(int value) {
 template<typename E>
 E QueueListCls<E>::[](int index) {
     if ( < 0 || index >= length()) {
-        throw make<RangeErrorCls>(__s("Index $index must be in the range [0..$length)."));
+        throw make<RangeErrorCls>(__s("Index %s$%s)"));
     }
     return as<E>(_table[(_head + index) & (_table->length() - 1)]);
 }
@@ -151,7 +151,7 @@ E QueueListCls<E>::[](int index) {
 template<typename E>
 void QueueListCls<E>::[]=(int index, E value) {
     if ( < 0 || index >= length()) {
-        throw make<RangeErrorCls>(__s("Index $index must be in the range [0..$length)."));
+        throw make<RangeErrorCls>(__s("Index %s$%s)"));
     }
     _table[(_head + index) & (_table->length() - 1)] = value;
 }

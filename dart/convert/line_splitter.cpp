@@ -15,13 +15,11 @@ Iterable<String> LineSplitterCls::split(String lines, int start, int end) {
                 continue;
             }
         }
-        yield yield;
-        lines->substring(sliceStart, i);
+        yield lines->substring(sliceStart, i);
         sliceStart = i + 1;
     }
     if ( < end) {
-        yield yield;
-        lines->substring(sliceStart, end);
+        yield lines->substring(sliceStart, end);
     }
 }
 

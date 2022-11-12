@@ -18,7 +18,7 @@ Animation<U> AnimationCls<T>::drive(Animatable<U> child) {
 
 template<typename T>
 String AnimationCls<T>::toString() {
-    return __s("${describeIdentity(this)}(${toStringDetails()})");
+    return __s("%s$%s;");
 }
 
 template<typename T>

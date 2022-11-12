@@ -100,5 +100,5 @@ int TableBorderCls::hashCode() {
 }
 
 String TableBorderCls::toString() {
-    return __s("TableBorder($top, $right, $bottom, $left, $horizontalInside, $verticalInside, $borderRadius)");
+    return __s("TableBorder(%s$%s$%s$%s$%s$%s$%s;");
 }

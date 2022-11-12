@@ -74,7 +74,7 @@ Tween<Rect> _HeroFlightManifestCls::createHeroRectTween(Rect begin, Rect end) {
 }
 
 String _HeroFlightManifestCls::toString() {
-    return __s("_HeroFlightManifest($type tag: $tag from route: ${fromRoute.settings} to route: ${toRoute.settings} with hero: $fromHero to $toHero)${isValid ? '' : ', INVALID'}");
+    return __s("_HeroFlightManifest(%s$%s$%sto route: $%s$%s$%s$%s");
 }
 
 _HeroFlightManifestCls::_HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<dynamic> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<dynamic> toRoute, HeroFlightDirection type) {
@@ -176,7 +176,7 @@ String _HeroFlightCls::toString() {
     RouteSettings from = manifest->fromRoute->settings();
     RouteSettings to = manifest->toRoute->settings();
     Object tag = manifest->tag();
-    return __s("HeroFlight(for: $tag, from: $from, to: $to ${_proxyAnimation.parent})");
+    return __s("HeroFlight(for: %s$%s$%s$%s;");
 }
 
 _HeroFlightCls::_HeroFlightCls(_OnFlightEnded onFlightEnded) {
@@ -287,7 +287,7 @@ void HeroControllerCls::_startHeroTransition(PageRoute<dynamic> from, PageRoute<
     }
     RenderObject navigatorRenderObject = navigator->context()->findRenderObject();
     if (!is<RenderBox>(navigatorRenderObject)) {
-        assert(false, __s("Navigator $navigator has an invalid RenderObject type ${navigatorRenderObject.runtimeType}."));
+        assert(false, __s("Navigator %s$%s)"));
         return;
     }
     assert(navigatorRenderObject->hasSize);

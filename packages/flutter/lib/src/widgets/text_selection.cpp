@@ -1,6 +1,6 @@
 #include "text_selection.hpp"
 String ToolbarItemsParentDataCls::toString() {
-    return __s("${super.toString()}; shouldPaint=$shouldPaint");
+    return __s("%s$%s;");
 }
 
 bool TextSelectionControlsCls::canCut(TextSelectionDelegate delegate) {
@@ -221,7 +221,7 @@ SelectionOverlayCls::SelectionOverlayCls(ClipboardStatusNotifier clipboardStatus
     }
     {
         OverlayState overlay = OverlayCls->of(context, true);
-        assert(overlay != nullptr, __s("No Overlay widget exists above $context.\nUsually the Navigator created by WidgetsApp provides the overlay. Perhaps your app content was created above the Navigator with the WidgetsApp builder parameter."));
+        assert(overlay != nullptr, __s("No Overlay widget exists above %sUsually the Navigator created by WidgetsApp provides the overlay. Perhaps your app content was created above the Navigator with the WidgetsApp builder parameter.,"));
     }
 }
 

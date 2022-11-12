@@ -212,7 +212,7 @@ bool BoxConstraintsCls::debugAssertIsValid(InformationCollector informationColle
                     List<String> list1 = make<ListCls<>>();        if (minWidth->isNaN()) {            list1.add(ArrayItem);        }if (maxWidth->isNaN()) {            list1.add(ArrayItem);        }if (minHeight->isNaN()) {            list1.add(ArrayItem);        }if (maxHeight->isNaN()) {            list1.add(ArrayItem);        }List<String> affectedFieldsList = list1;
             assert(affectedFieldsList->isNotEmpty());
             if (affectedFieldsList->length() > 1) {
-                affectedFieldsList->add(__s("and ${affectedFieldsList.removeLast()}"));
+                affectedFieldsList->add(__s("and %s)"));
             }
             String whichFields = __s("");
             if (affectedFieldsList->length() > 2) {
@@ -224,7 +224,7 @@ bool BoxConstraintsCls::debugAssertIsValid(InformationCollector informationColle
                 whichFields = affectedFieldsList->single();
             }
 ;
-            }            throwError(make<ErrorSummaryCls>(__s("BoxConstraints has ${affectedFieldsList.length == 1 ? 'a NaN value' : 'NaN values' } in $whichFields.")));
+            }            throwError(make<ErrorSummaryCls>(__s("BoxConstraints has %s")));
         }
         if ( < 0.0 &&  < 0.0) {
             throwError(make<ErrorSummaryCls>(__s("BoxConstraints has both a negative minimum width and a negative minimum height.")));
@@ -290,15 +290,15 @@ int BoxConstraintsCls::hashCode() {
 String BoxConstraintsCls::toString() {
     String annotation = isNormalized()? __s("") : __s("; NOT NORMALIZED");
     if (minWidth == double->infinity && minHeight == double->infinity) {
-        return __s("BoxConstraints(biggest$annotation)");
+        return __s("BoxConstraints(biggest%s;");
     }
     if (minWidth == 0 && maxWidth == double->infinity && minHeight == 0 && maxHeight == double->infinity) {
-        return __s("BoxConstraints(unconstrained$annotation)");
+        return __s("BoxConstraints(unconstrained%s;");
     }
     InlineMethod;
     String width = describe(minWidth, maxWidth, __s("w"));
     String height = describe(minHeight, maxHeight, __s("h"));
-    return __s("BoxConstraints($width, $height$annotation)");
+    return __s("BoxConstraints(%s$%s$%s;");
 }
 
 Size BoxConstraintsCls::_debugPropagateDebugSize(Size size, Size result) {
@@ -384,11 +384,11 @@ BoxHitTestEntryCls::BoxHitTestEntryCls(T target, Offset localPosition) {
 }
 
 String BoxHitTestEntryCls::toString() {
-    return __s("${describeIdentity(target)}@$localPosition");
+    return __s("%s$%s;");
 }
 
 String BoxParentDataCls::toString() {
-    return __s("offset=$offset");
+    return __s("offset=%s;");
 }
 
 bool _IntrinsicDimensionsCacheEntryCls::==(Object other) {
@@ -489,12 +489,12 @@ Size RenderBoxCls::getDryLayout(BoxConstraints constraints) {
             } else {
                 debugTimelineArguments = makeMap(makeList(), makeList();
             }
-            debugTimelineArguments![__s("getDryLayout constraints")] = __s("$constraints");
+            debugTimelineArguments![__s("getDryLayout constraints")] = __s("%s;");
             return true;
         }());
         if (!kReleaseMode) {
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
-                TimelineCls->startSync(__s("$runtimeType.getDryLayout"), debugTimelineArguments);
+                TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
             }
             _debugIntrinsicsDepth += 1;
         }
@@ -540,7 +540,7 @@ bool RenderBoxCls::hasSize() {
 }
 
 Size RenderBoxCls::size() {
-    assert(hasSize(), __s("RenderBox was not laid out: $this"));
+    assert(hasSize(), __s("RenderBox was not laid out: %s)"));
     assert([=] () {
         Size size = _size;
         if (is<_DebugSize>(size)) {
@@ -919,12 +919,12 @@ double RenderBoxCls::_computeIntrinsicDimension(_IntrinsicDimension dimension, d
                 debugTimelineArguments = makeMap(makeList(), makeList();
             }
             debugTimelineArguments![__s("intrinsics dimension")] = describeEnum(dimension);
-            debugTimelineArguments![__s("intrinsics argument")] = __s("$argument");
+            debugTimelineArguments![__s("intrinsics argument")] = __s("%s;");
             return true;
         }());
         if (!kReleaseMode) {
             if (debugProfileLayoutsEnabled || _debugIntrinsicsDepth == 0) {
-                TimelineCls->startSync(__s("$runtimeType intrinsics"), debugTimelineArguments);
+                TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
             }
             _debugIntrinsicsDepth += 1;
         }

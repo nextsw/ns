@@ -73,10 +73,10 @@ void WidgetsBindingCls::initServiceExtensions() {
                 return _forceRebuild();
             });
         }
-        registerServiceExtension(__s("didSendFirstFrameEvent"), [=] () {
+        registerServiceExtension(__s("didSendFirstFrameEvent"), [=] (Unknown  _) {
                     Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("enabled"), _needToReportFirstFrame? __s("false") : __s("true"));return list2;
         });
-        registerServiceExtension(__s("didSendFirstFrameRasterizedEvent"), [=] () {
+        registerServiceExtension(__s("didSendFirstFrameRasterizedEvent"), [=] (Unknown  _) {
                     Map<String, dynamic> map3 = make<MapCls<>>();        map3.set(__s("enabled"), firstFrameRasterized()? __s("true") : __s("false"));return list3;
         });
         registerServiceExtension(__s("fastReassemble"), [=] (Map<String, Object> params) {
@@ -376,7 +376,7 @@ void runApp(Widget app) {
 String _debugDumpAppString() {
     String mode = kDebugMode? __s("DEBUG MODE") : kReleaseMode? __s("RELEASE MODE") : __s("PROFILE MODE");
     StringBuffer buffer = make<StringBufferCls>();
-    buffer->writeln(__s("${WidgetsBinding.instance.runtimeType} - $mode"));
+    buffer->writeln(__s("%s$%s)"));
     if (WidgetsBindingCls::instance->renderViewElement != nullptr) {
         buffer->writeln(WidgetsBindingCls::instance->renderViewElement!->toStringDeep());
     } else {

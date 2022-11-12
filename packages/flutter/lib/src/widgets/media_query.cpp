@@ -77,7 +77,7 @@ int MediaQueryDataCls::hashCode() {
 
 String MediaQueryDataCls::toString() {
     List<String> properties = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
-    return __s("${objectRuntimeType(this, 'MediaQueryData')}(${properties.join(', ')})");
+    return __s("%s$%s;");
 }
 
 MediaQueryCls::MediaQueryCls(Widget child, MediaQueryData data, Key key) {

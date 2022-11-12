@@ -1,7 +1,7 @@
 #include "hit_test.hpp"
 template<typename T>
 String HitTestEntryCls<T>::toString() {
-    return __s("${describeIdentity(this)}($target)");
+    return __s("%s$%s;");
 }
 
 template<typename T>
@@ -39,7 +39,7 @@ void HitTestResultCls::add(HitTestEntry<any> entry) {
 
 void HitTestResultCls::pushTransform(Matrix4 transform) {
     assert(transform != nullptr);
-    assert(_debugVectorMoreOrLessEquals(transform->getRow(2), make<Vector4Cls>(0, 0, 1, 0)) && _debugVectorMoreOrLessEquals(transform->getColumn(2), make<Vector4Cls>(0, 0, 1, 0)), __s("The third row and third column of a transform matrix for pointer events must be Vector4(0, 0, 1, 0) to ensure that a transformed point is directly under the pointing device. Did you forget to run the paint matrix through PointerEvent.removePerspectiveTransform? The provided matrix is:\n$transform"));
+    assert(_debugVectorMoreOrLessEquals(transform->getRow(2), make<Vector4Cls>(0, 0, 1, 0)) && _debugVectorMoreOrLessEquals(transform->getColumn(2), make<Vector4Cls>(0, 0, 1, 0)), __s("The third row and third column of a transform matrix for pointer events must be Vector4(0, 0, 1, 0) to ensure that a transformed point is directly under the pointing device. Did you forget to run the paint matrix through PointerEvent.removePerspectiveTransform? The provided matrix is:\n%s,"));
     _localTransforms->add(make<_MatrixTransformPartCls>(transform));
 }
 
@@ -58,7 +58,7 @@ void HitTestResultCls::popTransform() {
 }
 
 String HitTestResultCls::toString() {
-    return __s("HitTestResult(${_path.isEmpty ? "<empty path>" : _path.join(", ")})");
+    return __s("HitTestResult(%s;");
 }
 
 void HitTestResultCls::_globalizeTransforms() {

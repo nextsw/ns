@@ -71,7 +71,7 @@ int RelativeRectCls::hashCode() {
 }
 
 String RelativeRectCls::toString() {
-    return __s("RelativeRect.fromLTRB(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)})");
+    return __s("RelativeRect.fromLTRB(%s$%s$%s$%s;");
 }
 
 RelativeRect StackParentDataCls::rect() {
@@ -420,7 +420,7 @@ List<DiagnosticsNode> RenderIndexedStackCls::debugDescribeChildren() {
     int i = 0;
     RenderObject child = firstChild;
     while (child != nullptr) {
-        children->add(child->toDiagnosticsNode(__s("child ${i + 1}"), i != index()!? DiagnosticsTreeStyleCls::offstage : nullptr));
+        children->add(child->toDiagnosticsNode(__s("child %s,"), i != index()!? DiagnosticsTreeStyleCls::offstage : nullptr));
         child = (as<StackParentData>(child->parentData!))->nextSibling;
         i += 1;
     }

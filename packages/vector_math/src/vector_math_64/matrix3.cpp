@@ -176,7 +176,7 @@ void Matrix3Cls::setUpper2x2(Matrix2 arg) {
 }
 
 String Matrix3Cls::toString() {
-    return __s("[0] ${getRow(0)}\n[1] ${getRow(1)}\n[2] ${getRow(2)}\n");
+    return __s("[0] %s$%s$%s;");
 }
 
 int Matrix3Cls::dimension() {

@@ -70,7 +70,7 @@ AnimationStatus AlwaysStoppedAnimationCls<T>::status() {
 
 template<typename T>
 String AlwaysStoppedAnimationCls<T>::toStringDetails() {
-    return __s("${super.toStringDetails()} $value; paused");
+    return __s("%s$%s;");
 }
 
 template<typename T>
@@ -163,9 +163,9 @@ double ProxyAnimationCls::value() {
 
 String ProxyAnimationCls::toString() {
     if (parent() == nullptr) {
-        return __s("${objectRuntimeType(this, 'ProxyAnimation')}(null; ${super.toStringDetails()} ${value.toStringAsFixed(3)})");
+        return __s("%s$%s$%s;");
     }
-    return __s("$parent\u27A9${objectRuntimeType(this, 'ProxyAnimation')}");
+    return __s("%s$%s;");
 }
 
 ReverseAnimationCls::ReverseAnimationCls(Animation<double> parent) {
@@ -201,7 +201,7 @@ double ReverseAnimationCls::value() {
 }
 
 String ReverseAnimationCls::toString() {
-    return __s("$parent\u27AA${objectRuntimeType(this, 'ReverseAnimation')}");
+    return __s("%s$%s;");
 }
 
 void ReverseAnimationCls::_statusChangeHandler(AnimationStatus status) {
@@ -240,7 +240,7 @@ double CurvedAnimationCls::value() {
             double transformedValue = activeCurve->transform(t);
             double roundedTransformedValue = transformedValue->round()->toDouble();
             if (roundedTransformedValue != t) {
-                throw make<FlutterErrorCls>(__s("Invalid curve endpoint at $t.\nCurves must map 0.0 to near zero and 1.0 to near one but ${activeCurve.runtimeType} mapped $t to $transformedValue, which is near $roundedTransformedValue."));
+                throw make<FlutterErrorCls>(__s("Invalid curve endpoint at %sCurves must map 0.0 to near zero and 1.0 to near one but $%s$%s$%sis near $%s,"));
             }
             return true;
         }());
@@ -251,12 +251,12 @@ double CurvedAnimationCls::value() {
 
 String CurvedAnimationCls::toString() {
     if (reverseCurve == nullptr) {
-        return __s("$parent\u27A9$curve");
+        return __s("%s$%s;");
     }
     if (_useForwardCurve()) {
-        return __s("$parent\u27A9$curve\u2092\u2099/$reverseCurve");
+        return __s("%s$%s$%s;");
     }
-    return __s("$parent\u27A9$curve/$reverseCurve\u2092\u2099");
+    return __s("%s$%s$%s;");
 }
 
 void CurvedAnimationCls::_updateCurveDirection(AnimationStatus status) {
@@ -318,9 +318,9 @@ void TrainHoppingAnimationCls::dispose() {
 
 String TrainHoppingAnimationCls::toString() {
     if (_nextTrain != nullptr) {
-        return __s("$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(next: $_nextTrain)");
+        return __s("%s$%s$%s;");
     }
-    return __s("$currentTrain\u27A9${objectRuntimeType(this, 'TrainHoppingAnimation')}(no next)");
+    return __s("%s$%s;");
 }
 
 void TrainHoppingAnimationCls::_statusChangeHandler(AnimationStatus status) {
@@ -391,7 +391,7 @@ AnimationStatus CompoundAnimationCls<T>::status() {
 
 template<typename T>
 String CompoundAnimationCls<T>::toString() {
-    return __s("${objectRuntimeType(this, 'CompoundAnimation')}($first, $next)");
+    return __s("%s$%s$%s;");
 }
 
 template<typename T>

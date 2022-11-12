@@ -364,7 +364,7 @@ Size RenderAspectRatioCls::_applyAspectRatio(BoxConstraints constraints) {
     assert(constraints->debugAssertIsValid());
     assert([=] () {
         if (!constraints->hasBoundedWidth() && !constraints->hasBoundedHeight()) {
-            throw make<FlutterErrorCls>(__s("$runtimeType has unbounded constraints.\nThis $runtimeType was given an aspect ratio of $aspectRatio but was given both unbounded width and unbounded height constraints. Because both constraints were unbounded, this render object doesn't know how much size to consume."));
+            throw make<FlutterErrorCls>(__s("%sThis $%s$%sboth unbounded width and unbounded height constraints. Because both constraints were unbounded, this render object doesn't know how much size to consume.,"));
         }
         return true;
     }());
@@ -1854,7 +1854,7 @@ Size RenderFittedBoxCls::computeDryLayout(BoxConstraints constraints) {
             return true;
         }());
         if (invalidChildSize) {
-            assert(debugCannotComputeDryLayout(__s("Child provided invalid size of $childSize.")));
+            assert(debugCannotComputeDryLayout(__s("Child provided invalid size of %s,")));
             return SizeCls::zero;
         }
         ;
@@ -2230,7 +2230,7 @@ void RenderRepaintBoundaryCls::debugFillProperties(DiagnosticPropertiesBuilder p
             };
             };
             };
-            }            properties->add(make<PercentPropertyCls>(__s("metrics"), fraction, __s("useful"), __s("$debugSymmetricPaintCount bad vs $debugAsymmetricPaintCount good")));
+            }            properties->add(make<PercentPropertyCls>(__s("metrics"), fraction, __s("useful"), __s("%s$%s)")));
             properties->add(make<MessagePropertyCls>(__s("diagnosis"), diagnosis));
         }
         return true;
@@ -2293,7 +2293,7 @@ void RenderIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor visit
 void RenderIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring()));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __s("implicitly %s:") : nullptr));
 }
 
 bool RenderIgnorePointerCls::_effectiveIgnoringSemantics() {
@@ -2464,7 +2464,7 @@ void RenderAbsorbPointerCls::visitChildrenForSemantics(RenderObjectVisitor visit
 void RenderAbsorbPointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("absorbing"), absorbing()));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __s("implicitly $_effectiveIgnoringSemantics") : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __s("implicitly %s:") : nullptr));
 }
 
 bool RenderAbsorbPointerCls::_effectiveIgnoringSemantics() {
@@ -3252,7 +3252,7 @@ bool RenderFollowerLayerCls::hitTestChildren(BoxHitTestResult result, Offset pos
 
 void RenderFollowerLayerCls::paint(PaintingContext context, Offset offset) {
     Size leaderSize = link()->leaderSize;
-    assert(link()->leaderSize != nullptr || (link()->leader() == nullptr || leaderAnchor() == AlignmentCls::topLeft), __s("$link: layer is linked to ${link.leader} but a valid leaderSize is not set. leaderSize is required when leaderAnchor is not Alignment.topLeft (current value is $leaderAnchor)."));
+    assert(link()->leaderSize != nullptr || (link()->leader() == nullptr || leaderAnchor() == AlignmentCls::topLeft), __s("%s$%sleaderSize is required when leaderAnchor is not Alignment.topLeft (current value is $%s,"));
     Offset effectiveLinkedOffset = leaderSize == nullptr? this->offset : leaderAnchor()->alongSize(leaderSize) - followerAnchor()->alongSize(size()) + this->offset;
     assert(showWhenUnlinked() != nullptr);
     if (layer() == nullptr) {

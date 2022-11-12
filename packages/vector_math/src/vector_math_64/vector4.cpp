@@ -80,7 +80,7 @@ void Vector4Cls::splat(double arg) {
 }
 
 String Vector4Cls::toString() {
-    return __s("${_v4storage[0]},${_v4storage[1]},${_v4storage[2]},${_v4storage[3]}");
+    return __s("%s$%s$%s$%s;");
 }
 
 bool Vector4Cls::==(Object other) {

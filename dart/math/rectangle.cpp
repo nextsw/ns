@@ -11,7 +11,7 @@ T _RectangleBaseCls<T>::bottom() {
 
 template<typename T>
 String _RectangleBaseCls<T>::toString() {
-    return __s("Rectangle ($left, $top) $width x $height");
+    return __s("Rectangle (%s$%s$%s$%s;");
 }
 
 template<typename T>

@@ -193,7 +193,7 @@ TransformPropertyCls::TransformPropertyCls(String name, Unknown value, Object de
 String TransformPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
         List<String> values = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
-        return __s("[${values.join('; ')}]");
+        return __s("[%s;");
     }
     return debugDescribeTransform(value())->join(__s("\n"));
 }

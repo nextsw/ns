@@ -6,6 +6,8 @@
 #include <dart/async/async.hpp>
 #include "_isolates_io.hpp"
 
+ComputeImpl compute;
+
 
 
 #endif

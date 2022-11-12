@@ -21,22 +21,22 @@ String FileSystemExceptionCls::toString() {
     StringBuffer sb = make<StringBufferCls>();
     sb->write(__s("FileSystemException"));
     if (message->isNotEmpty()) {
-        sb->write(__s(": $message"));
+        sb->write(__s(": %s)"));
         if (path != nullptr) {
-            sb->write(__s(", path = '$path'"));
+            sb->write(__s(", path = '%s)"));
         }
         if (osError != nullptr) {
-            sb->write(__s(" ($osError)"));
+            sb->write(__s(" (%s)"));
         }
     } else {
         if (osError != nullptr) {
-        sb->write(__s(": $osError"));
+        sb->write(__s(": %s)"));
         if (path != nullptr) {
-            sb->write(__s(", path = '$path'"));
+            sb->write(__s(", path = '%s)"));
         }
     } else {
         if (path != nullptr) {
-        sb->write(__s(": $path"));
+        sb->write(__s(": %s)"));
     }
 ;
     };

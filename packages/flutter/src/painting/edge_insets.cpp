@@ -70,14 +70,14 @@ String EdgeInsetsGeometryCls::toString() {
             return __s("EdgeInsets.zero");
         }
         if (_left() == _right() && _right() == _top() && _top() == _bottom()) {
-            return __s("EdgeInsets.all(${_left.toStringAsFixed(1)})");
+            return __s("EdgeInsets.all(%s;");
         }
-        return __s("EdgeInsets(${_left.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_right.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)})");
+        return __s("EdgeInsets(%s$%s$%s$%s;");
     }
     if (_left() == 0.0 && _right() == 0.0) {
-        return __s("EdgeInsetsDirectional(${_start.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_end.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)})");
+        return __s("EdgeInsetsDirectional(%s$%s$%s$%s;");
     }
-    return __s("EdgeInsets(${_left.toStringAsFixed(1)}, ${_top.toStringAsFixed(1)}, ${_right.toStringAsFixed(1)}, ${_bottom.toStringAsFixed(1)}) + EdgeInsetsDirectional(${_start.toStringAsFixed(1)}, 0.0, ${_end.toStringAsFixed(1)}, 0.0)");
+    return __s("EdgeInsets(%s$%s$%s$%s + EdgeInsetsDirectional($%s0.0, $%s0.0);");
 }
 
 bool EdgeInsetsGeometryCls::==(Object other) {

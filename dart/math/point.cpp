@@ -9,7 +9,7 @@ PointCls<T>::PointCls(T x, T y) {
 
 template<typename T>
 String PointCls<T>::toString() {
-    return __s("Point($x, $y)");
+    return __s("Point(%s$%s;");
 }
 
 template<typename T>

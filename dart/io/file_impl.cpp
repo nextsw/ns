@@ -41,7 +41,7 @@ void _FileStreamCls::_readBlock() {
         if ( < 0) {
             _readInProgress = false;
             if (!_unsubscribed) {
-                _controller->addError(make<RangeErrorCls>(__s("Bad end position: $end")));
+                _controller->addError(make<RangeErrorCls>(__s("Bad end position: %s)")));
                 _closeFile();
                 _unsubscribed = true;
             }
@@ -76,7 +76,7 @@ void _FileStreamCls::_readBlock() {
 
 void _FileStreamCls::_start() {
     if ( < 0) {
-        _controller->addError(make<RangeErrorCls>(__s("Bad start position: $_position")));
+        _controller->addError(make<RangeErrorCls>(__s("Bad start position: %s)")));
         _controller->close();
         _closeCompleter->complete();
         return;
@@ -106,7 +106,7 @@ Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
         _subscription = stream->listen([=] (Unknown  d) {
             _subscription->pause();
             try {
-                openedFile->writeFrom(d, 0, d->length)->then([=] () {
+                openedFile->writeFrom(d, 0, d->length)->then([=] (Unknown  _) {
                     _subscription->resume();
                 }, error);
             } catch (Unknown e) {
@@ -122,7 +122,7 @@ Future<File> _FileStreamConsumerCls::addStream(Stream<List<int>> stream) {
 Future<File> _FileStreamConsumerCls::close() {
     return _openFuture->then([=] (Unknown  openedFile) {
         openedFile->close();
-    })->then([=] () {
+    })->then([=] (Unknown  _) {
         _file;
     });
 }
@@ -161,7 +161,7 @@ File _FileCls::absolute() {
 
 Future<File> _FileCls::create(bool recursive) {
     auto result = recursive? parent()->create(true) : FutureCls->value(nullptr);
-    return result->then([=] () {
+    return result->then([=] (Unknown  _) {
         _dispatchWithNamespace(_IOServiceCls::fileCreate, makeList(ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
@@ -182,7 +182,7 @@ void _FileCls::createSync(bool recursive) {
 Future<File> _FileCls::rename(String newPath) {
     return _dispatchWithNamespace(_IOServiceCls::fileRename, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot rename file to '$newPath'"), path());
+            throw _exceptionFromResponse(response, __s("Cannot rename file to '%s,"), path());
         }
         return make<FileCls>(newPath);
     });
@@ -190,14 +190,14 @@ Future<File> _FileCls::rename(String newPath) {
 
 File _FileCls::renameSync(String newPath) {
     auto result = _rename(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot rename file to '$newPath'"), path());
+    throwIfError(result, __s("Cannot rename file to '%s,"), path());
     return make<FileCls>(newPath);
 }
 
 Future<File> _FileCls::copy(String newPath) {
     return _dispatchWithNamespace(_IOServiceCls::fileCopy, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot copy file to '$newPath'"), path());
+            throw _exceptionFromResponse(response, __s("Cannot copy file to '%s,"), path());
         }
         return make<FileCls>(newPath);
     });
@@ -205,7 +205,7 @@ Future<File> _FileCls::copy(String newPath) {
 
 File _FileCls::copySync(String newPath) {
     auto result = _copy(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot copy file to '$newPath'"), path());
+    throwIfError(result, __s("Cannot copy file to '%s,"), path());
     return make<FileCls>(newPath);
 }
 
@@ -252,7 +252,7 @@ DateTime _FileCls::lastAccessedSync() {
 }
 
 Future<any> _FileCls::setLastAccessed(DateTime time) {
-    int millis = time->millisecondsSinceEpoch;
+    int millis = time->millisecondsSinceEpoch();
     return _dispatchWithNamespace(_IOServiceCls::fileSetLastAccessed, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
             throw _exceptionFromResponse(response, __s("Cannot set access time"), path());
@@ -262,7 +262,7 @@ Future<any> _FileCls::setLastAccessed(DateTime time) {
 }
 
 void _FileCls::setLastAccessedSync(DateTime time) {
-    int millis = time->millisecondsSinceEpoch;
+    int millis = time->millisecondsSinceEpoch();
     auto result = _setLastAccessed(_NamespaceCls::_namespace, _rawPath, millis);
     if (is<OSError>(result)) {
         throw make<FileSystemExceptionCls>(__s("Failed to set file access time"), path(), as<OSErrorCls>(result));
@@ -285,7 +285,7 @@ DateTime _FileCls::lastModifiedSync() {
 }
 
 Future<any> _FileCls::setLastModified(DateTime time) {
-    int millis = time->millisecondsSinceEpoch;
+    int millis = time->millisecondsSinceEpoch();
     return _dispatchWithNamespace(_IOServiceCls::fileSetLastModified, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
             throw _exceptionFromResponse(response, __s("Cannot set modification time"), path());
@@ -295,7 +295,7 @@ Future<any> _FileCls::setLastModified(DateTime time) {
 }
 
 void _FileCls::setLastModifiedSync(DateTime time) {
-    int millis = time->millisecondsSinceEpoch;
+    int millis = time->millisecondsSinceEpoch();
     auto result = _setLastModified(_NamespaceCls::_namespace, _rawPath, millis);
     if (is<OSError>(result)) {
         throw make<FileSystemExceptionCls>(__s("Failed to set file modification time"), path(), as<OSErrorCls>(result));
@@ -383,9 +383,9 @@ List<String> _FileCls::readAsLinesSync(Encoding encoding) {
 
 Future<File> _FileCls::writeAsBytes(List<int> bytes, bool flush, FileMode mode) {
     return open(mode)->then([=] (Unknown  file) {
-        return file->writeFrom(bytes, 0, bytes->length())-><File>then([=] () {
+        return file->writeFrom(bytes, 0, bytes->length())-><File>then([=] (Unknown  _) {
             if (flush) {
-                return file->flush()->then([=] () {
+                return file->flush()->then([=] (Unknown  _) {
                 this;
             });
             }
@@ -419,7 +419,7 @@ void _FileCls::writeAsStringSync(String contents, Encoding encoding, bool flush,
 }
 
 String _FileCls::toString() {
-    return __s("File: '$path'");
+    return __s("File: '%s;");
 }
 
 void _FileCls::throwIfError(Object result, String msg, String path) {
@@ -446,7 +446,7 @@ Future<any> _FileCls::_dispatchWithNamespace(int request, List<any> data) {
 
 Future<File> _FileCls::_delete(bool recursive) {
     if (recursive) {
-        return make<DirectoryCls>(path())->delete(true)->then([=] () {
+        return make<DirectoryCls>(path())->delete(true)->then([=] (Unknown  _) {
             this;
         });
     }
@@ -469,7 +469,7 @@ void _FileCls::_deleteSync(bool recursive) {
 RandomAccessFile _FileCls::_openStdioSync(int fd) {
     auto id = _openStdio(fd);
     if (id == 0) {
-        throw make<FileSystemExceptionCls>(__s("Cannot open stdio file for: $fd"));
+        throw make<FileSystemExceptionCls>(__s("Cannot open stdio file for: %s)"));
     }
     return make<_RandomAccessFileCls>(id, __s(""));
 }
@@ -478,7 +478,7 @@ String _FileCls::_tryDecode(List<int> bytes, Encoding encoding) {
     try {
         return encoding->decode(bytes);
     } catch (Unknown _) {
-        throw make<FileSystemExceptionCls>(__s("Failed to decode data using encoding '${encoding.name}'"), path());
+        throw make<FileSystemExceptionCls>(__s("Failed to decode data using encoding '%s,"), path());
     };
 }
 

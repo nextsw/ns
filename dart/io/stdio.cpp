@@ -97,11 +97,11 @@ IOSink StdoutCls::nonBlocking() {
 void StdoutCls::_(IOSink sink, int _fd)
 
 String StdoutExceptionCls::toString() {
-    return __s("StdoutException: $message${osError == null ? "" : ", $osError"}");
+    return __s("StdoutException: %s$%s");
 }
 
 String StdinExceptionCls::toString() {
-    return __s("StdinException: $message${osError == null ? "" : ", $osError"}");
+    return __s("StdinException: %s$%s");
 }
 
 Future<any> _StdConsumerCls::addStream(Stream<List<int>> stream) {
@@ -178,7 +178,7 @@ Future<any> _StdSinkCls::done() {
 }
 
 String StdioTypeCls::toString() {
-    return __s("StdioType: $name");
+    return __s("StdioType: %s;");
 }
 
 void _setStdioFDs(int stdin, int stdout, int stderr) {
@@ -207,7 +207,7 @@ StdioType stdioType(object ) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
         Unknown type = _StdIOUtilsCls->_getStdioHandleType(stdiofd);
         if (is<OSError>(type)) {
-            throw make<FileSystemExceptionCls>(__s("Failed to get type of stdio handle (fd $stdiofd)"), __s(""), as<OSErrorCls>(type));
+            throw make<FileSystemExceptionCls>(__s("Failed to get type of stdio handle (fd %s,"), __s(""), as<OSErrorCls>(type));
         }
         ;
     }

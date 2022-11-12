@@ -1,6 +1,6 @@
 #include "isolate.hpp"
 String IsolateSpawnExceptionCls::toString() {
-    return __s("IsolateSpawnException: $message");
+    return __s("IsolateSpawnException: %s;");
 }
 
 Capability IsolateCls::pause(Capability resumeCapability) {

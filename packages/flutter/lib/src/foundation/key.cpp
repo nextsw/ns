@@ -6,7 +6,7 @@ LocalKeyCls::LocalKeyCls() {
 }
 
 String UniqueKeyCls::toString() {
-    return __s("[#${shortHash(this)}]");
+    return __s("[#%s;");
 }
 
 template<typename T>
@@ -24,11 +24,11 @@ int ValueKeyCls<T>::hashCode() {
 
 template<typename T>
 String ValueKeyCls<T>::toString() {
-    String valueString = T == StringCls? __s("<'$value'>") : __s("<$value>");
+    String valueString = T == StringCls? __s("<'%s:") : __s("<%s;");
     if (runtimeType == <ValueKey<T>>make<_TypeLiteralCls>()->type) {
-        return __s("[$valueString]");
+        return __s("[%s;");
     }
-    return __s("[$T $valueString]");
+    return __s("[%s$%s;");
 }
 
 template<typename T>

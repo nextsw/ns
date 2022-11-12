@@ -24,7 +24,7 @@ void _DirectoryCls::current(path ) {
         if (is<String>(path)) {
         _rawPath = FileSystemEntityCls->_toUtf8Array(as<StringCls>(path));
     } else {
-        throw make<ArgumentErrorCls>(__s("${Error.safeToString(path)} is not a String or Directory"));
+        throw make<ArgumentErrorCls>(__s("%s Directory)"));
     }
 ;
     };
@@ -33,7 +33,7 @@ void _DirectoryCls::current(path ) {
     }
     auto result = _setCurrent(_NamespaceCls::_namespace, _rawPath);
     if (is<ArgumentError>(result)) {
-        throw result;
+        throw as<ArgumentErrorCls>(result);
     }
     if (is<OSError>(result)) {
         throw make<FileSystemExceptionCls>(__s("Setting current working directory failed"), path->toString(), as<OSErrorCls>(result));
@@ -72,7 +72,7 @@ Future<Directory> _DirectoryCls::create(bool recursive) {
                 return this;
             }
             if (path() != parent()->path()) {
-                return parent()->create(true)->then([=] () {
+                return parent()->create(true)->then([=] (Unknown  _) {
                     return create();
                 });
             } else {
@@ -115,9 +115,9 @@ Future<Directory> _DirectoryCls::createTemp(String prefix) {
     }
     String fullPrefix;
     if (path()->endsWith(__s("/")) || (PlatformCls::isWindows && path()->endsWith(__s("\\")))) {
-        fullPrefix = __s("$path$prefix");
+        fullPrefix = __s("%s$%s;");
     } else {
-        fullPrefix = __s("$path${Platform.pathSeparator}$prefix");
+        fullPrefix = __s("%s$%s$%s;");
     }
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::directoryCreateTemp, makeList(ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
@@ -134,9 +134,9 @@ Directory _DirectoryCls::createTempSync(String prefix) {
     }
     String fullPrefix;
     if (path()->endsWith(__s("/")) || (PlatformCls::isWindows && path()->endsWith(__s("\\")))) {
-        fullPrefix = __s("$path$prefix");
+        fullPrefix = __s("%s$%s;");
     } else {
-        fullPrefix = __s("$path${Platform.pathSeparator}$prefix");
+        fullPrefix = __s("%s$%s$%s;");
     }
     auto result = _createTemp(_NamespaceCls::_namespace, FileSystemEntityCls->_toUtf8Array(fullPrefix));
     if (is<OSError>(result)) {
@@ -176,7 +176,7 @@ List<FileSystemEntity> _DirectoryCls::listSync(bool followLinks, bool recursive)
 }
 
 String _DirectoryCls::toString() {
-    return __s("Directory: '$path'");
+    return __s("Directory: '%s;");
 }
 
 _DirectoryCls::_DirectoryCls(String path) {

@@ -6,7 +6,7 @@ AssetImageCls::AssetImageCls(String assetName, AssetBundle bundle, String packag
 }
 
 String AssetImageCls::keyName() {
-    return package == nullptr? assetName : __s("packages/$package/$assetName");
+    return package == nullptr? assetName : __s("packages/%s$%s;");
 }
 
 Future<AssetBundleImageKey> AssetImageCls::obtainKey(ImageConfiguration configuration) {
@@ -46,7 +46,7 @@ int AssetImageCls::hashCode() {
 }
 
 String AssetImageCls::toString() {
-    return __s("${objectRuntimeType(this, 'AssetImage')}(bundle: $bundle, name: "$keyName")");
+    return __s("%s$%s$%s;");
 }
 
 Future<Map<String, List<String>>> AssetImageCls::_manifestParser(String jsonData) {
@@ -95,8 +95,8 @@ double AssetImageCls::_parseScale(String key) {
     }
     Uri assetUri = UriCls->parse(key);
     String directoryPath = __s("");
-    if (assetUri->pathSegments->length > 1) {
-        directoryPath = assetUri->pathSegments[assetUri->pathSegments->length - 2];
+    if (assetUri->pathSegments()->length() > 1) {
+        directoryPath = assetUri->pathSegments()[assetUri->pathSegments()->length() - 2];
     }
     Match match = _extractRatioRegExp->firstMatch(directoryPath);
     if (match != nullptr && match->groupCount() > 0) {

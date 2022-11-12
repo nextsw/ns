@@ -4,7 +4,7 @@
 
 #include <dart/core/core.hpp>
 
-auto  keepToString;
+pragma keepToString;
 
 
 

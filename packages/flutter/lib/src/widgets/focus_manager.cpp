@@ -1,10 +1,10 @@
 #include "focus_manager.hpp"
 bool _focusDebug(String message, Iterable<String> details) {
     if (debugFocusChanges) {
-        debugPrint(__s("FOCUS: $message"));
+        debugPrint(__s("FOCUS: %s)"));
         if (details != nullptr && details->isNotEmpty()) {
             for (String detail : details) {
-                debugPrint(__s("    $detail"));
+                debugPrint(__s("    %s)"));
             }
         }
     }
@@ -22,10 +22,10 @@ KeyEventResult combineKeyEventResults(Iterable<KeyEventResult> results) {
 void _AutofocusCls::applyIfValid(FocusManager manager) {
     bool shouldApply = (scope->parent() != nullptr || identical(scope, manager->rootScope)) && identical(scope->_manager, manager) && scope->focusedChild() == nullptr && autofocusNode->ancestors()->contains(scope);
     if (shouldApply) {
-        assert(_focusDebug(__s("Applying autofocus: $autofocusNode")));
+        assert(_focusDebug(__s("Applying autofocus: %s)")));
         autofocusNode->_doRequestFocus(true);
     } else {
-        assert(_focusDebug(__s("Autofocus request discarded for node: $autofocusNode.")));
+        assert(_focusDebug(__s("Autofocus request discarded for node: %s)")));
     }
 }
 
@@ -328,14 +328,14 @@ void FocusNodeCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 List<DiagnosticsNode> FocusNodeCls::debugDescribeChildren() {
     int count = 1;
     return _children-><DiagnosticsNode>map([=] (FocusNode child) {
-        return child->toDiagnosticsNode(__s("Child ${count++}"));
+        return child->toDiagnosticsNode(__s("Child %s)"));
     })->toList();
 }
 
 String FocusNodeCls::toStringShort() {
     bool hasDebugLabel = debugLabel() != nullptr && debugLabel()!->isNotEmpty();
-    String extraData = __s("${hasDebugLabel ? debugLabel : ''}${hasFocus && hasDebugLabel ? ' ' : ''}${hasFocus && !hasPrimaryFocus ? '[IN FOCUS PATH]' : ''}${hasPrimaryFocus ? '[PRIMARY FOCUS]' : ''}");
-    return __s("${describeIdentity(this)}${extraData.isNotEmpty ? '($extraData)' : ''}");
+    String extraData = __s("%s");
+    return __s("%s$%s");
 }
 
 void FocusNodeCls::_markNextFocus(FocusNode newFocus) {
@@ -419,7 +419,7 @@ void FocusNodeCls::_notify() {
 void FocusNodeCls::_doRequestFocus(bool findFirstFocus) {
     assert(findFirstFocus != nullptr);
     if (!canRequestFocus()) {
-        assert(_focusDebug(__s("Node NOT requesting focus because canRequestFocus is false: $this")));
+        assert(_focusDebug(__s("Node NOT requesting focus because canRequestFocus is false: %s)")));
         return;
     }
     if (_parent == nullptr) {
@@ -431,7 +431,7 @@ void FocusNodeCls::_doRequestFocus(bool findFirstFocus) {
         return;
     }
     _hasKeyboardToken = true;
-    assert(_focusDebug(__s("Node requesting focus: $this")));
+    assert(_focusDebug(__s("Node requesting focus: %s)")));
     _markNextFocus(this);
 }
 
@@ -439,7 +439,7 @@ void FocusNodeCls::_setAsFocusedChildForScope() {
     FocusNode scopeFocus = this;
     for (FocusScopeNode ancestor : ancestors()-><FocusScopeNode>whereType()) {
         assert(scopeFocus != ancestor, __s("Somehow made a loop by setting focusedChild to its scope."));
-        assert(_focusDebug(__s("Setting $scopeFocus as focused child for scope:"), makeList(ArrayItem)));
+        assert(_focusDebug(__s("Setting %s,"), makeList(ArrayItem)));
         ancestor->_focusedChildren->remove(scopeFocus);
         ancestor->_focusedChildren->add(scopeFocus);
         scopeFocus = ancestor;
@@ -483,11 +483,11 @@ Iterable<FocusNode> FocusScopeNodeCls::traversalDescendants() {
 void FocusScopeNodeCls::setFirstFocus(FocusScopeNode scope) {
     assert(scope != nullptr);
     assert(scope != this, __s("Unexpected self-reference in setFirstFocus."));
-    assert(_focusDebug(__s("Setting scope as first focus in $this to node:"), makeList(ArrayItem)));
+    assert(_focusDebug(__s("Setting scope as first focus in %s,"), makeList(ArrayItem)));
     if (scope->_parent == nullptr) {
         _reparent(scope);
     }
-    assert(scope->ancestors()->contains(this), __s("$FocusScopeNode $scope must be a child of $this to set it as first focus."));
+    assert(scope->ancestors()->contains(this), __s("%s$%s$%s)"));
     if (hasFocus()) {
         scope->_doRequestFocus(true);
     } else {
@@ -500,7 +500,7 @@ void FocusScopeNodeCls::autofocus(FocusNode node) {
         _reparent(node);
     }
     assert(_manager != nullptr);
-    assert(_focusDebug(__s("Autofocus scheduled for $node: scope $this")));
+    assert(_focusDebug(__s("Autofocus scheduled for %s$%s)")));
     _manager?->_pendingAutofocuses->add(make<_AutofocusCls>(this, node));
     _manager?->_markNeedsUpdate();
 }
@@ -627,7 +627,7 @@ void FocusManagerCls::_notifyHighlightModeListeners() {
                 };
                 return true;
             }());
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for %s)")), collector));
         };
     }
 }
@@ -643,9 +643,9 @@ void FocusManagerCls::_handlePointerEvent(PointerEvent event) {
 bool FocusManagerCls::_handleKeyMessage(KeyMessage message) {
     _lastInteractionWasTouch = false;
     _updateHighlightMode();
-    assert(_focusDebug(__s("Received key event $message")));
+    assert(_focusDebug(__s("Received key event %s)")));
     if (_primaryFocus == nullptr) {
-        assert(_focusDebug(__s("No primary focus for key event, ignored: $message")));
+        assert(_focusDebug(__s("No primary focus for key event, ignored: %s)")));
         return false;
     }
     bool handled = false;
@@ -665,13 +665,13 @@ bool FocusManagerCls::_handleKeyMessage(KeyMessage message) {
         break;
     }
     if (!handled) {
-        assert(_focusDebug(__s("Key event not handled by anyone: $message.")));
+        assert(_focusDebug(__s("Key event not handled by anyone: %s)")));
     }
     return handled;
 }
 
 void FocusManagerCls::_markDetached(FocusNode node) {
-    assert(_focusDebug(__s("Node was detached: $node")));
+    assert(_focusDebug(__s("Node was detached: %s)")));
     if (_primaryFocus == node) {
         _primaryFocus = nullptr;
     }
@@ -680,7 +680,7 @@ void FocusManagerCls::_markDetached(FocusNode node) {
 
 void FocusManagerCls::_markPropertiesChanged(FocusNode node) {
     _markNeedsUpdate();
-    assert(_focusDebug(__s("Properties changed for node $node.")));
+    assert(_focusDebug(__s("Properties changed for node %s)")));
     _dirtyNodes->add(node);
 }
 
@@ -694,7 +694,7 @@ void FocusManagerCls::_markNextFocus(FocusNode node) {
 }
 
 void FocusManagerCls::_markNeedsUpdate() {
-    assert(_focusDebug(__s("Scheduling update, current focus is $_primaryFocus, next focus will be $_markedForFocus")));
+    assert(_focusDebug(__s("Scheduling update, current focus is %s$%s)")));
     if (_haveScheduledUpdate) {
         return;
     }
@@ -712,7 +712,7 @@ void FocusManagerCls::_applyFocusChange() {
     if (_primaryFocus == nullptr && _markedForFocus == nullptr) {
         _markedForFocus = rootScope;
     }
-    assert(_focusDebug(__s("Refreshing focus state. Next focus will be $_markedForFocus")));
+    assert(_focusDebug(__s("Refreshing focus state. Next focus will be %s)")));
     if (_markedForFocus != nullptr && _markedForFocus != _primaryFocus) {
         Set<FocusNode> previousPath = previousFocus?->ancestors()->toSet() | makeSet();
         Set<FocusNode> nextPath = _markedForFocus!->ancestors()->toSet();
@@ -723,7 +723,7 @@ void FocusManagerCls::_applyFocusChange() {
     }
     assert(_markedForFocus == nullptr);
     if (previousFocus != _primaryFocus) {
-        assert(_focusDebug(__s("Updating focus from $previousFocus to $_primaryFocus")));
+        assert(_focusDebug(__s("Updating focus from %s$%s)")));
         if (previousFocus != nullptr) {
             _dirtyNodes->add(previousFocus);
         }
@@ -734,7 +734,7 @@ void FocusManagerCls::_applyFocusChange() {
     for (FocusNode node : _dirtyNodes) {
         node->_notify();
     }
-    assert(_focusDebug(__s("Notified ${_dirtyNodes.length} dirty nodes:"), _dirtyNodes->toList()-><String>map([=] (FocusNode node) {
+    assert(_focusDebug(__s("Notified %s,"), _dirtyNodes->toList()-><String>map([=] (FocusNode node) {
         node->toString();
     })));
     _dirtyNodes->clear();

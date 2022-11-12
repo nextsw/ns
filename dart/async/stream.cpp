@@ -210,7 +210,7 @@ Stream<S> StreamCls<T>::expand(std::function<Iterable<S>(T element)> convert) {
 
 template<typename T>
 Future<any> StreamCls<T>::pipe(StreamConsumer<T> streamConsumer) {
-    return streamConsumer->addStream(this)->then([=] () {
+    return streamConsumer->addStream(this)->then([=] (Unknown  _) {
         streamConsumer->close();
     });
 }
@@ -325,7 +325,7 @@ Future<any> StreamCls<T>::forEach(std::function<void(T element)> action) {
     subscription->onData([=] (T element) {
         <void>_runUserCode([=] () {
             action(element);
-        }, [=] () {
+        }, [=] (Unknown  _) {
         }, _cancelAndErrorClosure(subscription, future));
     });
     return future;
@@ -371,7 +371,7 @@ template<typename T>
 Future<int> StreamCls<T>::length() {
     _Future<int> future = <int>make<_FutureCls>();
     int count = 0;
-    this->listen([=] () {
+    this->listen([=] (Unknown  _) {
         count++;
     }, future->_completeError, [=] () {
         future->_complete(count);
@@ -385,7 +385,7 @@ Future<bool> StreamCls<T>::isEmpty() {
     StreamSubscription<T> subscription = this->listen(nullptr, future->_completeError, [=] () {
     future->_complete(true);
 }, true);
-    subscription->onData([=] () {
+    subscription->onData([=] (Unknown  _) {
         _cancelAndValue(subscription, future, false);
     });
     return future;

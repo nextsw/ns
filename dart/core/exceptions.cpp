@@ -7,14 +7,14 @@ String _ExceptionCls::toString() {
     if (message == nullptr) {
         return __s("Exception");
     }
-    return __s("Exception: $message");
+    return __s("Exception: %s;");
 }
 
 String FormatExceptionCls::toString() {
     String report = __s("FormatException");
     Object message = this->message;
     if (message != nullptr && __s("") != message) {
-        report = __s("$report: $message");
+        report = __s("%s$%s;");
     }
     int offset = this->offset;
     Object source = this->source;
@@ -26,7 +26,7 @@ String FormatExceptionCls::toString() {
             if (source->length() > 78) {
                 source = source->substring(0, 75) + __s("...");
             }
-            return __s("$report\n$source");
+            return __s("%s$%s;");
         }
         int lineNum = 1;
         int lineStart = 0;
@@ -48,9 +48,9 @@ String FormatExceptionCls::toString() {
 ;
             }        }
         if (lineNum > 1) {
-            report += __s(" (at line $lineNum, character ${offset - lineStart + 1})\n");
+            report += __s(" (at line %s$%s;");
         } else {
-            report += __s(" (at character ${offset + 1})\n");
+            report += __s(" (at character %s;");
         }
         int lineEnd = as<StringCls>(source)->length();
         for (;  < as<StringCls>(source)->length(); i++) {
@@ -83,10 +83,10 @@ String FormatExceptionCls::toString() {
             }        }
         String slice = as<StringCls>(source)->substring(start, end);
         int markOffset = offset - start + prefix->length;
-        return __s("$report$prefix$slice$postfix\n${" " * markOffset}^\n");
+        return __s("%s$%s$%s$%s$%s;");
     } else {
         if (offset != nullptr) {
-            report += __s(" (at offset $offset)");
+            report += __s(" (at offset %s;");
         }
         return report;
     }

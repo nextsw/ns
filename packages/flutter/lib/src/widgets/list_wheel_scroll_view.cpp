@@ -214,7 +214,7 @@ void _ListWheelScrollViewStateCls::didUpdateWidget(ListWheelScrollView oldWidget
     super->didUpdateWidget(oldWidget);
     if (widget()->controller != nullptr && widget()->controller != scrollController) {
         ScrollController oldScrollController = scrollController;
-        SchedulerBindingCls::instance->addPostFrameCallback([=] () {
+        SchedulerBindingCls::instance->addPostFrameCallback([=] (Unknown  _) {
             oldScrollController!->dispose();
         });
         scrollController = widget()->controller;

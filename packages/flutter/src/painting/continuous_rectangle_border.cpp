@@ -61,7 +61,7 @@ int ContinuousRectangleBorderCls::hashCode() {
 }
 
 String ContinuousRectangleBorderCls::toString() {
-    return __s("${objectRuntimeType(this, 'ContinuousRectangleBorder')}($side, $borderRadius)");
+    return __s("%s$%s$%s;");
 }
 
 double ContinuousRectangleBorderCls::_clampToShortest(RRect rrect, double value) {

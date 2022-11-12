@@ -124,7 +124,7 @@ int HSVColorCls::hashCode() {
 }
 
 String HSVColorCls::toString() {
-    return __s("${objectRuntimeType(this, 'HSVColor')}($alpha, $hue, $saturation, $value)");
+    return __s("%s$%s$%s$%s$%s;");
 }
 
 HSVColor HSVColorCls::_scaleAlpha(double factor) {
@@ -196,7 +196,7 @@ int HSLColorCls::hashCode() {
 }
 
 String HSLColorCls::toString() {
-    return __s("${objectRuntimeType(this, 'HSLColor')}($alpha, $hue, $saturation, $lightness)");
+    return __s("%s$%s$%s$%s$%s;");
 }
 
 HSLColor HSLColorCls::_scaleAlpha(double factor) {
@@ -226,7 +226,7 @@ int ColorSwatchCls<T>::hashCode() {
 
 template<typename T>
 String ColorSwatchCls<T>::toString() {
-    return __s("${objectRuntimeType(this, 'ColorSwatch')}(primary value: ${super.toString()})");
+    return __s("%s$%s;");
 }
 
 template<typename T>

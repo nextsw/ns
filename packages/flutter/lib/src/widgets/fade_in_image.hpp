@@ -12,11 +12,11 @@
 
 class FadeInImageCls : public StatefulWidgetCls {
 public:
-    ImageProvider placeholder;
+    ImageProvider<any> placeholder;
 
     ImageErrorWidgetBuilder placeholderErrorBuilder;
 
-    ImageProvider image;
+    ImageProvider<any> image;
 
     ImageErrorWidgetBuilder imageErrorBuilder;
 
@@ -47,7 +47,7 @@ public:
     String imageSemanticLabel;
 
 
-     FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, ImageProvider image, ImageErrorWidgetBuilder imageErrorBuilder, String imageSemanticLabel, Key key, bool matchTextDirection, ImageProvider placeholder, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, ImageRepeat repeat, double width);
+     FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, ImageProvider<any> image, ImageErrorWidgetBuilder imageErrorBuilder, String imageSemanticLabel, Key key, bool matchTextDirection, ImageProvider<any> placeholder, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, ImageRepeat repeat, double width);
 
     virtual void  memoryNetwork(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, String image, int imageCacheHeight, int imageCacheWidth, ImageErrorWidgetBuilder imageErrorBuilder, double imageScale, String imageSemanticLabel, Key key, bool matchTextDirection, Uint8List placeholder, int placeholderCacheHeight, int placeholderCacheWidth, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, double placeholderScale, ImageRepeat repeat, double width);
 
@@ -75,7 +75,7 @@ private:
     ProxyAnimation _placeholderAnimation;
 
 
-    virtual Image _image(ImageErrorWidgetBuilder errorBuilder, BoxFit fit, ImageFrameBuilder frameBuilder, ImageProvider image, Animation<double> opacity);
+    virtual Image _image(ImageErrorWidgetBuilder errorBuilder, BoxFit fit, ImageFrameBuilder frameBuilder, ImageProvider<any> image, Animation<double> opacity);
 
 };
 using _FadeInImageState = std::shared_ptr<_FadeInImageStateCls>;

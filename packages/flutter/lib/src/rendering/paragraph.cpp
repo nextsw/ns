@@ -4,7 +4,7 @@ String TextParentDataCls::toString() {
     return values->join(__s("; "));
 }
 
-PlaceholderSpanIndexSemanticsTagCls::PlaceholderSpanIndexSemanticsTagCls(int index) : SemanticsTag(__s("PlaceholderSpanIndexSemanticsTag($index)")) {
+PlaceholderSpanIndexSemanticsTagCls::PlaceholderSpanIndexSemanticsTagCls(int index) : SemanticsTag(__s("PlaceholderSpanIndexSemanticsTag(%s)")) {
 }
 
 bool PlaceholderSpanIndexSemanticsTagCls::==(Object other) {
@@ -525,7 +525,7 @@ void RenderParagraphCls::assembleSemanticsNode(SemanticsNode node, SemanticsConf
                         configuration->onLongPress() = recognizer->onLongPress;
                     }
                 } else {
-                    assert(false, __s("${recognizer.runtimeType} is not supported."));
+                    assert(false, __s("%s)"));
                 }
 ;
                 };

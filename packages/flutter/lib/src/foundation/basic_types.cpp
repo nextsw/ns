@@ -110,7 +110,7 @@ Type FactoryCls<T>::type() {
 
 template<typename T>
 String FactoryCls<T>::toString() {
-    return __s("Factory(type: $type)");
+    return __s("Factory(type: %s;");
 }
 
 Duration lerpDuration(Duration a, Duration b, double t) {

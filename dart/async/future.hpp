@@ -33,6 +33,7 @@ public:
 
     virtual void  delayed(Duration duration, std::function<FutureOr<T>()> computation);
 
+    template<typename T>
  static Future<List<T>> wait(Iterable<Future<T>> futures, std::function<void(T successValue)> cleanUp, bool eagerError);
 
     template<typename T>

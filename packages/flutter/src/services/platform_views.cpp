@@ -69,7 +69,7 @@ AndroidPointerPropertiesCls::AndroidPointerPropertiesCls(int id, int toolType) {
 }
 
 String AndroidPointerPropertiesCls::toString() {
-    return __s("${objectRuntimeType(this, 'AndroidPointerProperties')}(id: $id, toolType: $toolType)");
+    return __s("%s$%s$%s;");
 }
 
 List<int> AndroidPointerPropertiesCls::_asList() {
@@ -91,7 +91,7 @@ AndroidPointerCoordsCls::AndroidPointerCoordsCls(double orientation, double pres
 }
 
 String AndroidPointerCoordsCls::toString() {
-    return __s("${objectRuntimeType(this, 'AndroidPointerCoords')}(orientation: $orientation, pressure: $pressure, size: $size, toolMajor: $toolMajor, toolMinor: $toolMinor, touchMajor: $touchMajor, touchMinor: $touchMinor, x: $x, y: $y)");
+    return __s("%s$%s$%s$%s$%s$%s$%s$%s$%s$%s;");
 }
 
 List<double> AndroidPointerCoordsCls::_asList() {
@@ -120,7 +120,7 @@ AndroidMotionEventCls::AndroidMotionEventCls(int action, int buttonState, int de
 }
 
 String AndroidMotionEventCls::toString() {
-    return __s("AndroidPointerEvent(downTime: $downTime, eventTime: $eventTime, action: $action, pointerCount: $pointerCount, pointerProperties: $pointerProperties, pointerCoords: $pointerCoords, metaState: $metaState, buttonState: $buttonState, xPrecision: $xPrecision, yPrecision: $yPrecision, deviceId: $deviceId, edgeFlags: $edgeFlags, source: $source, flags: $flags, motionEventId: $motionEventId)");
+    return __s("AndroidPointerEvent(downTime: %s$%s$%s$%s$%s$%s$%s$%s$%s$%s$%s$%s$%s$%s$%s;");
 }
 
 List<dynamic> AndroidMotionEventCls::_asList(int viewId) {
@@ -223,7 +223,7 @@ bool AndroidViewControllerCls::awaitingCreation() {
 
 Future<void> AndroidViewControllerCls::create(Size size) {
     assert(_state != _AndroidViewStateCls::disposed, __s("trying to create a disposed Android view"));
-    assert(_state == _AndroidViewStateCls::waitingForSize, __s("Android view is already sized. View id: $viewId"));
+    assert(_state == _AndroidViewStateCls::waitingForSize, __s("Android view is already sized. View id: %s)"));
     if (_createRequiresSize() && size == nullptr) {
         return;
     }
@@ -236,7 +236,7 @@ Future<void> AndroidViewControllerCls::create(Size size) {
 }
 
 Future<Size> AndroidViewControllerCls::setSize(Size size) {
-    assert(_state != _AndroidViewStateCls::disposed, __s("Android view is disposed. View id: $viewId"));
+    assert(_state != _AndroidViewStateCls::disposed, __s("Android view is disposed. View id: %s)"));
     if (_state == _AndroidViewStateCls::waitingForSize) {
         await await create(size);
         return size;
@@ -279,7 +279,7 @@ List<PlatformViewCreatedCallback> AndroidViewControllerCls::createdCallbacks() {
 }
 
 Future<void> AndroidViewControllerCls::setLayoutDirection(TextDirection layoutDirection) {
-    assert(_state != _AndroidViewStateCls::disposed, __s("trying to set a layout direction for a disposed UIView. View id: $viewId"));
+    assert(_state != _AndroidViewStateCls::disposed, __s("trying to set a layout direction for a disposed UIView. View id: %s,"));
     if (layoutDirection == _layoutDirection) {
         return;
     }
@@ -338,11 +338,11 @@ int AndroidViewControllerCls::_getAndroidDirection(TextDirection direction) {
 void SurfaceAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
 
 int ExpensiveAndroidViewControllerCls::textureId() {
-    throw make<UnimplementedErrorCls>(__s("Not supported for $SurfaceAndroidViewController."));
+    throw make<UnimplementedErrorCls>(__s("Not supported for %s)"));
 }
 
 Future<void> ExpensiveAndroidViewControllerCls::setOffset(Offset off) {
-    throw make<UnimplementedErrorCls>(__s("Not supported for $SurfaceAndroidViewController."));
+    throw make<UnimplementedErrorCls>(__s("Not supported for %s)"));
 }
 
 void ExpensiveAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
@@ -365,7 +365,7 @@ Future<void> ExpensiveAndroidViewControllerCls::_sendDisposeMessage() {
 }
 
 Future<Size> ExpensiveAndroidViewControllerCls::_sendResizeMessage(Size size) {
-    throw make<UnimplementedErrorCls>(__s("Not supported for $SurfaceAndroidViewController."));
+    throw make<UnimplementedErrorCls>(__s("Not supported for %s)"));
 }
 
 int TextureAndroidViewControllerCls::textureId() {
@@ -386,7 +386,7 @@ Future<void> TextureAndroidViewControllerCls::setOffset(Offset off) {
 void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
 
 Future<Size> TextureAndroidViewControllerCls::_sendResizeMessage(Size size) {
-    assert(_state != _AndroidViewStateCls::waitingForSize, __s("Android view must have an initial size. View id: $viewId"));
+    assert(_state != _AndroidViewStateCls::waitingForSize, __s("Android view must have an initial size. View id: %s)"));
     assert(size != nullptr);
     assert(!size->isEmpty());
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
@@ -401,7 +401,7 @@ bool TextureAndroidViewControllerCls::_createRequiresSize() {
 }
 
 Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
-    assert(!size->isEmpty(), __s("trying to create $TextureAndroidViewController without setting a valid size."));
+    assert(!size->isEmpty(), __s("trying to create %s)"));
     Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
@@ -415,7 +415,7 @@ Future<void> TextureAndroidViewControllerCls::_sendDisposeMessage() {
 }
 
 Future<void> UiKitViewControllerCls::setLayoutDirection(TextDirection layoutDirection) {
-    assert(!_debugDisposed, __s("trying to set a layout direction for a disposed iOS UIView. View id: $id"));
+    assert(!_debugDisposed, __s("trying to set a layout direction for a disposed iOS UIView. View id: %s)"));
     if (layoutDirection == _layoutDirection) {
         return;
     }

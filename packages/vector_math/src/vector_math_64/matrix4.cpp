@@ -359,7 +359,7 @@ void Matrix4Cls::setOuter(Vector4 u, Vector4 v) {
 }
 
 String Matrix4Cls::toString() {
-    return __s("[0] ${getRow(0)}\n[1] ${getRow(1)}\n[2] ${getRow(2)}\n[3] ${getRow(3)}\n");
+    return __s("[0] %s$%s[2] $%s$%s;");
 }
 
 int Matrix4Cls::dimension() {

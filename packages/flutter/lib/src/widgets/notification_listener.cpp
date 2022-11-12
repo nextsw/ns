@@ -6,7 +6,7 @@ void NotificationCls::dispatch(BuildContext target) {
 String NotificationCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return __s("${objectRuntimeType(this, 'Notification')}(${description.join(", ")})");
+    return __s("%s$%s;");
 }
 
 void NotificationCls::debugFillDescription(List<String> description) {

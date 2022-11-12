@@ -48,5 +48,19 @@ Null provisional;
 Null proxy;
 
 
+class pragmaCls : public ObjectCls {
+public:
+    String name;
+
+    Object options;
+
+
+     pragmaCls(String name, Object options);
+private:
+
+    virtual void  _(String name, Object options);
+};
+using pragma = std::shared_ptr<pragmaCls>;
+
 
 #endif

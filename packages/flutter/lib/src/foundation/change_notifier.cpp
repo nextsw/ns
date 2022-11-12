@@ -2,7 +2,7 @@
 bool ChangeNotifierCls::debugAssertNotDisposed(ChangeNotifier notifier) {
     assert([=] () {
         if (notifier->_debugDisposed) {
-            throw make<FlutterErrorCls>(__s("A ${notifier.runtimeType} was used after being disposed.\nOnce you have called dispose() on a ${notifier.runtimeType}, it can no longer be used."));
+            throw make<FlutterErrorCls>(__s("A %sOnce you have called dispose() on a $%scan no longer be used.,"));
         }
         return true;
     }());
@@ -66,7 +66,7 @@ void ChangeNotifierCls::notifyListeners() {
         try {
             _listeners[i]?->call();
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("foundation library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for $runtimeType")), [=] () {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("foundation library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for %s)")), [=] () {
                 makeList(ArrayItem);
             }));
         };
@@ -133,7 +133,7 @@ void _MergingListenableCls::removeListener(VoidCallback listener) {
 }
 
 String _MergingListenableCls::toString() {
-    return __s("Listenable.merge([${_children.join(", ")}])");
+    return __s("Listenable.merge([%s;");
 }
 
 template<typename T>
@@ -152,5 +152,5 @@ void ValueNotifierCls<T>::value(T newValue) {
 
 template<typename T>
 String ValueNotifierCls<T>::toString() {
-    return __s("${describeIdentity(this)}($value)");
+    return __s("%s$%s;");
 }

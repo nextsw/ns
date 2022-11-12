@@ -22,12 +22,12 @@
 
 ImageConfiguration createLocalImageConfiguration(BuildContext context, Size size);
 
-Future<void> precacheImage(ImageProvider provider, BuildContext context, ImageErrorListener onError, Size size);
+Future<void> precacheImage(ImageProvider<any> provider, BuildContext context, ImageErrorListener onError, Size size);
 
 
 class ImageCls : public StatefulWidgetCls {
 public:
-    ImageProvider image;
+    ImageProvider<any> image;
 
     ImageFrameBuilder frameBuilder;
 
@@ -66,7 +66,7 @@ public:
     bool isAntiAlias;
 
 
-     ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, ImageProvider image, bool isAntiAlias, Key key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, String semanticLabel, double width);
+     ImageCls(AlignmentGeometry alignment, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, double height, ImageProvider<any> image, bool isAntiAlias, Key key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, String semanticLabel, double width);
 
     virtual void  network(String src, AlignmentGeometry alignment, int cacheHeight, int cacheWidth, Rect centerSlice, Color color, BlendMode colorBlendMode, ImageErrorWidgetBuilder errorBuilder, bool excludeFromSemantics, FilterQuality filterQuality, BoxFit fit, ImageFrameBuilder frameBuilder, bool gaplessPlayback, Map<String, String> headers, double height, bool isAntiAlias, Key key, ImageLoadingBuilder loadingBuilder, bool matchTextDirection, Animation<double> opacity, ImageRepeat repeat, double scale, String semanticLabel, double width);
 

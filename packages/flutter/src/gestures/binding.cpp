@@ -25,11 +25,11 @@ void _ResamplerCls::sample(Duration samplingOffset, SamplingClock clock) {
     SchedulerBinding scheduler = SchedulerBindingCls::instance;
     assert(scheduler != nullptr);
     if (_frameTime == DurationCls::zero) {
-        _frameTime = make<DurationCls>(clock->now()->millisecondsSinceEpoch);
+        _frameTime = make<DurationCls>(clock->now()->millisecondsSinceEpoch());
             auto _c1 = clock->stopwatch();    _c1.start();_frameTimeAge = _c1;
     }
     if (_timer?->isActive() != true) {
-        _timer = TimerCls->periodic(_samplingInterval, [=] () {
+        _timer = TimerCls->periodic(_samplingInterval, [=] (Unknown  _) {
             _onSampleTimeChanged();
         });
     }
@@ -52,12 +52,12 @@ void _ResamplerCls::sample(Duration samplingOffset, SamplingClock clock) {
     }
     if (!_frameCallbackScheduled) {
         _frameCallbackScheduled = true;
-        scheduler->addPostFrameCallback([=] () {
+        scheduler->addPostFrameCallback([=] (Unknown  _) {
             _frameCallbackScheduled = false;
             _frameTime = scheduler->currentSystemFrameTimeStamp();
             _frameTimeAge->reset();
             _timer?->cancel();
-            _timer = TimerCls->periodic(_samplingInterval, [=] () {
+            _timer = TimerCls->periodic(_samplingInterval, [=] (Unknown  _) {
                 _onSampleTimeChanged();
             });
             _onSampleTimeChanged();
@@ -78,7 +78,7 @@ void _ResamplerCls::_onSampleTimeChanged() {
     assert([=] () {
         if (debugPrintResamplingMargin) {
             Duration resamplingMargin = _lastEventTime - _lastSampleTime;
-            debugPrint(__s("$resamplingMargin"));
+            debugPrint(__s("%s)"));
         }
         return true;
     }());
@@ -194,7 +194,7 @@ void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
         }
         assert([=] () {
             if (debugPrintHitTestResults) {
-                debugPrint(__s("$event: $hitTestResult"));
+                debugPrint(__s("%s$%s)"));
             }
             return true;
         }());
@@ -209,7 +209,7 @@ void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
     };
     }    assert([=] () {
         if (debugPrintMouseHoverEvents && is<PointerHoverEvent>(event)) {
-            debugPrint(__s("$event"));
+            debugPrint(__s("%s)"));
         }
         return true;
     }());

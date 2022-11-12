@@ -107,7 +107,7 @@ void Matrix2Cls::setDiagonal(Vector2 arg) {
 }
 
 String Matrix2Cls::toString() {
-    return __s("[0] ${getRow(0)}\n[1] ${getRow(1)}\n");
+    return __s("[0] %s$%s;");
 }
 
 int Matrix2Cls::dimension() {

@@ -4,7 +4,7 @@ String InternetAddressTypeCls::name() {
 }
 
 String InternetAddressTypeCls::toString() {
-    return __s("InternetAddressType: $name");
+    return __s("InternetAddressType: %s;");
 }
 
 void InternetAddressTypeCls::_from(int value) {
@@ -17,7 +17,7 @@ void InternetAddressTypeCls::_from(int value) {
     if (value == unix->_value) {
         return unix;
     }
-    throw make<ArgumentErrorCls>(__s("Invalid type: $value"));
+    throw make<ArgumentErrorCls>(__s("Invalid type: %s)"));
 }
 
 Future<ServerSocket> ServerSocketCls::bind(address , int port, int backlog, bool shared, bool v6Only) {
@@ -101,20 +101,20 @@ String SocketExceptionCls::toString() {
     StringBuffer sb = make<StringBufferCls>();
     sb->write(__s("SocketException"));
     if (message->isNotEmpty()) {
-        sb->write(__s(": $message"));
+        sb->write(__s(": %s)"));
         if (osError != nullptr) {
-            sb->write(__s(" ($osError)"));
+            sb->write(__s(" (%s)"));
         }
     } else {
         if (osError != nullptr) {
-        sb->write(__s(": $osError"));
+        sb->write(__s(": %s)"));
     }
 ;
     }    if (address != nullptr) {
-        sb->write(__s(", address = ${address!.host}"));
+        sb->write(__s(", address = %s)"));
     }
     if (port != nullptr) {
-        sb->write(__s(", port = $port"));
+        sb->write(__s(", port = %s)"));
     }
     return sb->toString();
 }

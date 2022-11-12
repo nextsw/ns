@@ -1,6 +1,6 @@
 #include "table.hpp"
 String TableCellParentDataCls::toString() {
-    return __s("${super.toString()}; ${verticalAlignment == null ? "default vertical alignment" : "$verticalAlignment"}");
+    return __s("%s$%s");
 }
 
 double TableColumnWidthCls::flex(Iterable<RenderBox> cells) {
@@ -38,7 +38,7 @@ double IntrinsicColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String IntrinsicColumnWidthCls::toString() {
-    return __s("${objectRuntimeType(this, 'IntrinsicColumnWidth')}(flex: ${_flex?.toStringAsFixed(1)})");
+    return __s("%s$%s;");
 }
 
 FixedColumnWidthCls::FixedColumnWidthCls(double value) {
@@ -56,7 +56,7 @@ double FixedColumnWidthCls::maxIntrinsicWidth(Iterable<RenderBox> cells, double 
 }
 
 String FixedColumnWidthCls::toString() {
-    return __s("${objectRuntimeType(this, 'FixedColumnWidth')}(${debugFormatDouble(value)})");
+    return __s("%s$%s;");
 }
 
 FractionColumnWidthCls::FractionColumnWidthCls(double value) {
@@ -80,7 +80,7 @@ double FractionColumnWidthCls::maxIntrinsicWidth(Iterable<RenderBox> cells, doub
 }
 
 String FractionColumnWidthCls::toString() {
-    return __s("${objectRuntimeType(this, 'FractionColumnWidth')}($value)");
+    return __s("%s$%s;");
 }
 
 FlexColumnWidthCls::FlexColumnWidthCls(double value) {
@@ -102,7 +102,7 @@ double FlexColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String FlexColumnWidthCls::toString() {
-    return __s("${objectRuntimeType(this, 'FlexColumnWidth')}(${debugFormatDouble(value)})");
+    return __s("%s$%s;");
 }
 
 double MaxColumnWidthCls::minIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
@@ -126,7 +126,7 @@ double MaxColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String MaxColumnWidthCls::toString() {
-    return __s("${objectRuntimeType(this, 'MaxColumnWidth')}($a, $b)");
+    return __s("%s$%s$%s;");
 }
 
 double MinColumnWidthCls::minIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
@@ -150,7 +150,7 @@ double MinColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String MinColumnWidthCls::toString() {
-    return __s("${objectRuntimeType(this, 'MinColumnWidth')}($a, $b)");
+    return __s("%s$%s$%s;");
 }
 
 RenderTableCls::RenderTableCls(TableBorder border, List<List<RenderBox>> children, Map<int, TableColumnWidth> columnWidths, int columns, ImageConfiguration configuration, TableColumnWidth defaultColumnWidth, TableCellVerticalAlignment defaultVerticalAlignment, List<Decoration> rowDecorations, int rows, TextBaseline textBaseline, TextDirection textDirection) {
@@ -542,8 +542,7 @@ Iterable<RenderBox> RenderTableCls::column(int x) {
         int xy = x + y * columns();
         RenderBox child = _children[xy];
         if (child != nullptr) {
-            yield yield;
-            child;
+            yield child;
         }
     }
 }
@@ -554,8 +553,7 @@ Iterable<RenderBox> RenderTableCls::row(int y) {
     for (;  < end; xy += 1) {
         RenderBox child = _children[xy];
         if (child != nullptr) {
-            yield yield;
-            child;
+            yield child;
         }
     }
 }
@@ -710,7 +708,7 @@ void RenderTableCls::debugFillProperties(DiagnosticPropertiesBuilder properties)
     properties->add(<TableBorder>make<DiagnosticsPropertyCls>(__s("border"), border(), nullptr));
     properties->add(<Map<int, TableColumnWidth>>make<DiagnosticsPropertyCls>(__s("specified column widths"), _columnWidths, _columnWidths->isEmpty()? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
     properties->add(<TableColumnWidth>make<DiagnosticsPropertyCls>(__s("default column width"), defaultColumnWidth()));
-    properties->add(make<MessagePropertyCls>(__s("table size"), __s("$columns\u00D7$rows")));
+    properties->add(make<MessagePropertyCls>(__s("table size"), __s("%s$%s)")));
     properties->add(<String>make<IterablePropertyCls>(__s("column offsets"), _columnLefts?->map(debugFormatDouble), __s("unknown")));
     properties->add(<String>make<IterablePropertyCls>(__s("row offsets"), _rowTops->map(debugFormatDouble), __s("unknown")));
 }
@@ -724,7 +722,7 @@ List<DiagnosticsNode> RenderTableCls::debugDescribeChildren() {
         for (;  < columns(); x += 1) {
             int xy = x + y * columns();
             RenderBox child = _children[xy];
-            String name = __s("child ($x, $y)");
+            String name = __s("child (%s$%s;");
             if (child != nullptr) {
                 children->add(child->toDiagnosticsNode(name));
             } else {

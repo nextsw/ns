@@ -117,7 +117,7 @@ String Base64CodecCls::normalize(String source, int start, int end) {
 
 void Base64CodecCls::_checkPadding(String source, int sourceIndex, int sourceEnd, int firstPadding, int paddingCount, int length) {
     if (length % 4 != 0) {
-        throw make<FormatExceptionCls>(__s("Invalid base64 padding, padded length must be multiple of four, is $length"), source, sourceEnd);
+        throw make<FormatExceptionCls>(__s("Invalid base64 padding, padded length must be multiple of four, is %s,"), source, sourceEnd);
     }
     if (firstPadding + paddingCount != length) {
         throw make<FormatExceptionCls>(__s("Invalid base64 padding, '=' not at the end"), source, sourceIndex);
@@ -209,7 +209,7 @@ int _Base64EncoderCls::encodeChunk(String alphabet, List<int> bytes, int start, 
         }
         i++;
     }
-    throw ArgumentErrorCls->value(bytes, __s("Not a byte value at index $i: 0x${bytes[i].toRadixString(16)}"));
+    throw ArgumentErrorCls->value(bytes, __s("Not a byte value at index %s$%s)"));
 }
 
 void _Base64EncoderCls::writeFinalChunk(String alphabet, Uint8List output, int outputIndex, int count, int bits) {

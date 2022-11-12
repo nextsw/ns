@@ -122,7 +122,7 @@ bool AsyncSnapshotCls<T>::hasError() {
 
 template<typename T>
 String AsyncSnapshotCls<T>::toString() {
-    return __s("${objectRuntimeType(this, 'AsyncSnapshot')}($connectionState, $data, $error, $stackTrace)");
+    return __s("%s$%s$%s$%s$%s;");
 }
 
 template<typename T>

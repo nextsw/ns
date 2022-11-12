@@ -93,6 +93,7 @@ void FutureCls<T>::delayed(Duration duration, std::function<FutureOr<T>()> compu
 }
 
 template<typename T>
+template<typename T>
 Future<List<T>> FutureCls<T>::wait(Iterable<Future<T>> futures, std::function<void(T successValue)> cleanUp, bool eagerError) {
     _Future<List<T>> _future = <List<T>>make<_FutureCls>();
     List<T> values;
@@ -227,10 +228,10 @@ void FutureExtensionsCls<T>::_ignore(Object _, Object __) {
 String TimeoutExceptionCls::toString() {
     String result = __s("TimeoutException");
     if (duration != nullptr) {
-        result = __s("TimeoutException after $duration");
+        result = __s("TimeoutException after %s;");
     }
     if (message != nullptr) {
-        result = __s("$result: $message");
+        result = __s("%s$%s;");
     }
     return result;
 }

@@ -1,5 +1,5 @@
 #include "decoration_image.hpp"
-DecorationImageCls::DecorationImageCls(AlignmentGeometry alignment, Rect centerSlice, ColorFilter colorFilter, FilterQuality filterQuality, BoxFit fit, ImageProvider image, bool invertColors, bool isAntiAlias, bool matchTextDirection, ImageErrorListener onError, double opacity, ImageRepeat repeat, double scale) {
+DecorationImageCls::DecorationImageCls(AlignmentGeometry alignment, Rect centerSlice, ColorFilter colorFilter, FilterQuality filterQuality, BoxFit fit, ImageProvider<any> image, bool invertColors, bool isAntiAlias, bool matchTextDirection, ImageErrorListener onError, double opacity, ImageRepeat repeat, double scale) {
     {
         assert(image != nullptr);
         assert(alignment != nullptr);
@@ -30,7 +30,7 @@ int DecorationImageCls::hashCode() {
 
 String DecorationImageCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);if (colorFilter != nullptr) {    list1.add(ArrayItem);}if (fit != nullptr && !(fit == BoxFitCls::fill && centerSlice != nullptr) && !(fit == BoxFitCls::scaleDown && centerSlice == nullptr)) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (centerSlice != nullptr) {    list1.add(ArrayItem);}if (repeat != ImageRepeatCls::noRepeat) {    list1.add(ArrayItem);}if (matchTextDirection) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (invertColors) {    list1.add(ArrayItem);}if (isAntiAlias) {    list1.add(ArrayItem);}List<String> properties = list1;
-    return __s("${objectRuntimeType(this, 'DecorationImage')}(${properties.join(", ")})");
+    return __s("%s$%s;");
 }
 
 void DecorationImagePainterCls::paint(Canvas canvas, Rect rect, Path clipPath, ImageConfiguration configuration) {
@@ -76,7 +76,7 @@ void DecorationImagePainterCls::dispose() {
 }
 
 String DecorationImagePainterCls::toString() {
-    return __s("${objectRuntimeType(this, 'DecorationImagePainter')}(stream: $_imageStream, image: $_image) for $_details");
+    return __s("%s$%s$%s$%s;");
 }
 
 void DecorationImagePainterCls::_(DecorationImage _details, VoidCallback _onChanged)
@@ -151,13 +151,13 @@ void paintImage(Alignment alignment, Canvas canvas, Rect centerSlice, ColorFilte
     Rect destinationRect = destinationPosition & destinationSize;
     bool invertedCanvas = false;
     if (!kReleaseMode) {
-        ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel | __s("<Unknown Image(${image.width}×${image.height})>"), make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
+        ImageSizeInfo sizeInfo = make<ImageSizeInfoCls>(debugImageLabel | __s("<Unknown Image(%s$%s,"), make<SizeCls>(image->width->toDouble(), image->height->toDouble()), outputSize * PaintingBindingCls::instance->window->devicePixelRatio);
         assert([=] () {
             if (debugInvertOversizedImages && sizeInfo->decodedSizeInBytes() > sizeInfo->displaySizeInBytes() + debugImageOverheadAllowance) {
                 int overheadInKilobytes = (sizeInfo->decodedSizeInBytes() - sizeInfo->displaySizeInBytes()) ~/ 1024;
                 int outputWidth = sizeInfo->displaySize->width()->toInt();
                 int outputHeight = sizeInfo->displaySize->height()->toInt();
-                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Image $debugImageLabel has a display size of $outputWidth×$outputHeight but a decode size of ${image.width}×${image.height}, which uses an additional ${overheadInKilobytes}KB.\n\nConsider resizing the asset ahead of time, supplying a cacheWidth parameter of $outputWidth, a cacheHeight parameter of $outputHeight, or using a ResizeImage."), __s("painting library"), make<ErrorDescriptionCls>(__s("while painting an image"))));
+                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Image %s$%s$%s$%s$%s$%sConsider resizing the asset ahead of time, supplying a cacheWidth parameter of $%s$%s,"), __s("painting library"), make<ErrorDescriptionCls>(__s("while painting an image"))));
                             auto _c2 = make<PaintCls>();            _c2.colorFilter = ColorFilterCls->matrix(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem));canvas->saveLayer(destinationRect, _c2);
                 double dy = -(rect->top + rect->height() / 2.0);
                 canvas->translate(0.0, -dy);

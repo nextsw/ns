@@ -67,7 +67,7 @@ ScrollPosition ScrollControllerCls::createScrollPosition(ScrollPhysics physics, 
 String ScrollControllerCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return __s("${describeIdentity(this)}(${description.join(", ")})");
+    return __s("%s$%s;");
 }
 
 void ScrollControllerCls::debugFillDescription(List<String> description) {
@@ -75,15 +75,15 @@ void ScrollControllerCls::debugFillDescription(List<String> description) {
         description->add(debugLabel!);
     }
     if (initialScrollOffset() != 0.0) {
-        description->add(__s("initialScrollOffset: ${initialScrollOffset.toStringAsFixed(1)}, "));
+        description->add(__s("initialScrollOffset: %s)"));
     }
     if (_positions->isEmpty()) {
         description->add(__s("no clients"));
     } else {
         if (_positions->length() == 1) {
-        description->add(__s("one client, offset ${offset.toStringAsFixed(1)}"));
+        description->add(__s("one client, offset %s)"));
     } else {
-        description->add(__s("${_positions.length} clients"));
+        description->add(__s("%s)"));
     }
 ;
     }}

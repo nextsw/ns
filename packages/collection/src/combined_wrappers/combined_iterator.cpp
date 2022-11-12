@@ -2,7 +2,7 @@
 template<typename T>
 CombinedIteratorCls<T>::CombinedIteratorCls(Iterator<Iterator<T>> iterators) {
     {
-            auto _c1 = toSet();    _c1.addAll(other);_iterators = iterators;
+        _iterators = iterators;
     }
     {
         if (!iterators->moveNext()) {

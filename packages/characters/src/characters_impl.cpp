@@ -143,8 +143,7 @@ Characters StringCharactersCls::replaceFirst(Characters pattern, Characters repl
 
 Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts) {
     if (maxParts == 1 || stringValue->isEmpty()) {
-        yield yield;
-        this;
+        yield this;
         return;
     }
     auto patternString = pattern->stringValue;
@@ -155,8 +154,7 @@ Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts
             if ( < 0) {
                 break;
             }
-            yield yield;
-            make<StringCharactersCls>(stringValue->substring(start, match));
+            yield make<StringCharactersCls>(stringValue->substring(start, match));
             start = match + patternString->length();
             maxParts--;
         } while (maxParts != 1);
@@ -167,8 +165,7 @@ Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts
             if ( < 0) {
                 return;
             }
-            yield yield;
-            make<StringCharactersCls>(stringValue->substring(start, match));
+            yield make<StringCharactersCls>(stringValue->substring(start, match));
             start = match;
             maxParts--;
         } while (maxParts != 1);
@@ -176,8 +173,7 @@ Iterable<Characters> StringCharactersCls::split(Characters pattern, int maxParts
             return;
         }
     }
-    yield yield;
-    make<StringCharactersCls>(stringValue->substring(start));
+    yield make<StringCharactersCls>(stringValue->substring(start));
 }
 
 bool StringCharactersCls::containsAll(Characters characters) {
@@ -838,8 +834,7 @@ int StringCharacterRangeCls::stringBeforeLength() {
 
 Iterable<CharacterRange> StringCharacterRangeCls::split(Characters pattern, int maxParts) {
     if (maxParts == 1 || _start == _end) {
-        yield yield;
-        this;
+        yield this;
         return;
     }
     auto patternString = pattern->stringValue();
@@ -850,13 +845,11 @@ Iterable<CharacterRange> StringCharacterRangeCls::split(Characters pattern, int 
             if ( < 0) {
                 break;
             }
-            yield yield;
-            StringCharacterRangeCls->_(_string, start, match);
+            yield StringCharacterRangeCls->_(_string, start, match);
             start = match + patternString->length();
             maxParts--;
         } while (maxParts != 1);
-        yield yield;
-        StringCharacterRangeCls->_(_string, start, _end);
+        yield StringCharacterRangeCls->_(_string, start, _end);
     } else {
         auto breaks = make<BreaksCls>(_string, _start, _end, stateSoTNoBreak);
         do {
@@ -864,14 +857,12 @@ Iterable<CharacterRange> StringCharacterRangeCls::split(Characters pattern, int 
             if ( < 0) {
                 return;
             }
-            yield yield;
-            StringCharacterRangeCls->_(_string, start, match);
+            yield StringCharacterRangeCls->_(_string, start, match);
             start = match;
             maxParts--;
         } while (maxParts != 1);
         if ( < _end) {
-            yield yield;
-            StringCharacterRangeCls->_(_string, start, _end);
+            yield StringCharacterRangeCls->_(_string, start, _end);
         }
     }
 }

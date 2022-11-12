@@ -89,19 +89,19 @@ void BindingBaseCls::initServiceExtensions() {
         registerServiceExtension(platformOverrideExtensionName, [=] (Map<String, String> parameters) {
             if (parameters->containsKey(__s("value"))) {
                 ;
-                _postExtensionStateChangedEvent(platformOverrideExtensionName, defaultTargetPlatform->toString()->substring(__s("$TargetPlatform.")->length()));
+                _postExtensionStateChangedEvent(platformOverrideExtensionName, defaultTargetPlatform->toString()->substring(__s("%s.")->length()));
                 await await reassembleApplication();
             }
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("value"), defaultTargetPlatform->toString()->substring(__s("$TargetPlatform.")->length()));return list1;
+                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("value"), defaultTargetPlatform->toString()->substring(__s("%s.")->length()));return list1;
         });
         String brightnessOverrideExtensionName = __s("brightnessOverride");
         registerServiceExtension(brightnessOverrideExtensionName, [=] (Map<String, String> parameters) {
             if (parameters->containsKey(__s("value"))) {
                 ;
-                _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride | platformDispatcher()->platformBrightness)->toString());
+                _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride | platformDispatcher()->platformBrightness())->toString());
                 await await reassembleApplication();
             }
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride | platformDispatcher()->platformBrightness)->toString());return list2;
+                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride | platformDispatcher()->platformBrightness())->toString());return list2;
         });
         return true;
     }());
@@ -199,12 +199,12 @@ void BindingBaseCls::registerStringServiceExtension(AsyncValueGetter<String> get
 void BindingBaseCls::registerServiceExtension(ServiceExtensionCallback callback, String name) {
     assert(name != nullptr);
     assert(callback != nullptr);
-    String methodName = __s("ext.flutter.$name");
+    String methodName = __s("ext.flutter.%s;");
     developer->registerExtension(methodName, [=] (String method,Map<String, String> parameters) {
         assert(method == methodName);
         assert([=] () {
             if (debugInstrumentationEnabled) {
-                debugPrint(__s("service extension method received: $method($parameters)"));
+                debugPrint(__s("service extension method received: %s$%s)"));
             }
             return true;
         }());
@@ -215,7 +215,7 @@ void BindingBaseCls::registerServiceExtension(ServiceExtensionCallback callback,
         try {
             result = await callback(parameters);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, make<ErrorDescriptionCls>(__s("during a service extension callback for "$method""))));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, make<ErrorDescriptionCls>(__s("during a service extension callback for "%s)"))));
                     Map<String, String> map1 = make<MapCls<>>();        map1.set(__s("exception"), exception->toString());        map1.set(__s("stack"), stack->toString());        map1.set(__s("method"), method);return developer->ServiceExtensionResponseCls->error(developer->ServiceExtensionResponseCls::extensionError, json->encode(list1));
         };
         result[__s("type")] = __s("_extensionType");
@@ -225,11 +225,11 @@ void BindingBaseCls::registerServiceExtension(ServiceExtensionCallback callback,
 }
 
 String BindingBaseCls::toString() {
-    return __s("<${objectRuntimeType(this, 'BindingBase')}>");
+    return __s("<%s;");
 }
 
 void BindingBaseCls::_postExtensionStateChangedEvent(String name, dynamic value) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("extension"), __s("ext.flutter.$name"));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
+    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("extension"), __s("ext.flutter.%s,"));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
 }
 
 Future<void> _exitApplication() {

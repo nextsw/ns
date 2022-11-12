@@ -26,7 +26,7 @@ void _EngineLayerWrapperCls::dispose() {
 void _EngineLayerWrapperCls::_(EngineLayer nativeLayer)
 
 bool _EngineLayerWrapperCls::_debugCheckNotUsedAsOldLayer() {
-    assert(!_debugWasUsedAsOldLayer, __s("Layer $runtimeType was previously used as oldLayer.\nOnce a layer is used as oldLayer, it may not be used again. Instead, after calling one of the SceneBuilder.push* methods and passing an oldLayer to it, use the layer returned by the method as oldLayer in subsequent frames."));
+    assert(!_debugWasUsedAsOldLayer, __s("Layer %sOnce a layer is used as oldLayer, it may not be used again. Instead, after calling one of the SceneBuilder.push* methods and passing an oldLayer to it, use the layer returned by the method as oldLayer in subsequent frames.)"));
     return true;
 }
 
@@ -218,7 +218,7 @@ Scene SceneBuilderCls::build() {
 
 bool SceneBuilderCls::_debugCheckUsedOnce(EngineLayer layer, String usage) {
     assert([=] () {
-        assert(!_usedLayers->containsKey(layer), __s("Layer ${layer.runtimeType} already used.\nThe layer is already being used as ${_usedLayers[layer]} in this scene.\nA layer may only be used once in a given scene."));
+        assert(!_usedLayers->containsKey(layer), __s("Layer %sThe layer is already being used as $%sA layer may only be used once in a given scene.)"));
         _usedLayers[layer] = usage;
         return true;
     }());
@@ -232,7 +232,7 @@ bool SceneBuilderCls::_debugCheckCanBeUsedAsOldLayer(_EngineLayerWrapper layer, 
         }
         assert(layer->_nativeLayer != nullptr, __s("Object disposed"));
         layer->_debugCheckNotUsedAsOldLayer();
-        assert(_debugCheckUsedOnce(layer, __s("oldLayer in $methodName")));
+        assert(_debugCheckUsedOnce(layer, __s("oldLayer in %s)")));
         layer->_debugWasUsedAsOldLayer = true;
         return true;
     }());

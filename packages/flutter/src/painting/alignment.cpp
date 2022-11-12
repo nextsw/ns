@@ -30,7 +30,7 @@ String AlignmentGeometryCls::toString() {
     if (_x() == 0.0) {
         return AlignmentDirectionalCls->_stringify(_start(), _y());
     }
-    return __s("${Alignment._stringify(_x, _y)} + ${AlignmentDirectional._stringify(_start, 0.0)}");
+    return __s("%s$%s;");
 }
 
 bool AlignmentGeometryCls::==(Object other) {
@@ -169,7 +169,7 @@ String AlignmentCls::_stringify(double x, double y) {
     if (x == 1.0 && y == 1.0) {
         return __s("Alignment.bottomRight");
     }
-    return __s("Alignment(${x.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})");
+    return __s("Alignment(%s$%s;");
 }
 
 AlignmentDirectionalCls::AlignmentDirectionalCls(double start, double y) {
@@ -229,7 +229,7 @@ AlignmentDirectional AlignmentDirectionalCls::lerp(AlignmentDirectional a, Align
 }
 
 Alignment AlignmentDirectionalCls::resolve(TextDirection direction) {
-    assert(direction != nullptr, __s("Cannot resolve $runtimeType without a TextDirection."));
+    assert(direction != nullptr, __s("Cannot resolve %s)"));
     ;
 }
 
@@ -277,7 +277,7 @@ String AlignmentDirectionalCls::_stringify(double start, double y) {
     if (start == 1.0 && y == 1.0) {
         return __s("AlignmentDirectional.bottomEnd");
     }
-    return __s("AlignmentDirectional(${start.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})");
+    return __s("AlignmentDirectional(%s$%s;");
 }
 
 _MixedAlignment _MixedAlignmentCls::-() {
@@ -301,7 +301,7 @@ _MixedAlignment _MixedAlignmentCls::%(double other) {
 }
 
 Alignment _MixedAlignmentCls::resolve(TextDirection direction) {
-    assert(direction != nullptr, __s("Cannot resolve $runtimeType without a TextDirection."));
+    assert(direction != nullptr, __s("Cannot resolve %s)"));
     ;
 }
 
@@ -313,5 +313,5 @@ TextAlignVerticalCls::TextAlignVerticalCls(double y) {
 }
 
 String TextAlignVerticalCls::toString() {
-    return __s("${objectRuntimeType(this, 'TextAlignVertical')}(y: $y)");
+    return __s("%s$%s;");
 }

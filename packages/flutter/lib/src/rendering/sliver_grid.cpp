@@ -9,7 +9,7 @@ BoxConstraints SliverGridGeometryCls::getBoxConstraints(SliverConstraints constr
 
 String SliverGridGeometryCls::toString() {
     List<String> properties = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
-    return __s("SliverGridGeometry(${properties.join(', ')})");
+    return __s("SliverGridGeometry(%s;");
 }
 
 SliverGridRegularTileLayoutCls::SliverGridRegularTileLayoutCls(double childCrossAxisExtent, double childMainAxisExtent, int crossAxisCount, double crossAxisStride, double mainAxisStride, bool reverseCrossAxis) {
@@ -115,7 +115,7 @@ bool SliverGridDelegateWithMaxCrossAxisExtentCls::_debugAssertIsValid(double cro
 }
 
 String SliverGridParentDataCls::toString() {
-    return __s("crossAxisOffset=$crossAxisOffset; ${super.toString()}");
+    return __s("crossAxisOffset=%s$%s;");
 }
 
 RenderSliverGridCls::RenderSliverGridCls(Unknown childManager, SliverGridDelegate gridDelegate) {

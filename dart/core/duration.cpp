@@ -91,7 +91,7 @@ String DurationCls::toString() {
     microseconds = microseconds->remainder(microsecondsPerSecond);
     auto secondsPadding =  < 10? __s("0") : __s("");
     auto paddedMicroseconds = microseconds->toString()->padLeft(6, __s("0"));
-    return __s("$sign${hours.abs()}:$minutesPadding$minutes:$secondsPadding$seconds.$paddedMicroseconds");
+    return __s("%s$%s$%s$%s$%s$%s$%s;");
 }
 
 bool DurationCls::isNegative() {

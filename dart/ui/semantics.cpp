@@ -1,7 +1,7 @@
 #include "semantics.hpp"
 String SemanticsActionCls::toString() {
     ;
-    assert(false, __s("Unhandled index: $index (0x${index.toRadixString(8).padLeft(4, "0")})"));
+    assert(false, __s("Unhandled index: %s$%s)"));
     return __s("");
 }
 
@@ -9,7 +9,7 @@ void SemanticsActionCls::_(int index)
 
 String SemanticsFlagCls::toString() {
     ;
-    assert(false, __s("Unhandled index: $index (0x${index.toRadixString(8).padLeft(4, "0")})"));
+    assert(false, __s("Unhandled index: %s$%s)"));
     return __s("");
 }
 
@@ -29,7 +29,7 @@ StringAttribute SpellOutStringAttributeCls::copy(TextRange range) {
 }
 
 String SpellOutStringAttributeCls::toString() {
-    return __s("SpellOutStringAttribute($range)");
+    return __s("SpellOutStringAttribute(%s;");
 }
 
 LocaleStringAttributeCls::LocaleStringAttributeCls(Locale locale, TextRange range) {
@@ -46,7 +46,7 @@ StringAttribute LocaleStringAttributeCls::copy(TextRange range) {
 }
 
 String LocaleStringAttributeCls::toString() {
-    return __s("LocaleStringAttribute($range, ${locale.toLanguageTag()})");
+    return __s("LocaleStringAttribute(%s$%s;");
 }
 
 SemanticsUpdateBuilderCls::SemanticsUpdateBuilderCls() {

@@ -26,7 +26,7 @@ int InlineSpanSemanticsInformationCls::hashCode() {
 }
 
 String InlineSpanSemanticsInformationCls::toString() {
-    return __s("${objectRuntimeType(this, 'InlineSpanSemanticsInformation')}{text: $text, semanticsLabel: $semanticsLabel, recognizer: $recognizer}");
+    return __s("%s$%s$%s$%s;");
 }
 
 List<InlineSpanSemanticsInformation> combineSemanticsInfo(List<InlineSpanSemanticsInformation> infoList) {

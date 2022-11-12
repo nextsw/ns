@@ -58,5 +58,5 @@ int CircleBorderCls::hashCode() {
 }
 
 String CircleBorderCls::toString() {
-    return __s("${objectRuntimeType(this, 'CircleBorder')}($side)");
+    return __s("%s$%s;");
 }

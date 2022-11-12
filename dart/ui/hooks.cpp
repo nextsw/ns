@@ -134,3 +134,22 @@ bool _isLoopback(String host) {
         return false;
     };
 }
+
+std::function<void(Uri )> _getHttpConnectionHookClosure(bool mayInsecurelyConnectToAllDomains) {
+    return [=] (Uri uri) {
+        Object zoneOverride = ZoneCls::current[__symbol("flutter.io.allow_http")];
+        if (zoneOverride == true) {
+            return;
+        }
+        if (zoneOverride == false && uri->isScheme(__s("http"))) {
+        } else {
+            if (mayInsecurelyConnectToAllDomains || uri->isScheme(__s("https"))) {
+            return;
+        }
+;
+        }        if (_isLoopback(uri->host)) {
+            return;
+        }
+        throw make<UnsupportedErrorCls>(__s("Non-https connection "%sRefer to https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android.)"));
+    };
+}

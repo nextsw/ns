@@ -83,5 +83,81 @@ private:
 };
 using _SpringSolution = std::shared_ptr<_SpringSolutionCls>;
 
+class _CriticalSolutionCls : public ObjectCls {
+public:
+
+    virtual void  withArgs(double r, double c1, double c2);
+
+    virtual double x(double time);
+
+    virtual double dx(double time);
+
+    virtual SpringType type();
+
+private:
+    double _r;
+
+    double _c1;
+
+    double _c2;
+
+
+     _CriticalSolutionCls(SpringDescription spring, double distance, double velocity);
+
+};
+using _CriticalSolution = std::shared_ptr<_CriticalSolutionCls>;
+
+class _OverdampedSolutionCls : public ObjectCls {
+public:
+
+    virtual void  withArgs(double r1, double r2, double c1, double c2);
+
+    virtual double x(double time);
+
+    virtual double dx(double time);
+
+    virtual SpringType type();
+
+private:
+    double _r1;
+
+    double _r2;
+
+    double _c1;
+
+    double _c2;
+
+
+     _OverdampedSolutionCls(SpringDescription spring, double distance, double velocity);
+
+};
+using _OverdampedSolution = std::shared_ptr<_OverdampedSolutionCls>;
+
+class _UnderdampedSolutionCls : public ObjectCls {
+public:
+
+    virtual void  withArgs(double w, double r, double c1, double c2);
+
+    virtual double x(double time);
+
+    virtual double dx(double time);
+
+    virtual SpringType type();
+
+private:
+    double _w;
+
+    double _r;
+
+    double _c1;
+
+    double _c2;
+
+
+     _UnderdampedSolutionCls(SpringDescription spring, double distance, double velocity);
+
+};
+using _UnderdampedSolution = std::shared_ptr<_UnderdampedSolutionCls>;
+
 
 #endif

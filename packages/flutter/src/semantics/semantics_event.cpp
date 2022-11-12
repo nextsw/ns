@@ -12,9 +12,9 @@ String SemanticsEventCls::toString() {
     Map<String, dynamic> dataMap = getDataMap();
     auto _c1 = dataMap->keys()->toList();_c1.sort();List<String> sortedKeys = _c1;
     for (String key : sortedKeys) {
-        pairs->add(__s("$key: ${dataMap[key]}"));
+        pairs->add(__s("%s$%s)"));
     }
-    return __s("${objectRuntimeType(this, 'SemanticsEvent')}(${pairs.join(', ')})");
+    return __s("%s$%s;");
 }
 
 AnnounceSemanticsEventCls::AnnounceSemanticsEventCls(String message, TextDirection textDirection) : SemanticsEvent(__s("announce")) {

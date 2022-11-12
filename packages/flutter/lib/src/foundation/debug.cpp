@@ -22,7 +22,7 @@ Future<T> debugInstrumentAction(String description, std::function<Future<T>()> a
             return await action();
         } finally {
             stopwatch->stop();
-            debugPrint(__s("Action "$description" took ${stopwatch.elapsed}"));
+            debugPrint(__s("Action "%s$%s)"));
         };
     } else {
         return action();

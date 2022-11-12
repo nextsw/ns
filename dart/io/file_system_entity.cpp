@@ -24,7 +24,7 @@ Future<FileStat> FileStatCls::stat(String path) {
 }
 
 String FileStatCls::toString() {
-    return __s("""FileStat: type $type          changed $changed          modified $modified          accessed $accessed          mode ${modeString()}          size $size""");
+    return __s("FileStat: type %s$%s$%s$%s$%s$%s;");
 }
 
 String FileStatCls::modeString() {
@@ -213,7 +213,7 @@ Directory FileSystemEntityCls::parent() {
 Future<bool> FileSystemEntityCls::_identical(String path1, String path2) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileIdentical, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Error in FileSystemEntity.identical($path1, $path2)"), __s(""));
+            throw _exceptionFromResponse(response, __s("Error in FileSystemEntity.identical(%s$%s,"), __s(""));
         }
         return response;
     });
@@ -236,9 +236,9 @@ String FileSystemEntityCls::_absolutePath() {
     }
     String current = DirectoryCls::current->path;
     if (current->endsWith(__s("/"))) {
-        return __s("$current$path");
+        return __s("%s$%s;");
     } else {
-        return __s("$current${Platform.pathSeparator}$path");
+        return __s("%s$%s$%s;");
     }
 }
 
@@ -261,7 +261,7 @@ String FileSystemEntityCls::_absoluteWindowsPath(String path) {
         assert(!path->startsWith(__s("\"), 1));
         auto currentDrive = _windowsDriveLetter(current);
         if (currentDrive >= 0) {
-            return __s("${current[0]}:$path");
+            return __s("%s$%s;");
         }
         if (current->startsWith(__s("\\"))) {
             auto serverEnd = current->indexOf(__s("\"), 2);
@@ -270,7 +270,7 @@ String FileSystemEntityCls::_absoluteWindowsPath(String path) {
                 if ( < 0) {
                     shareEnd = current->length();
                 }
-                return __s("${current.substring(0, shareEnd)}$path");
+                return __s("%s$%s;");
             }
         }
         return path;
@@ -278,15 +278,15 @@ String FileSystemEntityCls::_absoluteWindowsPath(String path) {
     auto entityDrive = _windowsDriveLetter(path);
     if (entityDrive >= 0) {
         if (entityDrive != _windowsDriveLetter(current)) {
-            return __s("${path[0]}:\\$path");
+            return __s("%s$%s;");
         }
         path = path->substring(2);
         assert(!path->startsWith(__s("\\")));
     }
     if (current->endsWith(__s("\")) || current->endsWith(__s("/"))) {
-        return __s("$current$path");
+        return __s("%s$%s;");
     }
-    return __s("$current\\$path");
+    return __s("%s$%s;");
 }
 
 bool FileSystemEntityCls::_identicalSync(String path1, String path2) {
@@ -363,7 +363,7 @@ void FileSystemEntityCls::_throwIfError(Object result, String msg, String path) 
         throw make<FileSystemExceptionCls>(msg, path, as<OSErrorCls>(result));
     } else {
         if (is<ArgumentError>(result)) {
-        throw result;
+        throw as<ArgumentErrorCls>(result);
     }
 ;
     }}
@@ -388,39 +388,39 @@ String FileSystemEntityCls::_ensureTrailingPathSeparators(String path) {
     }
     if (PlatformCls::isWindows) {
         while (!path->endsWith(PlatformCls::pathSeparator) && !path->endsWith(__s("/"))) {
-            path = __s("$path${Platform.pathSeparator}");
+            path = __s("%s$%s;");
         }
     } else {
         while (!path->endsWith(PlatformCls::pathSeparator)) {
-            path = __s("$path${Platform.pathSeparator}");
+            path = __s("%s$%s;");
         }
     }
     return path;
 }
 
 String FileSystemCreateEventCls::toString() {
-    return __s("FileSystemCreateEvent('$path')");
+    return __s("FileSystemCreateEvent('%s;");
 }
 
 void FileSystemCreateEventCls::_(path , isDirectory )
 
 String FileSystemModifyEventCls::toString() {
-    return __s("FileSystemModifyEvent('$path', contentChanged=$contentChanged)");
+    return __s("FileSystemModifyEvent('%s$%s;");
 }
 
 void FileSystemModifyEventCls::_(path , isDirectory , bool contentChanged)
 
 String FileSystemDeleteEventCls::toString() {
-    return __s("FileSystemDeleteEvent('$path')");
+    return __s("FileSystemDeleteEvent('%s;");
 }
 
 void FileSystemDeleteEventCls::_(path , isDirectory )
 
 String FileSystemMoveEventCls::toString() {
     auto buffer = make<StringBufferCls>();
-    buffer->write(__s("FileSystemMoveEvent('$path'"));
+    buffer->write(__s("FileSystemMoveEvent('%s)"));
     if (destination != nullptr) {
-        buffer->write(__s(", '$destination'"));
+        buffer->write(__s(", '%s)"));
     }
     buffer->write(__s(")"));
     return buffer->toString();

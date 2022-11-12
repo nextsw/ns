@@ -236,7 +236,7 @@ void DragScrollActivityCls::dispose() {
 }
 
 String DragScrollActivityCls::toString() {
-    return __s("${describeIdentity(this)}($_controller)");
+    return __s("%s$%s;");
 }
 
 BallisticScrollActivityCls::BallisticScrollActivityCls(Unknown delegate, Simulation simulation, TickerProvider vsync) {
@@ -279,7 +279,7 @@ void BallisticScrollActivityCls::dispose() {
 }
 
 String BallisticScrollActivityCls::toString() {
-    return __s("${describeIdentity(this)}($_controller)");
+    return __s("%s$%s;");
 }
 
 void BallisticScrollActivityCls::_tick() {
@@ -333,7 +333,7 @@ void DrivenScrollActivityCls::dispose() {
 }
 
 String DrivenScrollActivityCls::toString() {
-    return __s("${describeIdentity(this)}($_controller)");
+    return __s("%s$%s;");
 }
 
 void DrivenScrollActivityCls::_tick() {

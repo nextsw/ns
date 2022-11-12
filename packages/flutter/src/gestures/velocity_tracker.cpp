@@ -39,7 +39,7 @@ int VelocityCls::hashCode() {
 }
 
 String VelocityCls::toString() {
-    return __s("Velocity(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)})");
+    return __s("Velocity(%s$%s;");
 }
 
 VelocityEstimateCls::VelocityEstimateCls(double confidence, Duration duration, Offset offset, Offset pixelsPerSecond) {
@@ -52,11 +52,11 @@ VelocityEstimateCls::VelocityEstimateCls(double confidence, Duration duration, O
 }
 
 String VelocityEstimateCls::toString() {
-    return __s("VelocityEstimate(${pixelsPerSecond.dx.toStringAsFixed(1)}, ${pixelsPerSecond.dy.toStringAsFixed(1)}; offset: $offset, duration: $duration, confidence: ${confidence.toStringAsFixed(1)})");
+    return __s("VelocityEstimate(%s$%s$%s$%s$%s;");
 }
 
 String _PointAtTimeCls::toString() {
-    return __s("_PointAtTime($point at $time)");
+    return __s("_PointAtTime(%s$%s;");
 }
 
 _PointAtTimeCls::_PointAtTimeCls(Offset point, Duration time) {
@@ -141,7 +141,7 @@ void IOSScrollViewFlingVelocityTrackerCls::addPosition(Duration time, Offset pos
         if (previousPoint == nullptr || previousPoint->time <= time) {
             return true;
         }
-        throw make<FlutterErrorCls>(__s("The position being added ($position) has a smaller timestamp ($time) than its predecessor: $previousPoint."));
+        throw make<FlutterErrorCls>(__s("The position being added (%s$%sthan its predecessor: $%s,"));
     }());
     _index = (_index + 1) % _sampleSize;
     _touchSamples[_index] = make<_PointAtTimeCls>(position, time);
@@ -158,7 +158,7 @@ VelocityEstimate IOSScrollViewFlingVelocityTrackerCls::getVelocityEstimate() {
         }
     }
     if (oldestNonNullSample == nullptr || newestSample == nullptr) {
-        assert(false, __s("There must be at least 1 point in _touchSamples: $_touchSamples"));
+        assert(false, __s("There must be at least 1 point in _touchSamples: %s)"));
         return make<VelocityEstimateCls>(OffsetCls::zero, 0.0, DurationCls::zero, OffsetCls::zero);
     } else {
         return make<VelocityEstimateCls>(estimatedVelocity, 1.0, newestSample->time - oldestNonNullSample->time, newestSample->point - oldestNonNullSample->point);

@@ -1,6 +1,6 @@
 #include "spirv.hpp"
 String TranspileExceptionCls::toString() {
-    return __s("$op: $message");
+    return __s("%s$%s;");
 }
 
 TranspileResult transpile(ByteBuffer spirv, TargetLanguage target) {

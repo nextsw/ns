@@ -103,7 +103,7 @@ List<FocusNode> FocusTraversalPolicyCls::_sortAllDescendants(FocusScopeNode scop
     sortedDescendants->removeWhere([=] (FocusNode node) {
         return !node->canRequestFocus || node->skipTraversal;
     });
-    assert(sortedDescendants->length() <= scope->traversalDescendants()->length() && sortedDescendants->toSet()->difference(scope->traversalDescendants()->toSet())->isEmpty, __s("Sorted descendants contains different nodes than FocusScopeNode.traversalDescendants would. These are the different nodes: ${sortedDescendants.toSet().difference(scope.traversalDescendants.toSet())}"));
+    assert(sortedDescendants->length() <= scope->traversalDescendants()->length() && sortedDescendants->toSet()->difference(scope->traversalDescendants()->toSet())->isEmpty, __s("Sorted descendants contains different nodes than FocusScopeNode.traversalDescendants would. These are the different nodes: %s,"));
     return sortedDescendants;
 }
 
@@ -358,7 +358,7 @@ void _ReadingOrderDirectionalGroupDataCls::debugFillProperties(DiagnosticPropert
     properties->add(<TextDirection>make<DiagnosticsPropertyCls>(__s("directionality"), directionality()));
     properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("rect"), rect()));
     properties->add(<String>make<IterablePropertyCls>(__s("members"), members-><String>map([=] (_ReadingOrderSortData member) {
-        return __s(""${member.node.debugLabel}"(${member.rect})");
+        return __s(""%s$%s;");
     })));
 }
 
@@ -429,7 +429,7 @@ _ReadingOrderSortData ReadingOrderTraversalPolicyCls::_pickNext(List<_ReadingOrd
 }
 
 int FocusOrderCls::compareTo(FocusOrder other) {
-    assert(runtimeType == other->runtimeType, __s("The sorting algorithm must not compare incomparable keys, since they don't know how to order themselves relative to each other. Comparing $this with $other"));
+    assert(runtimeType == other->runtimeType, __s("The sorting algorithm must not compare incomparable keys, since they don't know how to order themselves relative to each other. Comparing %s$%s,"));
     return doCompare(other);
 }
 
@@ -484,7 +484,7 @@ Iterable<FocusNode> OrderedTraversalPolicyCls::sortDescendants(Iterable<FocusNod
         }
     }
     <_OrderedFocusInfo>mergeSort(ordered, [=] (_OrderedFocusInfo a,_OrderedFocusInfo b) {
-        assert(a->order->runtimeType() == b->order->runtimeType(), __s("When sorting nodes for determining focus order, the order (${a.order}) of node ${a.node}, isn't the same type as the order (${b.order}) of ${b.node}. Incompatible order types can't be compared.  Use a FocusTraversalGroup to group similar orders together."));
+        assert(a->order->runtimeType() == b->order->runtimeType(), __s("When sorting nodes for determining focus order, the order (%snode $%s$%s$%sIncompatible order types can't be compared.  Use a FocusTraversalGroup to group similar orders together.,"));
         return a->order->compareTo(b->order);
     });
     return ordered-><FocusNode>map([=] (_OrderedFocusInfo info) {
@@ -497,7 +497,7 @@ FocusOrder FocusTraversalOrderCls::of(BuildContext context) {
     FocusTraversalOrder marker = as<FocusTraversalOrder>(context-><FocusTraversalOrder>getElementForInheritedWidgetOfExactType()?->widget());
     assert([=] () {
         if (marker == nullptr) {
-            throw make<FlutterErrorCls>(__s("FocusTraversalOrder.of() was called with a context that does not contain a FocusTraversalOrder widget. No TraversalOrder widget ancestor could be found starting from the context that was passed to FocusTraversalOrder.of().\nThe context used was:\n  $context"));
+            throw make<FlutterErrorCls>(__s("FocusTraversalOrder.of() was called with a context that does not contain a FocusTraversalOrder widget. No TraversalOrder widget ancestor could be found starting from the context that was passed to FocusTraversalOrder.of().\nThe context used was:\n  %s,"));
         }
         return true;
     }());
@@ -532,7 +532,7 @@ FocusTraversalPolicy FocusTraversalGroupCls::of(BuildContext context) {
     _FocusTraversalGroupMarker inherited = context-><_FocusTraversalGroupMarker>dependOnInheritedWidgetOfExactType();
     assert([=] () {
         if (inherited == nullptr) {
-            throw make<FlutterErrorCls>(__s("Unable to find a FocusTraversalGroup widget in the context.\nFocusTraversalGroup.of() was called with a context that does not contain a FocusTraversalGroup.\nNo FocusTraversalGroup ancestor could be found starting from the context that was passed to FocusTraversalGroup.of(). This can happen because there is not a WidgetsApp or MaterialApp widget (those widgets introduce a FocusTraversalGroup), or it can happen if the context comes from a widget above those widgets.\nThe context used was:\n  $context"));
+            throw make<FlutterErrorCls>(__s("Unable to find a FocusTraversalGroup widget in the context.\nFocusTraversalGroup.of() was called with a context that does not contain a FocusTraversalGroup.\nNo FocusTraversalGroup ancestor could be found starting from the context that was passed to FocusTraversalGroup.of(). This can happen because there is not a WidgetsApp or MaterialApp widget (those widgets introduce a FocusTraversalGroup), or it can happen if the context comes from a widget above those widgets.\nThe context used was:\n  %s,"));
         }
         return true;
     }());

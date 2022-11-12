@@ -15,7 +15,7 @@ int ViewConfigurationCls::hashCode() {
 }
 
 String ViewConfigurationCls::toString() {
-    return __s("$size at ${debugFormatDouble(devicePixelRatio)}x");
+    return __s("%s$%s;");
 }
 
 RenderViewCls::RenderViewCls(RenderBox child, ViewConfiguration configuration, FlutterView window) {
@@ -143,13 +143,13 @@ Rect RenderViewCls::semanticBounds() {
 
 void RenderViewCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     assert([=] () {
-        properties->add(DiagnosticsNodeCls->message(__s("debug mode enabled - ${kIsWeb ? 'Web' :  Platform.operatingSystem}")));
+        properties->add(DiagnosticsNodeCls->message(__s("debug mode enabled - %s)")));
         return true;
     }());
     properties->add(<Size>make<DiagnosticsPropertyCls>(__s("window size"), _window->physicalSize(), __s("in physical pixels")));
     properties->add(make<DoublePropertyCls>(__s("device pixel ratio"), _window->devicePixelRatio(), __s("physical pixels per logical pixel")));
     properties->add(<ViewConfiguration>make<DiagnosticsPropertyCls>(__s("configuration"), configuration(), __s("in logical pixels")));
-    if (_window->platformDispatcher()->semanticsEnabled) {
+    if (_window->platformDispatcher()->semanticsEnabled()) {
         properties->add(DiagnosticsNodeCls->message(__s("semantics enabled")));
     }
 }

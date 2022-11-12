@@ -287,7 +287,7 @@ T _CallbackHookProviderCls<T>::invokeCallback(T defaultValue) {
     try {
         return _callbacks->single();
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while invoking the callback for $runtimeType")), [=] () {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while invoking the callback for %s)")), [=] () {
             makeList(ArrayItem);
         }));
         return defaultValue;

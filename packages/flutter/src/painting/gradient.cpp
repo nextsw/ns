@@ -56,7 +56,7 @@ int GradientRotationCls::hashCode() {
 }
 
 String GradientRotationCls::toString() {
-    return __s("${objectRuntimeType(this, 'GradientRotation')}(radians: ${debugFormatDouble(radians)})");
+    return __s("%s$%s;");
 }
 
 GradientCls::GradientCls(List<Color> colors, List<double> stops, GradientTransform transform) {
@@ -176,7 +176,7 @@ int LinearGradientCls::hashCode() {
 
 String LinearGradientCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
-    return __s("${objectRuntimeType(this, 'LinearGradient')}(${description.join(', ')})");
+    return __s("%s$%s;");
 }
 
 RadialGradientCls::RadialGradientCls(AlignmentGeometry center, List<Color> colors, AlignmentGeometry focal, double focalRadius, double radius, List<double> stops, TileMode tileMode, GradientTransform transform) {
@@ -243,7 +243,7 @@ int RadialGradientCls::hashCode() {
 
 String RadialGradientCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (focal != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
-    return __s("${objectRuntimeType(this, 'RadialGradient')}(${description.join(', ')})");
+    return __s("%s$%s;");
 }
 
 SweepGradientCls::SweepGradientCls(AlignmentGeometry center, List<Color> colors, double endAngle, double startAngle, List<double> stops, TileMode tileMode, GradientTransform transform) {
@@ -310,5 +310,5 @@ int SweepGradientCls::hashCode() {
 
 String SweepGradientCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (stops != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);if (transform != nullptr) {    list1.add(ArrayItem);}List<String> description = list1;
-    return __s("${objectRuntimeType(this, 'SweepGradient')}(${description.join(', ')})");
+    return __s("%s$%s;");
 }

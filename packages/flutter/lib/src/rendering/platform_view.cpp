@@ -146,7 +146,7 @@ Future<void> RenderAndroidViewCls::_sizePlatformView() {
 }
 
 void RenderAndroidViewCls::_setOffset() {
-    SchedulerBindingCls::instance->addPostFrameCallback([=] () {
+    SchedulerBindingCls::instance->addPostFrameCallback([=] (Unknown  _) {
         if (!_isDisposed) {
             if (attached()) {
                 await await _viewController->setOffset(localToGlobal(OffsetCls::zero));
@@ -310,11 +310,11 @@ _UiKitViewGestureRecognizerCls::_UiKitViewGestureRecognizerCls(UiKitViewControll
                 };
             } else {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
-                as<DragGestureRecognizerCls>(gestureRecognizer)->onDown |= [=] () {
+                as<DragGestureRecognizerCls>(gestureRecognizer)->onDown |= [=] (Unknown  _) {
                 };
             } else {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
-                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] () {
+                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] (Unknown  _) {
                 };
             }
 ;
@@ -381,11 +381,11 @@ _PlatformViewGestureRecognizerCls::_PlatformViewGestureRecognizerCls(_HandlePoin
                 };
             } else {
                 if (is<DragGestureRecognizer>(gestureRecognizer)) {
-                as<DragGestureRecognizerCls>(gestureRecognizer)->onDown |= [=] () {
+                as<DragGestureRecognizerCls>(gestureRecognizer)->onDown |= [=] (Unknown  _) {
                 };
             } else {
                 if (is<TapGestureRecognizer>(gestureRecognizer)) {
-                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] () {
+                as<TapGestureRecognizerCls>(gestureRecognizer)->onTapDown |= [=] (Unknown  _) {
                 };
             }
 ;

@@ -5,7 +5,7 @@ int ViewportNotificationMixinCls::depth() {
 
 void ViewportNotificationMixinCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("depth: $depth (${ depth == 0 ? "local" : "remote"})"));
+    description->add(__s("depth: %s$%s"));
 }
 
 bool ViewportElementMixinCls::onNotification(Notification notification) {
@@ -17,13 +17,13 @@ bool ViewportElementMixinCls::onNotification(Notification notification) {
 
 void ScrollNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("$metrics"));
+    description->add(__s("%s)"));
 }
 
 void ScrollStartNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
     if (dragDetails != nullptr) {
-        description->add(__s("$dragDetails"));
+        description->add(__s("%s)"));
     }
 }
 
@@ -37,9 +37,9 @@ ScrollUpdateNotificationCls::ScrollUpdateNotificationCls(BuildContext context, i
 
 void ScrollUpdateNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("scrollDelta: $scrollDelta"));
+    description->add(__s("scrollDelta: %s)"));
     if (dragDetails != nullptr) {
-        description->add(__s("$dragDetails"));
+        description->add(__s("%s)"));
     }
 }
 
@@ -54,23 +54,23 @@ OverscrollNotificationCls::OverscrollNotificationCls(BuildContext context, DragU
 
 void OverscrollNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("overscroll: ${overscroll.toStringAsFixed(1)}"));
-    description->add(__s("velocity: ${velocity.toStringAsFixed(1)}"));
+    description->add(__s("overscroll: %s)"));
+    description->add(__s("velocity: %s)"));
     if (dragDetails != nullptr) {
-        description->add(__s("$dragDetails"));
+        description->add(__s("%s)"));
     }
 }
 
 void ScrollEndNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
     if (dragDetails != nullptr) {
-        description->add(__s("$dragDetails"));
+        description->add(__s("%s)"));
     }
 }
 
 void UserScrollNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("direction: $direction"));
+    description->add(__s("direction: %s)"));
 }
 
 bool defaultScrollNotificationPredicate(ScrollNotification notification) {

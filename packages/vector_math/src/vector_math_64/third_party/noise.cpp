@@ -2,7 +2,7 @@
 SimplexNoiseCls::SimplexNoiseCls(Random r) {
     {
         r |= math->make<RandomCls>();
-        Unknown p = <int>generate(256, [=] () {
+        Unknown p = <int>generate(256, [=] (Unknown  _) {
     r!->nextInt(256);
 }, false);
         _perm = <int>generate(p->length * 2, [=] (int i) {

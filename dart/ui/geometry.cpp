@@ -39,7 +39,7 @@ int OffsetBaseCls::hashCode() {
 }
 
 String OffsetBaseCls::toString() {
-    return __s("OffsetBase(${_dx.toStringAsFixed(1)}, ${_dy.toStringAsFixed(1)})");
+    return __s("OffsetBase(%s$%s;");
 }
 
 OffsetCls::OffsetCls(double dx, double dy) : OffsetBase(dx, dy) {
@@ -135,7 +135,7 @@ int OffsetCls::hashCode() {
 }
 
 String OffsetCls::toString() {
-    return __s("Offset(${dx.toStringAsFixed(1)}, ${dy.toStringAsFixed(1)})");
+    return __s("Offset(%s$%s;");
 }
 
 SizeCls::SizeCls(double width, double height) : OffsetBase(width, height) {
@@ -284,7 +284,7 @@ int SizeCls::hashCode() {
 }
 
 String SizeCls::toString() {
-    return __s("Size(${width.toStringAsFixed(1)}, ${height.toStringAsFixed(1)})");
+    return __s("Size(%s$%s;");
 }
 
 void RectCls::fromLTRB(double left, double top, double right, double bottom)
@@ -440,7 +440,7 @@ int RectCls::hashCode() {
 }
 
 String RectCls::toString() {
-    return __s("Rect.fromLTRB(${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)})");
+    return __s("Rect.fromLTRB(%s$%s$%s$%s;");
 }
 
 Float32List RectCls::_getValue32() {
@@ -515,7 +515,7 @@ int RadiusCls::hashCode() {
 }
 
 String RadiusCls::toString() {
-    return x == y? __s("Radius.circular(${x.toStringAsFixed(1)})") : __s("Radius.elliptical(${x.toStringAsFixed(1)}, ${y.toStringAsFixed(1)})");
+    return x == y? __s("Radius.circular(%s:") : __s("Radius.elliptical(%s$%s;");
 }
 
 void RRectCls::fromLTRBXY(double left, double top, double right, double bottom, double radiusX, double radiusY)
@@ -730,14 +730,14 @@ int RRectCls::hashCode() {
 }
 
 String RRectCls::toString() {
-    String rect = __s("${left.toStringAsFixed(1)}, ${top.toStringAsFixed(1)}, ${right.toStringAsFixed(1)}, ${bottom.toStringAsFixed(1)}");
+    String rect = __s("%s$%s$%s$%s;");
     if (tlRadius() == trRadius() && trRadius() == brRadius() && brRadius() == blRadius()) {
         if (tlRadius()->x == tlRadius()->y) {
-            return __s("RRect.fromLTRBR($rect, ${tlRadius.x.toStringAsFixed(1)})");
+            return __s("RRect.fromLTRBR(%s$%s;");
         }
-        return __s("RRect.fromLTRBXY($rect, ${tlRadius.x.toStringAsFixed(1)}, ${tlRadius.y.toStringAsFixed(1)})");
+        return __s("RRect.fromLTRBXY(%s$%s$%s;");
     }
-    return __s("RRect.fromLTRBAndCorners($rect, topLeft: $tlRadius, topRight: $trRadius, bottomRight: $brRadius, bottomLeft: $blRadius)");
+    return __s("RRect.fromLTRBAndCorners(%stopLeft: $%stopRight: $%sbottomRight: $%sbottomLeft: $%s);");
 }
 
 void RRectCls::_raw(double blRadiusX, double blRadiusY, double bottom, double brRadiusX, double brRadiusY, double left, double right, double tlRadiusX, double tlRadiusY, double top, double trRadiusX, double trRadiusY)

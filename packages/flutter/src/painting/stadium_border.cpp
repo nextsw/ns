@@ -74,7 +74,7 @@ int StadiumBorderCls::hashCode() {
 }
 
 String StadiumBorderCls::toString() {
-    return __s("${objectRuntimeType(this, 'StadiumBorder')}($side)");
+    return __s("%s$%s;");
 }
 
 EdgeInsetsGeometry _StadiumToCircleBorderCls::dimensions() {
@@ -141,7 +141,7 @@ int _StadiumToCircleBorderCls::hashCode() {
 }
 
 String _StadiumToCircleBorderCls::toString() {
-    return __s("StadiumBorder($side, ${(circleness * 100).toStringAsFixed(1)}% of the way to being a CircleBorder)");
+    return __s("StadiumBorder(%s$%sof the way to being a CircleBorder);");
 }
 
 _StadiumToCircleBorderCls::_StadiumToCircleBorderCls(double circleness, BorderSide side) {
@@ -235,7 +235,7 @@ int _StadiumToRoundedRectangleBorderCls::hashCode() {
 }
 
 String _StadiumToRoundedRectangleBorderCls::toString() {
-    return __s("StadiumBorder($side, $borderRadius, ${(rectness * 100).toStringAsFixed(1)}% of the way to being a RoundedRectangleBorder)");
+    return __s("StadiumBorder(%s$%s$%sRoundedRectangleBorder);");
 }
 
 _StadiumToRoundedRectangleBorderCls::_StadiumToRoundedRectangleBorderCls(BorderRadius borderRadius, double rectness, BorderSide side) {

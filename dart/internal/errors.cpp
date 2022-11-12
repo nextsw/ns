@@ -13,10 +13,10 @@ void LateErrorCls::localAI(String localName)
 
 String LateErrorCls::toString() {
     auto message = _message;
-    return (message != nullptr)? __s("LateInitializationError: $message") : __s("LateInitializationError");
+    return (message != nullptr)? __s("LateInitializationError: %s:") : __s("LateInitializationError");
 }
 
 String ReachabilityErrorCls::toString() {
     auto message = _message;
-    return (message != nullptr)? __s("ReachabilityError: $message") : __s("ReachabilityError");
+    return (message != nullptr)? __s("ReachabilityError: %s:") : __s("ReachabilityError");
 }

@@ -163,10 +163,10 @@ template<typename S>
 void RestorationMixinCls<S>::registerForRestoration(RestorableProperty<Object> property, String restorationId) {
     assert(property != nullptr);
     assert(restorationId != nullptr);
-    assert(property->_restorationId == nullptr || (_debugDoingRestore() && property->_restorationId == restorationId), __s("Property is already registered under ${property._restorationId}."));
+    assert(property->_restorationId == nullptr || (_debugDoingRestore() && property->_restorationId == restorationId), __s("Property is already registered under %s,"));
     assert(_debugDoingRestore() || !_properties->keys()->map([=] (RestorableProperty<Object> r) {
         r->_restorationId;
-    })->contains(restorationId), __s(""$restorationId" is already registered to another property."));
+    })->contains(restorationId), __s(""%s,"));
     bool hasSerializedValue = bucket()?->contains(restorationId) | false;
     Object initialValue = hasSerializedValue? property->fromPrimitives(bucket()!-><Object>read(restorationId)) : property->createDefaultValue();
     if (!property->isRegistered()) {
@@ -270,7 +270,7 @@ void RestorationMixinCls<S>::_doRestore(RestorationBucket oldBucket) {
     _firstRestorePending = false;
     assert([=] () {
         if (_debugPropertiesWaitingForReregistration!->isNotEmpty()) {
-                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        for (auto _x1 : _debugPropertiesWaitingForReregistration!->map([=] (RestorableProperty<Object> property) {                        make<ErrorDescriptionCls>(__s(" * ${property._restorationId}"));                    })) {        {            list1.add(_x1);        }throw FlutterErrorCls->fromParts(list1);
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        for (auto _x1 : _debugPropertiesWaitingForReregistration!->map([=] (RestorableProperty<Object> property) {                        make<ErrorDescriptionCls>(__s(" * %s,"));                    })) {        {            list1.add(_x1);        }throw FlutterErrorCls->fromParts(list1);
         }
         _debugPropertiesWaitingForReregistration = nullptr;
         return true;

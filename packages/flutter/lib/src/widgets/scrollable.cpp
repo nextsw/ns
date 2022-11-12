@@ -769,7 +769,7 @@ void ScrollActionCls::invoke(ScrollIntent intent) {
         }
         state = ScrollableCls->of(primaryScrollController->position()->context->notificationContext()!);
     }
-    assert(state != nullptr, __s("$ScrollAction was invoked on a context that has no scrollable parent"));
+    assert(state != nullptr, __s("%s)"));
     assert(state!->position()->hasPixels(), __s("Scrollable must be laid out before it can be scrolled via a ScrollAction"));
     assert(state!->position()->viewportDimension() != nullptr);
     assert(state!->position()->maxScrollExtent() != nullptr);

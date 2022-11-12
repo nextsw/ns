@@ -66,5 +66,5 @@ bool FixedScrollMetricsCls::hasViewportDimension() {
 }
 
 String FixedScrollMetricsCls::toString() {
-    return __s("${objectRuntimeType(this, 'FixedScrollMetrics')}(${extentBefore.toStringAsFixed(1)}..[${extentInside.toStringAsFixed(1)}]..${extentAfter.toStringAsFixed(1)})");
+    return __s("%s$%s$%s$%s;");
 }

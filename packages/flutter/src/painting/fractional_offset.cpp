@@ -73,5 +73,5 @@ FractionalOffset FractionalOffsetCls::lerp(FractionalOffset a, FractionalOffset 
 }
 
 String FractionalOffsetCls::toString() {
-    return __s("FractionalOffset(${dx.toStringAsFixed(1)}, ${dy.toStringAsFixed(1)})");
+    return __s("FractionalOffset(%s$%s;");
 }

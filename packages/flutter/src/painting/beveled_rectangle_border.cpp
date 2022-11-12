@@ -64,7 +64,7 @@ int BeveledRectangleBorderCls::hashCode() {
 }
 
 String BeveledRectangleBorderCls::toString() {
-    return __s("${objectRuntimeType(this, 'BeveledRectangleBorder')}($side, $borderRadius)");
+    return __s("%s$%s$%s;");
 }
 
 Path BeveledRectangleBorderCls::_getPath(RRect rrect) {

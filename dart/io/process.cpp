@@ -50,12 +50,12 @@ Stream<ProcessSignal> ProcessSignalCls::watch() {
 String SignalExceptionCls::toString() {
     auto msg = __s("");
     if (osError != nullptr) {
-        msg = __s(", osError: $osError");
+        msg = __s(", osError: %s;");
     }
-    return __s("SignalException: $message$msg");
+    return __s("SignalException: %s$%s;");
 }
 
 String ProcessExceptionCls::toString() {
     auto args = arguments->join(__s(" "));
-    return __s("ProcessException: $message\n  Command: $executable $args");
+    return __s("ProcessException: %s$%s$%s;");
 }

@@ -21,17 +21,17 @@ int SliverChildDelegateCls::findIndexByKey(Key key) {
 String SliverChildDelegateCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return __s("${describeIdentity(this)}(${description.join(", ")})");
+    return __s("%s$%s;");
 }
 
 void SliverChildDelegateCls::debugFillDescription(List<String> description) {
     try {
         int children = estimatedChildCount();
         if (children != nullptr) {
-            description->add(__s("estimated child count: $children"));
+            description->add(__s("estimated child count: %s)"));
         }
     } catch (Unknown e) {
-        description->add(__s("estimated child count: EXCEPTION (${e.runtimeType})"));
+        description->add(__s("estimated child count: EXCEPTION (%s)"));
     };
 }
 
@@ -136,7 +136,7 @@ Widget SliverChildListDelegateCls::build(BuildContext context, int index) {
     }
     Widget child = children[index];
     Key key = child->key != nullptr? make<_SaltedValueKeyCls>(child->key!) : nullptr;
-    assert(child != nullptr, __s("The sliver's children must not contain null values, but a null value was found at index $index"));
+    assert(child != nullptr, __s("The sliver's children must not contain null values, but a null value was found at index %s,"));
     if (addRepaintBoundaries) {
         child = make<RepaintBoundaryCls>(child);
     }
@@ -488,7 +488,7 @@ int SliverMultiBoxAdaptorElementCls::childCount() {
                 if ( < max) {
                 hi = max;
             } else {
-                throw make<FlutterErrorCls>(__s("Could not find the number of children in ${adaptorWidget.delegate}.\nThe childCount getter was called (implying that the delegate's builder returned null for a positive index), but even building the child with index $hi (the maximum possible integer) did not return null. Consider implementing childCount to avoid the cost of searching for the final child."));
+                throw make<FlutterErrorCls>(__s("Could not find the number of children in %sThe childCount getter was called (implying that the delegate's builder returned null for a positive index), but even building the child with index $%spossible integer) did not return null. Consider implementing childCount to avoid the cost of searching for the final child.,"));
             }
 ;
             }        }

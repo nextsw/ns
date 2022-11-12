@@ -132,7 +132,8 @@
 #include "src/widgets/widget_span.hpp"
 #include "src/widgets/will_pop_scope.hpp"
 
-#include <dart/core/core.hpp>
+
+String toString();
 
 
 

@@ -119,7 +119,7 @@ int DefaultPlatformMenuDelegateCls::_getId(MenuItem item) {
 
 Future<void> DefaultPlatformMenuDelegateCls::_methodCallHandler(MethodCall call) {
     int id = as<int>(call->arguments);
-    assert(_idMap->containsKey(id), __s("Received a menu ${call.method} for a menu item with an ID that was not recognized: $id"));
+    assert(_idMap->containsKey(id), __s("Received a menu %s$%s,"));
     if (!_idMap->containsKey(id)) {
         return;
     }
@@ -159,13 +159,13 @@ List<DiagnosticsNode> PlatformMenuBarCls::debugDescribeChildren() {
 
 void _PlatformMenuBarStateCls::initState() {
     super->initState();
-    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugLockDelegate(context()), __s("More than one active $PlatformMenuBar detected. Only one active platform-rendered menu bar is allowed at a time."));
+    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugLockDelegate(context()), __s("More than one active %splatform-rendered menu bar is allowed at a time.)"));
     WidgetsBindingCls::instance->platformMenuDelegate->clearMenus();
     _updateMenu();
 }
 
 void _PlatformMenuBarStateCls::dispose() {
-    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugUnlockDelegate(context()), __s("tried to unlock the $DefaultPlatformMenuDelegate more than once with context $context."));
+    assert(WidgetsBindingCls::instance->platformMenuDelegate->debugUnlockDelegate(context()), __s("tried to unlock the %s$%s)"));
     WidgetsBindingCls::instance->platformMenuDelegate->clearMenus();
     super->dispose();
 }
@@ -269,7 +269,7 @@ Map<String, Object> PlatformMenuItemCls::serialize(PlatformMenuItem item, Platfo
 }
 
 String PlatformMenuItemCls::toStringShort() {
-    return __s("${describeIdentity(this)}($label)");
+    return __s("%s$%s;");
 }
 
 void PlatformMenuItemCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -289,7 +289,7 @@ bool PlatformProvidedMenuItemCls::hasMenu(PlatformProvidedMenuItemType menu) {
 Iterable<Map<String, Object>> PlatformProvidedMenuItemCls::toChannelRepresentation(PlatformMenuDelegate delegate, MenuItemSerializableIdGenerator getId) {
     assert([=] () {
         if (!hasMenu(type)) {
-            throw make<ArgumentErrorCls>(__s("Platform ${defaultTargetPlatform.name} has no platform provided menu for $type. Call PlatformProvidedMenuItem.hasMenu to determine this before instantiating one."));
+            throw make<ArgumentErrorCls>(__s("Platform %s$%sinstantiating one.,"));
         }
         return true;
     }());

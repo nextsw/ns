@@ -26,7 +26,7 @@ enum ImageRepeat{
 
 class DecorationImageCls : public ObjectCls {
 public:
-    ImageProvider image;
+    ImageProvider<any> image;
 
     ImageErrorListener onError;
 
@@ -53,7 +53,7 @@ public:
     bool isAntiAlias;
 
 
-     DecorationImageCls(AlignmentGeometry alignment, Rect centerSlice, ColorFilter colorFilter, FilterQuality filterQuality, BoxFit fit, ImageProvider image, bool invertColors, bool isAntiAlias, bool matchTextDirection, ImageErrorListener onError, double opacity, ImageRepeat repeat, double scale);
+     DecorationImageCls(AlignmentGeometry alignment, Rect centerSlice, ColorFilter colorFilter, FilterQuality filterQuality, BoxFit fit, ImageProvider<any> image, bool invertColors, bool isAntiAlias, bool matchTextDirection, ImageErrorListener onError, double opacity, ImageRepeat repeat, double scale);
 
     virtual DecorationImagePainter createPainter(VoidCallback onChanged);
 

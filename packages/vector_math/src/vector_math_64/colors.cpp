@@ -38,7 +38,7 @@ void ColorsCls::fromHexString(String value, Vector4 result) {
             return;
         }
     }
-    throw make<FormatExceptionCls>(__s("Could not parse hex color $value"));
+    throw make<FormatExceptionCls>(__s("Could not parse hex color %s)"));
 }
 
 String ColorsCls::toHexString(Vector4 input, bool alpha, bool short) {

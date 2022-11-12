@@ -16,9 +16,9 @@ Uri ServiceProtocolInfoCls::serverWebSocketUri() {
 
 String ServiceProtocolInfoCls::toString() {
     if (serverUri != nullptr) {
-        return __s("Dart VM Service Protocol v$majorVersion.$minorVersion listening on $serverUri");
+        return __s("Dart VM Service Protocol v%s$%slistening on $%s;");
     } else {
-        return __s("Dart VM Service Protocol v$majorVersion.$minorVersion");
+        return __s("Dart VM Service Protocol v%s$%s;");
     }
 }
 

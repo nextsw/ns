@@ -99,7 +99,7 @@ int SliverConstraintsCls::hashCode() {
 
 String SliverConstraintsCls::toString() {
     List<String> list1 = make<ListCls<>>();list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);if (overlap != 0.0) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);list1.add(ArrayItem);List<String> properties = list1;
-    return __s("SliverConstraints(${properties.join(', ')})");
+    return __s("SliverConstraints(%s;");
 }
 
 SliverGeometryCls::SliverGeometryCls(double cacheExtent, bool hasVisualOverflow, double hitTestExtent, double layoutExtent, double maxPaintExtent, double maxScrollObstructionExtent, double paintExtent, double paintOrigin, double scrollExtent, double scrollOffsetCorrection, bool visible) {
@@ -202,11 +202,11 @@ SliverHitTestEntryCls::SliverHitTestEntryCls(T target, double crossAxisPosition,
 }
 
 String SliverHitTestEntryCls::toString() {
-    return __s("${target.runtimeType}@(mainAxis: $mainAxisPosition, crossAxis: $crossAxisPosition)");
+    return __s("%s$%s$%s;");
 }
 
 String SliverLogicalParentDataCls::toString() {
-    return __s("layoutOffset=${layoutOffset == null ? 'None': layoutOffset!.toStringAsFixed(1)}");
+    return __s("layoutOffset=%s;");
 }
 
 void SliverPhysicalParentDataCls::applyPaintTransform(Matrix4 transform) {
@@ -214,7 +214,7 @@ void SliverPhysicalParentDataCls::applyPaintTransform(Matrix4 transform) {
 }
 
 String SliverPhysicalParentDataCls::toString() {
-    return __s("paintOffset=$paintOffset");
+    return __s("paintOffset=%s;");
 }
 
 List<DiagnosticsNode> _debugCompareFloats(String labelA, double valueA, String labelB, double valueB) {
@@ -324,7 +324,7 @@ double RenderSliverCls::calculateCacheOffset(SliverConstraints constraints, doub
 
 double RenderSliverCls::childMainAxisPosition(RenderObject child) {
     assert([=] () {
-        throw make<FlutterErrorCls>(__s("${objectRuntimeType(this, 'RenderSliver')} does not implement childPosition."));
+        throw make<FlutterErrorCls>(__s("%s)"));
     }());
     return 0.0;
 }
@@ -340,7 +340,7 @@ double RenderSliverCls::childScrollOffset(RenderObject child) {
 
 void RenderSliverCls::applyPaintTransform(RenderObject child, Matrix4 transform) {
     assert([=] () {
-        throw make<FlutterErrorCls>(__s("${objectRuntimeType(this, 'RenderSliver')} does not implement applyPaintTransform."));
+        throw make<FlutterErrorCls>(__s("%s)"));
     }());
 }
 

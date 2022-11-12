@@ -63,7 +63,7 @@ SliverAnimatedListState SliverAnimatedListCls::of(BuildContext context) {
     SliverAnimatedListState result = context-><SliverAnimatedListState>findAncestorStateOfType();
     assert([=] () {
         if (result == nullptr) {
-            throw make<FlutterErrorCls>(__s("SliverAnimatedList.of() called with a context that does not contain a SliverAnimatedList.\nNo SliverAnimatedListState ancestor could be found starting from the context that was passed to SliverAnimatedListState.of(). This can happen when the context provided is from the same StatefulWidget that built the AnimatedList. Please see the SliverAnimatedList documentation for examples of how to refer to an AnimatedListState object: https://api.flutter.dev/flutter/widgets/SliverAnimatedListState-class.html\nThe context used was:\n  $context"));
+            throw make<FlutterErrorCls>(__s("SliverAnimatedList.of() called with a context that does not contain a SliverAnimatedList.\nNo SliverAnimatedListState ancestor could be found starting from the context that was passed to SliverAnimatedListState.of(). This can happen when the context provided is from the same StatefulWidget that built the AnimatedList. Please see the SliverAnimatedList documentation for examples of how to refer to an AnimatedListState object: https://api.flutter.dev/flutter/widgets/SliverAnimatedListState-class.html\nThe context used was:\n  %s,"));
         }
         return true;
     }());
@@ -108,7 +108,7 @@ void SliverAnimatedListStateCls::insertItem(int index, Duration duration) {
             auto _c1 = _incomingItems;    _c1.auto _c2 = add(incomingItem);    _c2.sort();    _c2;_c1;
         _itemsCount += 1;
     });
-    controller->forward()-><void>then([=] () {
+    controller->forward()-><void>then([=] (Unknown  _) {
         _removeActiveItemAt(_incomingItems, incomingItem->itemIndex)!->controller!->dispose();
     });
 }

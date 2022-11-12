@@ -125,7 +125,7 @@ void _BoxDecorationPainterCls::paint(Canvas canvas, Offset offset, ImageConfigur
 }
 
 String _BoxDecorationPainterCls::toString() {
-    return __s("BoxPainter for $_decoration");
+    return __s("BoxPainter for %s;");
 }
 
 _BoxDecorationPainterCls::_BoxDecorationPainterCls(BoxDecoration _decoration, VoidCallback onChanged) : BoxPainter(onChanged) {

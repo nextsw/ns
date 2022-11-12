@@ -1,5 +1,5 @@
 #include "fade_in_image.hpp"
-FadeInImageCls::FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, ImageProvider image, ImageErrorWidgetBuilder imageErrorBuilder, String imageSemanticLabel, Key key, bool matchTextDirection, ImageProvider placeholder, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, ImageRepeat repeat, double width) {
+FadeInImageCls::FadeInImageCls(AlignmentGeometry alignment, bool excludeFromSemantics, Curve fadeInCurve, Duration fadeInDuration, Curve fadeOutCurve, Duration fadeOutDuration, BoxFit fit, double height, ImageProvider<any> image, ImageErrorWidgetBuilder imageErrorBuilder, String imageSemanticLabel, Key key, bool matchTextDirection, ImageProvider<any> placeholder, ImageErrorWidgetBuilder placeholderErrorBuilder, BoxFit placeholderFit, ImageRepeat repeat, double width) {
     {
         assert(placeholder != nullptr);
         assert(image != nullptr);
@@ -34,7 +34,7 @@ Widget _FadeInImageStateCls::build(BuildContext context) {
     return result;
 }
 
-Image _FadeInImageStateCls::_image(ImageErrorWidgetBuilder errorBuilder, BoxFit fit, ImageFrameBuilder frameBuilder, ImageProvider image, Animation<double> opacity) {
+Image _FadeInImageStateCls::_image(ImageErrorWidgetBuilder errorBuilder, BoxFit fit, ImageFrameBuilder frameBuilder, ImageProvider<any> image, Animation<double> opacity) {
     assert(image != nullptr);
     return make<ImageCls>(image, errorBuilder, frameBuilder, opacity, widget()->width, widget()->height, fit, widget()->alignment, widget()->repeat, widget()->matchTextDirection, true, true);
 }

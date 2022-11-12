@@ -42,7 +42,7 @@ bool FrictionSimulationCls::isDone(double time) {
 }
 
 String FrictionSimulationCls::toString() {
-    return __s("${objectRuntimeType(this, 'FrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)})");
+    return __s("%s$%s$%s$%s;");
 }
 
 double FrictionSimulationCls::_dragFor(double startPosition, double endPosition, double startVelocity, double endVelocity) {
@@ -64,5 +64,5 @@ bool BoundedFrictionSimulationCls::isDone(double time) {
 }
 
 String BoundedFrictionSimulationCls::toString() {
-    return __s("${objectRuntimeType(this, 'BoundedFrictionSimulation')}(cₓ: ${_drag.toStringAsFixed(1)}, x₀: ${_x.toStringAsFixed(1)}, dx₀: ${_v.toStringAsFixed(1)}, x: ${_minX.toStringAsFixed(1)}..${_maxX.toStringAsFixed(1)})");
+    return __s("%s$%s$%s$%s$%s$%s;");
 }

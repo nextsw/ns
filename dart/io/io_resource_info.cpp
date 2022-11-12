@@ -13,7 +13,7 @@ int _IOResourceInfoCls::getNextID() {
 
 _IOResourceInfoCls::_IOResourceInfoCls(String type) {
     {
-            map1.set(__s("type"), __s("@$type"));    map1.set(__s("id"), id);    map1.set(__s("name"), name());id = _IOResourceInfoCls->getNextID();
+            map1.set(__s("type"), __s("@%s,"));    map1.set(__s("id"), id);    map1.set(__s("name"), name());id = _IOResourceInfoCls->getNextID();
     }
 }
 

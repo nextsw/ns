@@ -29,7 +29,7 @@ void PaintingContextCls::updateLayerProperties(RenderObject child) {
         return true;
     }());
     OffsetLayer updatedLayer = child->updateCompositedLayer(childLayer);
-    assert(identical(updatedLayer, childLayer), __s("$child created a new layer instance $updatedLayer instead of reusing the existing layer $childLayer. See the documentation of RenderObject.updateCompositedLayer for more information on how to correctly implement this method."));
+    assert(identical(updatedLayer, childLayer), __s("%s$%sexisting layer $%sfor more information on how to correctly implement this method.)"));
     assert(debugOldOffset == updatedLayer->offset());
     child->_needsCompositedLayerUpdate = false;
 }
@@ -220,7 +220,7 @@ OpacityLayer PaintingContextCls::pushOpacity(Offset offset, int alpha, PaintingC
 }
 
 String PaintingContextCls::toString() {
-    return __s("${objectRuntimeType(this, 'PaintingContext')}#$hashCode(layer: $_containerLayer, canvas bounds: $estimatedBounds)");
+    return __s("%s$%s$%s$%s;");
 }
 
 void PaintingContextCls::_repaintCompositedChild(RenderObject child, PaintingContext childContext, bool debugAlsoPaintedParent) {
@@ -244,7 +244,7 @@ void PaintingContextCls::_repaintCompositedChild(RenderObject child, PaintingCon
         }());
         childLayer->removeAllChildren();
         OffsetLayer updatedLayer = child->updateCompositedLayer(childLayer);
-        assert(identical(updatedLayer, childLayer), __s("$child created a new layer instance $updatedLayer instead of reusing the existing layer $childLayer. See the documentation of RenderObject.updateCompositedLayer for more information on how to correctly implement this method."));
+        assert(identical(updatedLayer, childLayer), __s("%s$%sexisting layer $%sfor more information on how to correctly implement this method.)"));
         assert(debugOldOffset == updatedLayer->offset());
     }
     child->_needsCompositedLayerUpdate = false;
@@ -351,7 +351,7 @@ void PipelineOwnerCls::flushLayout() {
         Map<String, String> debugTimelineArguments;
         assert([=] () {
             if (debugEnhanceLayoutTimelineArguments) {
-                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __s("${_nodesNeedingLayout.length}"));            map1.set(__s("dirty list"), __s("$_nodesNeedingLayout"));debugTimelineArguments = list1;
+                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __s("%s,"));            map1.set(__s("dirty list"), __s("%s,"));debugTimelineArguments = list1;
             }
             return true;
         }());
@@ -423,7 +423,7 @@ void PipelineOwnerCls::flushPaint() {
         Map<String, String> debugTimelineArguments;
         assert([=] () {
             if (debugEnhancePaintTimelineArguments) {
-                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __s("${_nodesNeedingPaint.length}"));            map1.set(__s("dirty list"), __s("$_nodesNeedingPaint"));debugTimelineArguments = list1;
+                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __s("%s,"));            map1.set(__s("dirty list"), __s("%s,"));debugTimelineArguments = list1;
             }
             return true;
         }());
@@ -692,7 +692,7 @@ void RenderObjectCls::markNeedsLayout() {
         if (owner() != nullptr) {
             assert([=] () {
                 if (debugPrintMarkNeedsLayoutStacks) {
-                    debugPrintStack(__s("markNeedsLayout() called for $this"));
+                    debugPrintStack(__s("markNeedsLayout() called for %s)"));
                 }
                 return true;
             }());
@@ -744,7 +744,7 @@ void RenderObjectCls::layout(Constraints constraints, bool parentUsesSize) {
             }
             return true;
         }());
-        TimelineCls->startSync(__s("$runtimeType"), debugTimelineArguments);
+        TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
     }
     assert(constraints != nullptr);
     assert(constraints->debugAssertIsValid(true, [=] () {
@@ -804,7 +804,7 @@ void RenderObjectCls::layout(Constraints constraints, bool parentUsesSize) {
     assert([=] () {
         _debugMutationsLocked = true;
         if (debugPrintLayouts) {
-            debugPrint(__s("Laying out (${sizedByParent ? "with separate resize" : "with resize allowed"}) $this"));
+            debugPrint(__s("Laying out (%s"));
         }
         return true;
     }());
@@ -976,7 +976,7 @@ void RenderObjectCls::markNeedsPaint() {
     if (isRepaintBoundary() && _wasRepaintBoundary) {
         assert([=] () {
             if (debugPrintMarkNeedsPaintStacks) {
-                debugPrintStack(__s("markNeedsPaint() called for $this"));
+                debugPrintStack(__s("markNeedsPaint() called for %s)"));
             }
             return true;
         }());
@@ -993,7 +993,7 @@ void RenderObjectCls::markNeedsPaint() {
     } else {
         assert([=] () {
             if (debugPrintMarkNeedsPaintStacks) {
-                debugPrintStack(__s("markNeedsPaint() called for $this (root of render tree)"));
+                debugPrintStack(__s("markNeedsPaint() called for %s)"));
             }
             return true;
         }());
@@ -1199,7 +1199,7 @@ String RenderObjectCls::toStringShort() {
                 target = as<RenderObject>(target->parent());
                 count += 1;
             }
-            header += __s(" relayoutBoundary=up$count");
+            header += __s(" relayoutBoundary=up%s;");
         }
         if (_needsLayout) {
             header += __s(" NEEDS-LAYOUT");
@@ -1279,7 +1279,7 @@ DiagnosticsNode RenderObjectCls::describeForError(String name, DiagnosticsTreeSt
 }
 
 void RenderObjectCls::_debugReportException(String method, Object exception, StackTrace stack) {
-    List<DiagnosticsNode> list1 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("rendering library"), make<ErrorDescriptionCls>(__s("during $method()")), [=] () {
+    List<DiagnosticsNode> list1 = make<ListCls<>>();if (kDebugMode && debugCreator != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("rendering library"), make<ErrorDescriptionCls>(__s("during %s)")), [=] () {
         list1;
     }));
 }
@@ -1312,7 +1312,7 @@ bool RenderObjectCls::_debugCanPerformMutations() {
         }
         RenderObject debugActiveLayout = RenderObjectCls::debugActiveLayout!;
         String culpritMethodName = debugActiveLayout->debugDoingThisLayout()? __s("performLayout") : __s("performResize");
-        String culpritFullMethodName = __s("${debugActiveLayout.runtimeType}.$culpritMethodName");
+        String culpritFullMethodName = __s("%s$%s;");
         result = false;
         if (activeLayoutRoot == nullptr) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
@@ -1320,9 +1320,9 @@ bool RenderObjectCls::_debugCanPerformMutations() {
         if (activeLayoutRoot == this) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
         }
-        ErrorSummary summary = make<ErrorSummaryCls>(__s("A $runtimeType was mutated in $culpritFullMethodName."));
+        ErrorSummary summary = make<ErrorSummaryCls>(__s("A %s$%s)"));
         bool isMutatedByAncestor = activeLayoutRoot == debugActiveLayout;
-        String description = isMutatedByAncestor? __s("A RenderObject must not mutate its descendants in its $culpritMethodName method.") : __s("A RenderObject must not mutate another RenderObject from a different render subtree in its $culpritMethodName method.");
+        String description = isMutatedByAncestor? __s("A RenderObject must not mutate its descendants in its %s:") : __s("A RenderObject must not mutate another RenderObject from a different render subtree in its %s;");
             List<DiagnosticsNode> list1 = make<ListCls<>>();    list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);    if (!isMutatedByAncestor) {        list1.add(ArrayItem);    }list1.add(ArrayItem);throw FlutterErrorCls->fromParts(list1);
     }());
     return result;
@@ -1384,7 +1384,7 @@ void RenderObjectCls::_layoutWithoutResize() {
         debugPreviousActiveLayout = _debugActiveLayout;
         _debugActiveLayout = this;
         if (debugPrintLayouts) {
-            debugPrint(__s("Laying out (without resize) $this"));
+            debugPrint(__s("Laying out (without resize) %s)"));
         }
         return true;
     }());
@@ -1475,7 +1475,7 @@ void RenderObjectCls::_paintWithContext(PaintingContext context, Offset offset) 
             }
             return true;
         }());
-        TimelineCls->startSync(__s("$runtimeType"), debugTimelineArguments);
+        TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
     }
     assert([=] () {
         if (_needsCompositingBitsUpdate) {
@@ -1548,7 +1548,7 @@ void RenderObjectCls::_updateSemantics() {
 
 _SemanticsFragment RenderObjectCls::_getSemanticsForParent(bool mergeIntoParent) {
     assert(mergeIntoParent != nullptr);
-    assert(!_needsLayout, __s("Updated layout information required for $this to calculate semantics."));
+    assert(!_needsLayout, __s("Updated layout information required for %s)"));
     SemanticsConfiguration config = _semanticsConfiguration();
     bool dropSemanticsOfPreviousSiblings = config->isBlockingSemanticsOfPreviouslyPaintedNodes;
     bool producesForkingFragment = !config->hasBeenAnnotated() && !config->isSemanticBoundary();
@@ -1831,7 +1831,7 @@ List<DiagnosticsNode> ContainerRenderObjectMixinCls<ChildType, ParentDataType>::
         ChildType child = firstChild()!;
         int count = 1;
         while (true) {
-            children->add(child->toDiagnosticsNode(__s("child $count")));
+            children->add(child->toDiagnosticsNode(__s("child %s)")));
             if (child == lastChild()) {
                 break;
             }

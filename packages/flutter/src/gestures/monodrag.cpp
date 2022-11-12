@@ -196,7 +196,7 @@ void DragGestureRecognizerCls::_checkEnd(int pointer) {
         Velocity velocity = make<VelocityCls>(estimate->pixelsPerSecond)->clampMagnitude(minFlingVelocity | kMinFlingVelocity, maxFlingVelocity | kMaxFlingVelocity);
         details = make<DragEndDetailsCls>(velocity, _getPrimaryValueFromOffset(velocity->pixelsPerSecond));
         debugReport = [=] () {
-            return __s("$estimate; fling at $velocity.");
+            return __s("%s$%s;");
         };
     } else {
         details = make<DragEndDetailsCls>(0.0);
@@ -204,7 +204,7 @@ void DragGestureRecognizerCls::_checkEnd(int pointer) {
             if (estimate == nullptr) {
                 return __s("Could not estimate velocity.");
             }
-            return __s("$estimate; judged to not be a fling.");
+            return __s("%s;");
         };
     }
     <void>invokeCallback(__s("onEnd"), [=] () {

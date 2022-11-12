@@ -65,7 +65,7 @@ void Vector3Cls::splat(double arg) {
 }
 
 String Vector3Cls::toString() {
-    return __s("[${storage[0]},${storage[1]},${storage[2]}]");
+    return __s("[%s$%s$%s;");
 }
 
 bool Vector3Cls::==(Object other) {
