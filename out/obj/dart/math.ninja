@@ -1,0 +1,21 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/math
+
+build obj/dart/math/dart/math.math.o: cxx ../dart/math/math.cpp
+  source_file_part = math.cpp
+  source_name_part = math
+build obj/dart/math/dart/math.random.o: cxx ../dart/math/random.cpp
+  source_file_part = random.cpp
+  source_name_part = random
+build obj/dart/math/dart/math.point.o: cxx ../dart/math/point.cpp
+  source_file_part = point.cpp
+  source_name_part = point
+build obj/dart/math/dart/math.rectangle.o: cxx ../dart/math/rectangle.cpp
+  source_file_part = rectangle.cpp
+  source_name_part = rectangle
+
+build obj/dart/math.stamp: stamp obj/dart/math/dart/math.math.o obj/dart/math/dart/math.random.o obj/dart/math/dart/math.point.o obj/dart/math/dart/math.rectangle.o

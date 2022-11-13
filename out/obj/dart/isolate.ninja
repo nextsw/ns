@@ -1,0 +1,15 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/isolate
+
+build obj/dart/isolate/dart/isolate.capability.o: cxx ../dart/isolate/capability.cpp
+  source_file_part = capability.cpp
+  source_name_part = capability
+build obj/dart/isolate/dart/isolate.isolate.o: cxx ../dart/isolate/isolate.cpp
+  source_file_part = isolate.cpp
+  source_name_part = isolate
+
+build obj/dart/isolate.stamp: stamp obj/dart/isolate/dart/isolate.capability.o obj/dart/isolate/dart/isolate.isolate.o

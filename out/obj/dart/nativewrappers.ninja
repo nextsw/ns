@@ -1,0 +1,12 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/nativewrappers
+
+build obj/dart/nativewrappers/dart/nativewrappers.nativewrappers.o: cxx ../dart/nativewrappers/nativewrappers.cpp
+  source_file_part = nativewrappers.cpp
+  source_name_part = nativewrappers
+
+build obj/dart/nativewrappers.stamp: stamp obj/dart/nativewrappers/dart/nativewrappers.nativewrappers.o

@@ -28,4 +28,23 @@ rule cxx
   depfile = ${out}.d
   deps = gcc
 
+subninja obj/dart/async.ninja
+subninja obj/dart/collection.ninja
+subninja obj/dart/convert.ninja
+subninja obj/dart/core.ninja
+subninja obj/dart/developer.ninja
+subninja obj/dart/http.ninja
+subninja obj/dart/internal.ninja
+subninja obj/dart/io.ninja
+subninja obj/dart/isolate.ninja
+subninja obj/dart/math.ninja
+subninja obj/dart/nativewrappers.ninja
+subninja obj/dart/spirv.ninja
+subninja obj/dart/typed_data.ninja
+subninja obj/dart/ui.ninja
 subninja obj/ns.ninja
+subninja obj/packages/characters.ninja
+subninja obj/packages/collection.ninja
+subninja obj/packages/flutter.ninja
+subninja obj/packages/meta.ninja
+subninja obj/packages/vector_math.ninja

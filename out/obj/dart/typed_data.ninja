@@ -1,0 +1,15 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/typed_data
+
+build obj/dart/typed_data/dart/typed_data.typed_data.o: cxx ../dart/typed_data/typed_data.cpp
+  source_file_part = typed_data.cpp
+  source_name_part = typed_data
+build obj/dart/typed_data/dart/typed_data.unmodifiable_typed_data.o: cxx ../dart/typed_data/unmodifiable_typed_data.cpp
+  source_file_part = unmodifiable_typed_data.cpp
+  source_name_part = unmodifiable_typed_data
+
+build obj/dart/typed_data.stamp: stamp obj/dart/typed_data/dart/typed_data.typed_data.o obj/dart/typed_data/dart/typed_data.unmodifiable_typed_data.o

@@ -1,0 +1,42 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/internal
+
+build obj/dart/internal/dart/internal.symbol.o: cxx ../dart/internal/symbol.cpp
+  source_file_part = symbol.cpp
+  source_name_part = symbol
+build obj/dart/internal/dart/internal.bytes_builder.o: cxx ../dart/internal/bytes_builder.cpp
+  source_file_part = bytes_builder.cpp
+  source_name_part = bytes_builder
+build obj/dart/internal/dart/internal.print.o: cxx ../dart/internal/print.cpp
+  source_file_part = print.cpp
+  source_name_part = print
+build obj/dart/internal/dart/internal.async_cast.o: cxx ../dart/internal/async_cast.cpp
+  source_file_part = async_cast.cpp
+  source_name_part = async_cast
+build obj/dart/internal/dart/internal.sort.o: cxx ../dart/internal/sort.cpp
+  source_file_part = sort.cpp
+  source_name_part = sort
+build obj/dart/internal/dart/internal.iterable.o: cxx ../dart/internal/iterable.cpp
+  source_file_part = iterable.cpp
+  source_name_part = iterable
+build obj/dart/internal/dart/internal.linked_list.o: cxx ../dart/internal/linked_list.cpp
+  source_file_part = linked_list.cpp
+  source_name_part = linked_list
+build obj/dart/internal/dart/internal.list.o: cxx ../dart/internal/list.cpp
+  source_file_part = list.cpp
+  source_name_part = list
+build obj/dart/internal/dart/internal.internal.o: cxx ../dart/internal/internal.cpp
+  source_file_part = internal.cpp
+  source_name_part = internal
+build obj/dart/internal/dart/internal.cast.o: cxx ../dart/internal/cast.cpp
+  source_file_part = cast.cpp
+  source_name_part = cast
+build obj/dart/internal/dart/internal.errors.o: cxx ../dart/internal/errors.cpp
+  source_file_part = errors.cpp
+  source_name_part = errors
+
+build obj/dart/internal.stamp: stamp obj/dart/internal/dart/internal.symbol.o obj/dart/internal/dart/internal.bytes_builder.o obj/dart/internal/dart/internal.print.o obj/dart/internal/dart/internal.async_cast.o obj/dart/internal/dart/internal.sort.o obj/dart/internal/dart/internal.iterable.o obj/dart/internal/dart/internal.linked_list.o obj/dart/internal/dart/internal.list.o obj/dart/internal/dart/internal.internal.o obj/dart/internal/dart/internal.cast.o obj/dart/internal/dart/internal.errors.o

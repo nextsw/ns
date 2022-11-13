@@ -1,0 +1,51 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/async
+
+build obj/dart/async/dart/async.stream_controller.o: cxx ../dart/async/stream_controller.cpp
+  source_file_part = stream_controller.cpp
+  source_name_part = stream_controller
+build obj/dart/async/dart/async.broadcast_stream_controller.o: cxx ../dart/async/broadcast_stream_controller.cpp
+  source_file_part = broadcast_stream_controller.cpp
+  source_name_part = broadcast_stream_controller
+build obj/dart/async/dart/async.stream_transformers.o: cxx ../dart/async/stream_transformers.cpp
+  source_file_part = stream_transformers.cpp
+  source_name_part = stream_transformers
+build obj/dart/async/dart/async.deferred_load.o: cxx ../dart/async/deferred_load.cpp
+  source_file_part = deferred_load.cpp
+  source_name_part = deferred_load
+build obj/dart/async/dart/async.zone.o: cxx ../dart/async/zone.cpp
+  source_file_part = zone.cpp
+  source_name_part = zone
+build obj/dart/async/dart/async.stream_pipe.o: cxx ../dart/async/stream_pipe.cpp
+  source_file_part = stream_pipe.cpp
+  source_name_part = stream_pipe
+build obj/dart/async/dart/async.stream_impl.o: cxx ../dart/async/stream_impl.cpp
+  source_file_part = stream_impl.cpp
+  source_name_part = stream_impl
+build obj/dart/async/dart/async.timer.o: cxx ../dart/async/timer.cpp
+  source_file_part = timer.cpp
+  source_name_part = timer
+build obj/dart/async/dart/async.future_impl.o: cxx ../dart/async/future_impl.cpp
+  source_file_part = future_impl.cpp
+  source_name_part = future_impl
+build obj/dart/async/dart/async.async.o: cxx ../dart/async/async.cpp
+  source_file_part = async.cpp
+  source_name_part = async
+build obj/dart/async/dart/async.stream.o: cxx ../dart/async/stream.cpp
+  source_file_part = stream.cpp
+  source_name_part = stream
+build obj/dart/async/dart/async.async_error.o: cxx ../dart/async/async_error.cpp
+  source_file_part = async_error.cpp
+  source_name_part = async_error
+build obj/dart/async/dart/async.schedule_microtask.o: cxx ../dart/async/schedule_microtask.cpp
+  source_file_part = schedule_microtask.cpp
+  source_name_part = schedule_microtask
+build obj/dart/async/dart/async.future.o: cxx ../dart/async/future.cpp
+  source_file_part = future.cpp
+  source_name_part = future
+
+build obj/dart/async.stamp: stamp obj/dart/async/dart/async.stream_controller.o obj/dart/async/dart/async.broadcast_stream_controller.o obj/dart/async/dart/async.stream_transformers.o obj/dart/async/dart/async.deferred_load.o obj/dart/async/dart/async.zone.o obj/dart/async/dart/async.stream_pipe.o obj/dart/async/dart/async.stream_impl.o obj/dart/async/dart/async.timer.o obj/dart/async/dart/async.future_impl.o obj/dart/async/dart/async.async.o obj/dart/async/dart/async.stream.o obj/dart/async/dart/async.async_error.o obj/dart/async/dart/async.schedule_microtask.o obj/dart/async/dart/async.future.o

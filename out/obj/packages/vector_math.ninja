@@ -1,0 +1,84 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = packages/vector_math
+
+build obj/packages/vector_math/packages/vector_math.vector_math.o: cxx ../packages/vector_math/vector_math.cpp
+  source_file_part = vector_math.cpp
+  source_name_part = vector_math
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector4.o: cxx ../packages/vector_math/src/vector_math_64/vector4.cpp
+  source_file_part = vector4.cpp
+  source_name_part = vector4
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector3.o: cxx ../packages/vector_math/src/vector_math_64/vector3.cpp
+  source_file_part = vector3.cpp
+  source_name_part = vector3
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.obb3.o: cxx ../packages/vector_math/src/vector_math_64/obb3.cpp
+  source_file_part = obb3.cpp
+  source_name_part = obb3
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector2.o: cxx ../packages/vector_math/src/vector_math_64/vector2.cpp
+  source_file_part = vector2.cpp
+  source_name_part = vector2
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.matrix4.o: cxx ../packages/vector_math/src/vector_math_64/matrix4.cpp
+  source_file_part = matrix4.cpp
+  source_name_part = matrix4
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.constants.o: cxx ../packages/vector_math/src/vector_math_64/constants.cpp
+  source_file_part = constants.cpp
+  source_name_part = constants
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.quad.o: cxx ../packages/vector_math/src/vector_math_64/quad.cpp
+  source_file_part = quad.cpp
+  source_name_part = quad
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.matrix2.o: cxx ../packages/vector_math/src/vector_math_64/matrix2.cpp
+  source_file_part = matrix2.cpp
+  source_name_part = matrix2
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.ray.o: cxx ../packages/vector_math/src/vector_math_64/ray.cpp
+  source_file_part = ray.cpp
+  source_name_part = ray
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.matrix3.o: cxx ../packages/vector_math/src/vector_math_64/matrix3.cpp
+  source_file_part = matrix3.cpp
+  source_name_part = matrix3
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.intersection_result.o: cxx ../packages/vector_math/src/vector_math_64/intersection_result.cpp
+  source_file_part = intersection_result.cpp
+  source_name_part = intersection_result
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.frustum.o: cxx ../packages/vector_math/src/vector_math_64/frustum.cpp
+  source_file_part = frustum.cpp
+  source_name_part = frustum
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.utilities.o: cxx ../packages/vector_math/src/vector_math_64/utilities.cpp
+  source_file_part = utilities.cpp
+  source_name_part = utilities
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector.o: cxx ../packages/vector_math/src/vector_math_64/vector.cpp
+  source_file_part = vector.cpp
+  source_name_part = vector
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.opengl.o: cxx ../packages/vector_math/src/vector_math_64/opengl.cpp
+  source_file_part = opengl.cpp
+  source_name_part = opengl
+build obj/packages/vector_math/src/vector_math_64/third_party/packages/vector_math.noise.o: cxx ../packages/vector_math/src/vector_math_64/third_party/noise.cpp
+  source_file_part = noise.cpp
+  source_name_part = noise
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.error_helpers.o: cxx ../packages/vector_math/src/vector_math_64/error_helpers.cpp
+  source_file_part = error_helpers.cpp
+  source_name_part = error_helpers
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.triangle.o: cxx ../packages/vector_math/src/vector_math_64/triangle.cpp
+  source_file_part = triangle.cpp
+  source_name_part = triangle
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.quaternion.o: cxx ../packages/vector_math/src/vector_math_64/quaternion.cpp
+  source_file_part = quaternion.cpp
+  source_name_part = quaternion
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.colors.o: cxx ../packages/vector_math/src/vector_math_64/colors.cpp
+  source_file_part = colors.cpp
+  source_name_part = colors
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.sphere.o: cxx ../packages/vector_math/src/vector_math_64/sphere.cpp
+  source_file_part = sphere.cpp
+  source_name_part = sphere
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.aabb3.o: cxx ../packages/vector_math/src/vector_math_64/aabb3.cpp
+  source_file_part = aabb3.cpp
+  source_name_part = aabb3
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.plane.o: cxx ../packages/vector_math/src/vector_math_64/plane.cpp
+  source_file_part = plane.cpp
+  source_name_part = plane
+build obj/packages/vector_math/src/vector_math_64/packages/vector_math.aabb2.o: cxx ../packages/vector_math/src/vector_math_64/aabb2.cpp
+  source_file_part = aabb2.cpp
+  source_name_part = aabb2
+
+build obj/packages/vector_math.stamp: stamp obj/packages/vector_math/packages/vector_math.vector_math.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector4.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector3.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.obb3.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector2.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.matrix4.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.constants.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.quad.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.matrix2.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.ray.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.matrix3.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.intersection_result.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.frustum.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.utilities.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.vector.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.opengl.o obj/packages/vector_math/src/vector_math_64/third_party/packages/vector_math.noise.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.error_helpers.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.triangle.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.quaternion.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.colors.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.sphere.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.aabb3.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.plane.o obj/packages/vector_math/src/vector_math_64/packages/vector_math.aabb2.o

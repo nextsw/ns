@@ -1,0 +1,24 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/developer
+
+build obj/dart/developer/dart/developer.extension.o: cxx ../dart/developer/extension.cpp
+  source_file_part = extension.cpp
+  source_name_part = extension
+build obj/dart/developer/dart/developer.profiler.o: cxx ../dart/developer/profiler.cpp
+  source_file_part = profiler.cpp
+  source_name_part = profiler
+build obj/dart/developer/dart/developer.developer.o: cxx ../dart/developer/developer.cpp
+  source_file_part = developer.cpp
+  source_name_part = developer
+build obj/dart/developer/dart/developer.timeline.o: cxx ../dart/developer/timeline.cpp
+  source_file_part = timeline.cpp
+  source_name_part = timeline
+build obj/dart/developer/dart/developer.service.o: cxx ../dart/developer/service.cpp
+  source_file_part = service.cpp
+  source_name_part = service
+
+build obj/dart/developer.stamp: stamp obj/dart/developer/dart/developer.extension.o obj/dart/developer/dart/developer.profiler.o obj/dart/developer/dart/developer.developer.o obj/dart/developer/dart/developer.timeline.o obj/dart/developer/dart/developer.service.o

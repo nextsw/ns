@@ -1,0 +1,27 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/spirv
+
+build obj/dart/spirv/dart/spirv.spirv.o: cxx ../dart/spirv/spirv.cpp
+  source_file_part = spirv.cpp
+  source_name_part = spirv
+build obj/dart/spirv/src/dart/spirv.types.o: cxx ../dart/spirv/src/types.cpp
+  source_file_part = types.cpp
+  source_name_part = types
+build obj/dart/spirv/src/dart/spirv.constants.o: cxx ../dart/spirv/src/constants.cpp
+  source_file_part = constants.cpp
+  source_name_part = constants
+build obj/dart/spirv/src/dart/spirv.function.o: cxx ../dart/spirv/src/function.cpp
+  source_file_part = function.cpp
+  source_name_part = function
+build obj/dart/spirv/src/dart/spirv.instructions.o: cxx ../dart/spirv/src/instructions.cpp
+  source_file_part = instructions.cpp
+  source_name_part = instructions
+build obj/dart/spirv/src/dart/spirv.transpiler.o: cxx ../dart/spirv/src/transpiler.cpp
+  source_file_part = transpiler.cpp
+  source_name_part = transpiler
+
+build obj/dart/spirv.stamp: stamp obj/dart/spirv/dart/spirv.spirv.o obj/dart/spirv/src/dart/spirv.types.o obj/dart/spirv/src/dart/spirv.constants.o obj/dart/spirv/src/dart/spirv.function.o obj/dart/spirv/src/dart/spirv.instructions.o obj/dart/spirv/src/dart/spirv.transpiler.o

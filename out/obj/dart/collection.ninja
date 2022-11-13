@@ -1,0 +1,51 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/collection
+
+build obj/dart/collection/dart/collection.collections.o: cxx ../dart/collection/collections.cpp
+  source_file_part = collections.cpp
+  source_name_part = collections
+build obj/dart/collection/dart/collection.collection.o: cxx ../dart/collection/collection.cpp
+  source_file_part = collection.cpp
+  source_name_part = collection
+build obj/dart/collection/dart/collection.maps.o: cxx ../dart/collection/maps.cpp
+  source_file_part = maps.cpp
+  source_name_part = maps
+build obj/dart/collection/dart/collection.iterator.o: cxx ../dart/collection/iterator.cpp
+  source_file_part = iterator.cpp
+  source_name_part = iterator
+build obj/dart/collection/dart/collection.linked_hash_map.o: cxx ../dart/collection/linked_hash_map.cpp
+  source_file_part = linked_hash_map.cpp
+  source_name_part = linked_hash_map
+build obj/dart/collection/dart/collection.hash_map.o: cxx ../dart/collection/hash_map.cpp
+  source_file_part = hash_map.cpp
+  source_name_part = hash_map
+build obj/dart/collection/dart/collection.set.o: cxx ../dart/collection/set.cpp
+  source_file_part = set.cpp
+  source_name_part = set
+build obj/dart/collection/dart/collection.iterable.o: cxx ../dart/collection/iterable.cpp
+  source_file_part = iterable.cpp
+  source_name_part = iterable
+build obj/dart/collection/dart/collection.splay_tree.o: cxx ../dart/collection/splay_tree.cpp
+  source_file_part = splay_tree.cpp
+  source_name_part = splay_tree
+build obj/dart/collection/dart/collection.linked_list.o: cxx ../dart/collection/linked_list.cpp
+  source_file_part = linked_list.cpp
+  source_name_part = linked_list
+build obj/dart/collection/dart/collection.hash_set.o: cxx ../dart/collection/hash_set.cpp
+  source_file_part = hash_set.cpp
+  source_name_part = hash_set
+build obj/dart/collection/dart/collection.list.o: cxx ../dart/collection/list.cpp
+  source_file_part = list.cpp
+  source_name_part = list
+build obj/dart/collection/dart/collection.queue.o: cxx ../dart/collection/queue.cpp
+  source_file_part = queue.cpp
+  source_name_part = queue
+build obj/dart/collection/dart/collection.linked_hash_set.o: cxx ../dart/collection/linked_hash_set.cpp
+  source_file_part = linked_hash_set.cpp
+  source_name_part = linked_hash_set
+
+build obj/dart/collection.stamp: stamp obj/dart/collection/dart/collection.collections.o obj/dart/collection/dart/collection.collection.o obj/dart/collection/dart/collection.maps.o obj/dart/collection/dart/collection.iterator.o obj/dart/collection/dart/collection.linked_hash_map.o obj/dart/collection/dart/collection.hash_map.o obj/dart/collection/dart/collection.set.o obj/dart/collection/dart/collection.iterable.o obj/dart/collection/dart/collection.splay_tree.o obj/dart/collection/dart/collection.linked_list.o obj/dart/collection/dart/collection.hash_set.o obj/dart/collection/dart/collection.list.o obj/dart/collection/dart/collection.queue.o obj/dart/collection/dart/collection.linked_hash_set.o

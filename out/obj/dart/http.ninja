@@ -1,0 +1,12 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/http
+
+build obj/dart/http/dart/http.http.o: cxx ../dart/http/http.cpp
+  source_file_part = http.cpp
+  source_name_part = http
+
+build obj/dart/http.stamp: stamp obj/dart/http/dart/http.http.o

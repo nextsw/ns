@@ -18,10 +18,67 @@ build build.ninja: phony build.ninja.stamp
 
 subninja toolchain.ninja
 
+build dart/async: phony obj/dart/async.stamp
+build dart/collection: phony obj/dart/collection.stamp
+build dart/convert: phony obj/dart/convert.stamp
+build dart/core: phony obj/dart/core.stamp
+build dart/developer: phony obj/dart/developer.stamp
+build dart/http: phony obj/dart/http.stamp
+build dart/internal: phony obj/dart/internal.stamp
+build dart/io: phony obj/dart/io.stamp
+build dart/isolate: phony obj/dart/isolate.stamp
+build dart/math: phony obj/dart/math.stamp
+build dart/nativewrappers: phony obj/dart/nativewrappers.stamp
+build dart/spirv: phony obj/dart/spirv.stamp
+build dart/typed_data: phony obj/dart/typed_data.stamp
+build dart/ui: phony obj/dart/ui.stamp
 build ns: phony ./libns.so
+build packages/characters: phony obj/packages/characters.stamp
+build packages/collection: phony obj/packages/collection.stamp
+build packages/flutter: phony obj/packages/flutter.stamp
+build packages/meta: phony obj/packages/meta.stamp
+build packages/vector_math: phony obj/packages/vector_math.stamp
+build $:dart/async: phony obj/dart/async.stamp
+build $:dart/collection: phony obj/dart/collection.stamp
+build $:dart/convert: phony obj/dart/convert.stamp
+build $:dart/core: phony obj/dart/core.stamp
+build $:dart/developer: phony obj/dart/developer.stamp
+build $:dart/http: phony obj/dart/http.stamp
+build $:dart/internal: phony obj/dart/internal.stamp
+build $:dart/io: phony obj/dart/io.stamp
+build $:dart/isolate: phony obj/dart/isolate.stamp
+build $:dart/math: phony obj/dart/math.stamp
+build $:dart/nativewrappers: phony obj/dart/nativewrappers.stamp
+build $:dart/spirv: phony obj/dart/spirv.stamp
+build $:dart/typed_data: phony obj/dart/typed_data.stamp
+build $:dart/ui: phony obj/dart/ui.stamp
 build $:ns: phony ./libns.so
+build $:packages/characters: phony obj/packages/characters.stamp
+build $:packages/collection: phony obj/packages/collection.stamp
+build $:packages/flutter: phony obj/packages/flutter.stamp
+build $:packages/meta: phony obj/packages/meta.stamp
+build $:packages/vector_math: phony obj/packages/vector_math.stamp
 
 build all: phony $
-    ./libns.so
+    obj/dart/async.stamp $
+    obj/dart/collection.stamp $
+    obj/dart/convert.stamp $
+    obj/dart/core.stamp $
+    obj/dart/developer.stamp $
+    obj/dart/http.stamp $
+    obj/dart/internal.stamp $
+    obj/dart/io.stamp $
+    obj/dart/isolate.stamp $
+    obj/dart/math.stamp $
+    obj/dart/nativewrappers.stamp $
+    obj/dart/spirv.stamp $
+    obj/dart/typed_data.stamp $
+    obj/dart/ui.stamp $
+    ./libns.so $
+    obj/packages/characters.stamp $
+    obj/packages/collection.stamp $
+    obj/packages/flutter.stamp $
+    obj/packages/meta.stamp $
+    obj/packages/vector_math.stamp
 
 default all

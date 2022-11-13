@@ -1,0 +1,27 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = packages/characters
+
+build obj/packages/characters/packages/characters.characters.o: cxx ../packages/characters/characters.cpp
+  source_file_part = characters.cpp
+  source_name_part = characters
+build obj/packages/characters/src/packages/characters.extensions.o: cxx ../packages/characters/src/extensions.cpp
+  source_file_part = extensions.cpp
+  source_name_part = extensions
+build obj/packages/characters/src/grapheme_clusters/packages/characters.constants.o: cxx ../packages/characters/src/grapheme_clusters/constants.cpp
+  source_file_part = constants.cpp
+  source_name_part = constants
+build obj/packages/characters/src/grapheme_clusters/packages/characters.breaks.o: cxx ../packages/characters/src/grapheme_clusters/breaks.cpp
+  source_file_part = breaks.cpp
+  source_name_part = breaks
+build obj/packages/characters/src/packages/characters.characters_impl.o: cxx ../packages/characters/src/characters_impl.cpp
+  source_file_part = characters_impl.cpp
+  source_name_part = characters_impl
+build obj/packages/characters/src/packages/characters.characters.o: cxx ../packages/characters/src/characters.cpp
+  source_file_part = characters.cpp
+  source_name_part = characters
+
+build obj/packages/characters.stamp: stamp obj/packages/characters/packages/characters.characters.o obj/packages/characters/src/packages/characters.extensions.o obj/packages/characters/src/grapheme_clusters/packages/characters.constants.o obj/packages/characters/src/grapheme_clusters/packages/characters.breaks.o obj/packages/characters/src/packages/characters.characters_impl.o obj/packages/characters/src/packages/characters.characters.o

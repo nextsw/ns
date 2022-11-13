@@ -1,0 +1,15 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = packages/meta
+
+build obj/packages/meta/packages/meta.meta_meta.o: cxx ../packages/meta/meta_meta.cpp
+  source_file_part = meta_meta.cpp
+  source_name_part = meta_meta
+build obj/packages/meta/packages/meta.meta.o: cxx ../packages/meta/meta.cpp
+  source_file_part = meta.cpp
+  source_name_part = meta
+
+build obj/packages/meta.stamp: stamp obj/packages/meta/packages/meta.meta_meta.o obj/packages/meta/packages/meta.meta.o

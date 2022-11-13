@@ -19,8 +19,8 @@ template<typename T, typename U> std::shared_ptr<T> as(std::shared_ptr<U> a) {
 }
 
 
-template <class Type, class BaseClass>
-using CheckType = std::is_base_of<BaseClass, Type>::value;
+// template <class Type, class BaseClass>
+// using CheckType = std::is_base_of<BaseClass, Type>::value;
 
 #endif
 

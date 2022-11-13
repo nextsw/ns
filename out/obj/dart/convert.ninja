@@ -1,0 +1,51 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/convert
+
+build obj/dart/convert/dart/convert.latin1.o: cxx ../dart/convert/latin1.cpp
+  source_file_part = latin1.cpp
+  source_name_part = latin1
+build obj/dart/convert/dart/convert.base64.o: cxx ../dart/convert/base64.cpp
+  source_file_part = base64.cpp
+  source_name_part = base64
+build obj/dart/convert/dart/convert.byte_conversion.o: cxx ../dart/convert/byte_conversion.cpp
+  source_file_part = byte_conversion.cpp
+  source_name_part = byte_conversion
+build obj/dart/convert/dart/convert.convert.o: cxx ../dart/convert/convert.cpp
+  source_file_part = convert.cpp
+  source_name_part = convert
+build obj/dart/convert/dart/convert.converter.o: cxx ../dart/convert/converter.cpp
+  source_file_part = converter.cpp
+  source_name_part = converter
+build obj/dart/convert/dart/convert.ascii.o: cxx ../dart/convert/ascii.cpp
+  source_file_part = ascii.cpp
+  source_name_part = ascii
+build obj/dart/convert/dart/convert.html_escape.o: cxx ../dart/convert/html_escape.cpp
+  source_file_part = html_escape.cpp
+  source_name_part = html_escape
+build obj/dart/convert/dart/convert.string_conversion.o: cxx ../dart/convert/string_conversion.cpp
+  source_file_part = string_conversion.cpp
+  source_name_part = string_conversion
+build obj/dart/convert/dart/convert.chunked_conversion.o: cxx ../dart/convert/chunked_conversion.cpp
+  source_file_part = chunked_conversion.cpp
+  source_name_part = chunked_conversion
+build obj/dart/convert/dart/convert.encoding.o: cxx ../dart/convert/encoding.cpp
+  source_file_part = encoding.cpp
+  source_name_part = encoding
+build obj/dart/convert/dart/convert.line_splitter.o: cxx ../dart/convert/line_splitter.cpp
+  source_file_part = line_splitter.cpp
+  source_name_part = line_splitter
+build obj/dart/convert/dart/convert.utf.o: cxx ../dart/convert/utf.cpp
+  source_file_part = utf.cpp
+  source_name_part = utf
+build obj/dart/convert/dart/convert.codec.o: cxx ../dart/convert/codec.cpp
+  source_file_part = codec.cpp
+  source_name_part = codec
+build obj/dart/convert/dart/convert.json.o: cxx ../dart/convert/json.cpp
+  source_file_part = json.cpp
+  source_name_part = json
+
+build obj/dart/convert.stamp: stamp obj/dart/convert/dart/convert.latin1.o obj/dart/convert/dart/convert.base64.o obj/dart/convert/dart/convert.byte_conversion.o obj/dart/convert/dart/convert.convert.o obj/dart/convert/dart/convert.converter.o obj/dart/convert/dart/convert.ascii.o obj/dart/convert/dart/convert.html_escape.o obj/dart/convert/dart/convert.string_conversion.o obj/dart/convert/dart/convert.chunked_conversion.o obj/dart/convert/dart/convert.encoding.o obj/dart/convert/dart/convert.line_splitter.o obj/dart/convert/dart/convert.utf.o obj/dart/convert/dart/convert.codec.o obj/dart/convert/dart/convert.json.o

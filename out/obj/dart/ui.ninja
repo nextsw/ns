@@ -1,0 +1,63 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/ui
+
+build obj/dart/ui/dart/ui.ui.o: cxx ../dart/ui/ui.cpp
+  source_file_part = ui.cpp
+  source_name_part = ui
+build obj/dart/ui/dart/ui.geometry.o: cxx ../dart/ui/geometry.cpp
+  source_file_part = geometry.cpp
+  source_name_part = geometry
+build obj/dart/ui/dart/ui.text.o: cxx ../dart/ui/text.cpp
+  source_file_part = text.cpp
+  source_name_part = text
+build obj/dart/ui/dart/ui.channel_buffers.o: cxx ../dart/ui/channel_buffers.cpp
+  source_file_part = channel_buffers.cpp
+  source_name_part = channel_buffers
+build obj/dart/ui/dart/ui.window.o: cxx ../dart/ui/window.cpp
+  source_file_part = window.cpp
+  source_name_part = window
+build obj/dart/ui/dart/ui.lerp.o: cxx ../dart/ui/lerp.cpp
+  source_file_part = lerp.cpp
+  source_name_part = lerp
+build obj/dart/ui/dart/ui.semantics.o: cxx ../dart/ui/semantics.cpp
+  source_file_part = semantics.cpp
+  source_name_part = semantics
+build obj/dart/ui/dart/ui.hash_codes.o: cxx ../dart/ui/hash_codes.cpp
+  source_file_part = hash_codes.cpp
+  source_name_part = hash_codes
+build obj/dart/ui/dart/ui.isolate_name_server.o: cxx ../dart/ui/isolate_name_server.cpp
+  source_file_part = isolate_name_server.cpp
+  source_name_part = isolate_name_server
+build obj/dart/ui/dart/ui.platform_dispatcher.o: cxx ../dart/ui/platform_dispatcher.cpp
+  source_file_part = platform_dispatcher.cpp
+  source_name_part = platform_dispatcher
+build obj/dart/ui/dart/ui.compositing.o: cxx ../dart/ui/compositing.cpp
+  source_file_part = compositing.cpp
+  source_name_part = compositing
+build obj/dart/ui/dart/ui.painting.o: cxx ../dart/ui/painting.cpp
+  source_file_part = painting.cpp
+  source_name_part = painting
+build obj/dart/ui/dart/ui.natives.o: cxx ../dart/ui/natives.cpp
+  source_file_part = natives.cpp
+  source_name_part = natives
+build obj/dart/ui/dart/ui.plugins.o: cxx ../dart/ui/plugins.cpp
+  source_file_part = plugins.cpp
+  source_name_part = plugins
+build obj/dart/ui/dart/ui.pointer.o: cxx ../dart/ui/pointer.cpp
+  source_file_part = pointer.cpp
+  source_name_part = pointer
+build obj/dart/ui/dart/ui.annotations.o: cxx ../dart/ui/annotations.cpp
+  source_file_part = annotations.cpp
+  source_name_part = annotations
+build obj/dart/ui/dart/ui.hooks.o: cxx ../dart/ui/hooks.cpp
+  source_file_part = hooks.cpp
+  source_name_part = hooks
+build obj/dart/ui/dart/ui.key.o: cxx ../dart/ui/key.cpp
+  source_file_part = key.cpp
+  source_name_part = key
+
+build obj/dart/ui.stamp: stamp obj/dart/ui/dart/ui.ui.o obj/dart/ui/dart/ui.geometry.o obj/dart/ui/dart/ui.text.o obj/dart/ui/dart/ui.channel_buffers.o obj/dart/ui/dart/ui.window.o obj/dart/ui/dart/ui.lerp.o obj/dart/ui/dart/ui.semantics.o obj/dart/ui/dart/ui.hash_codes.o obj/dart/ui/dart/ui.isolate_name_server.o obj/dart/ui/dart/ui.platform_dispatcher.o obj/dart/ui/dart/ui.compositing.o obj/dart/ui/dart/ui.painting.o obj/dart/ui/dart/ui.natives.o obj/dart/ui/dart/ui.plugins.o obj/dart/ui/dart/ui.pointer.o obj/dart/ui/dart/ui.annotations.o obj/dart/ui/dart/ui.hooks.o obj/dart/ui/dart/ui.key.o

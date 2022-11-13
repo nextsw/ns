@@ -1,0 +1,81 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = packages/collection
+
+build obj/packages/collection/packages/collection.collection.o: cxx ../packages/collection/collection.cpp
+  source_file_part = collection.cpp
+  source_name_part = collection
+build obj/packages/collection/src/packages/collection.equality_set.o: cxx ../packages/collection/src/equality_set.cpp
+  source_file_part = equality_set.cpp
+  source_name_part = equality_set
+build obj/packages/collection/src/packages/collection.union_set.o: cxx ../packages/collection/src/union_set.cpp
+  source_file_part = union_set.cpp
+  source_name_part = union_set
+build obj/packages/collection/src/packages/collection.wrappers.o: cxx ../packages/collection/src/wrappers.cpp
+  source_file_part = wrappers.cpp
+  source_name_part = wrappers
+build obj/packages/collection/src/packages/collection.algorithms.o: cxx ../packages/collection/src/algorithms.cpp
+  source_file_part = algorithms.cpp
+  source_name_part = algorithms
+build obj/packages/collection/src/packages/collection.utils.o: cxx ../packages/collection/src/utils.cpp
+  source_file_part = utils.cpp
+  source_name_part = utils
+build obj/packages/collection/src/packages/collection.union_set_controller.o: cxx ../packages/collection/src/union_set_controller.cpp
+  source_file_part = union_set_controller.cpp
+  source_name_part = union_set_controller
+build obj/packages/collection/src/packages/collection.empty_unmodifiable_set.o: cxx ../packages/collection/src/empty_unmodifiable_set.cpp
+  source_file_part = empty_unmodifiable_set.cpp
+  source_name_part = empty_unmodifiable_set
+build obj/packages/collection/src/packages/collection.queue_list.o: cxx ../packages/collection/src/queue_list.cpp
+  source_file_part = queue_list.cpp
+  source_name_part = queue_list
+build obj/packages/collection/src/packages/collection.boollist.o: cxx ../packages/collection/src/boollist.cpp
+  source_file_part = boollist.cpp
+  source_name_part = boollist
+build obj/packages/collection/src/packages/collection.canonicalized_map.o: cxx ../packages/collection/src/canonicalized_map.cpp
+  source_file_part = canonicalized_map.cpp
+  source_name_part = canonicalized_map
+build obj/packages/collection/src/packages/collection.equality.o: cxx ../packages/collection/src/equality.cpp
+  source_file_part = equality.cpp
+  source_name_part = equality
+build obj/packages/collection/src/packages/collection.priority_queue.o: cxx ../packages/collection/src/priority_queue.cpp
+  source_file_part = priority_queue.cpp
+  source_name_part = priority_queue
+build obj/packages/collection/src/packages/collection.iterable_zip.o: cxx ../packages/collection/src/iterable_zip.cpp
+  source_file_part = iterable_zip.cpp
+  source_name_part = iterable_zip
+build obj/packages/collection/src/packages/collection.equality_map.o: cxx ../packages/collection/src/equality_map.cpp
+  source_file_part = equality_map.cpp
+  source_name_part = equality_map
+build obj/packages/collection/src/packages/collection.iterable_extensions.o: cxx ../packages/collection/src/iterable_extensions.cpp
+  source_file_part = iterable_extensions.cpp
+  source_name_part = iterable_extensions
+build obj/packages/collection/src/combined_wrappers/packages/collection.combined_list.o: cxx ../packages/collection/src/combined_wrappers/combined_list.cpp
+  source_file_part = combined_list.cpp
+  source_name_part = combined_list
+build obj/packages/collection/src/combined_wrappers/packages/collection.combined_map.o: cxx ../packages/collection/src/combined_wrappers/combined_map.cpp
+  source_file_part = combined_map.cpp
+  source_name_part = combined_map
+build obj/packages/collection/src/combined_wrappers/packages/collection.combined_iterator.o: cxx ../packages/collection/src/combined_wrappers/combined_iterator.cpp
+  source_file_part = combined_iterator.cpp
+  source_name_part = combined_iterator
+build obj/packages/collection/src/combined_wrappers/packages/collection.combined_iterable.o: cxx ../packages/collection/src/combined_wrappers/combined_iterable.cpp
+  source_file_part = combined_iterable.cpp
+  source_name_part = combined_iterable
+build obj/packages/collection/src/packages/collection.functions.o: cxx ../packages/collection/src/functions.cpp
+  source_file_part = functions.cpp
+  source_name_part = functions
+build obj/packages/collection/src/packages/collection.list_extensions.o: cxx ../packages/collection/src/list_extensions.cpp
+  source_file_part = list_extensions.cpp
+  source_name_part = list_extensions
+build obj/packages/collection/src/packages/collection.comparators.o: cxx ../packages/collection/src/comparators.cpp
+  source_file_part = comparators.cpp
+  source_name_part = comparators
+build obj/packages/collection/src/packages/collection.unmodifiable_wrappers.o: cxx ../packages/collection/src/unmodifiable_wrappers.cpp
+  source_file_part = unmodifiable_wrappers.cpp
+  source_name_part = unmodifiable_wrappers
+
+build obj/packages/collection.stamp: stamp obj/packages/collection/packages/collection.collection.o obj/packages/collection/src/packages/collection.equality_set.o obj/packages/collection/src/packages/collection.union_set.o obj/packages/collection/src/packages/collection.wrappers.o obj/packages/collection/src/packages/collection.algorithms.o obj/packages/collection/src/packages/collection.utils.o obj/packages/collection/src/packages/collection.union_set_controller.o obj/packages/collection/src/packages/collection.empty_unmodifiable_set.o obj/packages/collection/src/packages/collection.queue_list.o obj/packages/collection/src/packages/collection.boollist.o obj/packages/collection/src/packages/collection.canonicalized_map.o obj/packages/collection/src/packages/collection.equality.o obj/packages/collection/src/packages/collection.priority_queue.o obj/packages/collection/src/packages/collection.iterable_zip.o obj/packages/collection/src/packages/collection.equality_map.o obj/packages/collection/src/packages/collection.iterable_extensions.o obj/packages/collection/src/combined_wrappers/packages/collection.combined_list.o obj/packages/collection/src/combined_wrappers/packages/collection.combined_map.o obj/packages/collection/src/combined_wrappers/packages/collection.combined_iterator.o obj/packages/collection/src/combined_wrappers/packages/collection.combined_iterable.o obj/packages/collection/src/packages/collection.functions.o obj/packages/collection/src/packages/collection.list_extensions.o obj/packages/collection/src/packages/collection.comparators.o obj/packages/collection/src/packages/collection.unmodifiable_wrappers.o

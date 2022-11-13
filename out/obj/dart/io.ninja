@@ -1,0 +1,93 @@
+defines =
+include_dirs = -I..
+cflags =
+cflags_cc =
+target_out_dir = obj
+target_output_name = dart/io
+
+build obj/dart/io/dart/io.io_sink.o: cxx ../dart/io/io_sink.cpp
+  source_file_part = io_sink.cpp
+  source_name_part = io_sink
+build obj/dart/io/dart/io.common.o: cxx ../dart/io/common.cpp
+  source_file_part = common.cpp
+  source_name_part = common
+build obj/dart/io/dart/io.string_transformer.o: cxx ../dart/io/string_transformer.cpp
+  source_file_part = string_transformer.cpp
+  source_name_part = string_transformer
+build obj/dart/io/dart/io.process.o: cxx ../dart/io/process.cpp
+  source_file_part = process.cpp
+  source_name_part = process
+build obj/dart/io/dart/io.data_transformer.o: cxx ../dart/io/data_transformer.cpp
+  source_file_part = data_transformer.cpp
+  source_name_part = data_transformer
+build obj/dart/io/dart/io.socket.o: cxx ../dart/io/socket.cpp
+  source_file_part = socket.cpp
+  source_name_part = socket
+build obj/dart/io/dart/io.io_resource_info.o: cxx ../dart/io/io_resource_info.cpp
+  source_file_part = io_resource_info.cpp
+  source_name_part = io_resource_info
+build obj/dart/io/dart/io.file_impl.o: cxx ../dart/io/file_impl.cpp
+  source_file_part = file_impl.cpp
+  source_name_part = file_impl
+build obj/dart/io/dart/io.stdio.o: cxx ../dart/io/stdio.cpp
+  source_file_part = stdio.cpp
+  source_name_part = stdio
+build obj/dart/io/dart/io.io_service.o: cxx ../dart/io/io_service.cpp
+  source_file_part = io_service.cpp
+  source_name_part = io_service
+build obj/dart/io/dart/io.platform_impl.o: cxx ../dart/io/platform_impl.cpp
+  source_file_part = platform_impl.cpp
+  source_name_part = platform_impl
+build obj/dart/io/dart/io.directory.o: cxx ../dart/io/directory.cpp
+  source_file_part = directory.cpp
+  source_name_part = directory
+build obj/dart/io/dart/io.network_profiling.o: cxx ../dart/io/network_profiling.cpp
+  source_file_part = network_profiling.cpp
+  source_name_part = network_profiling
+build obj/dart/io/dart/io.embedder_config.o: cxx ../dart/io/embedder_config.cpp
+  source_file_part = embedder_config.cpp
+  source_name_part = embedder_config
+build obj/dart/io/dart/io.io.o: cxx ../dart/io/io.cpp
+  source_file_part = io.cpp
+  source_name_part = io
+build obj/dart/io/dart/io.file.o: cxx ../dart/io/file.cpp
+  source_file_part = file.cpp
+  source_name_part = file
+build obj/dart/io/dart/io.file_system_entity.o: cxx ../dart/io/file_system_entity.cpp
+  source_file_part = file_system_entity.cpp
+  source_name_part = file_system_entity
+build obj/dart/io/dart/io.directory_impl.o: cxx ../dart/io/directory_impl.cpp
+  source_file_part = directory_impl.cpp
+  source_name_part = directory_impl
+build obj/dart/io/dart/io.platform.o: cxx ../dart/io/platform.cpp
+  source_file_part = platform.cpp
+  source_name_part = platform
+build obj/dart/io/dart/io.security_context.o: cxx ../dart/io/security_context.cpp
+  source_file_part = security_context.cpp
+  source_name_part = security_context
+build obj/dart/io/dart/io.namespace_impl.o: cxx ../dart/io/namespace_impl.cpp
+  source_file_part = namespace_impl.cpp
+  source_name_part = namespace_impl
+build obj/dart/io/dart/io.overrides.o: cxx ../dart/io/overrides.cpp
+  source_file_part = overrides.cpp
+  source_name_part = overrides
+build obj/dart/io/dart/io.sync_socket.o: cxx ../dart/io/sync_socket.cpp
+  source_file_part = sync_socket.cpp
+  source_name_part = sync_socket
+build obj/dart/io/dart/io.secure_socket.o: cxx ../dart/io/secure_socket.cpp
+  source_file_part = secure_socket.cpp
+  source_name_part = secure_socket
+build obj/dart/io/dart/io.link.o: cxx ../dart/io/link.cpp
+  source_file_part = link.cpp
+  source_name_part = link
+build obj/dart/io/dart/io.service_object.o: cxx ../dart/io/service_object.cpp
+  source_file_part = service_object.cpp
+  source_name_part = service_object
+build obj/dart/io/dart/io.secure_server_socket.o: cxx ../dart/io/secure_server_socket.cpp
+  source_file_part = secure_server_socket.cpp
+  source_name_part = secure_server_socket
+build obj/dart/io/dart/io.eventhandler.o: cxx ../dart/io/eventhandler.cpp
+  source_file_part = eventhandler.cpp
+  source_name_part = eventhandler
+
+build obj/dart/io.stamp: stamp obj/dart/io/dart/io.io_sink.o obj/dart/io/dart/io.common.o obj/dart/io/dart/io.string_transformer.o obj/dart/io/dart/io.process.o obj/dart/io/dart/io.data_transformer.o obj/dart/io/dart/io.socket.o obj/dart/io/dart/io.io_resource_info.o obj/dart/io/dart/io.file_impl.o obj/dart/io/dart/io.stdio.o obj/dart/io/dart/io.io_service.o obj/dart/io/dart/io.platform_impl.o obj/dart/io/dart/io.directory.o obj/dart/io/dart/io.network_profiling.o obj/dart/io/dart/io.embedder_config.o obj/dart/io/dart/io.io.o obj/dart/io/dart/io.file.o obj/dart/io/dart/io.file_system_entity.o obj/dart/io/dart/io.directory_impl.o obj/dart/io/dart/io.platform.o obj/dart/io/dart/io.security_context.o obj/dart/io/dart/io.namespace_impl.o obj/dart/io/dart/io.overrides.o obj/dart/io/dart/io.sync_socket.o obj/dart/io/dart/io.secure_socket.o obj/dart/io/dart/io.link.o obj/dart/io/dart/io.service_object.o obj/dart/io/dart/io.secure_server_socket.o obj/dart/io/dart/io.eventhandler.o

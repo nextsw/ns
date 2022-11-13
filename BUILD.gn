@@ -3,15 +3,11 @@
 # found in the LICENSE file.
 
 
-shared_library("ns") {
-    include_dirs = [
-        ".",
-    ]
-    cflags= [
-        "-ferror-limit=5000000"
-    ]
+source_set("dart/ui") {
+  include_dirs = [
+    ".",
+  ]
   sources = [
-    "base.hpp",
     "dart/ui/annotations.hpp",
     "dart/ui/ui.cpp",
     "dart/ui/hooks.hpp",
@@ -48,6 +44,44 @@ shared_library("ns") {
     "dart/ui/key.cpp",
     "dart/ui/text.hpp",
     "dart/ui/channel_buffers.hpp",
+  ]
+}
+
+
+shared_library("ns") {
+    include_dirs = [
+        ".",
+    ]
+    cflags= [
+        "-ferror-limit=5000000"
+    ]
+    deps = [
+      ":dart/core",
+      ":dart/collection",
+      ":dart/async",
+      ":dart/isolate",
+      ":dart/internal",
+      ":dart/developer",
+      ":dart/ui",
+      ":dart/spirv",
+      ":dart/math",
+      ":dart/http",
+      ":dart/nativewrappers",
+      ":dart/convert",
+      ":packages/collection",
+      ":packages/meta",
+      ":packages/vector_math",
+      ":packages/flutter",
+      ":packages/characters",
+    ]
+  sources = [
+  ]
+}
+source_set("dart/developer") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [
     "dart/developer/extension.cpp",
     "dart/developer/profiler.cpp",
     "dart/developer/service.hpp",
@@ -58,6 +92,13 @@ shared_library("ns") {
     "dart/developer/timeline.hpp",
     "dart/developer/extension.hpp",
     "dart/developer/profiler.hpp",
+  ]
+}
+source_set("dart/collection") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [
     "dart/collection/collections.cpp",
     "dart/collection/collection.cpp",
     "dart/collection/maps.cpp",
@@ -86,6 +127,13 @@ shared_library("ns") {
     "dart/collection/iterator.hpp",
     "dart/collection/linked_hash_set.cpp",
     "dart/collection/linked_hash_map.hpp",
+  ]
+}
+source_set("dart/core") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/core/exceptions.cpp",
     "dart/core/annotations.hpp",
     "dart/core/errors.hpp",
@@ -158,10 +206,24 @@ shared_library("ns") {
     "dart/core/regexp.hpp",
     "dart/core/type.cpp",
     "dart/core/num.hpp",
+  ]
+}
+source_set("dart/isolate") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/isolate/isolate.hpp",
     "dart/isolate/capability.cpp",
     "dart/isolate/isolate.cpp",
     "dart/isolate/capability.hpp",
+  ]
+}
+source_set("dart/async") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/async/stream_controller.cpp",
     "dart/async/broadcast_stream_controller.cpp",
     "dart/async/stream_transformers.cpp",
@@ -190,6 +252,13 @@ shared_library("ns") {
     "dart/async/schedule_microtask.cpp",
     "dart/async/future.cpp",
     "dart/async/stream_pipe.hpp",
+  ]
+}
+source_set("dart/io") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/io/sync_socket.hpp",
     "dart/io/secure_socket.hpp",
     "dart/io/io_sink.cpp",
@@ -245,7 +314,13 @@ shared_library("ns") {
     "dart/io/link.cpp",
     "dart/io/service_object.cpp",
     "dart/io/secure_server_socket.cpp",
-    "dart/io/eventhandler.cpp",
+    "dart/io/eventhandler.cpp",  ]
+}
+source_set("dart/internal") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [
     "dart/internal/cast.hpp",
     "dart/internal/errors.hpp",
     "dart/internal/symbol.cpp",
@@ -268,6 +343,13 @@ shared_library("ns") {
     "dart/internal/cast.cpp",
     "dart/internal/errors.cpp",
     "dart/internal/symbol.hpp",
+  ]
+}
+source_set("dart/spirv") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/spirv/spirv.hpp",
     "dart/spirv/spirv.cpp",
     "dart/spirv/src/types.cpp",
@@ -280,6 +362,13 @@ shared_library("ns") {
     "dart/spirv/src/types.hpp",
     "dart/spirv/src/instructions.cpp",
     "dart/spirv/src/transpiler.cpp",
+  ]
+}
+source_set("dart/math") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/math/math.cpp",
     "dart/math/random.cpp",
     "dart/math/point.hpp",
@@ -288,14 +377,42 @@ shared_library("ns") {
     "dart/math/math.hpp",
     "dart/math/point.cpp",
     "dart/math/rectangle.cpp",
+  ]
+}
+source_set("dart/http") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/http/http.hpp",
     "dart/http/http.cpp",
+  ]
+}
+source_set("dart/nativewrappers") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/nativewrappers/nativewrappers.cpp",
     "dart/nativewrappers/nativewrappers.hpp",
+  ]
+}
+source_set("dart/typed_data") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/typed_data/typed_data.cpp",
     "dart/typed_data/unmodifiable_typed_data.hpp",
     "dart/typed_data/typed_data.hpp",
     "dart/typed_data/unmodifiable_typed_data.cpp",
+  ]
+}
+source_set("dart/convert") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "dart/convert/line_splitter.hpp",
     "dart/convert/latin1.cpp",
     "dart/convert/utf.hpp",
@@ -324,6 +441,13 @@ shared_library("ns") {
     "dart/convert/base64.hpp",
     "dart/convert/byte_conversion.hpp",
     "dart/convert/convert.hpp",
+  ]
+}
+source_set("packages/collection") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "packages/collection/collection.cpp",
     "packages/collection/collection.hpp",
     "packages/collection/src/iterable_zip.hpp",
@@ -372,10 +496,24 @@ shared_library("ns") {
     "packages/collection/src/queue_list.hpp",
     "packages/collection/src/empty_unmodifiable_set.hpp",
     "packages/collection/src/unmodifiable_wrappers.cpp",
+  ]
+}
+source_set("packages/meta") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "packages/meta/meta_meta.cpp",
     "packages/meta/meta.hpp",
     "packages/meta/meta.cpp",
     "packages/meta/meta_meta.hpp",
+  ]
+}
+source_set("packages/vector_math") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [
     "packages/vector_math/vector_math.cpp",
     "packages/vector_math/vector_math.hpp",
     "packages/vector_math/src/vector_math_64/sphere.hpp",
@@ -426,6 +564,13 @@ shared_library("ns") {
     "packages/vector_math/src/vector_math_64/vector3.hpp",
     "packages/vector_math/src/vector_math_64/obb3.hpp",
     "packages/vector_math/src/vector_math_64/vector2.hpp",
+  ]
+}
+source_set("packages/flutter") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [    
     "packages/flutter/flutter.hpp",
     "packages/flutter/lib/rendering.hpp",
     "packages/flutter/lib/widgets.hpp",
@@ -1078,6 +1223,13 @@ shared_library("ns") {
     "packages/flutter/src/services/keyboard_maps.g.hpp",
     "packages/flutter/src/services/haptic_feedback.hpp",
     "packages/flutter/src/services/platform_views.cpp",
+  ]
+}
+source_set("packages/characters") {
+  include_dirs = [
+    ".",
+  ]
+  sources = [     
     "packages/characters/characters.hpp",
     "packages/characters/characters.cpp",
     "packages/characters/src/extensions.cpp",
@@ -1092,5 +1244,5 @@ shared_library("ns") {
     "packages/characters/src/extensions.hpp",
   ]
 
-  defines = [ "HELLO_SHARED_IMPLEMENTATION" ]
 }
+
