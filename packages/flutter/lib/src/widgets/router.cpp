@@ -204,7 +204,7 @@ _RouteSetter<T> _RouterStateCls<T>::_processParsedRouteInformation(Object transa
         if (_currentRouterTransaction != transaction) {
             return;
         }
-        await await delegateRouteSetter()(data);
+        await delegateRouteSetter()(data);
         if (_currentRouterTransaction == transaction) {
             _rebuild();
         }

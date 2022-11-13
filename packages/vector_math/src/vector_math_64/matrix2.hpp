@@ -78,7 +78,7 @@ public:
 
     virtual Matrix2 copyInto(Matrix2 arg);
 
-    virtual dynamic operator*(dynamic arg);
+    virtual Object operator*(Object arg);
 
     virtual Matrix2 operator+(Matrix2 arg);
 

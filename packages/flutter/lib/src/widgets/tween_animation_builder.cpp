@@ -24,9 +24,9 @@ void _TweenAnimationBuilderStateCls<T>::initState() {
 }
 
 template<typename T>
-void _TweenAnimationBuilderStateCls<T>::forEachTween(TweenVisitor<dynamic> visitor) {
+void _TweenAnimationBuilderStateCls<T>::forEachTween(TweenVisitor<Object> visitor) {
     assert(widget()->tween->end != nullptr, __s("Tween provided to TweenAnimationBuilder must have non-null Tween.end value."));
-    _currentTween = as<Tween<T>>(visitor(_currentTween, widget()->tween->end, [=] (dynamic value) {
+    _currentTween = as<Tween<T>>(visitor(_currentTween, widget()->tween->end, [=] (Object value) {
         assert(false);
         throw make<StateErrorCls>(__s("Constructor will never be called because null is never provided as current tween."));
     }));

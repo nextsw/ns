@@ -1,5 +1,5 @@
 #include "message_codec.hpp"
-MethodCallCls::MethodCallCls(String method, dynamic arguments) {
+MethodCallCls::MethodCallCls(String method, Object arguments) {
     {
         assert(method != nullptr);
     }
@@ -9,7 +9,7 @@ String MethodCallCls::toString() {
     return __sf("%s(%s, %s)", objectRuntimeType(this, __s("MethodCall")), method, arguments);
 }
 
-PlatformExceptionCls::PlatformExceptionCls(String code, dynamic details, String message, String stacktrace) {
+PlatformExceptionCls::PlatformExceptionCls(String code, Object details, String message, String stacktrace) {
     {
         assert(code != nullptr);
     }

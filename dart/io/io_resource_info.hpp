@@ -15,8 +15,8 @@ public:
     virtual String name();
     static int timestamp();
 
-    virtual Map<String, dynamic> fullValueMap();
-    virtual Map<String, dynamic> referenceValueMap();
+    virtual Map<String, Object> fullValueMap();
+    virtual Map<String, Object> referenceValueMap();
 
     static int getNextID();
 
@@ -54,7 +54,7 @@ public:
 
     virtual void addWrite(int bytes);
 
-    virtual Map<String, dynamic> fullValueMap();
+    virtual Map<String, Object> fullValueMap();
 
 private:
 
@@ -74,11 +74,11 @@ public:
 
     static void  fileClosed(_FileResourceInfo info);
 
-    static Iterable<Map<String, dynamic>> getOpenFilesList();
+    static Iterable<Map<String, Object>> getOpenFilesList();
 
     static Future<ServiceExtensionResponse> getOpenFiles(function , params );
 
-    virtual Map<String, dynamic> fileInfoMap();
+    virtual Map<String, Object> fileInfoMap();
 
     static Future<ServiceExtensionResponse> getOpenFileInfoMapByID(function , params );
 
@@ -106,13 +106,13 @@ public:
 
     virtual void stopped();
 
-    virtual Map<String, dynamic> fullValueMap();
+    virtual Map<String, Object> fullValueMap();
 
     static void  processStarted(_SpawnedProcessResourceInfo info);
 
     static void  processStopped(_SpawnedProcessResourceInfo info);
 
-    static Iterable<Map<String, dynamic>> getStartedProcessesList();
+    static Iterable<Map<String, Object>> getStartedProcessesList();
 
     static Future<ServiceExtensionResponse> getStartedProcesses(String function, Map<String, String> params);
 

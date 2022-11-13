@@ -26,14 +26,14 @@ String NullThrownErrorCls::toString() {
     return __s("Throw of null.");
 }
 
-ArgumentErrorCls::ArgumentErrorCls(dynamic message, String name) {
+ArgumentErrorCls::ArgumentErrorCls(Object message, String name) {
     {
         invalidValue = nullptr;
         _hasValue = false;
     }
 }
 
-void ArgumentErrorCls::value(value , String name, dynamic message)
+void ArgumentErrorCls::value(value , String name, Object message)
 
 void ArgumentErrorCls::notNull(String name)
 
@@ -85,7 +85,7 @@ int RangeErrorCls::checkValueInInterval(int value, int minValue, int maxValue, S
     return value;
 }
 
-int RangeErrorCls::checkValidIndex(int index, dynamic indexable, String name, int length, String message) {
+int RangeErrorCls::checkValidIndex(int index, Object indexable, String name, int length, String message) {
     length |= (as<int>(indexable->length));
     if (0 > index || index >= length) {
         name |= __s("index");
@@ -147,7 +147,7 @@ String RangeErrorCls::_errorExplanation() {
     }    return explanation;
 }
 
-IndexErrorCls::IndexErrorCls(int invalidValue, dynamic indexable, String name, String message, int length) {
+IndexErrorCls::IndexErrorCls(int invalidValue, Object indexable, String name, String message, int length) {
     {
         this->indexable = indexable;
         this->length = length | indexable->length;

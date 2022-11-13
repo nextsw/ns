@@ -150,7 +150,7 @@ public:
      KeyEventManagerCls(HardwareKeyboard _hardwareKeyboard, RawKeyboard _rawKeyboard);
     virtual bool handleKeyData(KeyData data);
 
-    virtual Future<Map<String, dynamic>> handleRawKeyMessage(dynamic message);
+    virtual Future<Map<String, Object>> handleRawKeyMessage(Object message);
 
     virtual void clearState();
 

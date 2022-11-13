@@ -219,7 +219,7 @@ std::function<void(T1 , T2 )> _CustomZoneCls::bindBinaryCallbackGuarded(std::fun
     };
 }
 
-dynamic _CustomZoneCls::[](Object key) {
+Object _CustomZoneCls::[](Object key) {
     auto result = _map[key];
     if (result != nullptr || _map->containsKey(key)) {
         return result;
@@ -636,7 +636,7 @@ std::function<void(T1 , T2 )> _RootZoneCls::bindBinaryCallbackGuarded(std::funct
     };
 }
 
-dynamic _RootZoneCls::[](Object key) {
+Object _RootZoneCls::[](Object key) {
     return nullptr;
 }
 

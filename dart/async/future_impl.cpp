@@ -25,7 +25,7 @@ void _AsyncCompleterCls<T>::complete(FutureOr<T> value) {
     if (!future->_mayComplete()) {
         throw make<StateErrorCls>(__s("Future already completed"));
     }
-    future->_asyncComplete(value == nullptr? as<dynamic>(value) : value);
+    future->_asyncComplete(value == nullptr? as<Object>(value) : value);
 }
 
 template<typename T>
@@ -38,7 +38,7 @@ void _SyncCompleterCls<T>::complete(FutureOr<T> value) {
     if (!future->_mayComplete()) {
         throw make<StateErrorCls>(__s("Future already completed"));
     }
-    future->_complete(value == nullptr? as<dynamic>(value) : value);
+    future->_complete(value == nullptr? as<Object>(value) : value);
 }
 
 template<typename T>
@@ -101,11 +101,11 @@ template<typename S, typename T>
 FutureOr<T> _FutureListenerCls<S, T>::handleError(AsyncError asyncError) {
     assert(handlesError() && hasErrorCallback());
     auto errorCallback = this->errorCallback;
-    dynamic result;
-    if (is<std::function<dynamic(Object , StackTrace )>>(errorCallback)) {
-        result = _zone()-><dynamic, Object, StackTrace>runBinary(errorCallback, asyncError->error, asyncError->stackTrace);
+    Object result;
+    if (is<std::function<Object(Object , StackTrace )>>(errorCallback)) {
+        result = _zone()-><Object, Object, StackTrace>runBinary(errorCallback, asyncError->error, asyncError->stackTrace);
     } else {
-        result = _zone()-><dynamic, Object>runUnary(as<dynamic>(errorCallback), asyncError->error);
+        result = _zone()-><Object, Object>runUnary(as<Object>(errorCallback), asyncError->error);
     }
     try {
         return result;
@@ -118,13 +118,13 @@ FutureOr<T> _FutureListenerCls<S, T>::handleError(AsyncError asyncError) {
 }
 
 template<typename S, typename T>
-dynamic _FutureListenerCls<S, T>::handleWhenComplete() {
+Object _FutureListenerCls<S, T>::handleWhenComplete() {
     assert(!handlesError());
     return _zone()->run(_whenCompleteAction());
 }
 
 template<typename S, typename T>
-bool _FutureListenerCls<S, T>::shouldChain(Future<dynamic> value) {
+bool _FutureListenerCls<S, T>::shouldChain(Future<Object> value) {
     return is<Future<T>>(value) || !is<T>(value);
 }
 
@@ -151,9 +151,9 @@ std::function<bool(Object )> _FutureListenerCls<S, T>::_errorTest() {
 }
 
 template<typename S, typename T>
-std::function<dynamic()> _FutureListenerCls<S, T>::_whenCompleteAction() {
+std::function<Object()> _FutureListenerCls<S, T>::_whenCompleteAction() {
     assert(handlesComplete());
-    return <std::function<dynamic()>>unsafeCast(callback);
+    return <std::function<Object()>>unsafeCast(callback);
 }
 
 template<typename T>
@@ -207,10 +207,10 @@ Future<T> _FutureCls<T>::catchError(std::function<void ()> onError, std::functio
 }
 
 template<typename T>
-Future<T> _FutureCls<T>::whenComplete(std::function<dynamic()> action) {
+Future<T> _FutureCls<T>::whenComplete(std::function<Object()> action) {
     _Future<T> result = <T>make<_FutureCls>();
     if (!identical(result->_zone, _rootZone)) {
-        action = result->_zone-><dynamic>registerCallback(action);
+        action = result->_zone-><Object>registerCallback(action);
     }
     _addListener(<T, T>whenComplete(result, action));
     return result;
@@ -500,7 +500,7 @@ void _FutureCls<T>::_complete(FutureOr<T> value) {
         }
     } else {
         _FutureListener<any, any> listeners = _removeListeners();
-        _setValue(as<dynamic>(value));
+        _setValue(as<Object>(value));
         _propagateToListeners(this, listeners);
     }
 }
@@ -528,13 +528,13 @@ void _FutureCls<T>::_asyncComplete(FutureOr<T> value) {
         _chainFuture(as<FutureCls>(value));
         return;
     }
-    _asyncCompleteWithValue(as<dynamic>(value));
+    _asyncCompleteWithValue(as<Object>(value));
 }
 
 template<typename T>
-void _FutureCls<T>::_asyncCompleteUnchecked(dynamic value) {
+void _FutureCls<T>::_asyncCompleteUnchecked(Object value) {
     assert(identical(as<FutureOr<T>>(value), value));
-    Unknown typedValue = <FutureOr<T>>unsafeCast(value);
+    auto typedValue = <FutureOr<T>>unsafeCast(value);
     if (is<Future<T>>(typedValue)) {
         _chainFuture(as<FutureCls>(typedValue));
         return;
@@ -543,7 +543,7 @@ void _FutureCls<T>::_asyncCompleteUnchecked(dynamic value) {
 }
 
 template<typename T>
-void _FutureCls<T>::_asyncCompleteUncheckedNoFuture(dynamic value) {
+void _FutureCls<T>::_asyncCompleteUncheckedNoFuture(Object value) {
     assert(identical(as<T>(value), value));
     _asyncCompleteWithValue(<T>unsafeCast(value));
 }
@@ -601,7 +601,7 @@ void _FutureCls<T>::_propagateToListeners(_Future<any> source, _FutureListener<a
             listener = nextListener;
             nextListener = listener->_nextListener;
         }
-        dynamic sourceResult = source->_resultOrListeners;
+        Object sourceResult = source->_resultOrListeners;
         bool listenerHasError = hasError;
         auto listenerValueOrError = sourceResult;
         if (hasError || listener->handlesValue() || listener->handlesComplete()) {
@@ -665,11 +665,11 @@ void _FutureCls<T>::_propagateToListeners(_Future<any> source, _FutureListener<a
 }
 
 std::function<void ()> _registerErrorHandler(std::function<void ()> errorHandler, Zone zone) {
-    if (is<std::function<dynamic(Object , StackTrace )>>(errorHandler)) {
-        return zone-><dynamic, Object, StackTrace>registerBinaryCallback(errorHandler);
+    if (is<std::function<Object(Object , StackTrace )>>(errorHandler)) {
+        return zone-><Object, Object, StackTrace>registerBinaryCallback(errorHandler);
     }
-    if (is<std::function<dynamic(Object )>>(errorHandler)) {
-        return zone-><dynamic, Object>registerUnaryCallback(errorHandler);
+    if (is<std::function<Object(Object )>>(errorHandler)) {
+        return zone-><Object, Object>registerUnaryCallback(errorHandler);
     }
     throw ArgumentErrorCls->value(errorHandler, __s("onError"), __s("Error handler must accept one Object or one Object and a StackTrace as arguments, and return a value of the returned future's type"));
 }

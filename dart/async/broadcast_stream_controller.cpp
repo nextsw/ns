@@ -355,7 +355,7 @@ void _SyncBroadcastStreamControllerCls<T>::_sendData(T data) {
     }
     if (_hasOneListener()) {
         _state |= _BroadcastStreamControllerCls::_STATE_FIRING;
-        _BroadcastSubscription<T> firstSubscription = as<dynamic>(_firstSubscription);
+        _BroadcastSubscription<T> firstSubscription = as<Object>(_firstSubscription);
         firstSubscription->_add(data);
         _state &= ~_BroadcastStreamControllerCls->_STATE_FIRING;
         if (_isEmpty()) {

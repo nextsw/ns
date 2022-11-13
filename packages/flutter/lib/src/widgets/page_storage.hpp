@@ -20,7 +20,7 @@ using PageStorageKey = std::shared_ptr<PageStorageKeyCls<T>>;
 
 class _StorageEntryIdentifierCls : public ObjectCls {
 public:
-    List<PageStorageKey<dynamic>> keys;
+    List<PageStorageKey<Object>> keys;
 
 
     virtual bool isNotEmpty();
@@ -33,7 +33,7 @@ public:
 
 private:
 
-     _StorageEntryIdentifierCls(List<PageStorageKey<dynamic>> keys);
+     _StorageEntryIdentifierCls(List<PageStorageKey<Object>> keys);
 
 };
 using _StorageEntryIdentifier = std::shared_ptr<_StorageEntryIdentifierCls>;
@@ -41,17 +41,17 @@ using _StorageEntryIdentifier = std::shared_ptr<_StorageEntryIdentifierCls>;
 class PageStorageBucketCls : public ObjectCls {
 public:
 
-    virtual void writeState(BuildContext context, dynamic data, Object identifier);
+    virtual void writeState(BuildContext context, Object data, Object identifier);
 
-    virtual dynamic readState(BuildContext context, Object identifier);
+    virtual Object readState(BuildContext context, Object identifier);
 
 private:
-    Map<Object, dynamic> _storage;
+    Map<Object, Object> _storage;
 
 
-    static bool _maybeAddKey(BuildContext context, List<PageStorageKey<dynamic>> keys);
+    static bool _maybeAddKey(BuildContext context, List<PageStorageKey<Object>> keys);
 
-    virtual List<PageStorageKey<dynamic>> _allKeys(BuildContext context);
+    virtual List<PageStorageKey<Object>> _allKeys(BuildContext context);
 
     virtual _StorageEntryIdentifier _computeIdentifier(BuildContext context);
 

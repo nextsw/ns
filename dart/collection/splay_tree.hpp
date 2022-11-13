@@ -89,7 +89,7 @@ private:
 };
 template<typename K, typename Node>
 using _SplayTree = std::shared_ptr<_SplayTreeCls<K, Node>>;
-int _dynamicCompare(dynamic a, dynamic b);
+int _dynamicCompare(Object a, Object b);
 
 template<typename K>
  Comparator<K> _defaultCompare();
@@ -99,15 +99,15 @@ template<typename K, typename V>
 class SplayTreeMapCls : public _SplayTreeCls<K, _SplayTreeMapNode<K, V>> {
 public:
 
-     SplayTreeMapCls(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+     SplayTreeMapCls(std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
-    virtual void  from(Map<dynamic, dynamic> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  from(Map<Object, Object> other, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
-    virtual void  of(Map<K, V> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  of(Map<K, V> other, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
-    virtual void  fromIterable(Iterable<any> iterable, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
+    virtual void  fromIterable(Iterable<any> iterable, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey, std::function<K(Object element)> key, std::function<V(Object element)> value);
 
-    virtual void  fromIterables(Iterable<K> keys, Iterable<V> values, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  fromIterables(Iterable<K> keys, Iterable<V> values, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
     virtual V operator[](Object key);
 
@@ -301,11 +301,11 @@ template<typename E>
 class SplayTreeSetCls : public _SplayTreeCls<E, _SplayTreeSetNode<E>> {
 public:
 
-     SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+     SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
-    virtual void  from(Iterable<any> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  from(Iterable<any> elements, std::function<int(E key1, E key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
-    virtual void  of(Iterable<E> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey);
+    virtual void  of(Iterable<E> elements, std::function<int(E key1, E key2)> compare, std::function<bool(Object potentialKey)> isValidKey);
 
     template<typename R>
  virtual Set<R> cast();

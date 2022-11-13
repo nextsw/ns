@@ -123,24 +123,24 @@ public:
     virtual BinaryMessenger binaryMessenger();
 
     template<typename T>
- virtual Future<T> invokeMethod(String method, dynamic arguments);
+ virtual Future<T> invokeMethod(String method, Object arguments);
 
     template<typename T>
- virtual Future<List<T>> invokeListMethod(String method, dynamic arguments);
+ virtual Future<List<T>> invokeListMethod(String method, Object arguments);
 
     template<typename K, typename V>
- virtual Future<Map<K, V>> invokeMapMethod(String method, dynamic arguments);
+ virtual Future<Map<K, V>> invokeMapMethod(String method, Object arguments);
 
-    virtual void setMethodCallHandler(std::function<Future<dynamic>(MethodCall call)> handler);
+    virtual void setMethodCallHandler(std::function<Future<Object>(MethodCall call)> handler);
 
 private:
     BinaryMessenger _binaryMessenger;
 
 
     template<typename T>
- virtual Future<T> _invokeMethod(String method, dynamic arguments, bool missingOk);
+ virtual Future<T> _invokeMethod(String method, Object arguments, bool missingOk);
 
-    virtual Future<ByteData> _handleAsMethodCall(ByteData message, std::function<Future<dynamic>(MethodCall call)> handler);
+    virtual Future<ByteData> _handleAsMethodCall(ByteData message, std::function<Future<Object>(MethodCall call)> handler);
 
 };
 using MethodChannel = std::shared_ptr<MethodChannelCls>;
@@ -150,7 +150,7 @@ public:
 
      OptionalMethodChannelCls(String name, MethodCodec codec, Unknown binaryMessenger);
     template<typename T>
- virtual Future<T> invokeMethod(String method, dynamic arguments);
+ virtual Future<T> invokeMethod(String method, Object arguments);
 
 private:
 
@@ -168,7 +168,7 @@ public:
 
     virtual BinaryMessenger binaryMessenger();
 
-    virtual Stream<dynamic> receiveBroadcastStream(dynamic arguments);
+    virtual Stream<Object> receiveBroadcastStream(Object arguments);
 
 private:
     BinaryMessenger _binaryMessenger;

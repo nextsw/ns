@@ -20,7 +20,7 @@ public:
 
     virtual Future<T> timeout(Duration timeLimit, std::function<FutureOr<T>()> onTimeout);
 
-    virtual Future<T> whenComplete(std::function<FutureOr<dynamic>()> action);
+    virtual Future<T> whenComplete(std::function<FutureOr<Object>()> action);
 
 private:
     T _value;

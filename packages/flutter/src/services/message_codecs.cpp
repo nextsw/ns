@@ -29,7 +29,7 @@ ByteData JSONMessageCodecCls::encodeMessage(Object message) {
     return make<StringCodecCls>()->encodeMessage(json->encode(message));
 }
 
-dynamic JSONMessageCodecCls::decodeMessage(ByteData message) {
+Object JSONMessageCodecCls::decodeMessage(ByteData message) {
     if (message == nullptr) {
         return message;
     }
@@ -53,7 +53,7 @@ MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     throw make<FormatExceptionCls>(__sf("Invalid method call: %s", decoded));
 }
 
-dynamic JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
+Object JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(envelope);
     if (!is<List<any>>(decoded)) {
         throw make<FormatExceptionCls>(__sf("Expected envelope List, got %s", as<ListCls>(decoded)));
@@ -88,7 +88,7 @@ ByteData StandardMessageCodecCls::encodeMessage(Object message) {
     return buffer->done();
 }
 
-dynamic StandardMessageCodecCls::decodeMessage(ByteData message) {
+Object StandardMessageCodecCls::decodeMessage(ByteData message) {
     if (message == nullptr) {
         return nullptr;
     }
@@ -265,7 +265,7 @@ ByteData StandardMethodCodecCls::encodeErrorEnvelope(String code, Object details
     return buffer->done();
 }
 
-dynamic StandardMethodCodecCls::decodeEnvelope(ByteData envelope) {
+Object StandardMethodCodecCls::decodeEnvelope(ByteData envelope) {
     if (envelope->lengthInBytes() == 0) {
         throw make<FormatExceptionCls>(__s("Expected envelope, got nothing"));
     }

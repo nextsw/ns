@@ -308,7 +308,7 @@ Iterable<_DragTargetState<Object>> _DragAvatarCls<T>::_getDragTargets(Iterable<H
     for (HitTestEntry<any> entry : path) {
         HitTestTarget target = entry->target;
         if (is<RenderMetaData>(target)) {
-            dynamic metaData = as<RenderMetaDataCls>(target)->metaData;
+            Object metaData = as<RenderMetaDataCls>(target)->metaData;
             if (is<_DragTargetState<any>>(metaData) && metaData->isExpectedDataType(data, T)) {
                 targets->add(metaData);
             }

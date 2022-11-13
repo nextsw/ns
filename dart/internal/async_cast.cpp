@@ -29,7 +29,7 @@ Future<any> CastStreamSubscriptionCls<S, T>::cancel() {
 
 template<typename S, typename T>
 void CastStreamSubscriptionCls<S, T>::onData(std::function<void(T data)> handleData) {
-    _handleData = handleData == nullptr? nullptr : _zone-><dynamic, T>registerUnaryCallback(handleData);
+    _handleData = handleData == nullptr? nullptr : _zone-><Object, T>registerUnaryCallback(handleData);
 }
 
 template<typename S, typename T>
@@ -39,10 +39,10 @@ void CastStreamSubscriptionCls<S, T>::onError(std::function<void ()> handleError
         _handleError = nullptr;
     } else {
         if (is<std::function<void(Object , StackTrace )>>(handleError)) {
-        _handleError = _zone-><dynamic, Object, StackTrace>registerBinaryCallback(handleError);
+        _handleError = _zone-><Object, Object, StackTrace>registerBinaryCallback(handleError);
     } else {
         if (is<std::function<void(Object )>>(handleError)) {
-        _handleError = _zone-><dynamic, Object>registerUnaryCallback(handleError);
+        _handleError = _zone-><Object, Object>registerUnaryCallback(handleError);
     } else {
         throw make<ArgumentErrorCls>(__s("handleError callback must take either an Object (the error), or both an Object (the error) and a StackTrace."));
     }

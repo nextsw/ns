@@ -109,9 +109,9 @@ public:
 
     virtual FutureOr<T> handleError(AsyncError asyncError);
 
-    virtual dynamic handleWhenComplete();
+    virtual Object handleWhenComplete();
 
-    virtual bool shouldChain(Future<dynamic> value);
+    virtual bool shouldChain(Future<Object> value);
 
 private:
     _FutureListener<any, any> _nextListener;
@@ -125,7 +125,7 @@ private:
 
     virtual std::function<bool(Object )> _errorTest();
 
-    virtual std::function<dynamic()> _whenCompleteAction();
+    virtual std::function<Object()> _whenCompleteAction();
 
 };
 template<typename S, typename T>
@@ -148,7 +148,7 @@ public:
 
     virtual Future<T> catchError(std::function<void ()> onError, std::function<bool(Object error)> test);
 
-    virtual Future<T> whenComplete(std::function<dynamic()> action);
+    virtual Future<T> whenComplete(std::function<Object()> action);
 
     virtual Stream<T> asStream();
 
@@ -235,9 +235,9 @@ private:
 
     virtual void _asyncComplete(FutureOr<T> value);
 
-    virtual void _asyncCompleteUnchecked(dynamic value);
+    virtual void _asyncCompleteUnchecked(Object value);
 
-    virtual void _asyncCompleteUncheckedNoFuture(dynamic value);
+    virtual void _asyncCompleteUncheckedNoFuture(Object value);
 
     virtual void _asyncCompleteWithValue(T value);
 

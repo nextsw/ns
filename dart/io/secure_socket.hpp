@@ -118,7 +118,7 @@ public:
     ReceivePort keyLogPort;
 
 
-    static Future<_RawSecureSocket> connect(dynamic host, int requestedPort, bool isServer, RawSocket socket, List<int> bufferedData, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
+    static Future<_RawSecureSocket> connect(Object host, int requestedPort, bool isServer, RawSocket socket, List<int> bufferedData, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols);
 
     virtual StreamSubscription<RawSocketEvent> listen(std::function<void(RawSocketEvent data)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
 

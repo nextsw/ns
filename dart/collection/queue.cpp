@@ -94,7 +94,7 @@ E _DoubleLinkedQueueSentinelCls<E>::_remove() {
 }
 
 template<typename E>
-void DoubleLinkedQueueCls<E>::from(Iterable<dynamic> elements) {
+void DoubleLinkedQueueCls<E>::from(Iterable<Object> elements) {
     DoubleLinkedQueue<E> list = <E>make<DoubleLinkedQueueCls>();
     for (auto e : elements) {
         list->addLast(as<E>(e));
@@ -327,8 +327,8 @@ ListQueueCls<E>::ListQueueCls(int initialCapacity) {
 }
 
 template<typename E>
-void ListQueueCls<E>::from(Iterable<dynamic> elements) {
-    if (is<List<dynamic>>(elements)) {
+void ListQueueCls<E>::from(Iterable<Object> elements) {
+    if (is<List<Object>>(elements)) {
         int length = as<ListCls>(elements)->length();
         ListQueue<E> queue = <E>make<ListQueueCls>(length + 1);
         assert(queue->_table->length > length);

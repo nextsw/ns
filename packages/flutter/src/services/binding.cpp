@@ -6,7 +6,7 @@ void ServicesBindingCls::initInstances() {
     _restorationManager = createRestorationManager();
     _initKeyboard();
     initLicenses();
-    SystemChannelsCls::system->setMessageHandler([=] (dynamic message) {
+    SystemChannelsCls::system->setMessageHandler([=] (Object message) {
         handleSystemMessage(as<Object>(message));
     });
     SystemChannelsCls::lifecycle->setMessageHandler(_handleLifecycleMessage);
@@ -44,7 +44,7 @@ void ServicesBindingCls::handleMemoryPressure() {
 }
 
 Future<void> ServicesBindingCls::handleSystemMessage(Object systemMessage) {
-    Map<String, dynamic> message = as<Map<String, dynamic>>(systemMessage);
+    Map<String, Object> message = as<Map<String, Object>>(systemMessage);
     String type = as<String>(message[__s("type")]);
     ;
     return;
@@ -112,7 +112,7 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
         }
         List<LicenseEntry> licenses = await <String, List<LicenseEntry>>compute(_parseLicenses, rawLicenses, __s("parseLicenses"));
         licenses->forEach(controller->add);
-        await await controller->close();
+        await controller->close();
     });
     return controller->stream();
 }
@@ -140,9 +140,9 @@ Future<String> ServicesBindingCls::_handleLifecycleMessage(String message) {
 Future<void> ServicesBindingCls::_handlePlatformMessage(MethodCall methodCall) {
     String method = methodCall->method;
     assert(method == __s("SystemChrome.systemUIChange"));
-    List<dynamic> args = as<List<dynamic>>(methodCall->arguments);
+    List<Object> args = as<List<Object>>(methodCall->arguments);
     if (_systemUiChangeCallback != nullptr) {
-        await await _systemUiChangeCallback!(as<bool>(args[0]));
+        await _systemUiChangeCallback!(as<bool>(args[0]));
     }
 }
 

@@ -39,7 +39,7 @@ void FutureCls<T>::sync(std::function<FutureOr<T>()> computation) {
         if (is<Future<T>>(result)) {
             return as<FutureCls>(result);
         } else {
-            return <T>value(as<dynamic>(result));
+            return <T>value(as<Object>(result));
         }
     } catch (Unknown error) {
         auto future = <T>make<_FutureCls>();

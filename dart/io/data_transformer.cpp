@@ -122,7 +122,7 @@ void _FilterSinkCls::addSlice(List<int> data, int start, int end, bool isLast) {
         _filter->process(bufferAndStart->buffer, bufferAndStart->start, end - (start - bufferAndStart->start));
         List<int> out;
         while (true) {
-            Unknown out = _filter->processed(false);
+            auto out = _filter->processed(false);
             if (out == nullptr) {
                 break;
             }
@@ -146,7 +146,7 @@ void _FilterSinkCls::close() {
     }
     try {
         while (true) {
-            Unknown out = _filter->processed(true);
+            auto out = _filter->processed(true);
             if (out == nullptr) {
                 break;
             }

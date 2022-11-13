@@ -35,7 +35,7 @@ void _FileStreamCls::_readBlock() {
     }
     _readInProgress = true;
     int readBytes = _blockSize;
-    Unknown end = _end;
+    auto end = _end;
     if (end != nullptr) {
         readBytes = min(readBytes, end - _position);
         if ( < 0) {
@@ -84,7 +84,7 @@ void _FileStreamCls::_start() {
     InlineMethod;
     InlineMethod;
     InlineMethod;
-    Unknown path = _path;
+    auto path = _path;
     if (path != nullptr) {
         make<FileCls>(path)->open(FileModeCls::read)->then(onOpenFile, openFailed);
     } else {
@@ -620,7 +620,7 @@ Future<RandomAccessFile> _RandomAccessFileCls::writeFrom(List<int> buffer, int s
     } catch (Unknown e) {
         return FutureCls->error(e);
     };
-    List<any> request = <dynamic>filled(4, nullptr);
+    List<any> request = <Object>filled(4, nullptr);
     request[0] = nullptr;
     request[1] = result->buffer;
     request[2] = result->start;

@@ -19,7 +19,7 @@ TextEditingDeltaCls::TextEditingDeltaCls(TextRange composing, String oldText, Te
     }
 }
 
-void TextEditingDeltaCls::fromJSON(Map<String, dynamic> encoded) {
+void TextEditingDeltaCls::fromJSON(Map<String, Object> encoded) {
     String oldText = as<String>(encoded[__s("oldText")]);
     int replacementDestinationStart = as<int>(encoded[__s("deltaStart")]);
     int replacementDestinationEnd = as<int>(encoded[__s("deltaEnd")]);

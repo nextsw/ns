@@ -68,7 +68,7 @@ ImageStream ImageProviderCls<T>::resolve(ImageConfiguration configuration) {
     _createErrorHandlerAndKey(configuration, [=] (T key,ImageErrorListener errorHandler) {
         resolveStreamForKey(configuration, stream, key, errorHandler);
     }, [=] (T key,Object exception,StackTrace stack) {
-        await await nullptr;
+        await nullptr;
         InformationCollector collector;
         assert([=] () {
             collector = [=] () {

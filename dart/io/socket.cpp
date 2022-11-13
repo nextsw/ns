@@ -30,7 +30,7 @@ Future<ServerSocket> ServerSocketCls::bind(address , int port, int backlog, bool
 
 void RawSocketOptionCls::fromInt(int level, int option, int value) {
     Uint8List list = make<Uint8ListCls>(4);
-    Unknown buffer = ByteDataCls->view(list->buffer, list->offsetInBytes);
+    auto buffer = ByteDataCls->view(list->buffer, list->offsetInBytes);
     buffer->setInt32(0, value, EndianCls::host);
     return make<RawSocketOptionCls>(level, option, list);
 }

@@ -74,16 +74,16 @@ void WidgetsBindingCls::initServiceExtensions() {
             });
         }
         registerServiceExtension(__s("didSendFirstFrameEvent"), [=] (Unknown  _) {
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("enabled"), _needToReportFirstFrame? __s("false") : __s("true"));return list2;
+                    Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("enabled"), _needToReportFirstFrame? __s("false") : __s("true"));return list2;
         });
         registerServiceExtension(__s("didSendFirstFrameRasterizedEvent"), [=] (Unknown  _) {
-                    Map<String, dynamic> map3 = make<MapCls<>>();        map3.set(__s("enabled"), firstFrameRasterized()? __s("true") : __s("false"));return list3;
+                    Map<String, Object> map3 = make<MapCls<>>();        map3.set(__s("enabled"), firstFrameRasterized()? __s("true") : __s("false"));return list3;
         });
         registerServiceExtension(__s("fastReassemble"), [=] (Map<String, Object> params) {
             String className = as<String>(params[__s("className")]);
             BindingBaseCls::debugReassembleConfig = make<DebugReassembleConfigCls>(className);
             try {
-                await await reassembleApplication();
+                await reassembleApplication();
             } finally {
                 BindingBaseCls::debugReassembleConfig = nullptr;
             };
@@ -346,7 +346,7 @@ Future<void> WidgetsBindingCls::_forceRebuild() {
     return <void>value();
 }
 
-Future<void> WidgetsBindingCls::_handlePushRouteInformation(Map<dynamic, dynamic> routeArguments) {
+Future<void> WidgetsBindingCls::_handlePushRouteInformation(Map<Object, Object> routeArguments) {
     for (WidgetsBindingObserver observer : <WidgetsBindingObserver>of(_observers)) {
         if (await observer->didPushRouteInformation(make<RouteInformationCls>(as<String>(routeArguments[__s("location")]), as<Object>(routeArguments[__s("state")])))) {
             return;
@@ -354,9 +354,9 @@ Future<void> WidgetsBindingCls::_handlePushRouteInformation(Map<dynamic, dynamic
     }
 }
 
-Future<dynamic> WidgetsBindingCls::_handleNavigationInvocation(MethodCall methodCall) {
+Future<Object> WidgetsBindingCls::_handleNavigationInvocation(MethodCall methodCall) {
     ;
-    return <dynamic>value();
+    return <Object>value();
 }
 
 void WidgetsBindingCls::_handleBuildScheduled() {

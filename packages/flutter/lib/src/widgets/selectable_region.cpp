@@ -384,7 +384,7 @@ Future<void> _SelectableRegionStateCls::_copy() {
     if (data == nullptr) {
         return;
     }
-    await await ClipboardCls->setData(make<ClipboardDataCls>(data->plainText));
+    await ClipboardCls->setData(make<ClipboardDataCls>(data->plainText));
 }
 
 template<typename T>

@@ -28,6 +28,6 @@ bool SphereCls::intersectsWithVector3(Vector3 other) {
 }
 
 bool SphereCls::intersectsWithSphere(Sphere other) {
-    Unknown radiusSum = radius + other->radius;
+    auto radiusSum = radius + other->radius;
     return other->center()->distanceToSquared(center()) <= (radiusSum * radiusSum);
 }

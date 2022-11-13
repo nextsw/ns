@@ -43,9 +43,9 @@ class UriCls : public ObjectCls {
 public:
 
     static Uri base();
-     UriCls(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo);
-    virtual void  http(String authority, String unencodedPath, Map<String, dynamic> queryParameters);
-    virtual void  https(String authority, String unencodedPath, Map<String, dynamic> queryParameters);
+     UriCls(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo);
+    virtual void  http(String authority, String unencodedPath, Map<String, Object> queryParameters);
+    virtual void  https(String authority, String unencodedPath, Map<String, Object> queryParameters);
     virtual void  file(String path, bool windows);
     virtual void  directory(String path, bool windows);
     virtual void  dataFromString(String content, bool base64, Encoding encoding, String mimeType, Map<String, String> parameters);
@@ -79,7 +79,7 @@ public:
     virtual int hashCode();
     virtual bool operator==(Object other);
     virtual String toString();
-    virtual Uri replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo);
+    virtual Uri replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo);
     virtual Uri removeFragment();
     virtual Uri resolve(String reference);
     virtual Uri resolveUri(Uri reference);
@@ -130,9 +130,9 @@ public:
 
     virtual void  notSimple(String uri, int start, int end, int schemeEnd, int hostStart, int portStart, int pathStart, int queryStart, int fragmentStart, String scheme);
 
-    virtual void  http(String authority, String unencodedPath, Map<String, dynamic> queryParameters);
+    virtual void  http(String authority, String unencodedPath, Map<String, Object> queryParameters);
 
-    virtual void  https(String authority, String unencodedPath, Map<String, dynamic> queryParameters);
+    virtual void  https(String authority, String unencodedPath, Map<String, Object> queryParameters);
 
     virtual String authority();
 
@@ -152,7 +152,7 @@ public:
 
     virtual void  directory(String path, bool windows);
 
-    virtual Uri replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo);
+    virtual Uri replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo);
 
     virtual Uri removeFragment();
 
@@ -225,13 +225,13 @@ private:
 
 
     virtual void  _internal(String scheme, String _userInfo, String _host, int _port, String path, String _query, String _fragment);
-     _UriCls(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo);
+     _UriCls(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo);
 
     static int _defaultPort(String scheme);
 
     static Never _fail(String uri, int index, String message);
 
-    static _Uri _makeHttpUri(String scheme, String authority, String unencodedPath, Map<String, dynamic> queryParameters);
+    static _Uri _makeHttpUri(String scheme, String authority, String unencodedPath, Map<String, Object> queryParameters);
 
     static bool _isWindows();
     static void _checkNonWindowsPathReservedCharacters(List<String> segments, bool argumentError);
@@ -272,7 +272,7 @@ private:
 
     static String _normalizePath(String path, String scheme, bool hasAuthority);
 
-    static String _makeQuery(String query, int start, int end, Map<String, dynamic> queryParameters);
+    static String _makeQuery(String query, int start, int end, Map<String, Object> queryParameters);
 
     static String _makeFragment(String fragment, int start, int end);
 
@@ -468,7 +468,7 @@ public:
 
     virtual Uri removeFragment();
 
-    virtual Uri replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo);
+    virtual Uri replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo);
 
     virtual Uri resolve(String reference);
 

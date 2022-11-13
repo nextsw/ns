@@ -69,7 +69,7 @@ void Aabb3Cls::setQuad(Quad quad) {
 }
 
 void Aabb3Cls::setObb3(Obb3 obb) {
-    Unknown corner = Vector3Cls->zero();
+    auto corner = Vector3Cls->zero();
     obb->copyCorner(0, corner);
     _min->setFrom(corner);
     _max->setFrom(corner);
@@ -92,17 +92,17 @@ void Aabb3Cls::setObb3(Obb3 obb) {
 void Aabb3Cls::setRay(Ray ray, double limitMin, double limitMax) {
     auto _c1 = ray;_c1.auto _c2 = copyAt(_min, limitMin);_c2.copyAt(_max, limitMax);_c2;_c1;
     if (_max->x < _min->x) {
-        Unknown temp = _max->x;
+        auto temp = _max->x;
         _max->x = _min->x;
         _min->x = temp;
     }
     if (_max->y < _min->y) {
-        Unknown temp = _max->y;
+        auto temp = _max->y;
         _max->y = _min->y;
         _min->y = temp;
     }
     if (_max->z < _min->z) {
-        Unknown temp = _max->z;
+        auto temp = _max->z;
         _max->z = _min->z;
         _min->z = temp;
     }
@@ -179,14 +179,14 @@ void Aabb3Cls::hullPoint(Vector3 point) {
 }
 
 bool Aabb3Cls::containsAabb3(Aabb3 other) {
-    Unknown otherMax = other->_max;
-    Unknown otherMin = other->_min;
+    auto otherMax = other->_max;
+    auto otherMin = other->_min;
     return (_min->x < otherMin->x) && (_min->y < otherMin->y) && (_min->z < otherMin->z) && (_max->x > otherMax->x) && (_max->y > otherMax->y) && (_max->z > otherMax->z);
 }
 
 bool Aabb3Cls::containsSphere(Sphere other) {
-    Unknown boxExtends = Vector3Cls->all(other->radius);
-    Unknown sphereBox = Aabb3Cls->centerAndHalfExtents(other->_center, boxExtends);
+    auto boxExtends = Vector3Cls->all(other->radius);
+    auto sphereBox = Aabb3Cls->centerAndHalfExtents(other->_center, boxExtends);
     return containsAabb3(sphereBox);
 }
 
@@ -199,14 +199,14 @@ bool Aabb3Cls::containsTriangle(Triangle other) {
 }
 
 bool Aabb3Cls::intersectsWithAabb3(Aabb3 other) {
-    Unknown otherMax = other->_max;
-    Unknown otherMin = other->_min;
+    auto otherMax = other->_max;
+    auto otherMin = other->_min;
     return (_min->x <= otherMax->x) && (_min->y <= otherMax->y) && (_min->z <= otherMax->z) && (_max->x >= otherMin->x) && (_max->y >= otherMin->y) && (_max->z >= otherMin->z);
 }
 
 bool Aabb3Cls::intersectsWithSphere(Sphere other) {
-    Unknown center = other->_center;
-    Unknown radius = other->radius;
+    auto center = other->_center;
+    auto radius = other->radius;
     auto d = 0.0;
     auto e = 0.0;
     for (;  < 3; ++i) {
@@ -399,10 +399,10 @@ bool Aabb3Cls::intersectsWithTriangle(Triangle other, double epsilon, Intersecti
 
 bool Aabb3Cls::intersectsWithPlane(Plane other, IntersectionResult result) {
     copyCenterAndHalfExtents(_aabbCenter, _aabbHalfExtents);
-    Unknown r = _aabbHalfExtents[0] * other->normal()[0]->abs() + _aabbHalfExtents[1] * other->normal()[1]->abs() + _aabbHalfExtents[2] * other->normal()[2]->abs();
-    Unknown s = other->normal()->dot(_aabbCenter) - other->constant;
+    auto r = _aabbHalfExtents[0] * other->normal()[0]->abs() + _aabbHalfExtents[1] * other->normal()[1]->abs() + _aabbHalfExtents[2] * other->normal()[2]->abs();
+    auto s = other->normal()->dot(_aabbCenter) - other->constant;
     if (s->abs() <= r) {
-        Unknown a = s - r;
+        auto a = s - r;
         if (result != nullptr && (result->_depth == nullptr || (result->_depth!) < a)) {
             result->_depth = a;
             result->axis->setFrom(other->normal());

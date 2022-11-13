@@ -148,7 +148,7 @@ private:
 
     virtual void _filter(std::function<bool(E element)> test, bool retainMatching);
 
-    static int _compareAny(dynamic a, dynamic b);
+    static int _compareAny(Object a, Object b);
 
 };
 template<typename E>

@@ -3,7 +3,7 @@ int PlatformViewsRegistryCls::getNextPlatformViewId() {
     return _nextPlatformViewId++;
 }
 
-AndroidViewController PlatformViewsServiceCls::initAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
+AndroidViewController PlatformViewsServiceCls::initAndroidView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
     assert(id != nullptr);
     assert(viewType != nullptr);
     assert(layoutDirection != nullptr);
@@ -14,7 +14,7 @@ AndroidViewController PlatformViewsServiceCls::initAndroidView(dynamic creationP
     return controller;
 }
 
-SurfaceAndroidViewController PlatformViewsServiceCls::initSurfaceAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
+SurfaceAndroidViewController PlatformViewsServiceCls::initSurfaceAndroidView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
     assert(id != nullptr);
     assert(viewType != nullptr);
     assert(layoutDirection != nullptr);
@@ -25,7 +25,7 @@ SurfaceAndroidViewController PlatformViewsServiceCls::initSurfaceAndroidView(dyn
     return controller;
 }
 
-ExpensiveAndroidViewController PlatformViewsServiceCls::initExpensiveAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
+ExpensiveAndroidViewController PlatformViewsServiceCls::initExpensiveAndroidView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
     ExpensiveAndroidViewController controller = ExpensiveAndroidViewControllerCls->_(id, viewType, layoutDirection, creationParams, creationParamsCodec);
     _instance->_focusCallbacks[id] = onFocus | [=] () {
     };
@@ -35,17 +35,17 @@ ExpensiveAndroidViewController PlatformViewsServiceCls::initExpensiveAndroidView
 Future<void> PlatformViewsServiceCls::synchronizeToNativeViewHierarchy(bool yes) {
 }
 
-Future<UiKitViewController> PlatformViewsServiceCls::initUiKitView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
+Future<UiKitViewController> PlatformViewsServiceCls::initUiKitView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType) {
     assert(id != nullptr);
     assert(viewType != nullptr);
     assert(layoutDirection != nullptr);
     assert(creationParams == nullptr || creationParamsCodec != nullptr);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);map1.set(__s("viewType"), viewType);Map<String, dynamic> args = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), id);map1.set(__s("viewType"), viewType);Map<String, Object> args = list1;
     if (creationParams != nullptr) {
         ByteData paramsByteData = creationParamsCodec!->encodeMessage(creationParams)!;
         args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer(), 0, paramsByteData->lengthInBytes());
     }
-    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
+    await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
     if (onFocus != nullptr) {
         _instance->_focusCallbacks[id] = onFocus;
     }
@@ -123,7 +123,7 @@ String AndroidMotionEventCls::toString() {
     return __sf("AndroidPointerEvent(downTime: %s, eventTime: %s, action: %s, pointerCount: %s, pointerProperties: %s, pointerCoords: %s, metaState: %s, buttonState: %s, xPrecision: %s, yPrecision: %s, deviceId: %s, edgeFlags: %s, source: %s, flags: %s, motionEventId: %s)", downTime, eventTime, action, pointerCount, pointerProperties, pointerCoords, metaState, buttonState, xPrecision, yPrecision, deviceId, edgeFlags, source, flags, motionEventId);
 }
 
-List<dynamic> AndroidMotionEventCls::_asList(int viewId) {
+List<Object> AndroidMotionEventCls::_asList(int viewId) {
     return makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem, ArrayItem);
 }
 
@@ -228,7 +228,7 @@ Future<void> AndroidViewControllerCls::create(Size size) {
         return;
     }
     _state = _AndroidViewStateCls::creating;
-    await await _sendCreateMessage(size);
+    await _sendCreateMessage(size);
     _state = _AndroidViewStateCls::created;
     for (PlatformViewCreatedCallback callback : _platformViewCreatedCallbacks) {
         callback(viewId);
@@ -238,7 +238,7 @@ Future<void> AndroidViewControllerCls::create(Size size) {
 Future<Size> AndroidViewControllerCls::setSize(Size size) {
     assert(_state != _AndroidViewStateCls::disposed, __sf("Android view is disposed. View id: %s", viewId));
     if (_state == _AndroidViewStateCls::waitingForSize) {
-        await await create(size);
+        await create(size);
         return size;
     } else {
         return _sendResizeMessage(size);
@@ -246,7 +246,7 @@ Future<Size> AndroidViewControllerCls::setSize(Size size) {
 }
 
 Future<void> AndroidViewControllerCls::sendMotionEvent(AndroidMotionEvent event) {
-    await await SystemChannelsCls::platform_views-><dynamic>invokeMethod(__s("touch"), event->_asList(viewId));
+    await SystemChannelsCls::platform_views-><Object>invokeMethod(__s("touch"), event->_asList(viewId));
 }
 
 PointTransformer AndroidViewControllerCls::pointTransformer() {
@@ -288,7 +288,7 @@ Future<void> AndroidViewControllerCls::setLayoutDirection(TextDirection layoutDi
     if (_state == _AndroidViewStateCls::waitingForSize) {
         return;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("direction"), _getAndroidDirection(layoutDirection));await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("setDirection"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("direction"), _getAndroidDirection(layoutDirection));await SystemChannelsCls::platform_views-><void>invokeMethod(__s("setDirection"), list1);
 }
 
 Future<void> AndroidViewControllerCls::dispatchPointerEvent(PointerEvent event) {
@@ -308,7 +308,7 @@ Future<void> AndroidViewControllerCls::dispatchPointerEvent(PointerEvent event) 
     }
 ;
     }    if (androidEvent != nullptr) {
-        await await sendMotionEvent(androidEvent);
+        await sendMotionEvent(androidEvent);
     }
 }
 
@@ -321,14 +321,14 @@ Future<void> AndroidViewControllerCls::clearFocus() {
 
 Future<void> AndroidViewControllerCls::dispose() {
     if (_state == _AndroidViewStateCls::creating || _state == _AndroidViewStateCls::created) {
-        await await _sendDisposeMessage();
+        await _sendDisposeMessage();
     }
     _platformViewCreatedCallbacks->clear();
     _state = _AndroidViewStateCls::disposed;
     PlatformViewsServiceCls::_instance->_focusCallbacks->remove(viewId);
 }
 
-void AndroidViewControllerCls::_(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, TextDirection layoutDirection, int viewId, String viewType)
+void AndroidViewControllerCls::_(Object creationParams, MessageCodec<Object> creationParamsCodec, TextDirection layoutDirection, int viewId, String viewType)
 
 int AndroidViewControllerCls::_getAndroidDirection(TextDirection direction) {
     assert(direction != nullptr);
@@ -352,16 +352,16 @@ bool ExpensiveAndroidViewControllerCls::_createRequiresSize() {
 }
 
 Future<void> ExpensiveAndroidViewControllerCls::_sendCreateMessage(Size size) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));map1.set(__s("hybrid"), true);Map<String, dynamic> args = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));map1.set(__s("hybrid"), true);Map<String, Object> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
         args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer(), 0, paramsByteData->lengthInBytes());
     }
-    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
+    await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
 }
 
 Future<void> ExpensiveAndroidViewControllerCls::_sendDisposeMessage() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("hybrid"), true);return SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("hybrid"), true);return SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), list1);
 }
 
 Future<Size> ExpensiveAndroidViewControllerCls::_sendResizeMessage(Size size) {
@@ -380,7 +380,7 @@ Future<void> TextureAndroidViewControllerCls::setOffset(Offset off) {
         return;
     }
     _off = off;
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("top"), off->dy());map1.set(__s("left"), off->dx());await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("offset"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("top"), off->dy());map1.set(__s("left"), off->dx());await SystemChannelsCls::platform_views-><void>invokeMethod(__s("offset"), list1);
 }
 
 void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
@@ -389,7 +389,7 @@ Future<Size> TextureAndroidViewControllerCls::_sendResizeMessage(Size size) {
     assert(_state != _AndroidViewStateCls::waitingForSize, __sf("Android view must have an initial size. View id: %s", viewId));
     assert(size != nullptr);
     assert(!size->isEmpty());
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());Map<Object, Object> meta = await SystemChannelsCls::platform_views-><Object, Object>invokeMapMethod(__s("resize"), list1);
     assert(meta != nullptr);
     assert(meta!->containsKey(__s("width")));
     assert(meta!->containsKey(__s("height")));
@@ -402,7 +402,7 @@ bool TextureAndroidViewControllerCls::_createRequiresSize() {
 
 Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
     assert(!size->isEmpty(), __sf("trying to create %s without setting a valid size.", TextureAndroidViewControllerCls));
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, dynamic> args = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), _viewType);map1.set(__s("width"), size->width());map1.set(__s("height"), size->height());map1.set(__s("direction"), AndroidViewControllerCls->_getAndroidDirection(_layoutDirection));Map<String, Object> args = list1;
     if (_creationParams != nullptr) {
         ByteData paramsByteData = _creationParamsCodec!->encodeMessage(_creationParams)!;
         args[__s("params")] = Uint8ListCls->view(paramsByteData->buffer(), 0, paramsByteData->lengthInBytes());
@@ -411,7 +411,7 @@ Future<void> TextureAndroidViewControllerCls::_sendCreateMessage(Size size) {
 }
 
 Future<void> TextureAndroidViewControllerCls::_sendDisposeMessage() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("hybrid"), false);return SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("hybrid"), false);return SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), list1);
 }
 
 Future<void> UiKitViewControllerCls::setLayoutDirection(TextDirection layoutDirection) {
@@ -424,18 +424,18 @@ Future<void> UiKitViewControllerCls::setLayoutDirection(TextDirection layoutDire
 }
 
 Future<void> UiKitViewControllerCls::acceptGesture() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);Map<String, dynamic> args = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), id);Map<String, Object> args = list1;
     return SystemChannelsCls::platform_views->invokeMethod(__s("acceptGesture"), args);
 }
 
 Future<void> UiKitViewControllerCls::rejectGesture() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);Map<String, dynamic> args = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), id);Map<String, Object> args = list1;
     return SystemChannelsCls::platform_views->invokeMethod(__s("rejectGesture"), args);
 }
 
 Future<void> UiKitViewControllerCls::dispose() {
     _debugDisposed = true;
-    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), id);
+    await SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), id);
 }
 
 void UiKitViewControllerCls::_(int id, TextDirection layoutDirection)

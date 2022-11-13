@@ -134,9 +134,9 @@ private:
 
     virtual Future<void> _forceRebuild();
 
-    virtual Future<void> _handlePushRouteInformation(Map<dynamic, dynamic> routeArguments);
+    virtual Future<void> _handlePushRouteInformation(Map<Object, Object> routeArguments);
 
-    virtual Future<dynamic> _handleNavigationInvocation(MethodCall methodCall);
+    virtual Future<Object> _handleNavigationInvocation(MethodCall methodCall);
 
     virtual void _handleBuildScheduled();
 

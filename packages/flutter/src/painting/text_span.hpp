@@ -53,7 +53,7 @@ public:
 
     virtual int codeUnitAtVisitor(int index, Accumulator offset);
 
-    virtual void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements);
+    virtual void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<Object> semanticsElements);
 
     virtual bool debugAssertIsValid();
 

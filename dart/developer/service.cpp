@@ -2,7 +2,7 @@
 Uri ServiceProtocolInfoCls::serverWebSocketUri() {
     Uri uri = serverUri;
     if (uri != nullptr) {
-        Unknown pathSegments = makeList();
+        auto pathSegments = makeList();
         if (uri->pathSegments->isNotEmpty()) {
             pathSegments->addAll(uri->pathSegments->where([=] (Unknown  s) {
                 s->isNotEmpty;

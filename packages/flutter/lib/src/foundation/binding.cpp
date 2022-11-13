@@ -90,18 +90,18 @@ void BindingBaseCls::initServiceExtensions() {
             if (parameters->containsKey(__s("value"))) {
                 ;
                 _postExtensionStateChangedEvent(platformOverrideExtensionName, defaultTargetPlatform->toString()->substring(__sf("%s.", TargetPlatformCls)->length()));
-                await await reassembleApplication();
+                await reassembleApplication();
             }
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("value"), defaultTargetPlatform->toString()->substring(__sf("%s.", TargetPlatformCls)->length()));return list1;
+                    Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("value"), defaultTargetPlatform->toString()->substring(__sf("%s.", TargetPlatformCls)->length()));return list1;
         });
         String brightnessOverrideExtensionName = __s("brightnessOverride");
         registerServiceExtension(brightnessOverrideExtensionName, [=] (Map<String, String> parameters) {
             if (parameters->containsKey(__s("value"))) {
                 ;
                 _postExtensionStateChangedEvent(brightnessOverrideExtensionName, (debugBrightnessOverride | platformDispatcher()->platformBrightness())->toString());
-                await await reassembleApplication();
+                await reassembleApplication();
             }
-                    Map<String, dynamic> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride | platformDispatcher()->platformBrightness())->toString());return list2;
+                    Map<String, Object> map2 = make<MapCls<>>();        map2.set(__s("value"), (debugBrightnessOverride | platformDispatcher()->platformBrightness())->toString());return list2;
         });
         return true;
     }());
@@ -148,7 +148,7 @@ void BindingBaseCls::registerSignalServiceExtension(AsyncCallback callback, Stri
     assert(name != nullptr);
     assert(callback != nullptr);
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
-        await await callback();
+        await callback();
         return makeMap(makeList(), makeList();
     });
 }
@@ -159,10 +159,10 @@ void BindingBaseCls::registerBoolServiceExtension(AsyncValueGetter<bool> getter,
     assert(setter != nullptr);
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         if (parameters->containsKey(__s("enabled"))) {
-            await await setter(parameters[__s("enabled")] == __s("true"));
+            await setter(parameters[__s("enabled")] == __s("true"));
             _postExtensionStateChangedEvent(name, await getter()? __s("true") : __s("false"));
         }
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("enabled"), await getter()? __s("true") : __s("false"));return list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("enabled"), await getter()? __s("true") : __s("false"));return list1;
     });
 }
 
@@ -172,14 +172,14 @@ void BindingBaseCls::registerNumericServiceExtension(AsyncValueGetter<double> ge
     assert(setter != nullptr);
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         if (parameters->containsKey(name)) {
-            await await setter(double->parse(parameters[name]!));
+            await setter(double->parse(parameters[name]!));
             _postExtensionStateChangedEvent(name, (await getter())->toString());
         }
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(name, (await getter())->toString());return list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(name, (await getter())->toString());return list1;
     });
 }
 
-void BindingBaseCls::postEvent(String eventKind, Map<String, dynamic> eventData) {
+void BindingBaseCls::postEvent(String eventKind, Map<String, Object> eventData) {
     developer->postEvent(eventKind, eventData);
 }
 
@@ -189,10 +189,10 @@ void BindingBaseCls::registerStringServiceExtension(AsyncValueGetter<String> get
     assert(setter != nullptr);
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         if (parameters->containsKey(__s("value"))) {
-            await await setter(parameters[__s("value")]!);
+            await setter(parameters[__s("value")]!);
             _postExtensionStateChangedEvent(name, await getter());
         }
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("value"), await getter());return list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("value"), await getter());return list1;
     });
 }
 
@@ -208,10 +208,10 @@ void BindingBaseCls::registerServiceExtension(ServiceExtensionCallback callback,
             }
             return true;
         }());
-        await await <void>debugInstrumentAction(__s("Wait for outer event loop"), [=] () {
+        await <void>debugInstrumentAction(__s("Wait for outer event loop"), [=] () {
             return <void>delayed(DurationCls::zero);
         });
-        Map<String, dynamic> result;
+        Map<String, Object> result;
         try {
             result = await callback(parameters);
         } catch (Unknown exception) {
@@ -228,8 +228,8 @@ String BindingBaseCls::toString() {
     return __sf("<%s>", objectRuntimeType(this, __s("BindingBase")));
 }
 
-void BindingBaseCls::_postExtensionStateChangedEvent(String name, dynamic value) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("extension"), __sf("ext.flutter.%s", name));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
+void BindingBaseCls::_postExtensionStateChangedEvent(String name, Object value) {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("extension"), __sf("ext.flutter.%s", name));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
 }
 
 Future<void> _exitApplication() {

@@ -4,12 +4,12 @@ Float64List Matrix3Cls::storage() {
 }
 
 void Matrix3Cls::solve2(Matrix3 A, Vector2 x, Vector2 b) {
-    Unknown a11 = A->entry(0, 0);
-    Unknown a12 = A->entry(0, 1);
-    Unknown a21 = A->entry(1, 0);
-    Unknown a22 = A->entry(1, 1);
-    Unknown bx = b->x - A::storage()[6];
-    Unknown by = b->y - A::storage()[7];
+    auto a11 = A->entry(0, 0);
+    auto a12 = A->entry(0, 1);
+    auto a21 = A->entry(1, 0);
+    auto a22 = A->entry(1, 1);
+    auto bx = b->x - A::storage()[6];
+    auto by = b->y - A::storage()[7];
     auto det = a11 * a22 - a12 * a21;
     if (det != 0.0) {
         det = 1.0 / det;
@@ -18,15 +18,15 @@ void Matrix3Cls::solve2(Matrix3 A, Vector2 x, Vector2 b) {
 }
 
 void Matrix3Cls::solve(Matrix3 A, Vector3 x, Vector3 b) {
-    Unknown A0x = A->entry(0, 0);
-    Unknown A0y = A->entry(1, 0);
-    Unknown A0z = A->entry(2, 0);
-    Unknown A1x = A->entry(0, 1);
-    Unknown A1y = A->entry(1, 1);
-    Unknown A1z = A->entry(2, 1);
-    Unknown A2x = A->entry(0, 2);
-    Unknown A2y = A->entry(1, 2);
-    Unknown A2z = A->entry(2, 2);
+    auto A0x = A->entry(0, 0);
+    auto A0y = A->entry(1, 0);
+    auto A0z = A->entry(2, 0);
+    auto A1x = A->entry(0, 1);
+    auto A1y = A->entry(1, 1);
+    auto A1z = A->entry(2, 1);
+    auto A2x = A->entry(0, 2);
+    auto A2y = A->entry(1, 2);
+    auto A2z = A->entry(2, 2);
     double rx, ry, rz;
     double det;
     rx = A1yCls * A2zCls - A1zCls * A2yCls;
@@ -36,15 +36,15 @@ void Matrix3Cls::solve(Matrix3 A, Vector3 x, Vector3 b) {
     if (det != 0.0) {
         det = 1.0 / det;
     }
-    Unknown x_ = det * (b->x * rx + b->y * ry + b->z * rz);
+    auto x_ = det * (b->x * rx + b->y * ry + b->z * rz);
     rx = -(A2yCls * b->z - A2zCls * b->y);
     ry = -(A2zCls * b->x - A2xCls * b->z);
     rz = -(A2xCls * b->y - A2yCls * b->x);
-    Unknown y_ = det * (A0xCls * rx + A0yCls * ry + A0zCls * rz);
+    auto y_ = det * (A0xCls * rx + A0yCls * ry + A0zCls * rz);
     rx = -(b->y * A1zCls - b->z * A1yCls);
     ry = -(b->z * A1xCls - b->x * A1zCls);
     rz = -(b->x * A1yCls - b->y * A1xCls);
-    Unknown z_ = det * (A0xCls * rx + A0yCls * ry + A0zCls * rz);
+    auto z_ = det * (A0xCls * rx + A0yCls * ry + A0zCls * rz);
     auto _c1 = x;_c1.x = auto _c2 = x_;_c2.y = auto _c3 = y_;_c3.z = z_;_c3;_c2;_c1;
 }
 
@@ -114,9 +114,9 @@ void Matrix3Cls::setValues(double arg0, double arg1, double arg2, double arg3, d
 }
 
 void Matrix3Cls::setColumns(Vector3 arg0, Vector3 arg1, Vector3 arg2) {
-    Unknown arg0Storage = arg0->_v3storage;
-    Unknown arg1Storage = arg1->_v3storage;
-    Unknown arg2Storage = arg2->_v3storage;
+    auto arg0Storage = arg0->_v3storage;
+    auto arg1Storage = arg1->_v3storage;
+    auto arg2Storage = arg2->_v3storage;
     _m3storage[0] = arg0Storage[0];
     _m3storage[1] = arg0Storage[1];
     _m3storage[2] = arg0Storage[2];
@@ -129,7 +129,7 @@ void Matrix3Cls::setColumns(Vector3 arg0, Vector3 arg1, Vector3 arg2) {
 }
 
 void Matrix3Cls::setFrom(Matrix3 arg) {
-    Unknown argStorage = arg->_m3storage;
+    auto argStorage = arg->_m3storage;
     _m3storage[8] = argStorage[8];
     _m3storage[7] = argStorage[7];
     _m3storage[6] = argStorage[6];
@@ -142,8 +142,8 @@ void Matrix3Cls::setFrom(Matrix3 arg) {
 }
 
 void Matrix3Cls::setOuter(Vector3 u, Vector3 v) {
-    Unknown uStorage = u->_v3storage;
-    Unknown vStorage = v->_v3storage;
+    auto uStorage = u->_v3storage;
+    auto vStorage = v->_v3storage;
     _m3storage[0] = uStorage[0] * vStorage[0];
     _m3storage[1] = uStorage[0] * vStorage[1];
     _m3storage[2] = uStorage[0] * vStorage[2];
@@ -168,7 +168,7 @@ void Matrix3Cls::setDiagonal(Vector3 arg) {
 }
 
 void Matrix3Cls::setUpper2x2(Matrix2 arg) {
-    Unknown argStorage = arg->_m2storage;
+    auto argStorage = arg->_m2storage;
     _m3storage[0] = argStorage[0];
     _m3storage[1] = argStorage[1];
     _m3storage[3] = argStorage[2];
@@ -224,15 +224,15 @@ void Matrix3Cls::row2(Vector3 arg) {
 }
 
 void Matrix3Cls::setRow(int row, Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _m3storage[index(row, 0)] = argStorage[0];
     _m3storage[index(row, 1)] = argStorage[1];
     _m3storage[index(row, 2)] = argStorage[2];
 }
 
 Vector3 Matrix3Cls::getRow(int row) {
-    Unknown r = Vector3Cls->zero();
-    Unknown rStorage = r->_v3storage;
+    auto r = Vector3Cls->zero();
+    auto rStorage = r->_v3storage;
     rStorage[0] = _m3storage[index(row, 0)];
     rStorage[1] = _m3storage[index(row, 1)];
     rStorage[2] = _m3storage[index(row, 2)];
@@ -240,17 +240,17 @@ Vector3 Matrix3Cls::getRow(int row) {
 }
 
 void Matrix3Cls::setColumn(int column, Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
-    Unknown entry = column * 3;
+    auto argStorage = arg->_v3storage;
+    auto entry = column * 3;
     _m3storage[entry + 2] = argStorage[2];
     _m3storage[entry + 1] = argStorage[1];
     _m3storage[entry + 0] = argStorage[0];
 }
 
 Vector3 Matrix3Cls::getColumn(int column) {
-    Unknown r = Vector3Cls->zero();
-    Unknown rStorage = r->_v3storage;
-    Unknown entry = column * 3;
+    auto r = Vector3Cls->zero();
+    auto rStorage = r->_v3storage;
+    auto entry = column * 3;
     rStorage[2] = _m3storage[entry + 2];
     rStorage[1] = _m3storage[entry + 1];
     rStorage[0] = _m3storage[entry + 0];
@@ -262,7 +262,7 @@ Matrix3 Matrix3Cls::clone() {
 }
 
 Matrix3 Matrix3Cls::copyInto(Matrix3 arg) {
-    Unknown argStorage = arg->_m3storage;
+    auto argStorage = arg->_m3storage;
     argStorage[0] = _m3storage[0];
     argStorage[1] = _m3storage[1];
     argStorage[2] = _m3storage[2];
@@ -275,7 +275,7 @@ Matrix3 Matrix3Cls::copyInto(Matrix3 arg) {
     return arg;
 }
 
-dynamic Matrix3Cls::*(dynamic arg) {
+Object Matrix3Cls::*(Object arg) {
     if (is<double>(arg)) {
         return scaled(as<doubleCls>(arg));
     }
@@ -342,8 +342,8 @@ void Matrix3Cls::transpose() {
 }
 
 Matrix3 Matrix3Cls::absolute() {
-    Unknown r = Matrix3Cls->zero();
-    Unknown rStorage = r->_m3storage;
+    auto r = Matrix3Cls->zero();
+    auto rStorage = r->_m3storage;
     rStorage[0] = _m3storage[0]->abs();
     rStorage[1] = _m3storage[1]->abs();
     rStorage[2] = _m3storage[2]->abs();
@@ -357,19 +357,19 @@ Matrix3 Matrix3Cls::absolute() {
 }
 
 double Matrix3Cls::determinant() {
-    Unknown x = _m3storage[0] * ((_m3storage[4] * _m3storage[8]) - (_m3storage[5] * _m3storage[7]));
-    Unknown y = _m3storage[1] * ((_m3storage[3] * _m3storage[8]) - (_m3storage[5] * _m3storage[6]));
-    Unknown z = _m3storage[2] * ((_m3storage[3] * _m3storage[7]) - (_m3storage[4] * _m3storage[6]));
+    auto x = _m3storage[0] * ((_m3storage[4] * _m3storage[8]) - (_m3storage[5] * _m3storage[7]));
+    auto y = _m3storage[1] * ((_m3storage[3] * _m3storage[8]) - (_m3storage[5] * _m3storage[6]));
+    auto z = _m3storage[2] * ((_m3storage[3] * _m3storage[7]) - (_m3storage[4] * _m3storage[6]));
     return x - y + z;
 }
 
 double Matrix3Cls::dotRow(int i, Vector3 v) {
-    Unknown vStorage = v->_v3storage;
+    auto vStorage = v->_v3storage;
     return _m3storage[i] * vStorage[0] + _m3storage[3 + i] * vStorage[1] + _m3storage[6 + i] * vStorage[2];
 }
 
 double Matrix3Cls::dotColumn(int j, Vector3 v) {
-    Unknown vStorage = v->_v3storage;
+    auto vStorage = v->_v3storage;
     return _m3storage[j * 3] * vStorage[0] + _m3storage[j * 3 + 1] * vStorage[1] + _m3storage[j * 3 + 2] * vStorage[2];
 }
 
@@ -405,16 +405,16 @@ double Matrix3Cls::infinityNorm() {
 }
 
 double Matrix3Cls::relativeError(Matrix3 correct) {
-    Unknown diff = correct - this;
-    Unknown correct_norm = correct->infinityNorm();
-    Unknown diff_norm = diff->infinityNorm();
+    auto diff = correct - this;
+    auto correct_norm = correct->infinityNorm();
+    auto diff_norm = diff->infinityNorm();
     return diff_norm / correct_norm;
 }
 
 double Matrix3Cls::absoluteError(Matrix3 correct) {
-    Unknown this_norm = infinityNorm();
-    Unknown correct_norm = correct->infinityNorm();
-    Unknown diff_norm = (this_norm - correct_norm)->abs();
+    auto this_norm = infinityNorm();
+    auto correct_norm = correct->infinityNorm();
+    auto diff_norm = (this_norm - correct_norm)->abs();
     return diff_norm;
 }
 
@@ -423,22 +423,22 @@ double Matrix3Cls::invert() {
 }
 
 double Matrix3Cls::copyInverse(Matrix3 arg) {
-    Unknown det = arg->determinant();
+    auto det = arg->determinant();
     if (det == 0.0) {
         setFrom(arg);
         return 0.0;
     }
-    Unknown invDet = 1.0 / det;
-    Unknown argStorage = arg->_m3storage;
-    Unknown ix = invDet * (argStorage[4] * argStorage[8] - argStorage[5] * argStorage[7]);
-    Unknown iy = invDet * (argStorage[2] * argStorage[7] - argStorage[1] * argStorage[8]);
-    Unknown iz = invDet * (argStorage[1] * argStorage[5] - argStorage[2] * argStorage[4]);
-    Unknown jx = invDet * (argStorage[5] * argStorage[6] - argStorage[3] * argStorage[8]);
-    Unknown jy = invDet * (argStorage[0] * argStorage[8] - argStorage[2] * argStorage[6]);
-    Unknown jz = invDet * (argStorage[2] * argStorage[3] - argStorage[0] * argStorage[5]);
-    Unknown kx = invDet * (argStorage[3] * argStorage[7] - argStorage[4] * argStorage[6]);
-    Unknown ky = invDet * (argStorage[1] * argStorage[6] - argStorage[0] * argStorage[7]);
-    Unknown kz = invDet * (argStorage[0] * argStorage[4] - argStorage[1] * argStorage[3]);
+    auto invDet = 1.0 / det;
+    auto argStorage = arg->_m3storage;
+    auto ix = invDet * (argStorage[4] * argStorage[8] - argStorage[5] * argStorage[7]);
+    auto iy = invDet * (argStorage[2] * argStorage[7] - argStorage[1] * argStorage[8]);
+    auto iz = invDet * (argStorage[1] * argStorage[5] - argStorage[2] * argStorage[4]);
+    auto jx = invDet * (argStorage[5] * argStorage[6] - argStorage[3] * argStorage[8]);
+    auto jy = invDet * (argStorage[0] * argStorage[8] - argStorage[2] * argStorage[6]);
+    auto jz = invDet * (argStorage[2] * argStorage[3] - argStorage[0] * argStorage[5]);
+    auto kx = invDet * (argStorage[3] * argStorage[7] - argStorage[4] * argStorage[6]);
+    auto ky = invDet * (argStorage[1] * argStorage[6] - argStorage[0] * argStorage[7]);
+    auto kz = invDet * (argStorage[0] * argStorage[4] - argStorage[1] * argStorage[3]);
     _m3storage[0] = ix;
     _m3storage[1] = iy;
     _m3storage[2] = iz;
@@ -457,8 +457,8 @@ void Matrix3Cls::copyNormalMatrix(Matrix4 arg) {
 }
 
 void Matrix3Cls::setRotationX(double radians) {
-    Unknown c = math->cos(radians);
-    Unknown s = math->sin(radians);
+    auto c = math->cos(radians);
+    auto s = math->sin(radians);
     _m3storage[0] = 1.0;
     _m3storage[1] = 0.0;
     _m3storage[2] = 0.0;
@@ -471,8 +471,8 @@ void Matrix3Cls::setRotationX(double radians) {
 }
 
 void Matrix3Cls::setRotationY(double radians) {
-    Unknown c = math->cos(radians);
-    Unknown s = math->sin(radians);
+    auto c = math->cos(radians);
+    auto s = math->sin(radians);
     _m3storage[0] = c;
     _m3storage[1] = 0.0;
     _m3storage[2] = s;
@@ -485,8 +485,8 @@ void Matrix3Cls::setRotationY(double radians) {
 }
 
 void Matrix3Cls::setRotationZ(double radians) {
-    Unknown c = math->cos(radians);
-    Unknown s = math->sin(radians);
+    auto c = math->cos(radians);
+    auto s = math->sin(radians);
     _m3storage[0] = c;
     _m3storage[1] = s;
     _m3storage[2] = 0.0;
@@ -499,15 +499,15 @@ void Matrix3Cls::setRotationZ(double radians) {
 }
 
 void Matrix3Cls::scaleAdjoint(double scale) {
-    Unknown m00 = _m3storage[0];
-    Unknown m01 = _m3storage[3];
-    Unknown m02 = _m3storage[6];
-    Unknown m10 = _m3storage[1];
-    Unknown m11 = _m3storage[4];
-    Unknown m12 = _m3storage[7];
-    Unknown m20 = _m3storage[2];
-    Unknown m21 = _m3storage[5];
-    Unknown m22 = _m3storage[8];
+    auto m00 = _m3storage[0];
+    auto m01 = _m3storage[3];
+    auto m02 = _m3storage[6];
+    auto m10 = _m3storage[1];
+    auto m11 = _m3storage[4];
+    auto m12 = _m3storage[7];
+    auto m20 = _m3storage[2];
+    auto m21 = _m3storage[5];
+    auto m22 = _m3storage[8];
     _m3storage[0] = (m11 * m22 - m12 * m21) * scale;
     _m3storage[1] = (m12 * m20 - m10 * m22) * scale;
     _m3storage[2] = (m10 * m21 - m11 * m20) * scale;
@@ -520,19 +520,19 @@ void Matrix3Cls::scaleAdjoint(double scale) {
 }
 
 Vector3 Matrix3Cls::absoluteRotate(Vector3 arg) {
-    Unknown m00 = _m3storage[0]->abs();
-    Unknown m01 = _m3storage[3]->abs();
-    Unknown m02 = _m3storage[6]->abs();
-    Unknown m10 = _m3storage[1]->abs();
-    Unknown m11 = _m3storage[4]->abs();
-    Unknown m12 = _m3storage[7]->abs();
-    Unknown m20 = _m3storage[2]->abs();
-    Unknown m21 = _m3storage[5]->abs();
-    Unknown m22 = _m3storage[8]->abs();
-    Unknown argStorage = arg->_v3storage;
-    Unknown x = argStorage[0];
-    Unknown y = argStorage[1];
-    Unknown z = argStorage[2];
+    auto m00 = _m3storage[0]->abs();
+    auto m01 = _m3storage[3]->abs();
+    auto m02 = _m3storage[6]->abs();
+    auto m10 = _m3storage[1]->abs();
+    auto m11 = _m3storage[4]->abs();
+    auto m12 = _m3storage[7]->abs();
+    auto m20 = _m3storage[2]->abs();
+    auto m21 = _m3storage[5]->abs();
+    auto m22 = _m3storage[8]->abs();
+    auto argStorage = arg->_v3storage;
+    auto x = argStorage[0];
+    auto y = argStorage[1];
+    auto z = argStorage[2];
     argStorage[0] = x * m00 + y * m01 + z * m02;
     argStorage[1] = x * m10 + y * m11 + z * m12;
     argStorage[2] = x * m20 + y * m21 + z * m22;
@@ -540,22 +540,22 @@ Vector3 Matrix3Cls::absoluteRotate(Vector3 arg) {
 }
 
 Vector2 Matrix3Cls::absoluteRotate2(Vector2 arg) {
-    Unknown m00 = _m3storage[0]->abs();
-    Unknown m01 = _m3storage[3]->abs();
-    Unknown m10 = _m3storage[1]->abs();
-    Unknown m11 = _m3storage[4]->abs();
-    Unknown argStorage = arg->_v2storage;
-    Unknown x = argStorage[0];
-    Unknown y = argStorage[1];
+    auto m00 = _m3storage[0]->abs();
+    auto m01 = _m3storage[3]->abs();
+    auto m10 = _m3storage[1]->abs();
+    auto m11 = _m3storage[4]->abs();
+    auto argStorage = arg->_v2storage;
+    auto x = argStorage[0];
+    auto y = argStorage[1];
     argStorage[0] = x * m00 + y * m01;
     argStorage[1] = x * m10 + y * m11;
     return arg;
 }
 
 Vector2 Matrix3Cls::transform2(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
-    Unknown x_ = (_m3storage[0] * argStorage[0]) + (_m3storage[3] * argStorage[1]) + _m3storage[6];
-    Unknown y_ = (_m3storage[1] * argStorage[0]) + (_m3storage[4] * argStorage[1]) + _m3storage[7];
+    auto argStorage = arg->_v2storage;
+    auto x_ = (_m3storage[0] * argStorage[0]) + (_m3storage[3] * argStorage[1]) + _m3storage[6];
+    auto y_ = (_m3storage[1] * argStorage[0]) + (_m3storage[4] * argStorage[1]) + _m3storage[7];
     argStorage[0] = x_;
     argStorage[1] = y_;
     return arg;
@@ -578,7 +578,7 @@ Matrix3 Matrix3Cls::scaled(double scale) {
 }
 
 void Matrix3Cls::add(Matrix3 o) {
-    auto _c1 = clone();_c1.scale(scale);Unknown oStorage = o->_m3storage;
+    auto _c1 = clone();_c1.scale(scale);auto oStorage = o->_m3storage;
     _m3storage[0] = _m3storage[0] + oStorage[0];
     _m3storage[1] = _m3storage[1] + oStorage[1];
     _m3storage[2] = _m3storage[2] + oStorage[2];
@@ -591,7 +591,7 @@ void Matrix3Cls::add(Matrix3 o) {
 }
 
 void Matrix3Cls::sub(Matrix3 o) {
-    Unknown oStorage = o->_m3storage;
+    auto oStorage = o->_m3storage;
     _m3storage[0] = _m3storage[0] - oStorage[0];
     _m3storage[1] = _m3storage[1] - oStorage[1];
     _m3storage[2] = _m3storage[2] - oStorage[2];
@@ -616,25 +616,25 @@ void Matrix3Cls::negate() {
 }
 
 void Matrix3Cls::multiply(Matrix3 arg) {
-    Unknown m00 = _m3storage[0];
-    Unknown m01 = _m3storage[3];
-    Unknown m02 = _m3storage[6];
-    Unknown m10 = _m3storage[1];
-    Unknown m11 = _m3storage[4];
-    Unknown m12 = _m3storage[7];
-    Unknown m20 = _m3storage[2];
-    Unknown m21 = _m3storage[5];
-    Unknown m22 = _m3storage[8];
-    Unknown argStorage = arg->_m3storage;
-    Unknown n00 = argStorage[0];
-    Unknown n01 = argStorage[3];
-    Unknown n02 = argStorage[6];
-    Unknown n10 = argStorage[1];
-    Unknown n11 = argStorage[4];
-    Unknown n12 = argStorage[7];
-    Unknown n20 = argStorage[2];
-    Unknown n21 = argStorage[5];
-    Unknown n22 = argStorage[8];
+    auto m00 = _m3storage[0];
+    auto m01 = _m3storage[3];
+    auto m02 = _m3storage[6];
+    auto m10 = _m3storage[1];
+    auto m11 = _m3storage[4];
+    auto m12 = _m3storage[7];
+    auto m20 = _m3storage[2];
+    auto m21 = _m3storage[5];
+    auto m22 = _m3storage[8];
+    auto argStorage = arg->_m3storage;
+    auto n00 = argStorage[0];
+    auto n01 = argStorage[3];
+    auto n02 = argStorage[6];
+    auto n10 = argStorage[1];
+    auto n11 = argStorage[4];
+    auto n12 = argStorage[7];
+    auto n20 = argStorage[2];
+    auto n21 = argStorage[5];
+    auto n22 = argStorage[8];
     _m3storage[0] = (m00 * n00) + (m01 * n10) + (m02 * n20);
     _m3storage[3] = (m00 * n01) + (m01 * n11) + (m02 * n21);
     _m3storage[6] = (m00 * n02) + (m01 * n12) + (m02 * n22);
@@ -651,16 +651,16 @@ Matrix3 Matrix3Cls::multiplied(Matrix3 arg) {
 }
 
 void Matrix3Cls::transposeMultiply(Matrix3 arg) {
-    auto _c1 = clone();_c1.multiply(arg);Unknown m00 = _m3storage[0];
-    Unknown m01 = _m3storage[1];
-    Unknown m02 = _m3storage[2];
-    Unknown m10 = _m3storage[3];
-    Unknown m11 = _m3storage[4];
-    Unknown m12 = _m3storage[5];
-    Unknown m20 = _m3storage[6];
-    Unknown m21 = _m3storage[7];
-    Unknown m22 = _m3storage[8];
-    Unknown argStorage = arg->_m3storage;
+    auto _c1 = clone();_c1.multiply(arg);auto m00 = _m3storage[0];
+    auto m01 = _m3storage[1];
+    auto m02 = _m3storage[2];
+    auto m10 = _m3storage[3];
+    auto m11 = _m3storage[4];
+    auto m12 = _m3storage[5];
+    auto m20 = _m3storage[6];
+    auto m21 = _m3storage[7];
+    auto m22 = _m3storage[8];
+    auto argStorage = arg->_m3storage;
     _m3storage[0] = (m00 * argStorage[0]) + (m01 * argStorage[1]) + (m02 * argStorage[2]);
     _m3storage[3] = (m00 * argStorage[3]) + (m01 * argStorage[4]) + (m02 * argStorage[5]);
     _m3storage[6] = (m00 * argStorage[6]) + (m01 * argStorage[7]) + (m02 * argStorage[8]);
@@ -673,16 +673,16 @@ void Matrix3Cls::transposeMultiply(Matrix3 arg) {
 }
 
 void Matrix3Cls::multiplyTranspose(Matrix3 arg) {
-    Unknown m00 = _m3storage[0];
-    Unknown m01 = _m3storage[3];
-    Unknown m02 = _m3storage[6];
-    Unknown m10 = _m3storage[1];
-    Unknown m11 = _m3storage[4];
-    Unknown m12 = _m3storage[7];
-    Unknown m20 = _m3storage[2];
-    Unknown m21 = _m3storage[5];
-    Unknown m22 = _m3storage[8];
-    Unknown argStorage = arg->_m3storage;
+    auto m00 = _m3storage[0];
+    auto m01 = _m3storage[3];
+    auto m02 = _m3storage[6];
+    auto m10 = _m3storage[1];
+    auto m11 = _m3storage[4];
+    auto m12 = _m3storage[7];
+    auto m20 = _m3storage[2];
+    auto m21 = _m3storage[5];
+    auto m22 = _m3storage[8];
+    auto argStorage = arg->_m3storage;
     _m3storage[0] = (m00 * argStorage[0]) + (m01 * argStorage[3]) + (m02 * argStorage[6]);
     _m3storage[3] = (m00 * argStorage[1]) + (m01 * argStorage[4]) + (m02 * argStorage[7]);
     _m3storage[6] = (m00 * argStorage[2]) + (m01 * argStorage[5]) + (m02 * argStorage[8]);
@@ -695,10 +695,10 @@ void Matrix3Cls::multiplyTranspose(Matrix3 arg) {
 }
 
 Vector3 Matrix3Cls::transform(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
-    Unknown x_ = (_m3storage[0] * argStorage[0]) + (_m3storage[3] * argStorage[1]) + (_m3storage[6] * argStorage[2]);
-    Unknown y_ = (_m3storage[1] * argStorage[0]) + (_m3storage[4] * argStorage[1]) + (_m3storage[7] * argStorage[2]);
-    Unknown z_ = (_m3storage[2] * argStorage[0]) + (_m3storage[5] * argStorage[1]) + (_m3storage[8] * argStorage[2]);
+    auto argStorage = arg->_v3storage;
+    auto x_ = (_m3storage[0] * argStorage[0]) + (_m3storage[3] * argStorage[1]) + (_m3storage[6] * argStorage[2]);
+    auto y_ = (_m3storage[1] * argStorage[0]) + (_m3storage[4] * argStorage[1]) + (_m3storage[7] * argStorage[2]);
+    auto z_ = (_m3storage[2] * argStorage[0]) + (_m3storage[5] * argStorage[1]) + (_m3storage[8] * argStorage[2]);
     auto _c1 = arg;_c1.x = auto _c2 = x_;_c2.y = auto _c3 = y_;_c3.z = z_;_c3;_c2;_c1;
     return arg;
 }
@@ -713,7 +713,7 @@ Vector3 Matrix3Cls::transformed(Vector3 arg, Vector3 out) {
 }
 
 void Matrix3Cls::copyIntoArray(List<num> array, int offset) {
-    Unknown i = offset;
+    auto i = offset;
     array[i + 8] = _m3storage[8];
     array[i + 7] = _m3storage[7];
     array[i + 6] = _m3storage[6];
@@ -726,7 +726,7 @@ void Matrix3Cls::copyIntoArray(List<num> array, int offset) {
 }
 
 void Matrix3Cls::copyFromArray(List<double> array, int offset) {
-    Unknown i = offset;
+    auto i = offset;
     _m3storage[8] = array[i + 8];
     _m3storage[7] = array[i + 7];
     _m3storage[6] = array[i + 6];
@@ -740,7 +740,7 @@ void Matrix3Cls::copyFromArray(List<double> array, int offset) {
 
 List<double> Matrix3Cls::applyToVector3Array(List<double> array, int offset) {
     for (;  < array->length(); i += 3, j += 3) {
-            auto _c1 = Vector3Cls->array(array, j);    _c1.applyMatrix3(this);Unknown v = _c1;
+            auto _c1 = Vector3Cls->array(array, j);    _c1.applyMatrix3(this);auto v = _c1;
         array[j] = v->storage[0];
         array[j + 1] = v->storage[1];
         array[j + 2] = v->storage[2];
@@ -749,23 +749,23 @@ List<double> Matrix3Cls::applyToVector3Array(List<double> array, int offset) {
 }
 
 Vector3 Matrix3Cls::right() {
-    Unknown x = _m3storage[0];
-    Unknown y = _m3storage[1];
-    Unknown z = _m3storage[2];
+    auto x = _m3storage[0];
+    auto y = _m3storage[1];
+    auto z = _m3storage[2];
     return make<Vector3Cls>(x, y, z);
 }
 
 Vector3 Matrix3Cls::up() {
-    Unknown x = _m3storage[3];
-    Unknown y = _m3storage[4];
-    Unknown z = _m3storage[5];
+    auto x = _m3storage[3];
+    auto y = _m3storage[4];
+    auto z = _m3storage[5];
     return make<Vector3Cls>(x, y, z);
 }
 
 Vector3 Matrix3Cls::forward() {
-    Unknown x = _m3storage[6];
-    Unknown y = _m3storage[7];
-    Unknown z = _m3storage[8];
+    auto x = _m3storage[6];
+    auto y = _m3storage[7];
+    auto z = _m3storage[8];
     return make<Vector3Cls>(x, y, z);
 }
 

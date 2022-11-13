@@ -21,13 +21,13 @@ Widget FormStateCls::build(BuildContext context) {
 }
 
 void FormStateCls::save() {
-    for (FormFieldState<dynamic> field : _fields) {
+    for (FormFieldState<Object> field : _fields) {
         field->save();
     }
 }
 
 void FormStateCls::reset() {
-    for (FormFieldState<dynamic> field : _fields) {
+    for (FormFieldState<Object> field : _fields) {
         field->reset();
     }
     _hasInteractedByUser = false;
@@ -42,7 +42,7 @@ bool FormStateCls::validate() {
 
 void FormStateCls::_fieldDidChange() {
     widget()->onChanged?->call();
-    _hasInteractedByUser = _fields->any([=] (FormFieldState<dynamic> field) {
+    _hasInteractedByUser = _fields->any([=] (FormFieldState<Object> field) {
         field->_hasInteractedByUser->value;
     });
     _forceRebuild();
@@ -54,17 +54,17 @@ void FormStateCls::_forceRebuild() {
     });
 }
 
-void FormStateCls::_register(FormFieldState<dynamic> field) {
+void FormStateCls::_register(FormFieldState<Object> field) {
     _fields->add(field);
 }
 
-void FormStateCls::_unregister(FormFieldState<dynamic> field) {
+void FormStateCls::_unregister(FormFieldState<Object> field) {
     _fields->remove(field);
 }
 
 bool FormStateCls::_validate() {
     bool hasError = false;
-    for (FormFieldState<dynamic> field : _fields) {
+    for (FormFieldState<Object> field : _fields) {
         hasError = !field->validate() || hasError;
     }
     return !hasError;

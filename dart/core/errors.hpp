@@ -64,16 +64,16 @@ using NullThrownError = std::shared_ptr<NullThrownErrorCls>;
 
 class ArgumentErrorCls : public ErrorCls {
 public:
-    dynamic invalidValue;
+    Object invalidValue;
 
     String name;
 
-    dynamic message;
+    Object message;
 
 
-     ArgumentErrorCls(dynamic message, String name);
+     ArgumentErrorCls(Object message, String name);
 
-    virtual void  value(value , String name, dynamic message);
+    virtual void  value(value , String name, Object message);
 
     virtual void  notNull(String name);
 
@@ -106,10 +106,10 @@ public:
 
     virtual void  range(num invalidValue, int minValue, int maxValue, String name, String message);
 
-    virtual void  index(int index, dynamic indexable, String name, String message, int length);
+    virtual void  index(int index, Object indexable, String name, String message, int length);
     static int checkValueInInterval(int value, int minValue, int maxValue, String name, String message);
 
-    static int checkValidIndex(int index, dynamic indexable, String name, int length, String message);
+    static int checkValidIndex(int index, Object indexable, String name, int length, String message);
 
     static int checkValidRange(int start, int end, int length, String startName, String endName, String message);
 
@@ -131,7 +131,7 @@ public:
     int length;
 
 
-     IndexErrorCls(int invalidValue, dynamic indexable, String name, String message, int length);
+     IndexErrorCls(int invalidValue, Object indexable, String name, String message, int length);
 
     virtual int start();
 
@@ -174,7 +174,7 @@ class NoSuchMethodErrorCls : public ErrorCls {
 public:
 
     void  withInvocation(Object receiver, Invocation invocation);
-     NoSuchMethodErrorCls(Object receiver, Symbol memberName, List<any> positionalArguments, Map<Symbol, dynamic> namedArguments);
+     NoSuchMethodErrorCls(Object receiver, Symbol memberName, List<any> positionalArguments, Map<Symbol, Object> namedArguments);
     String toString();
 private:
 

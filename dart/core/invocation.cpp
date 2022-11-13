@@ -21,11 +21,11 @@ void _InvocationCls::getter(Symbol memberName)
 
 void _InvocationCls::setter(Symbol memberName, Object argument)
 
-List<dynamic> _InvocationCls::positionalArguments() {
+List<Object> _InvocationCls::positionalArguments() {
     return _positional | makeList();
 }
 
-Map<Symbol, dynamic> _InvocationCls::namedArguments() {
+Map<Symbol, Object> _InvocationCls::namedArguments() {
     return _named | makeMap(makeList(), makeList();
 }
 

@@ -76,8 +76,8 @@ void Aabb2Cls::hullPoint(Vector2 point) {
 }
 
 bool Aabb2Cls::containsAabb2(Aabb2 other) {
-    Unknown otherMax = other->_max;
-    Unknown otherMin = other->_min;
+    auto otherMax = other->_max;
+    auto otherMin = other->_min;
     return (_min->x < otherMin->x) && (_min->y < otherMin->y) && (_max->y > otherMax->y) && (_max->x > otherMax->x);
 }
 
@@ -86,8 +86,8 @@ bool Aabb2Cls::containsVector2(Vector2 other) {
 }
 
 bool Aabb2Cls::intersectsWithAabb2(Aabb2 other) {
-    Unknown otherMax = other->_max;
-    Unknown otherMin = other->_min;
+    auto otherMax = other->_max;
+    auto otherMin = other->_min;
     return (_min->x <= otherMax->x) && (_min->y <= otherMax->y) && (_max->x >= otherMin->x) && (_max->y >= otherMin->y);
 }
 

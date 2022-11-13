@@ -5,14 +5,14 @@ AutofillConfigurationCls::AutofillConfigurationCls(List<String> autofillHints, T
     }
 }
 
-Map<String, dynamic> AutofillConfigurationCls::toJson() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("uniqueIdentifier"), uniqueIdentifier);map1.set(__s("hints"), autofillHints);map1.set(__s("editingValue"), currentEditingValue->toJSON());if (hintText != nullptr) {    map1.set(__s("hintText"), hintText);}return enabled? list1 : nullptr;
+Map<String, Object> AutofillConfigurationCls::toJson() {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("uniqueIdentifier"), uniqueIdentifier);map1.set(__s("hints"), autofillHints);map1.set(__s("editingValue"), currentEditingValue->toJSON());if (hintText != nullptr) {    map1.set(__s("hintText"), hintText);}return enabled? list1 : nullptr;
 }
 
 void AutofillConfigurationCls::_(List<String> autofillHints, TextEditingValue currentEditingValue, bool enabled, String hintText, String uniqueIdentifier)
 
-Map<String, dynamic> _AutofillScopeTextInputConfigurationCls::toJson() {
-    Map<String, dynamic> result = super->toJson();
+Map<String, Object> _AutofillScopeTextInputConfigurationCls::toJson() {
+    Map<String, Object> result = super->toJson();
     result[__s("fields")] = allConfigurations->map([=] (TextInputConfiguration configuration) {
         configuration->toJson();
     })->toList(false);

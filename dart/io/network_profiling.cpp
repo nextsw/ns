@@ -32,7 +32,7 @@ String _success() {
     return json->encode(list1);
 }
 
-String _invalidArgument(String argument, dynamic value) {
+String _invalidArgument(String argument, Object value) {
     return __sf("Value for parameter '%s' is not valid: %s", argument, value);
 }
 
@@ -49,7 +49,7 @@ String _setHttpEnableTimelineLogging(Map<String, String> parameters) {
     if (!parameters->containsKey(kEnable)) {
         throw _missingArgument(kEnable);
     }
-    Unknown enable = parameters[kEnable]!->toLowerCase();
+    auto enable = parameters[kEnable]!->toLowerCase();
     if (enable != __s("true") && enable != __s("false")) {
         throw _invalidArgument(kEnable, enable);
     }
@@ -61,11 +61,11 @@ String _getHttpProfileRequest(Map<String, String> parameters) {
     if (!parameters->containsKey(__s("id"))) {
         throw _missingArgument(__s("id"));
     }
-    Unknown id = intValue->tryParse(parameters[__s("id")]!);
+    auto id = intValue->tryParse(parameters[__s("id")]!);
     if (id == nullptr) {
         throw _invalidArgument(__s("id"), parameters[__s("id")]!);
     }
-    Unknown request = HttpProfilerCls->getHttpProfileRequest(id);
+    auto request = HttpProfilerCls->getHttpProfileRequest(id);
     if (request == nullptr) {
         throw __sf("Unable to find request with id: '%s'", id);
     }
@@ -75,7 +75,7 @@ String _getHttpProfileRequest(Map<String, String> parameters) {
 String _socketProfilingEnabled(Map<String, String> parameters) {
     String kEnabled = __s("enabled");
     if (parameters->containsKey(kEnabled)) {
-        Unknown enable = parameters[kEnabled]!->toLowerCase();
+        auto enable = parameters[kEnabled]!->toLowerCase();
         if (enable != __s("true") && enable != __s("false")) {
             throw _invalidArgument(kEnabled, enable);
         }
@@ -106,7 +106,7 @@ void _SocketProfileCls::collectNewSocket(int id, String type, InternetAddress ad
     _SocketProfileCls->collectStatistic(id, _SocketProfileTypeCls::port, port);
 }
 
-void _SocketProfileCls::collectStatistic(int id, _SocketProfileType type, dynamic object) {
+void _SocketProfileCls::collectStatistic(int id, _SocketProfileType type, Object object) {
     if (!_enableSocketProfiling) {
         return;
     }
@@ -132,8 +132,8 @@ String _SocketProfileCls::clear() {
     return _success();
 }
 
-Map<String, dynamic> _SocketStatisticCls::toMap() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), id);Unknown map = list1;
+Map<String, Object> _SocketStatisticCls::toMap() {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), id);auto map = list1;
     _setIfNotNull(map, __s("startTime"), startTime);
     _setIfNotNull(map, __s("endTime"), endTime);
     _setIfNotNull(map, __s("address"), address);
@@ -146,7 +146,7 @@ Map<String, dynamic> _SocketStatisticCls::toMap() {
     return map;
 }
 
-void _SocketStatisticCls::_setIfNotNull(Map<String, dynamic> json, String key, Object value) {
+void _SocketStatisticCls::_setIfNotNull(Map<String, Object> json, String key, Object value) {
     if (value == nullptr) {
         return;
     }

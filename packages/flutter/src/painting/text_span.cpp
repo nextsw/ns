@@ -121,7 +121,7 @@ int TextSpanCls::codeUnitAtVisitor(int index, Accumulator offset) {
     return nullptr;
 }
 
-void TextSpanCls::describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements) {
+void TextSpanCls::describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<Object> semanticsElements) {
     if (recognizer != nullptr && (is<TapGestureRecognizer>(recognizer) || is<LongPressGestureRecognizer>(recognizer))) {
         int length = semanticsLabel?->length() | text!->length();
         semanticsOffsets->add(offset->value());

@@ -649,6 +649,6 @@ void ListMixinCls<E>::_filter(std::function<bool(E element)> test, bool retainMa
 }
 
 template<typename E>
-int ListMixinCls<E>::_compareAny(dynamic a, dynamic b) {
+int ListMixinCls<E>::_compareAny(Object a, Object b) {
     return ComparableCls->compare(as<Comparable<any>>(a), as<Comparable<any>>(b));
 }

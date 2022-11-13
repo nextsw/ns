@@ -208,7 +208,7 @@ Future<void> TickerFutureCls::timeout(Duration timeLimit, std::function<FutureOr
     return _primaryCompleter->future()->timeout(timeLimit, onTimeout);
 }
 
-Future<void> TickerFutureCls::whenComplete(std::function<dynamic()> action) {
+Future<void> TickerFutureCls::whenComplete(std::function<Object()> action) {
     return _primaryCompleter->future()->whenComplete(action);
 }
 

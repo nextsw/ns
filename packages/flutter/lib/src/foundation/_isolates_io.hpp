@@ -43,7 +43,7 @@ template<typename Q, typename R>
 template<typename R>
  List<R> _buildSuccessResponse(R result);
 
-List<dynamic> _buildErrorResponse(Object error, StackTrace stack);
+List<Object> _buildErrorResponse(Object error, StackTrace stack);
 
 
 

@@ -72,7 +72,7 @@ Future<E> _BufferingStreamSubscriptionCls<T>::asFuture(E futureValue) {
         if (!<E>typeAcceptsNull()) {
             throw ArgumentErrorCls->notNull(__s("futureValue"));
         }
-        resultValue = as<dynamic>(futureValue);
+        resultValue = as<Object>(futureValue);
     } else {
         resultValue = futureValue;
     }
@@ -128,10 +128,10 @@ template<typename T>
 std::function<void ()> _BufferingStreamSubscriptionCls<T>::_registerErrorHandler(Zone zone, std::function<void ()> handleError) {
     handleError |= _nullErrorHandler;
     if (is<std::function<void(Object , StackTrace )>>(handleError)) {
-        return zone-><dynamic, Object, StackTrace>registerBinaryCallback(handleError);
+        return zone-><Object, Object, StackTrace>registerBinaryCallback(handleError);
     }
     if (is<std::function<void(Object )>>(handleError)) {
-        return zone-><dynamic, Object>registerUnaryCallback(handleError);
+        return zone-><Object, Object>registerUnaryCallback(handleError);
     }
     throw make<ArgumentErrorCls>(__s("handleError callback must take either an Object (the error), or both an Object (the error) and a StackTrace."));
 }
@@ -385,7 +385,7 @@ template<typename T>
 void _StreamImplCls<T>::_onListen(StreamSubscription<any> subscription) {
 }
 
-void _nullDataHandler(dynamic value) {
+void _nullDataHandler(Object value) {
 }
 
 void _nullErrorHandler(Object error, StackTrace stackTrace) {
@@ -540,7 +540,7 @@ Future<E> _DoneStreamSubscriptionCls<T>::asFuture(E futureValue) {
         if (!<E>typeAcceptsNull()) {
             throw ArgumentErrorCls->notNull(__s("futureValue"));
         }
-        resultValue = as<dynamic>(futureValue);
+        resultValue = as<Object>(futureValue);
     } else {
         resultValue = futureValue;
     }
@@ -715,9 +715,9 @@ Future<E> _BroadcastSubscriptionWrapperCls<T>::asFuture(E futureValue) {
 template<typename T>
 T _StreamIteratorCls<T>::current() {
     if (_hasValue) {
-        return as<dynamic>(_stateData);
+        return as<Object>(_stateData);
     }
-    return as<dynamic>(nullptr);
+    return as<Object>(nullptr);
 }
 
 template<typename T>
@@ -744,7 +744,7 @@ Future<any> _StreamIteratorCls<T>::cancel() {
     if (subscription != nullptr) {
         _subscription = nullptr;
         if (!_hasValue) {
-            _Future<bool> future = as<dynamic>(stateData);
+            _Future<bool> future = as<Object>(stateData);
             future->_asyncComplete(false);
         } else {
             _hasValue = false;
@@ -766,7 +766,7 @@ Future<bool> _StreamIteratorCls<T>::_initializeOrDone() {
     assert(_subscription == nullptr);
     auto stateData = _stateData;
     if (stateData != nullptr) {
-        Stream<T> stream = as<dynamic>(stateData);
+        Stream<T> stream = as<Object>(stateData);
         auto future = <bool>make<_FutureCls>();
         _stateData = future;
         auto subscription = stream->listen(_onData, _onError, _onDone, true);
@@ -783,7 +783,7 @@ void _StreamIteratorCls<T>::_onData(T data) {
     if (_subscription == nullptr) {
         return;
     }
-    _Future<bool> moveNextFuture = as<dynamic>(_stateData);
+    _Future<bool> moveNextFuture = as<Object>(_stateData);
     _stateData = data;
     _hasValue = true;
     moveNextFuture->_complete(true);
@@ -795,7 +795,7 @@ void _StreamIteratorCls<T>::_onData(T data) {
 template<typename T>
 void _StreamIteratorCls<T>::_onError(Object error, StackTrace stackTrace) {
     auto subscription = _subscription;
-    _Future<bool> moveNextFuture = as<dynamic>(_stateData);
+    _Future<bool> moveNextFuture = as<Object>(_stateData);
     _subscription = nullptr;
     _stateData = nullptr;
     if (subscription != nullptr) {
@@ -808,7 +808,7 @@ void _StreamIteratorCls<T>::_onError(Object error, StackTrace stackTrace) {
 template<typename T>
 void _StreamIteratorCls<T>::_onDone() {
     auto subscription = _subscription;
-    _Future<bool> moveNextFuture = as<dynamic>(_stateData);
+    _Future<bool> moveNextFuture = as<Object>(_stateData);
     _subscription = nullptr;
     _stateData = nullptr;
     if (subscription != nullptr) {

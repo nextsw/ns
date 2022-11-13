@@ -7,7 +7,7 @@ bool _StorageEntryIdentifierCls::==(Object other) {
     if (other->runtimeType() != runtimeType) {
         return false;
     }
-    return is<_StorageEntryIdentifier>(other) && <PageStorageKey<dynamic>>listEquals(other->keys, keys);
+    return is<_StorageEntryIdentifier>(other) && <PageStorageKey<Object>>listEquals(other->keys, keys);
 }
 
 int _StorageEntryIdentifierCls::hashCode() {
@@ -18,13 +18,13 @@ String _StorageEntryIdentifierCls::toString() {
     return __sf("StorageEntryIdentifier(%s)", keys->join(__s(":")));
 }
 
-_StorageEntryIdentifierCls::_StorageEntryIdentifierCls(List<PageStorageKey<dynamic>> keys) {
+_StorageEntryIdentifierCls::_StorageEntryIdentifierCls(List<PageStorageKey<Object>> keys) {
     {
         assert(keys != nullptr);
     }
 }
 
-void PageStorageBucketCls::writeState(BuildContext context, dynamic data, Object identifier) {
+void PageStorageBucketCls::writeState(BuildContext context, Object data, Object identifier) {
     _storage |= makeMap(makeList(), makeList();
     if (identifier != nullptr) {
         _storage![identifier] = data;
@@ -36,7 +36,7 @@ void PageStorageBucketCls::writeState(BuildContext context, dynamic data, Object
     }
 }
 
-dynamic PageStorageBucketCls::readState(BuildContext context, Object identifier) {
+Object PageStorageBucketCls::readState(BuildContext context, Object identifier) {
     if (_storage == nullptr) {
         return nullptr;
     }
@@ -47,7 +47,7 @@ dynamic PageStorageBucketCls::readState(BuildContext context, Object identifier)
     return contextIdentifier->isNotEmpty()? _storage![contextIdentifier] : nullptr;
 }
 
-bool PageStorageBucketCls::_maybeAddKey(BuildContext context, List<PageStorageKey<dynamic>> keys) {
+bool PageStorageBucketCls::_maybeAddKey(BuildContext context, List<PageStorageKey<Object>> keys) {
     Widget widget = context->widget();
     Key key = widget->key;
     if (is<PageStorageKey<any>>(key)) {
@@ -56,8 +56,8 @@ bool PageStorageBucketCls::_maybeAddKey(BuildContext context, List<PageStorageKe
     return !is<PageStorage>(widget);
 }
 
-List<PageStorageKey<dynamic>> PageStorageBucketCls::_allKeys(BuildContext context) {
-    List<PageStorageKey<dynamic>> keys = makeList();
+List<PageStorageKey<Object>> PageStorageBucketCls::_allKeys(BuildContext context) {
+    List<PageStorageKey<Object>> keys = makeList();
     if (_maybeAddKey(context, keys)) {
         context->visitAncestorElements([=] (Element element) {
             return _maybeAddKey(element, keys);

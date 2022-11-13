@@ -24,10 +24,10 @@ class MethodCallCls : public ObjectCls {
 public:
     String method;
 
-    dynamic arguments;
+    Object arguments;
 
 
-     MethodCallCls(String method, dynamic arguments);
+     MethodCallCls(String method, Object arguments);
 
     virtual String toString();
 
@@ -41,7 +41,7 @@ public:
 
     virtual ByteData encodeMethodCall(MethodCall methodCall);
     virtual MethodCall decodeMethodCall(ByteData methodCall);
-    virtual dynamic decodeEnvelope(ByteData envelope);
+    virtual Object decodeEnvelope(ByteData envelope);
     virtual ByteData encodeSuccessEnvelope(Object result);
     virtual ByteData encodeErrorEnvelope(String code, Object details, String message);
 private:
@@ -55,12 +55,12 @@ public:
 
     String message;
 
-    dynamic details;
+    Object details;
 
     String stacktrace;
 
 
-     PlatformExceptionCls(String code, dynamic details, String message, String stacktrace);
+     PlatformExceptionCls(String code, Object details, String message, String stacktrace);
 
     virtual String toString();
 

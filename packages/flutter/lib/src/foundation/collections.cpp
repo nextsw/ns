@@ -101,7 +101,7 @@ void mergeSort(List<T> list, std::function<int(T , T )> compare, int end, int st
 template<typename T>
 Comparator<T> _defaultCompare() {
     return [=] (T value1,T value2) {
-        (as<Comparable<dynamic>>(value1))->compareTo(value2);
+        (as<Comparable<Object>>(value1))->compareTo(value2);
     };
 }
 

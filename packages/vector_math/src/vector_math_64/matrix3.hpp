@@ -90,7 +90,7 @@ public:
 
     virtual Matrix3 copyInto(Matrix3 arg);
 
-    virtual dynamic operator*(dynamic arg);
+    virtual Object operator*(Object arg);
 
     virtual Matrix3 operator+(Matrix3 arg);
 

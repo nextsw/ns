@@ -19,7 +19,7 @@ void RawAutocompleteCls<T>::onFieldSubmitted(GlobalKey<any> key) {
 }
 
 template<typename T>
-String RawAutocompleteCls<T>::defaultStringForOption(dynamic option) {
+String RawAutocompleteCls<T>::defaultStringForOption(Object option) {
     return option->toString();
 }
 

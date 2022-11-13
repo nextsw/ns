@@ -66,7 +66,7 @@ public:
 
     virtual void  numberWithOptions(bool decimal, bool signed);
 
-    virtual Map<String, dynamic> toJson();
+    virtual Map<String, Object> toJson();
 
     virtual String toString();
 
@@ -145,7 +145,7 @@ public:
 
     virtual TextInputConfiguration copyWith(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization);
 
-    virtual Map<String, dynamic> toJson();
+    virtual Map<String, Object> toJson();
 
 private:
 
@@ -187,7 +187,7 @@ public:
 
      TextEditingValueCls(TextRange composing, TextSelection selection, String text);
 
-    virtual void  fromJSON(Map<String, dynamic> encoded);
+    virtual void  fromJSON(Map<String, Object> encoded);
 
     virtual TextEditingValue copyWith(TextRange composing, TextSelection selection, String text);
 
@@ -195,7 +195,7 @@ public:
 
     virtual TextEditingValue replaced(TextRange replacementRange, String replacementString);
 
-    virtual Map<String, dynamic> toJSON();
+    virtual Map<String, Object> toJSON();
 
     virtual String toString();
 
@@ -252,7 +252,7 @@ public:
     virtual AutofillScope currentAutofillScope();
     virtual void updateEditingValue(TextEditingValue value);
     virtual void performAction(TextInputAction action);
-    virtual void performPrivateCommand(String action, Map<String, dynamic> data);
+    virtual void performPrivateCommand(String action, Map<String, Object> data);
     virtual void updateFloatingCursor(RawFloatingCursorPoint point);
     virtual void showAutocorrectionPromptRect(int start, int end);
     virtual void connectionClosed();
@@ -364,7 +364,7 @@ TextInputAction _toTextInputAction(String action);
 
 FloatingCursorDragState _toTextCursorAction(String state);
 
-RawFloatingCursorPoint _toTextPoint(FloatingCursorDragState state, Map<String, dynamic> encoded);
+RawFloatingCursorPoint _toTextPoint(FloatingCursorDragState state, Map<String, Object> encoded);
 
 
 class TextInputCls : public ObjectCls {
@@ -412,9 +412,9 @@ private:
 
     static bool _debugEnsureInputActionWorksOnPlatform(TextInputAction inputAction);
 
-    virtual Future<dynamic> _loudlyHandleTextInputInvocation(MethodCall call);
+    virtual Future<Object> _loudlyHandleTextInputInvocation(MethodCall call);
 
-    virtual Future<dynamic> _handleTextInputInvocation(MethodCall methodCall);
+    virtual Future<Object> _handleTextInputInvocation(MethodCall methodCall);
 
     virtual void _scheduleHide();
 
@@ -428,15 +428,15 @@ private:
 
     virtual void _requestAutofill();
 
-    virtual void _setEditableSizeAndTransform(Map<String, dynamic> args);
+    virtual void _setEditableSizeAndTransform(Map<String, Object> args);
 
-    virtual void _setComposingTextRect(Map<String, dynamic> args);
+    virtual void _setComposingTextRect(Map<String, Object> args);
 
-    virtual void _setCaretRect(Map<String, dynamic> args);
+    virtual void _setCaretRect(Map<String, Object> args);
 
     virtual void _setSelectionRects(List<List<num>> args);
 
-    virtual void _setStyle(Map<String, dynamic> args);
+    virtual void _setStyle(Map<String, Object> args);
 
 };
 using TextInput = std::shared_ptr<TextInputCls>;

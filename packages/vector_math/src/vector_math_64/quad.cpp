@@ -36,7 +36,7 @@ void QuadCls::copyFrom(Quad other) {
 }
 
 void QuadCls::copyNormalInto(Vector3 normal) {
-    auto _c1 = _point0->clone();_c1.sub(_point1);Unknown v0 = _c1;
+    auto _c1 = _point0->clone();_c1.sub(_point1);auto v0 = _c1;
     auto _c2 = normal;_c2.auto _c3 = setFrom(_point2);_c3.auto _c4 = sub(_point1);_c4.auto _c5 = crossInto(v0, normal);_c5.normalize();_c5;_c4;_c3;_c2;
 }
 

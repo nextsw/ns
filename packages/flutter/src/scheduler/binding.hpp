@@ -147,7 +147,7 @@ private:
 
     AppLifecycleState _lifecycleState;
 
-    PriorityQueue<_TaskEntry<dynamic>> _taskQueue;
+    PriorityQueue<_TaskEntry<Object>> _taskQueue;
 
     bool _hasRequestedAnEventLoopCallback;
 
@@ -190,7 +190,7 @@ private:
 
     virtual void _executeTimingsCallbacks(List<FrameTiming> timings);
 
-    static int _taskSorter(_TaskEntry<dynamic> e1, _TaskEntry<dynamic> e2);
+    static int _taskSorter(_TaskEntry<Object> e1, _TaskEntry<Object> e2);
 
     virtual void _ensureEventLoopCallback();
 

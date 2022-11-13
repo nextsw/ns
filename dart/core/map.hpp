@@ -12,9 +12,9 @@ public:
      MapCls();
     virtual void  from(Map<any, any> other);
     virtual void  of(Map<K, V> other);
-    void  unmodifiable(Map<dynamic, dynamic> other);
+    void  unmodifiable(Map<Object, Object> other);
     virtual void  identity();
-    virtual void  fromIterable(Iterable<any> iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value);
+    virtual void  fromIterable(Iterable<any> iterable, std::function<K(Object element)> key, std::function<V(Object element)> value);
     virtual void  fromIterables(Iterable<K> keys, Iterable<V> values);
     template<typename K, typename V, typename K2, typename V2>
  static Map<K2, V2> castFrom(Map<K, V> source);

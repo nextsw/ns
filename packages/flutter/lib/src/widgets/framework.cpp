@@ -178,7 +178,7 @@ void StateCls<T>::setState(VoidCallback fn) {
         }
         return true;
     }());
-    Object result = as<dynamic>(fn());
+    Object result = as<Object>(fn());
     assert([=] () {
         if (is<Future<any>>(result)) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -1787,7 +1787,7 @@ void StatefulElementCls::update(StatefulWidget newWidget) {
     state()->_widget = as<StatefulWidget>(widget());
     try {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
-        Object debugCheckForReturnedFuture = as<dynamic>(state()->didUpdateWidget(oldWidget));
+        Object debugCheckForReturnedFuture = as<Object>(state()->didUpdateWidget(oldWidget));
         assert([=] () {
             if (is<Future<any>>(debugCheckForReturnedFuture)) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
@@ -1858,7 +1858,7 @@ void StatefulElementCls::_firstBuild() {
     assert(state()->_debugLifecycleState == _StateLifecycleCls::created);
     try {
         _debugSetAllowIgnoredCallsToMarkNeedsBuild(true);
-        Object debugCheckForReturnedFuture = as<dynamic>(state()->initState());
+        Object debugCheckForReturnedFuture = as<Object>(state()->initState());
         assert([=] () {
             if (is<Future<any>>(debugCheckForReturnedFuture)) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));

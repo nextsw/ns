@@ -30,9 +30,9 @@ Stream<LicenseEntry> LicenseRegistryCls::licenses() {
     StreamController<LicenseEntry> controller;
     controller = <LicenseEntry>make<StreamControllerCls>([=] () {
         for (LicenseEntryCollector collector : _collectors!) {
-            await await controller->addStream(collector());
+            await controller->addStream(collector());
         }
-        await await controller->close();
+        await controller->close();
     });
     return controller->stream();
 }

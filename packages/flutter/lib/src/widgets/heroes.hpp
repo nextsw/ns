@@ -78,9 +78,9 @@ public:
 
     Size navigatorSize;
 
-    PageRoute<dynamic> fromRoute;
+    PageRoute<Object> fromRoute;
 
-    PageRoute<dynamic> toRoute;
+    PageRoute<Object> toRoute;
 
     _HeroState fromHero;
 
@@ -111,7 +111,7 @@ public:
 
 private:
 
-     _HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<dynamic> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<dynamic> toRoute, HeroFlightDirection type);
+     _HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<Object> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<Object> toRoute, HeroFlightDirection type);
 
     static Rect _boundingBoxFor(BuildContext context, BuildContext ancestorContext);
 
@@ -170,13 +170,13 @@ public:
 
 
      HeroControllerCls(CreateRectTween createRectTween);
-    virtual void didPush(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didPush(Route<Object> route, Route<Object> previousRoute);
 
-    virtual void didPop(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didPop(Route<Object> route, Route<Object> previousRoute);
 
-    virtual void didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute);
+    virtual void didReplace(Route<Object> newRoute, Route<Object> oldRoute);
 
-    virtual void didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didStartUserGesture(Route<Object> route, Route<Object> previousRoute);
 
     virtual void didStopUserGesture();
 
@@ -184,9 +184,9 @@ private:
     Map<Object, _HeroFlight> _flights;
 
 
-    virtual void _maybeStartHeroTransition(Route<dynamic> fromRoute, Route<dynamic> toRoute, HeroFlightDirection flightType, bool isUserGestureTransition);
+    virtual void _maybeStartHeroTransition(Route<Object> fromRoute, Route<Object> toRoute, HeroFlightDirection flightType, bool isUserGestureTransition);
 
-    virtual void _startHeroTransition(PageRoute<dynamic> from, PageRoute<dynamic> to, HeroFlightDirection flightType, bool isUserGestureTransition);
+    virtual void _startHeroTransition(PageRoute<Object> from, PageRoute<Object> to, HeroFlightDirection flightType, bool isUserGestureTransition);
 
     virtual void _handleFlightEnded(_HeroFlight flight);
 

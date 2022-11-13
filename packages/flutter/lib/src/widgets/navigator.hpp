@@ -51,7 +51,7 @@ public:
 
     virtual void didAdd();
 
-    virtual void didReplace(Route<dynamic> oldRoute);
+    virtual void didReplace(Route<Object> oldRoute);
 
     virtual Future<RoutePopDisposition> willPop();
 
@@ -65,11 +65,11 @@ public:
 
     virtual void didComplete(T result);
 
-    virtual void didPopNext(Route<dynamic> nextRoute);
+    virtual void didPopNext(Route<Object> nextRoute);
 
-    virtual void didChangeNext(Route<dynamic> nextRoute);
+    virtual void didChangeNext(Route<Object> nextRoute);
 
-    virtual void didChangePrevious(Route<dynamic> previousRoute);
+    virtual void didChangePrevious(Route<Object> previousRoute);
 
     virtual void changedInternalState();
 
@@ -129,7 +129,7 @@ public:
 
 
      PageCls(Object arguments, LocalKey key, String name, String restorationId);
-    virtual bool canUpdate(Page<dynamic> other);
+    virtual bool canUpdate(Page<Object> other);
 
     virtual Route<T> createRoute(BuildContext context);
     virtual String toString();
@@ -145,15 +145,15 @@ public:
 
     virtual NavigatorState navigator();
 
-    virtual void didPush(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didPush(Route<Object> route, Route<Object> previousRoute);
 
-    virtual void didPop(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didPop(Route<Object> route, Route<Object> previousRoute);
 
-    virtual void didRemove(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didRemove(Route<Object> route, Route<Object> previousRoute);
 
-    virtual void didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute);
+    virtual void didReplace(Route<Object> newRoute, Route<Object> oldRoute);
 
-    virtual void didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didStartUserGesture(Route<Object> route, Route<Object> previousRoute);
 
     virtual void didStopUserGesture();
 
@@ -185,13 +185,13 @@ using HeroControllerScope = std::shared_ptr<HeroControllerScopeCls>;
 class RouteTransitionRecordCls : public ObjectCls {
 public:
 
-    virtual Route<dynamic> route();
+    virtual Route<Object> route();
     virtual bool isWaitingForEnteringDecision();
     virtual bool isWaitingForExitingDecision();
     virtual void markForPush();
     virtual void markForAdd();
-    virtual void markForPop(dynamic result);
-    virtual void markForComplete(dynamic result);
+    virtual void markForPop(Object result);
+    virtual void markForComplete(Object result);
     virtual void markForRemove();
 private:
 
@@ -228,11 +228,11 @@ using DefaultTransitionDelegate = std::shared_ptr<DefaultTransitionDelegateCls<T
 
 class NavigatorCls : public StatefulWidgetCls {
 public:
-    List<Page<dynamic>> pages;
+    List<Page<Object>> pages;
 
     PopPageCallback onPopPage;
 
-    TransitionDelegate<dynamic> transitionDelegate;
+    TransitionDelegate<Object> transitionDelegate;
 
     String initialRoute;
 
@@ -253,7 +253,7 @@ public:
     bool requestFocus;
 
 
-     NavigatorCls(String initialRoute, Key key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate);
+     NavigatorCls(String initialRoute, Key key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<Object>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<Object> transitionDelegate);
 
     template<typename T>
  static Future<T> pushNamed(BuildContext context, String routeName, Object arguments);
@@ -298,16 +298,16 @@ public:
  static String restorablePushAndRemoveUntil(BuildContext context, RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate, Object arguments);
 
     template<typename T>
- static void replace(BuildContext context, Route<T> newRoute, Route<dynamic> oldRoute);
+ static void replace(BuildContext context, Route<T> newRoute, Route<Object> oldRoute);
 
     template<typename T>
- static String restorableReplace(BuildContext context, Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute);
+ static String restorableReplace(BuildContext context, Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<Object> oldRoute);
 
     template<typename T>
- static void replaceRouteBelow(BuildContext context, Route<dynamic> anchorRoute, Route<T> newRoute);
+ static void replaceRouteBelow(BuildContext context, Route<Object> anchorRoute, Route<T> newRoute);
 
     template<typename T>
- static String restorableReplaceRouteBelow(BuildContext context, Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder);
+ static String restorableReplaceRouteBelow(BuildContext context, Route<Object> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder);
 
     static bool canPop(BuildContext context);
 
@@ -319,15 +319,15 @@ public:
 
     static void popUntil(BuildContext context, RoutePredicate predicate);
 
-    static void removeRoute(BuildContext context, Route<dynamic> route);
+    static void removeRoute(BuildContext context, Route<Object> route);
 
-    static void removeRouteBelow(BuildContext context, Route<dynamic> anchorRoute);
+    static void removeRouteBelow(BuildContext context, Route<Object> anchorRoute);
 
     static NavigatorState of(BuildContext context, bool rootNavigator);
 
     static NavigatorState maybeOf(BuildContext context, bool rootNavigator);
 
-    static List<Route<dynamic>> defaultGenerateInitialRoutes(NavigatorState navigator, String initialRouteName);
+    static List<Route<Object>> defaultGenerateInitialRoutes(NavigatorState navigator, String initialRouteName);
 
     virtual NavigatorState createState();
 
@@ -364,19 +364,19 @@ using _NotAnnounced = std::shared_ptr<_NotAnnouncedCls>;
 
 class _RouteEntryCls : public RouteTransitionRecordCls {
 public:
-    Route<dynamic> route;
+    Route<Object> route;
 
     _RestorationInformation restorationInformation;
 
-    static Route<dynamic> notAnnounced;
+    static Route<Object> notAnnounced;
 
     _RouteLifecycle currentState;
 
-    Route<dynamic> lastAnnouncedPreviousRoute;
+    Route<Object> lastAnnouncedPreviousRoute;
 
-    Route<dynamic> lastAnnouncedPoppedNextRoute;
+    Route<Object> lastAnnouncedPoppedNextRoute;
 
-    Route<dynamic> lastAnnouncedNextRoute;
+    Route<Object> lastAnnouncedNextRoute;
 
     Object pendingResult;
 
@@ -385,19 +385,19 @@ public:
 
     virtual bool hasPage();
 
-    virtual bool canUpdateFrom(Page<dynamic> page);
+    virtual bool canUpdateFrom(Page<Object> page);
 
-    virtual void handleAdd(NavigatorState navigator, Route<dynamic> previousPresent);
+    virtual void handleAdd(NavigatorState navigator, Route<Object> previousPresent);
 
-    virtual void handlePush(bool isNewFirst, NavigatorState navigator, Route<dynamic> previous, Route<dynamic> previousPresent);
+    virtual void handlePush(bool isNewFirst, NavigatorState navigator, Route<Object> previous, Route<Object> previousPresent);
 
-    virtual void handleDidPopNext(Route<dynamic> poppedRoute);
+    virtual void handleDidPopNext(Route<Object> poppedRoute);
 
-    virtual bool handlePop(NavigatorState navigator, Route<dynamic> previousPresent);
+    virtual bool handlePop(NavigatorState navigator, Route<Object> previousPresent);
 
     virtual void handleComplete();
 
-    virtual void handleRemoval(NavigatorState navigator, Route<dynamic> previousPresent);
+    virtual void handleRemoval(NavigatorState navigator, Route<Object> previousPresent);
 
     virtual void didAdd(bool isNewFirst, NavigatorState navigator);
 
@@ -423,7 +423,7 @@ public:
 
     virtual bool suitableForTransitionAnimation();
 
-    virtual bool shouldAnnounceChangeToNext(Route<dynamic> nextRoute);
+    virtual bool shouldAnnounceChangeToNext(Route<Object> nextRoute);
 
     static bool isPresentPredicate(_RouteEntry entry);
 
@@ -431,7 +431,7 @@ public:
 
     static bool willBePresentPredicate(_RouteEntry entry);
 
-    static _RouteEntryPredicate isRoutePredicate(Route<dynamic> route);
+    static _RouteEntryPredicate isRoutePredicate(Route<Object> route);
 
     virtual bool isWaitingForEnteringDecision();
 
@@ -443,9 +443,9 @@ public:
 
     virtual void markForAdd();
 
-    virtual void markForPop(dynamic result);
+    virtual void markForPop(Object result);
 
-    virtual void markForComplete(dynamic result);
+    virtual void markForComplete(Object result);
 
     virtual void markForRemove();
 
@@ -459,22 +459,22 @@ private:
     bool _isWaitingForExitingDecision;
 
 
-     _RouteEntryCls(Route<dynamic> route, _RouteLifecycle initialState, _RestorationInformation restorationInformation);
+     _RouteEntryCls(Route<Object> route, _RouteLifecycle initialState, _RestorationInformation restorationInformation);
 
 };
 using _RouteEntry = std::shared_ptr<_RouteEntryCls>;
 
 class _NavigatorObservationCls : public ObjectCls {
 public:
-    Route<dynamic> primaryRoute;
+    Route<Object> primaryRoute;
 
-    Route<dynamic> secondaryRoute;
+    Route<Object> secondaryRoute;
 
 
     virtual void notify(NavigatorObserver observer);
 private:
 
-     _NavigatorObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
+     _NavigatorObservationCls(Route<Object> primaryRoute, Route<Object> secondaryRoute);
 };
 using _NavigatorObservation = std::shared_ptr<_NavigatorObservationCls>;
 
@@ -485,7 +485,7 @@ public:
 
 private:
 
-     _NavigatorPushObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
+     _NavigatorPushObservationCls(Route<Object> primaryRoute, Route<Object> secondaryRoute);
 };
 using _NavigatorPushObservation = std::shared_ptr<_NavigatorPushObservationCls>;
 
@@ -496,7 +496,7 @@ public:
 
 private:
 
-     _NavigatorPopObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
+     _NavigatorPopObservationCls(Route<Object> primaryRoute, Route<Object> secondaryRoute);
 };
 using _NavigatorPopObservation = std::shared_ptr<_NavigatorPopObservationCls>;
 
@@ -507,7 +507,7 @@ public:
 
 private:
 
-     _NavigatorRemoveObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
+     _NavigatorRemoveObservationCls(Route<Object> primaryRoute, Route<Object> secondaryRoute);
 };
 using _NavigatorRemoveObservation = std::shared_ptr<_NavigatorRemoveObservationCls>;
 
@@ -518,7 +518,7 @@ public:
 
 private:
 
-     _NavigatorReplaceObservationCls(Route<dynamic> primaryRoute, Route<dynamic> secondaryRoute);
+     _NavigatorReplaceObservationCls(Route<Object> primaryRoute, Route<Object> secondaryRoute);
 };
 using _NavigatorReplaceObservation = std::shared_ptr<_NavigatorReplaceObservationCls>;
 
@@ -592,16 +592,16 @@ public:
  virtual String restorablePushAndRemoveUntil(RestorableRouteBuilder<T> newRouteBuilder, RoutePredicate predicate, Object arguments);
 
     template<typename T>
- virtual void replace(Route<T> newRoute, Route<dynamic> oldRoute);
+ virtual void replace(Route<T> newRoute, Route<Object> oldRoute);
 
     template<typename T>
- virtual String restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute);
+ virtual String restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<Object> oldRoute);
 
     template<typename T>
- virtual void replaceRouteBelow(Route<dynamic> anchorRoute, Route<T> newRoute);
+ virtual void replaceRouteBelow(Route<Object> anchorRoute, Route<T> newRoute);
 
     template<typename T>
- virtual String restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder);
+ virtual String restorableReplaceRouteBelow(Route<Object> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder);
 
     virtual bool canPop();
 
@@ -613,11 +613,11 @@ public:
 
     virtual void popUntil(RoutePredicate predicate);
 
-    virtual void removeRoute(Route<dynamic> route);
+    virtual void removeRoute(Route<Object> route);
 
-    virtual void removeRouteBelow(Route<dynamic> anchorRoute);
+    virtual void removeRouteBelow(Route<Object> anchorRoute);
 
-    virtual void finalizeRoute(Route<dynamic> route);
+    virtual void finalizeRoute(Route<Object> route);
 
     virtual bool userGestureInProgress();
 
@@ -684,22 +684,22 @@ private:
     template<typename T>
  virtual Route<T> _routeNamed(String name, bool allowNull, Object arguments);
 
-    virtual bool _debugCheckIsPagelessRoute(Route<dynamic> route);
+    virtual bool _debugCheckIsPagelessRoute(Route<Object> route);
 
     virtual bool _debugIsStaticCallback(std::function<void ()> callback);
 
     virtual void _pushEntry(_RouteEntry entry);
 
-    virtual void _afterNavigation(Route<dynamic> route);
+    virtual void _afterNavigation(Route<Object> route);
 
     template<typename TO>
  virtual void _pushReplacementEntry(_RouteEntry entry, TO result);
 
     virtual void _pushEntryAndRemoveUntil(_RouteEntry entry, RoutePredicate predicate);
 
-    virtual void _replaceEntry(_RouteEntry entry, Route<dynamic> oldRoute);
+    virtual void _replaceEntry(_RouteEntry entry, Route<Object> oldRoute);
 
-    virtual void _replaceEntryBelow(_RouteEntry entry, Route<dynamic> anchorRoute);
+    virtual void _replaceEntryBelow(_RouteEntry entry, Route<Object> anchorRoute);
 
     template<typename T>
  virtual Route<T> _getRouteById(String id);
@@ -738,7 +738,7 @@ public:
 
     virtual List<Object> computeSerializableData();
 
-    virtual Route<dynamic> createRoute(NavigatorState navigator);
+    virtual Route<Object> createRoute(NavigatorState navigator);
     virtual _RouteEntry toRouteEntry(NavigatorState navigator, _RouteLifecycle initialState);
 
 private:
@@ -763,7 +763,7 @@ public:
 
     virtual List<Object> computeSerializableData();
 
-    virtual Route<dynamic> createRoute(NavigatorState navigator);
+    virtual Route<Object> createRoute(NavigatorState navigator);
 
 private:
 
@@ -787,7 +787,7 @@ public:
 
     virtual List<Object> computeSerializableData();
 
-    virtual Route<dynamic> createRoute(NavigatorState navigator);
+    virtual Route<Object> createRoute(NavigatorState navigator);
 
 private:
 

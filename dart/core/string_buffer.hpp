@@ -16,7 +16,7 @@ public:
 
     void write(Object object);
     void writeCharCode(int charCode);
-    void writeAll(Iterable<dynamic> objects, String separator);
+    void writeAll(Iterable<Object> objects, String separator);
     void writeln(Object obj);
     void clear();
     String toString();

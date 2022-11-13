@@ -354,7 +354,7 @@ int _Base64DecoderCls::decodeChunk(String input, int start, int end, Uint8List o
     auto bits = _stateBits(state);
     auto count = _stateCount(state);
     auto charOr = 0;
-    Unknown inverseAlphabet = _Base64DecoderCls::_inverseAlphabet;
+    auto inverseAlphabet = _Base64DecoderCls::_inverseAlphabet;
     for (;  < end; i++) {
         auto char = input->codeUnitAt(i);
         charOr |= charValue;

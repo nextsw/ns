@@ -48,16 +48,16 @@ private:
 
     bool _hasInteractedByUser;
 
-    Set<FormFieldState<dynamic>> _fields;
+    Set<FormFieldState<Object>> _fields;
 
 
     virtual void _fieldDidChange();
 
     virtual void _forceRebuild();
 
-    virtual void _register(FormFieldState<dynamic> field);
+    virtual void _register(FormFieldState<Object> field);
 
-    virtual void _unregister(FormFieldState<dynamic> field);
+    virtual void _unregister(FormFieldState<Object> field);
 
     virtual bool _validate();
 

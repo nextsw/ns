@@ -105,7 +105,7 @@ public:
 
     virtual void translate(double dx, double dy);
 
-    virtual dynamic noSuchMethod(Invocation invocation);
+    virtual Object noSuchMethod(Invocation invocation);
 
 private:
     Canvas _main;
@@ -477,7 +477,7 @@ public:
 
     virtual void resetCounts();
 
-    virtual Map<String, dynamic> exportToJson(Duration startTime);
+    virtual Map<String, Object> exportToJson(Duration startTime);
 
 private:
     List<_LocationCount> _stats;

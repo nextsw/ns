@@ -35,7 +35,7 @@ public:
 
     virtual void initState();
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 

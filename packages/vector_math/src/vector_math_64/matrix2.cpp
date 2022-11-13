@@ -4,12 +4,12 @@ Float64List Matrix2Cls::storage() {
 }
 
 void Matrix2Cls::solve(Matrix2 A, Vector2 x, Vector2 b) {
-    Unknown a11 = A->entry(0, 0);
-    Unknown a12 = A->entry(0, 1);
-    Unknown a21 = A->entry(1, 0);
-    Unknown a22 = A->entry(1, 1);
-    Unknown bx = b->x;
-    Unknown by = b->y;
+    auto a11 = A->entry(0, 0);
+    auto a12 = A->entry(0, 1);
+    auto a21 = A->entry(1, 0);
+    auto a22 = A->entry(1, 1);
+    auto bx = b->x;
+    auto by = b->y;
     auto det = a11 * a22 - a12 * a21;
     if (det != 0.0) {
         det = 1.0 / det;
@@ -70,8 +70,8 @@ void Matrix2Cls::setValues(double arg0, double arg1, double arg2, double arg3) {
 }
 
 void Matrix2Cls::setColumns(Vector2 arg0, Vector2 arg1) {
-    Unknown arg0Storage = arg0->_v2storage;
-    Unknown arg1Storage = arg1->_v2storage;
+    auto arg0Storage = arg0->_v2storage;
+    auto arg1Storage = arg1->_v2storage;
     _m2storage[0] = arg0Storage[0];
     _m2storage[1] = arg0Storage[1];
     _m2storage[2] = arg1Storage[0];
@@ -79,7 +79,7 @@ void Matrix2Cls::setColumns(Vector2 arg0, Vector2 arg1) {
 }
 
 void Matrix2Cls::setFrom(Matrix2 arg) {
-    Unknown argStorage = arg->_m2storage;
+    auto argStorage = arg->_m2storage;
     _m2storage[3] = argStorage[3];
     _m2storage[2] = argStorage[2];
     _m2storage[1] = argStorage[1];
@@ -87,8 +87,8 @@ void Matrix2Cls::setFrom(Matrix2 arg) {
 }
 
 void Matrix2Cls::setOuter(Vector2 u, Vector2 v) {
-    Unknown uStorage = u->_v2storage;
-    Unknown vStorage = v->_v2storage;
+    auto uStorage = u->_v2storage;
+    auto vStorage = v->_v2storage;
     _m2storage[0] = uStorage[0] * vStorage[0];
     _m2storage[1] = uStorage[0] * vStorage[1];
     _m2storage[2] = uStorage[1] * vStorage[0];
@@ -101,7 +101,7 @@ void Matrix2Cls::splatDiagonal(double arg) {
 }
 
 void Matrix2Cls::setDiagonal(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _m2storage[0] = argStorage[0];
     _m2storage[3] = argStorage[1];
 }
@@ -147,30 +147,30 @@ void Matrix2Cls::row1(Vector2 arg) {
 }
 
 void Matrix2Cls::setRow(int row, Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _m2storage[index(row, 0)] = argStorage[0];
     _m2storage[index(row, 1)] = argStorage[1];
 }
 
 Vector2 Matrix2Cls::getRow(int row) {
-    Unknown r = Vector2Cls->zero();
-    Unknown rStorage = r->_v2storage;
+    auto r = Vector2Cls->zero();
+    auto rStorage = r->_v2storage;
     rStorage[0] = _m2storage[index(row, 0)];
     rStorage[1] = _m2storage[index(row, 1)];
     return r;
 }
 
 void Matrix2Cls::setColumn(int column, Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
-    Unknown entry = column * 2;
+    auto argStorage = arg->_v2storage;
+    auto entry = column * 2;
     _m2storage[entry + 1] = argStorage[1];
     _m2storage[entry + 0] = argStorage[0];
 }
 
 Vector2 Matrix2Cls::getColumn(int column) {
-    Unknown r = Vector2Cls->zero();
-    Unknown entry = column * 2;
-    Unknown rStorage = r->_v2storage;
+    auto r = Vector2Cls->zero();
+    auto entry = column * 2;
+    auto rStorage = r->_v2storage;
     rStorage[1] = _m2storage[entry + 1];
     rStorage[0] = _m2storage[entry + 0];
     return r;
@@ -181,7 +181,7 @@ Matrix2 Matrix2Cls::clone() {
 }
 
 Matrix2 Matrix2Cls::copyInto(Matrix2 arg) {
-    Unknown argStorage = arg->_m2storage;
+    auto argStorage = arg->_m2storage;
     argStorage[0] = _m2storage[0];
     argStorage[1] = _m2storage[1];
     argStorage[2] = _m2storage[2];
@@ -189,7 +189,7 @@ Matrix2 Matrix2Cls::copyInto(Matrix2 arg) {
     return arg;
 }
 
-dynamic Matrix2Cls::*(dynamic arg) {
+Object Matrix2Cls::*(Object arg) {
     if (is<double>(arg)) {
         return scaled(as<doubleCls>(arg));
     }
@@ -233,14 +233,14 @@ Matrix2 Matrix2Cls::transposed() {
 }
 
 void Matrix2Cls::transpose() {
-    auto _c1 = clone();_c1.transpose();Unknown temp = _m2storage[2];
+    auto _c1 = clone();_c1.transpose();auto temp = _m2storage[2];
     _m2storage[2] = _m2storage[1];
     _m2storage[1] = temp;
 }
 
 Matrix2 Matrix2Cls::absolute() {
-    Unknown r = Matrix2Cls->zero();
-    Unknown rStorage = r->_m2storage;
+    auto r = Matrix2Cls->zero();
+    auto rStorage = r->_m2storage;
     rStorage[0] = _m2storage[0]->abs();
     rStorage[1] = _m2storage[1]->abs();
     rStorage[2] = _m2storage[2]->abs();
@@ -253,12 +253,12 @@ double Matrix2Cls::determinant() {
 }
 
 double Matrix2Cls::dotRow(int i, Vector2 v) {
-    Unknown vStorage = v->_v2storage;
+    auto vStorage = v->_v2storage;
     return _m2storage[i] * vStorage[0] + _m2storage[2 + i] * vStorage[1];
 }
 
 double Matrix2Cls::dotColumn(int j, Vector2 v) {
-    Unknown vStorage = v->_v2storage;
+    auto vStorage = v->_v2storage;
     return _m2storage[j * 2] * vStorage[0] + _m2storage[(j * 2) + 1] * vStorage[1];
 }
 
@@ -285,26 +285,26 @@ double Matrix2Cls::infinityNorm() {
 }
 
 double Matrix2Cls::relativeError(Matrix2 correct) {
-    Unknown diff = correct - this;
-    Unknown correctNorm = correct->infinityNorm();
-    Unknown diff_norm = diff->infinityNorm();
+    auto diff = correct - this;
+    auto correctNorm = correct->infinityNorm();
+    auto diff_norm = diff->infinityNorm();
     return diff_norm / correctNorm;
 }
 
 double Matrix2Cls::absoluteError(Matrix2 correct) {
-    Unknown this_norm = infinityNorm();
-    Unknown correct_norm = correct->infinityNorm();
-    Unknown diff_norm = (this_norm - correct_norm)->abs();
+    auto this_norm = infinityNorm();
+    auto correct_norm = correct->infinityNorm();
+    auto diff_norm = (this_norm - correct_norm)->abs();
     return diff_norm;
 }
 
 double Matrix2Cls::invert() {
-    Unknown det = determinant();
+    auto det = determinant();
     if (det == 0.0) {
         return 0.0;
     }
-    Unknown invDet = 1.0 / det;
-    Unknown temp = _m2storage[0];
+    auto invDet = 1.0 / det;
+    auto temp = _m2storage[0];
     _m2storage[0] = _m2storage[3] * invDet;
     _m2storage[1] = -_m2storage[1] * invDet;
     _m2storage[2] = -_m2storage[2] * invDet;
@@ -313,13 +313,13 @@ double Matrix2Cls::invert() {
 }
 
 double Matrix2Cls::copyInverse(Matrix2 arg) {
-    Unknown det = arg->determinant();
+    auto det = arg->determinant();
     if (det == 0.0) {
         setFrom(arg);
         return 0.0;
     }
-    Unknown invDet = 1.0 / det;
-    Unknown argStorage = arg->_m2storage;
+    auto invDet = 1.0 / det;
+    auto argStorage = arg->_m2storage;
     _m2storage[0] = argStorage[3] * invDet;
     _m2storage[1] = -argStorage[1] * invDet;
     _m2storage[2] = -argStorage[2] * invDet;
@@ -328,8 +328,8 @@ double Matrix2Cls::copyInverse(Matrix2 arg) {
 }
 
 void Matrix2Cls::setRotation(double radians) {
-    Unknown c = math->cos(radians);
-    Unknown s = math->sin(radians);
+    auto c = math->cos(radians);
+    auto s = math->sin(radians);
     _m2storage[0] = c;
     _m2storage[1] = s;
     _m2storage[2] = -s;
@@ -337,7 +337,7 @@ void Matrix2Cls::setRotation(double radians) {
 }
 
 void Matrix2Cls::scaleAdjoint(double scale) {
-    Unknown temp = _m2storage[0];
+    auto temp = _m2storage[0];
     _m2storage[0] = _m2storage[3] * scale;
     _m2storage[2] = -_m2storage[2] * scale;
     _m2storage[1] = -_m2storage[1] * scale;
@@ -356,7 +356,7 @@ Matrix2 Matrix2Cls::scaled(double scale) {
 }
 
 void Matrix2Cls::add(Matrix2 o) {
-    auto _c1 = clone();_c1.scale(scale);Unknown oStorage = o->_m2storage;
+    auto _c1 = clone();_c1.scale(scale);auto oStorage = o->_m2storage;
     _m2storage[0] = _m2storage[0] + oStorage[0];
     _m2storage[1] = _m2storage[1] + oStorage[1];
     _m2storage[2] = _m2storage[2] + oStorage[2];
@@ -364,7 +364,7 @@ void Matrix2Cls::add(Matrix2 o) {
 }
 
 void Matrix2Cls::sub(Matrix2 o) {
-    Unknown oStorage = o->_m2storage;
+    auto oStorage = o->_m2storage;
     _m2storage[0] = _m2storage[0] - oStorage[0];
     _m2storage[1] = _m2storage[1] - oStorage[1];
     _m2storage[2] = _m2storage[2] - oStorage[2];
@@ -379,15 +379,15 @@ void Matrix2Cls::negate() {
 }
 
 void Matrix2Cls::multiply(Matrix2 arg) {
-    Unknown m00 = _m2storage[0];
-    Unknown m01 = _m2storage[2];
-    Unknown m10 = _m2storage[1];
-    Unknown m11 = _m2storage[3];
-    Unknown argStorage = arg->_m2storage;
-    Unknown n00 = argStorage[0];
-    Unknown n01 = argStorage[2];
-    Unknown n10 = argStorage[1];
-    Unknown n11 = argStorage[3];
+    auto m00 = _m2storage[0];
+    auto m01 = _m2storage[2];
+    auto m10 = _m2storage[1];
+    auto m11 = _m2storage[3];
+    auto argStorage = arg->_m2storage;
+    auto n00 = argStorage[0];
+    auto n01 = argStorage[2];
+    auto n10 = argStorage[1];
+    auto n11 = argStorage[3];
     _m2storage[0] = (m00 * n00) + (m01 * n10);
     _m2storage[2] = (m00 * n01) + (m01 * n11);
     _m2storage[1] = (m10 * n00) + (m11 * n10);
@@ -399,11 +399,11 @@ Matrix2 Matrix2Cls::multiplied(Matrix2 arg) {
 }
 
 void Matrix2Cls::transposeMultiply(Matrix2 arg) {
-    auto _c1 = clone();_c1.multiply(arg);Unknown m00 = _m2storage[0];
-    Unknown m01 = _m2storage[1];
-    Unknown m10 = _m2storage[2];
-    Unknown m11 = _m2storage[3];
-    Unknown argStorage = arg->_m2storage;
+    auto _c1 = clone();_c1.multiply(arg);auto m00 = _m2storage[0];
+    auto m01 = _m2storage[1];
+    auto m10 = _m2storage[2];
+    auto m11 = _m2storage[3];
+    auto argStorage = arg->_m2storage;
     _m2storage[0] = (m00 * argStorage[0]) + (m01 * argStorage[1]);
     _m2storage[2] = (m00 * argStorage[2]) + (m01 * argStorage[3]);
     _m2storage[1] = (m10 * argStorage[0]) + (m11 * argStorage[1]);
@@ -411,11 +411,11 @@ void Matrix2Cls::transposeMultiply(Matrix2 arg) {
 }
 
 void Matrix2Cls::multiplyTranspose(Matrix2 arg) {
-    Unknown m00 = _m2storage[0];
-    Unknown m01 = _m2storage[2];
-    Unknown m10 = _m2storage[1];
-    Unknown m11 = _m2storage[3];
-    Unknown argStorage = arg->_m2storage;
+    auto m00 = _m2storage[0];
+    auto m01 = _m2storage[2];
+    auto m10 = _m2storage[1];
+    auto m11 = _m2storage[3];
+    auto argStorage = arg->_m2storage;
     _m2storage[0] = (m00 * argStorage[0]) + (m01 * argStorage[2]);
     _m2storage[2] = (m00 * argStorage[1]) + (m01 * argStorage[3]);
     _m2storage[1] = (m10 * argStorage[0]) + (m11 * argStorage[2]);
@@ -423,9 +423,9 @@ void Matrix2Cls::multiplyTranspose(Matrix2 arg) {
 }
 
 Vector2 Matrix2Cls::transform(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
-    Unknown x = (_m2storage[0] * argStorage[0]) + (_m2storage[2] * argStorage[1]);
-    Unknown y = (_m2storage[1] * argStorage[0]) + (_m2storage[3] * argStorage[1]);
+    auto argStorage = arg->_v2storage;
+    auto x = (_m2storage[0] * argStorage[0]) + (_m2storage[2] * argStorage[1]);
+    auto y = (_m2storage[1] * argStorage[0]) + (_m2storage[3] * argStorage[1]);
     argStorage[0] = x;
     argStorage[1] = y;
     return arg;
@@ -441,7 +441,7 @@ Vector2 Matrix2Cls::transformed(Vector2 arg, Vector2 out) {
 }
 
 void Matrix2Cls::copyIntoArray(List<num> array, int offset) {
-    Unknown i = offset;
+    auto i = offset;
     array[i + 3] = _m2storage[3];
     array[i + 2] = _m2storage[2];
     array[i + 1] = _m2storage[1];
@@ -449,7 +449,7 @@ void Matrix2Cls::copyIntoArray(List<num> array, int offset) {
 }
 
 void Matrix2Cls::copyFromArray(List<double> array, int offset) {
-    Unknown i = offset;
+    auto i = offset;
     _m2storage[3] = array[i + 3];
     _m2storage[2] = array[i + 2];
     _m2storage[1] = array[i + 1];

@@ -48,8 +48,8 @@ Listenable PaintingBindingCls::systemFonts() {
 }
 
 Future<void> PaintingBindingCls::handleSystemMessage(Object systemMessage) {
-    await await super->handleSystemMessage(systemMessage);
-    Map<String, dynamic> message = as<Map<String, dynamic>>(systemMessage);
+    await super->handleSystemMessage(systemMessage);
+    Map<String, Object> message = as<Map<String, Object>>(systemMessage);
     String type = as<String>(message[__s("type")]);
     ;
     return;

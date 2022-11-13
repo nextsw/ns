@@ -91,7 +91,7 @@ Future<void> FixedExtentScrollControllerCls::animateToItem(int itemIndex, Curve 
     if (!hasClients()) {
         return;
     }
-    List<Future<void>> list1 = make<ListCls<>>();for (_FixedExtentScrollPosition position : positions()-><_FixedExtentScrollPosition>cast()) {        ;    }{    list1.add(ArrayItem);}await await FutureCls-><void>wait(list1);
+    List<Future<void>> list1 = make<ListCls<>>();for (_FixedExtentScrollPosition position : positions()-><_FixedExtentScrollPosition>cast()) {        ;    }{    list1.add(ArrayItem);}await FutureCls-><void>wait(list1);
 }
 
 void FixedExtentScrollControllerCls::jumpToItem(int itemIndex) {

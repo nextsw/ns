@@ -76,7 +76,7 @@ public:
 private:
     Map<String, Future<String>> _stringCache;
 
-    Map<String, Future<dynamic>> _structuredDataCache;
+    Map<String, Future<Object>> _structuredDataCache;
 
 
 };

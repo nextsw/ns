@@ -149,7 +149,7 @@ void RenderAndroidViewCls::_setOffset() {
     SchedulerBindingCls::instance->addPostFrameCallback([=] (Unknown  _) {
         if (!_isDisposed) {
             if (attached()) {
-                await await _viewController->setOffset(localToGlobal(OffsetCls::zero));
+                await _viewController->setOffset(localToGlobal(OffsetCls::zero));
             }
             _setOffset();
         }

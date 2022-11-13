@@ -15,7 +15,7 @@ Future<ConnectionTask<SecureSocket>> SecureSocketCls::startConnect(host , int po
 }
 
 Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, List<String> supportedProtocols) {
-    return (as<Future<any>>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
+    return (as<Future<any>>((as<Object>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
         return RawSecureSocketCls->secure(as<RawSocket>(detachedRaw[0]), as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), host, context, onBadCertificate, keyLog, supportedProtocols);
     })-><SecureSocket>then([=] (Unknown  raw) {
         SecureSocketCls->_(raw);
@@ -23,7 +23,7 @@ Future<SecureSocket> SecureSocketCls::secure(Socket socket, host , SecurityConte
 }
 
 Future<SecureSocket> SecureSocketCls::secureServer(Socket socket, SecurityContext context, List<int> bufferedData, bool requestClientCertificate, bool requireClientCertificate, List<String> supportedProtocols) {
-    return (as<Future<any>>((as<dynamic>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
+    return (as<Future<any>>((as<Object>(socket))->_detachRaw()))-><RawSecureSocket>then([=] (Unknown  detachedRaw) {
         return RawSecureSocketCls->secureServer(as<RawSocket>(detachedRaw[0]), context, as<StreamSubscription<RawSocketEvent>>(detachedRaw[1]), bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
     })-><SecureSocket>then([=] (Unknown  raw) {
         SecureSocketCls->_(raw);
@@ -58,7 +58,7 @@ Future<RawSecureSocket> RawSecureSocketCls::secureServer(RawSocket socket, Secur
     return _RawSecureSocketCls->connect(socket->address(), socket->remotePort(), true, socket, context, subscription, bufferedData, requestClientCertificate, requireClientCertificate, supportedProtocols);
 }
 
-Future<_RawSecureSocket> _RawSecureSocketCls::connect(dynamic host, int requestedPort, bool isServer, RawSocket socket, List<int> bufferedData, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
+Future<_RawSecureSocket> _RawSecureSocketCls::connect(Object host, int requestedPort, bool isServer, RawSocket socket, List<int> bufferedData, SecurityContext context, std::function<void(String line)> keyLog, std::function<bool(X509Certificate certificate)> onBadCertificate, bool requestClientCertificate, bool requireClientCertificate, StreamSubscription<RawSocketEvent> subscription, List<String> supportedProtocols) {
     _verifyFields(host, requestedPort, requestClientCertificate, requireClientCertificate);
     if (is<InternetAddress>(host)) {
         as<InternetAddressCls>(host) = as<InternetAddressCls>(host)->as<InternetAddressCls>(host);
@@ -222,11 +222,11 @@ bool _RawSecureSocketCls::_isBufferEncrypted(int identifier) {
 _RawSecureSocketCls::_RawSecureSocketCls(InternetAddress address, int requestedPort, bool isServer, SecurityContext context, RawSocket _socket, StreamSubscription<RawSocketEvent> subscription, List<int> _bufferedData, bool requestClientCertificate, bool requireClientCertificate, std::function<bool(X509Certificate certificate)> onBadCertificate, std::function<void(String line)> keyLog, List<String> supportedProtocols) {
     {
             auto _c1 = _controller;    _c1.onListen = auto _c2 = _onSubscriptionStateChange;    _c2.onPause = auto _c3 = _onPauseStateChange;    _c3.onResume = auto _c4 = _onPauseStateChange;    _c4.onCancel = _onSubscriptionStateChange;    _c4;    _c3;    _c2;_c1;
-        Unknown secureFilter = _secureFilter!;
+        auto secureFilter = _secureFilter!;
         secureFilter->init();
         secureFilter->registerHandshakeCompleteCallback(_secureHandshakeCompleteHandler);
         if (keyLog != nullptr) {
-            Unknown port = make<ReceivePortCls>();
+            auto port = make<ReceivePortCls>();
             port->listen([=] (Unknown  line) {
                 try {
                     keyLog!((as<String>(line)) + __s("\n"));
@@ -251,7 +251,7 @@ _RawSecureSocketCls::_RawSecureSocketCls(InternetAddress address, int requestedP
                 _socket->close();
                 throw make<ArgumentErrorCls>(__s("Subscription passed to TLS upgrade is paused"));
             }
-            dynamic s = _socket;
+            Object s = _socket;
             if (s->_socket->closedReadEventSent) {
                 _eventDispatcher(RawSocketEventCls::readClosed);
             }
@@ -280,7 +280,7 @@ void _RawSecureSocketCls::_verifyFields(host , int requestedPort, bool requestCl
 }
 
 void _RawSecureSocketCls::_owner(owner ) {
-    (as<dynamic>(_socket))->_owner = owner;
+    (as<Object>(_socket))->_owner = owner;
 }
 
 void _RawSecureSocketCls::_completeCloseCompleter(RawSocket dummy) {
@@ -378,7 +378,7 @@ void _RawSecureSocketCls::_closeHandler() {
                 _close();
             }
         } else {
-            await await _scheduleFilter();
+            await _scheduleFilter();
         }
     } else {
         if (_status == handshakeStatus) {
@@ -386,7 +386,7 @@ void _RawSecureSocketCls::_closeHandler() {
         if (_filterStatus->readEmpty) {
             _reportError(make<HandshakeExceptionCls>(__s("Connection terminated during handshake")), nullptr);
         } else {
-            await await _secureHandshake();
+            await _secureHandshake();
         }
     }
 ;
@@ -396,12 +396,12 @@ Future<void> _RawSecureSocketCls::_secureHandshake() {
     try {
         bool needRetryHandshake = await _secureFilter!->handshake();
         if (needRetryHandshake) {
-            await await _secureHandshake();
+            await _secureHandshake();
         } else {
             _filterStatus->writeEmpty = false;
             _readSocket();
             _writeSocket();
-            await await _scheduleFilter();
+            await _scheduleFilter();
         }
     } catch (Unknown e) {
         _reportError(e, stackTrace);
@@ -504,7 +504,7 @@ Future<void> _RawSecureSocketCls::_tryFilter() {
                     _scheduleReadEvent();
                 }
                 if (_status == handshakeStatus) {
-                    await await _secureHandshake();
+                    await _secureHandshake();
                 }
             }
         }
@@ -514,7 +514,7 @@ Future<void> _RawSecureSocketCls::_tryFilter() {
 }
 
 List<int> _RawSecureSocketCls::_readSocketOrBufferedData(int bytes) {
-    Unknown bufferedData = _bufferedData;
+    auto bufferedData = _bufferedData;
     if (bufferedData != nullptr) {
         if (bytes > bufferedData->length() - _bufferedDataIndex) {
             bytes = bufferedData->length() - _bufferedDataIndex;
@@ -580,7 +580,7 @@ void _RawSecureSocketCls::_sendWriteEvent() {
 
 Future<_FilterStatus> _RawSecureSocketCls::_pushAllFilterStages() {
     bool wasInHandshake = _status != connectedStatus;
-    List<any> args = <dynamic>filled(2 + bufferCount * 2, nullptr);
+    List<any> args = <Object>filled(2 + bufferCount * 2, nullptr);
     args[0] = _secureFilter!->_pointer();
     args[1] = wasInHandshake;
     auto bufs = _secureFilter!->buffers()!;

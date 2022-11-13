@@ -81,17 +81,17 @@ public:
 
     virtual void didAdd();
 
-    virtual void didReplace(Route<dynamic> oldRoute);
+    virtual void didReplace(Route<Object> oldRoute);
 
     virtual bool didPop(T result);
 
-    virtual void didPopNext(Route<dynamic> nextRoute);
+    virtual void didPopNext(Route<Object> nextRoute);
 
-    virtual void didChangeNext(Route<dynamic> nextRoute);
+    virtual void didChangeNext(Route<Object> nextRoute);
 
-    virtual bool canTransitionTo(TransitionRoute<dynamic> nextRoute);
+    virtual bool canTransitionTo(TransitionRoute<Object> nextRoute);
 
-    virtual bool canTransitionFrom(TransitionRoute<dynamic> previousRoute);
+    virtual bool canTransitionFrom(TransitionRoute<Object> previousRoute);
 
     virtual void dispose();
 
@@ -117,9 +117,9 @@ private:
 
     virtual void _handleStatusChanged(AnimationStatus status);
 
-    virtual void _updateSecondaryAnimation(Route<dynamic> nextRoute);
+    virtual void _updateSecondaryAnimation(Route<Object> nextRoute);
 
-    virtual void _setSecondaryAnimation(Animation<double> animation, Future<dynamic> disposed);
+    virtual void _setSecondaryAnimation(Animation<double> animation, Future<Object> disposed);
 
 };
 template<typename T>
@@ -136,7 +136,7 @@ public:
     virtual void remove();
 
 private:
-    LocalHistoryRoute<dynamic> _owner;
+    LocalHistoryRoute<Object> _owner;
 
 
     virtual void _notifyRemoved();
@@ -191,7 +191,7 @@ public:
 
     bool impliesAppBarDismissal;
 
-    Route<dynamic> route;
+    Route<Object> route;
 
 
     virtual bool updateShouldNotify(_ModalScopeStatus old);
@@ -200,7 +200,7 @@ public:
 
 private:
 
-     _ModalScopeStatusCls(bool canPop, Widget child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route);
+     _ModalScopeStatusCls(bool canPop, Widget child, bool impliesAppBarDismissal, bool isCurrent, Route<Object> route);
 
 };
 using _ModalScopeStatus = std::shared_ptr<_ModalScopeStatusCls>;
@@ -305,7 +305,7 @@ public:
 
     virtual bool hasScopedWillPopCallback();
 
-    virtual void didChangePrevious(Route<dynamic> previousRoute);
+    virtual void didChangePrevious(Route<Object> previousRoute);
 
     virtual void changedInternalState();
 
@@ -374,9 +374,9 @@ public:
 
     virtual void unsubscribe(RouteAware routeAware);
 
-    virtual void didPop(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didPop(Route<Object> route, Route<Object> previousRoute);
 
-    virtual void didPush(Route<dynamic> route, Route<dynamic> previousRoute);
+    virtual void didPush(Route<Object> route, Route<Object> previousRoute);
 
 private:
     Map<R, Set<RouteAware>> _listeners;

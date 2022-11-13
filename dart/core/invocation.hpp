@@ -18,8 +18,8 @@ public:
     virtual Symbol memberName();
     virtual List<Type> typeArguments();
 
-    virtual List<dynamic> positionalArguments();
-    virtual Map<Symbol, dynamic> namedArguments();
+    virtual List<Object> positionalArguments();
+    virtual Map<Symbol, Object> namedArguments();
     virtual bool isMethod();
     virtual bool isGetter();
     virtual bool isSetter();
@@ -43,9 +43,9 @@ public:
 
     virtual void  setter(Symbol memberName, Object argument);
 
-    virtual List<dynamic> positionalArguments();
+    virtual List<Object> positionalArguments();
 
-    virtual Map<Symbol, dynamic> namedArguments();
+    virtual Map<Symbol, Object> namedArguments();
 
     virtual bool isMethod();
 

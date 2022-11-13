@@ -4,9 +4,9 @@
 
 #include <dart/core/core.hpp>
 
-double relativeError(dynamic calculated, dynamic correct);
+double relativeError(Object calculated, Object correct);
 
-double absoluteError(dynamic calculated, dynamic correct);
+double absoluteError(Object calculated, Object correct);
 
 
 

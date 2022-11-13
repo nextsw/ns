@@ -60,7 +60,7 @@ Future<Codec> NetworkImageCls::_loadAsync(NetworkImage key, StreamController<Ima
         });
         HttpClientResponse response = await request->close();
         if (response->statusCode != HttpStatusCls::ok) {
-            await await response-><List<int>>drain(makeList());
+            await response-><List<int>>drain(makeList());
             throw image_provider->make<NetworkImageLoadExceptionCls>(response->statusCode, resolved);
         }
         Uint8List bytes = await consolidateHttpClientResponseBytes(response, [=] (int cumulative,int total) {

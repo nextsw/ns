@@ -135,12 +135,12 @@ bool KeyEventManagerCls::handleKeyData(KeyData data) {
     ;
 }
 
-Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic message) {
+Future<Map<String, Object>> KeyEventManagerCls::handleRawKeyMessage(Object message) {
     if (_transitMode == nullptr) {
         _transitMode = KeyDataTransitModeCls::rawKeyData;
         _rawKeyboard->addListener(_convertRawEventAndStore);
     }
-    RawKeyEvent rawEvent = RawKeyEventCls->fromMessage(as<Map<String, dynamic>>(message));
+    RawKeyEvent rawEvent = RawKeyEventCls->fromMessage(as<Map<String, Object>>(message));
     bool shouldDispatch = true;
     if (is<RawKeyDownEvent>(rawEvent)) {
         if (!as<RawKeyDownEventCls>(rawEvent)->data->shouldDispatchEvent()) {
@@ -169,7 +169,7 @@ Future<Map<String, dynamic>> KeyEventManagerCls::handleRawKeyMessage(dynamic mes
         handled = _dispatchKeyMessage(_keyEventsSinceLastMessage, rawEvent) || handled;
         _keyEventsSinceLastMessage->clear();
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("handled"), handled);return list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("handled"), handled);return list1;
 }
 
 void KeyEventManagerCls::clearState() {

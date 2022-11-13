@@ -84,7 +84,7 @@ SystemMouseCursor _SystemMouseCursorSessionCls::cursor() {
 }
 
 Future<void> _SystemMouseCursorSessionCls::activate() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("device"), device);map1.set(__s("kind"), cursor()->kind);return SystemChannelsCls::mouseCursor-><void>invokeMethod(__s("activateSystemCursor"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("device"), device);map1.set(__s("kind"), cursor()->kind);return SystemChannelsCls::mouseCursor-><void>invokeMethod(__s("activateSystemCursor"), list1);
 }
 
 void _SystemMouseCursorSessionCls::dispose() {

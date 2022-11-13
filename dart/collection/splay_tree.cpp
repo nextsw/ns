@@ -201,10 +201,10 @@ void _SplayTreeCls<K, Node>::_clear() {
 
 template<typename K, typename Node>
 bool _SplayTreeCls<K, Node>::_containsKey(Object key) {
-    return _validKey(key) && _splay(as<dynamic>(key)) == 0;
+    return _validKey(key) && _splay(as<Object>(key)) == 0;
 }
 
-int _dynamicCompare(dynamic a, dynamic b) {
+int _dynamicCompare(Object a, Object b) {
     return ComparableCls->compare(a, b);
 }
 
@@ -218,41 +218,41 @@ Comparator<K> _defaultCompare() {
 }
 
 template<typename K, typename V>
-SplayTreeMapCls<K, V>::SplayTreeMapCls(std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+SplayTreeMapCls<K, V>::SplayTreeMapCls(std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     {
         _compare = compare | <K>_defaultCompare();
-        _validKey = isValidKey | ([=] (dynamic a) {
+        _validKey = isValidKey | ([=] (Object a) {
             is<K>(a);
         });
     }
 }
 
 template<typename K, typename V>
-void SplayTreeMapCls<K, V>::from(Map<dynamic, dynamic> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+void SplayTreeMapCls<K, V>::from(Map<Object, Object> other, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     if (is<Map<K, V>>(other)) {
         return <K, V>of(as<MapCls>(other), compare, isValidKey);
     }
     SplayTreeMap<K, V> result = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
-    other->forEach([=] (dynamic k,dynamic v) {
+    other->forEach([=] (Object k,Object v) {
         result[k] = v;
     });
     return result;
 }
 
 template<typename K, typename V>
-void SplayTreeMapCls<K, V>::of(Map<K, V> other, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+void SplayTreeMapCls<K, V>::of(Map<K, V> other, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     return _c1;
 }
 
 template<typename K, typename V>
-void SplayTreeMapCls<K, V>::fromIterable(Iterable<any> iterable, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value) {
+void SplayTreeMapCls<K, V>::fromIterable(Iterable<any> iterable, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey, std::function<K(Object element)> key, std::function<V(Object element)> value) {
     auto _c1 = <K, V>make<SplayTreeMapCls>(compare, isValidKey);_c1.addAll(other);SplayTreeMap<K, V> map = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
     MapBaseCls->_fillMapWithMappedIterable(map, iterable, key, value);
     return map;
 }
 
 template<typename K, typename V>
-void SplayTreeMapCls<K, V>::fromIterables(Iterable<K> keys, Iterable<V> values, std::function<int(K key1, K key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+void SplayTreeMapCls<K, V>::fromIterables(Iterable<K> keys, Iterable<V> values, std::function<int(K key1, K key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     SplayTreeMap<K, V> map = <K, V>make<SplayTreeMapCls>(compare, isValidKey);
     MapBaseCls->_fillMapWithIterables(map, keys, values);
     return map;
@@ -264,7 +264,7 @@ V SplayTreeMapCls<K, V>::[](Object key) {
         return nullptr;
     }
     if (_root != nullptr) {
-        int comp = _splay(as<dynamic>(key));
+        int comp = _splay(as<Object>(key));
         if (comp == 0) {
             return _root!->value;
         }
@@ -277,7 +277,7 @@ V SplayTreeMapCls<K, V>::remove(Object key) {
     if (!_validKey(key)) {
         return nullptr;
     }
-    _SplayTreeMapNode<K, V> mapRoot = _remove(as<dynamic>(key));
+    _SplayTreeMapNode<K, V> mapRoot = _remove(as<Object>(key));
     if (mapRoot != nullptr) {
         return mapRoot->value;
     }
@@ -670,29 +670,29 @@ void _SplayTreeMapEntryIteratorCls<K, V>::_replaceValue(V value) {
 }
 
 template<typename E>
-SplayTreeSetCls<E>::SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+SplayTreeSetCls<E>::SplayTreeSetCls(std::function<int(E key1, E key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     {
         _compare = compare | <E>_defaultCompare();
-        _validKey = isValidKey | ([=] (dynamic v) {
+        _validKey = isValidKey | ([=] (Object v) {
             is<E>(v);
         });
     }
 }
 
 template<typename E>
-void SplayTreeSetCls<E>::from(Iterable<any> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+void SplayTreeSetCls<E>::from(Iterable<any> elements, std::function<int(E key1, E key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     if (is<Iterable<E>>(elements)) {
         return <E>of(as<IterableCls>(elements), compare, isValidKey);
     }
     SplayTreeSet<E> result = <E>make<SplayTreeSetCls>(compare, isValidKey);
     for (auto element : elements) {
-        result->add(as<dynamic>(element));
+        result->add(as<Object>(element));
     }
     return result;
 }
 
 template<typename E>
-void SplayTreeSetCls<E>::of(Iterable<E> elements, std::function<int(E key1, E key2)> compare, std::function<bool(dynamic potentialKey)> isValidKey) {
+void SplayTreeSetCls<E>::of(Iterable<E> elements, std::function<int(E key1, E key2)> compare, std::function<bool(Object potentialKey)> isValidKey) {
     return _c1;
 }
 

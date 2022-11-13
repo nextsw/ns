@@ -110,7 +110,7 @@ class DoubleLinkedQueueCls : public IterableCls<E> {
 public:
 
      DoubleLinkedQueueCls();
-    virtual void  from(Iterable<dynamic> elements);
+    virtual void  from(Iterable<Object> elements);
 
     virtual void  of(Iterable<E> elements);
 
@@ -197,7 +197,7 @@ public:
 
      ListQueueCls(int initialCapacity);
 
-    virtual void  from(Iterable<dynamic> elements);
+    virtual void  from(Iterable<Object> elements);
 
     virtual void  of(Iterable<E> elements);
 

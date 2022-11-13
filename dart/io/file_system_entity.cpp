@@ -301,7 +301,7 @@ Uint8List FileSystemEntityCls::_toUtf8Array(String s) {
 
 Uint8List FileSystemEntityCls::_toNullTerminatedUtf8Array(Uint8List l) {
     if (l->isEmpty() || (l->isNotEmpty() && l->last != 0)) {
-        Unknown tmp = make<Uint8ListCls>(l->length() + 1);
+        auto tmp = make<Uint8ListCls>(l->length() + 1);
         tmp->setRange(0, l->length(), l);
         return tmp;
     } else {

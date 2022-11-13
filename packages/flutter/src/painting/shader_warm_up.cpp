@@ -6,7 +6,7 @@ Size ShaderWarmUpCls::size() {
 Future<void> ShaderWarmUpCls::execute() {
     PictureRecorder recorder = ui->make<PictureRecorderCls>();
     Canvas canvas = ui->make<CanvasCls>(recorder);
-    await await warmUpOnCanvas(canvas);
+    await warmUpOnCanvas(canvas);
     Picture picture = recorder->endRecording();
     assert(debugCaptureShaderWarmUpPicture(picture));
     if (!kIsWeb) {

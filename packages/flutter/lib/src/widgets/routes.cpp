@@ -108,7 +108,7 @@ void TransitionRouteCls<T>::didAdd() {
 }
 
 template<typename T>
-void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
+void TransitionRouteCls<T>::didReplace(Route<Object> oldRoute) {
     assert(_controller != nullptr, __sf("%s.didReplace called before calling install() or after calling dispose().", runtimeType));
     assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     if (is<TransitionRoute<any>>(oldRoute)) {
@@ -127,7 +127,7 @@ bool TransitionRouteCls<T>::didPop(T result) {
 }
 
 template<typename T>
-void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
+void TransitionRouteCls<T>::didPopNext(Route<Object> nextRoute) {
     assert(_controller != nullptr, __sf("%s.didPopNext called before calling install() or after calling dispose().", runtimeType));
     assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     _updateSecondaryAnimation(nextRoute);
@@ -135,7 +135,7 @@ void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
 }
 
 template<typename T>
-void TransitionRouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
+void TransitionRouteCls<T>::didChangeNext(Route<Object> nextRoute) {
     assert(_controller != nullptr, __sf("%s.didChangeNext called before calling install() or after calling dispose().", runtimeType));
     assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     _updateSecondaryAnimation(nextRoute);
@@ -143,12 +143,12 @@ void TransitionRouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
 }
 
 template<typename T>
-bool TransitionRouteCls<T>::canTransitionTo(TransitionRoute<dynamic> nextRoute) {
+bool TransitionRouteCls<T>::canTransitionTo(TransitionRoute<Object> nextRoute) {
     return true;
 }
 
 template<typename T>
-bool TransitionRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
+bool TransitionRouteCls<T>::canTransitionFrom(TransitionRoute<Object> previousRoute) {
     return true;
 }
 
@@ -179,10 +179,10 @@ void TransitionRouteCls<T>::_handleStatusChanged(AnimationStatus status) {
 }
 
 template<typename T>
-void TransitionRouteCls<T>::_updateSecondaryAnimation(Route<dynamic> nextRoute) {
+void TransitionRouteCls<T>::_updateSecondaryAnimation(Route<Object> nextRoute) {
     VoidCallback previousTrainHoppingListenerRemover = _trainHoppingListenerRemover;
     _trainHoppingListenerRemover = nullptr;
-    if (is<TransitionRoute<dynamic>>(nextRoute) && canTransitionTo(nextRoute) && nextRoute->canTransitionFrom(this)) {
+    if (is<TransitionRoute<Object>>(nextRoute) && canTransitionTo(nextRoute) && nextRoute->canTransitionFrom(this)) {
         Animation<double> current = _secondaryAnimation->parent();
         if (current != nullptr) {
             Animation<double> currentTrain = (is<TrainHoppingAnimation>(current)? current->currentTrain : current)!;
@@ -220,9 +220,9 @@ void TransitionRouteCls<T>::_updateSecondaryAnimation(Route<dynamic> nextRoute) 
 }
 
 template<typename T>
-void TransitionRouteCls<T>::_setSecondaryAnimation(Animation<double> animation, Future<dynamic> disposed) {
+void TransitionRouteCls<T>::_setSecondaryAnimation(Animation<double> animation, Future<Object> disposed) {
     _secondaryAnimation->parent() = animation;
-    disposed?->then([=] (dynamic _) {
+    disposed?->then([=] (Object _) {
         if (_secondaryAnimation->parent() == animation) {
             _secondaryAnimation->parent() = kAlwaysDismissedAnimation;
             if (is<TrainHoppingAnimation>(animation)) {
@@ -316,7 +316,7 @@ bool LocalHistoryRouteCls<T>::willHandlePopInternally() {
 }
 
 bool _DismissModalActionCls::isEnabled(DismissIntent intent) {
-    ModalRoute<dynamic> route = ModalRouteCls-><dynamic>of(context)!;
+    ModalRoute<Object> route = ModalRouteCls-><Object>of(context)!;
     return route->barrierDismissible();
 }
 
@@ -335,7 +335,7 @@ void _ModalScopeStatusCls::debugFillProperties(DiagnosticPropertiesBuilder descr
     description->add(make<FlagPropertyCls>(__s("impliesAppBarDismissal"), impliesAppBarDismissal, __s("implies app bar dismissal")));
 }
 
-_ModalScopeStatusCls::_ModalScopeStatusCls(bool canPop, Widget child, bool impliesAppBarDismissal, bool isCurrent, Route<dynamic> route) {
+_ModalScopeStatusCls::_ModalScopeStatusCls(bool canPop, Widget child, bool impliesAppBarDismissal, bool isCurrent, Route<Object> route) {
     {
         assert(isCurrent != nullptr);
         assert(canPop != nullptr);
@@ -441,7 +441,7 @@ void ModalRouteCls<T>::setState(VoidCallback fn) {
 
 template<typename T>
 RoutePredicate ModalRouteCls<T>::withName(String name) {
-    return [=] (Route<dynamic> route) {
+    return [=] (Route<Object> route) {
         return !route->willHandlePopInternally && is<ModalRoute<any>>(route) && route->settings->name == name;
     };
 }
@@ -547,7 +547,7 @@ bool ModalRouteCls<T>::hasScopedWillPopCallback() {
 }
 
 template<typename T>
-void ModalRouteCls<T>::didChangePrevious(Route<dynamic> previousRoute) {
+void ModalRouteCls<T>::didChangePrevious(Route<Object> previousRoute) {
     super->didChangePrevious(previousRoute);
     changedInternalState();
 }
@@ -663,7 +663,7 @@ void RouteObserverCls<R>::unsubscribe(RouteAware routeAware) {
 }
 
 template<typename R>
-void RouteObserverCls<R>::didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+void RouteObserverCls<R>::didPop(Route<Object> route, Route<Object> previousRoute) {
     if (is<R>(route) && is<R>(previousRoute)) {
         List<RouteAware> previousSubscribers = _listeners[previousRoute]?->toList();
         if (previousSubscribers != nullptr) {
@@ -681,7 +681,7 @@ void RouteObserverCls<R>::didPop(Route<dynamic> route, Route<dynamic> previousRo
 }
 
 template<typename R>
-void RouteObserverCls<R>::didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+void RouteObserverCls<R>::didPush(Route<Object> route, Route<Object> previousRoute) {
     if (is<R>(route) && is<R>(previousRoute)) {
         Set<RouteAware> previousSubscribers = _listeners[previousRoute];
         if (previousSubscribers != nullptr) {

@@ -3,7 +3,7 @@ int _IOResourceInfoCls::timestamp() {
     return _startTime + _sw->elapsedMicroseconds ~/ 1000;
 }
 
-Map<String, dynamic> _IOResourceInfoCls::referenceValueMap() {
+Map<String, Object> _IOResourceInfoCls::referenceValueMap() {
     return list1;
 }
 
@@ -33,7 +33,7 @@ void _ReadWriteResourceInfoCls::addWrite(int bytes) {
     lastWriteTime = _IOResourceInfoCls::timestamp;
 }
 
-Map<String, dynamic> _ReadWriteResourceInfoCls::fullValueMap() {
+Map<String, Object> _ReadWriteResourceInfoCls::fullValueMap() {
     return list1;
 }
 
@@ -58,7 +58,7 @@ void _FileResourceInfoCls::fileClosed(_FileResourceInfo info) {
     openFiles->remove(info->id);
 }
 
-Iterable<Map<String, dynamic>> _FileResourceInfoCls::getOpenFilesList() {
+Iterable<Map<String, Object>> _FileResourceInfoCls::getOpenFilesList() {
     return ListCls->from(openFiles->values->map([=] (Unknown  e) {
         e->referenceValueMap;
     }));
@@ -66,19 +66,19 @@ Iterable<Map<String, dynamic>> _FileResourceInfoCls::getOpenFilesList() {
 
 Future<ServiceExtensionResponse> _FileResourceInfoCls::getOpenFiles(function , params ) {
     assert(function == __s("ext.dart.io.getOpenFiles"));
-    map1.set(__s("type"), __s("OpenFileList"));map1.set(__s("files"), getOpenFilesList());Unknown data = list1;
-    Unknown jsonValue = json->encode(data);
+    map1.set(__s("type"), __s("OpenFileList"));map1.set(__s("files"), getOpenFilesList());auto data = list1;
+    auto jsonValue = json->encode(data);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 
-Map<String, dynamic> _FileResourceInfoCls::fileInfoMap() {
+Map<String, Object> _FileResourceInfoCls::fileInfoMap() {
     return fullValueMap();
 }
 
 Future<ServiceExtensionResponse> _FileResourceInfoCls::getOpenFileInfoMapByID(function , params ) {
-    Unknown id = intValue->parse(params[__s("id")]!);
-    Unknown result = openFiles->containsKey(id)? openFiles[id]!->fileInfoMap : makeMap(makeList(), makeList();
-    Unknown jsonValue = json->encode(result);
+    auto id = intValue->parse(params[__s("id")]!);
+    auto result = openFiles->containsKey(id)? openFiles[id]!->fileInfoMap : makeMap(makeList(), makeList();
+    auto jsonValue = json->encode(result);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 
@@ -100,7 +100,7 @@ void _SpawnedProcessResourceInfoCls::stopped() {
     return processStopped(this);
 }
 
-Map<String, dynamic> _SpawnedProcessResourceInfoCls::fullValueMap() {
+Map<String, Object> _SpawnedProcessResourceInfoCls::fullValueMap() {
     return list1;
 }
 
@@ -114,7 +114,7 @@ void _SpawnedProcessResourceInfoCls::processStopped(_SpawnedProcessResourceInfo 
     startedProcesses->remove(info->id);
 }
 
-Iterable<Map<String, dynamic>> _SpawnedProcessResourceInfoCls::getStartedProcessesList() {
+Iterable<Map<String, Object>> _SpawnedProcessResourceInfoCls::getStartedProcessesList() {
     return ListCls->from(startedProcesses->values->map([=] (Unknown  e) {
         e->referenceValueMap;
     }));
@@ -122,15 +122,15 @@ Iterable<Map<String, dynamic>> _SpawnedProcessResourceInfoCls::getStartedProcess
 
 Future<ServiceExtensionResponse> _SpawnedProcessResourceInfoCls::getStartedProcesses(String function, Map<String, String> params) {
     assert(function == __s("ext.dart.io.getSpawnedProcesses"));
-    map1.set(__s("type"), __s("SpawnedProcessList"));map1.set(__s("processes"), getStartedProcessesList());Unknown data = list1;
-    Unknown jsonValue = json->encode(data);
+    map1.set(__s("type"), __s("SpawnedProcessList"));map1.set(__s("processes"), getStartedProcessesList());auto data = list1;
+    auto jsonValue = json->encode(data);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 
 Future<ServiceExtensionResponse> _SpawnedProcessResourceInfoCls::getProcessInfoMapById(String function, Map<String, String> params) {
-    Unknown id = intValue->parse(params[__s("id")]!);
-    Unknown result = startedProcesses->containsKey(id)? startedProcesses[id]!->fullValueMap : makeMap(makeList(), makeList();
-    Unknown jsonValue = json->encode(result);
+    auto id = intValue->parse(params[__s("id")]!);
+    auto result = startedProcesses->containsKey(id)? startedProcesses[id]!->fullValueMap : makeMap(makeList(), makeList();
+    auto jsonValue = json->encode(result);
     return FutureCls->value(ServiceExtensionResponseCls->result(jsonValue));
 }
 

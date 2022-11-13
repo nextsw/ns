@@ -52,7 +52,7 @@ void Vector3Cls::setZero() {
 }
 
 void Vector3Cls::setFrom(Vector3 other) {
-    Unknown otherStorage = other->_v3storage;
+    auto otherStorage = other->_v3storage;
     _v3storage[0] = otherStorage[0];
     _v3storage[1] = otherStorage[1];
     _v3storage[2] = otherStorage[2];
@@ -132,11 +132,11 @@ double Vector3Cls::length2() {
 }
 
 double Vector3Cls::normalize() {
-    Unknown l = length;
+    auto l = length;
     if (l == 0.0) {
         return 0.0;
     }
-    Unknown d = 1.0 / l;
+    auto d = 1.0 / l;
     _v3storage[0] *= d;
     _v3storage[1] *= d;
     _v3storage[2] *= d;
@@ -161,31 +161,31 @@ double Vector3Cls::distanceTo(Vector3 arg) {
 }
 
 double Vector3Cls::distanceToSquared(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
-    Unknown dx = _v3storage[0] - argStorage[0];
-    Unknown dy = _v3storage[1] - argStorage[1];
-    Unknown dz = _v3storage[2] - argStorage[2];
+    auto argStorage = arg->_v3storage;
+    auto dx = _v3storage[0] - argStorage[0];
+    auto dy = _v3storage[1] - argStorage[1];
+    auto dz = _v3storage[2] - argStorage[2];
     return dx * dx + dy * dy + dz * dz;
 }
 
 double Vector3Cls::angleTo(Vector3 other) {
-    Unknown otherStorage = other->_v3storage;
+    auto otherStorage = other->_v3storage;
     if (_v3storage[0] == otherStorage[0] && _v3storage[1] == otherStorage[1] && _v3storage[2] == otherStorage[2]) {
         return 0.0;
     }
-    Unknown d = dot(other) / (length * other->length);
+    auto d = dot(other) / (length * other->length);
     return math->acos(d->clamp(-1.0, 1.0));
 }
 
 double Vector3Cls::angleToSigned(Vector3 other, Vector3 normal) {
-    Unknown angle = angleTo(other);
-    Unknown c = cross(other);
-    Unknown d = c->dot(normal);
+    auto angle = angleTo(other);
+    auto c = cross(other);
+    auto d = c->dot(normal);
     return  < 0.0? -angle : angle;
 }
 
 double Vector3Cls::dot(Vector3 other) {
-    Unknown otherStorage = other->_v3storage;
+    auto otherStorage = other->_v3storage;
     double sum;
     sum = _v3storage[0] * otherStorage[0];
     sum += _v3storage[1] * otherStorage[1];
@@ -194,35 +194,35 @@ double Vector3Cls::dot(Vector3 other) {
 }
 
 void Vector3Cls::postmultiply(Matrix3 arg) {
-    Unknown argStorage = arg->storage();
-    Unknown v0 = _v3storage[0];
-    Unknown v1 = _v3storage[1];
-    Unknown v2 = _v3storage[2];
+    auto argStorage = arg->storage();
+    auto v0 = _v3storage[0];
+    auto v1 = _v3storage[1];
+    auto v2 = _v3storage[2];
     _v3storage[0] = v0 * argStorage[0] + v1 * argStorage[1] + v2 * argStorage[2];
     _v3storage[1] = v0 * argStorage[3] + v1 * argStorage[4] + v2 * argStorage[5];
     _v3storage[2] = v0 * argStorage[6] + v1 * argStorage[7] + v2 * argStorage[8];
 }
 
 Vector3 Vector3Cls::cross(Vector3 other) {
-    Unknown _x = _v3storage[0];
-    Unknown _y = _v3storage[1];
-    Unknown _z = _v3storage[2];
-    Unknown otherStorage = other->_v3storage;
-    Unknown ox = otherStorage[0];
-    Unknown oy = otherStorage[1];
-    Unknown oz = otherStorage[2];
+    auto _x = _v3storage[0];
+    auto _y = _v3storage[1];
+    auto _z = _v3storage[2];
+    auto otherStorage = other->_v3storage;
+    auto ox = otherStorage[0];
+    auto oy = otherStorage[1];
+    auto oz = otherStorage[2];
     return make<Vector3Cls>(_y * oz - _z * oy, _z * ox - _x * oz, _x * oy - _y * ox);
 }
 
 Vector3 Vector3Cls::crossInto(Vector3 other, Vector3 out) {
-    Unknown x = _v3storage[0];
-    Unknown y = _v3storage[1];
-    Unknown z = _v3storage[2];
-    Unknown otherStorage = other->_v3storage;
-    Unknown ox = otherStorage[0];
-    Unknown oy = otherStorage[1];
-    Unknown oz = otherStorage[2];
-    Unknown outStorage = out->_v3storage;
+    auto x = _v3storage[0];
+    auto y = _v3storage[1];
+    auto z = _v3storage[2];
+    auto otherStorage = other->_v3storage;
+    auto ox = otherStorage[0];
+    auto oy = otherStorage[1];
+    auto oz = otherStorage[2];
+    auto outStorage = out->_v3storage;
     outStorage[0] = y * oz - z * oy;
     outStorage[1] = z * ox - x * oz;
     outStorage[2] = x * oy - y * ox;
@@ -238,11 +238,11 @@ Vector3 Vector3Cls::reflected(Vector3 normal) {
 }
 
 void Vector3Cls::applyProjection(Matrix4 arg) {
-    auto _c1 = clone();_c1.reflect(normal);Unknown argStorage = arg->storage();
-    Unknown x = _v3storage[0];
-    Unknown y = _v3storage[1];
-    Unknown z = _v3storage[2];
-    Unknown d = 1.0 / (argStorage[3] * x + argStorage[7] * y + argStorage[11] * z + argStorage[15]);
+    auto _c1 = clone();_c1.reflect(normal);auto argStorage = arg->storage();
+    auto x = _v3storage[0];
+    auto y = _v3storage[1];
+    auto z = _v3storage[2];
+    auto d = 1.0 / (argStorage[3] * x + argStorage[7] * y + argStorage[11] * z + argStorage[15]);
     _v3storage[0] = (argStorage[0] * x + argStorage[4] * y + argStorage[8] * z + argStorage[12]) * d;
     _v3storage[1] = (argStorage[1] * x + argStorage[5] * y + argStorage[9] * z + argStorage[13]) * d;
     _v3storage[2] = (argStorage[2] * x + argStorage[6] * y + argStorage[10] * z + argStorage[14]) * d;
@@ -253,46 +253,46 @@ void Vector3Cls::applyAxisAngle(Vector3 axis, double angle) {
 }
 
 void Vector3Cls::applyQuaternion(Quaternion arg) {
-    Unknown argStorage = arg->_qStorage;
-    Unknown v0 = _v3storage[0];
-    Unknown v1 = _v3storage[1];
-    Unknown v2 = _v3storage[2];
-    Unknown qx = argStorage[0];
-    Unknown qy = argStorage[1];
-    Unknown qz = argStorage[2];
-    Unknown qw = argStorage[3];
-    Unknown ix = qw * v0 + qy * v2 - qz * v1;
-    Unknown iy = qw * v1 + qz * v0 - qx * v2;
-    Unknown iz = qw * v2 + qx * v1 - qy * v0;
-    Unknown iw = -qx * v0 - qy * v1 - qz * v2;
+    auto argStorage = arg->_qStorage;
+    auto v0 = _v3storage[0];
+    auto v1 = _v3storage[1];
+    auto v2 = _v3storage[2];
+    auto qx = argStorage[0];
+    auto qy = argStorage[1];
+    auto qz = argStorage[2];
+    auto qw = argStorage[3];
+    auto ix = qw * v0 + qy * v2 - qz * v1;
+    auto iy = qw * v1 + qz * v0 - qx * v2;
+    auto iz = qw * v2 + qx * v1 - qy * v0;
+    auto iw = -qx * v0 - qy * v1 - qz * v2;
     _v3storage[0] = ix * qw + iw * -qx + iy * -qz - iz * -qy;
     _v3storage[1] = iy * qw + iw * -qy + iz * -qx - ix * -qz;
     _v3storage[2] = iz * qw + iw * -qz + ix * -qy - iy * -qx;
 }
 
 void Vector3Cls::applyMatrix3(Matrix3 arg) {
-    Unknown argStorage = arg->storage();
-    Unknown v0 = _v3storage[0];
-    Unknown v1 = _v3storage[1];
-    Unknown v2 = _v3storage[2];
+    auto argStorage = arg->storage();
+    auto v0 = _v3storage[0];
+    auto v1 = _v3storage[1];
+    auto v2 = _v3storage[2];
     _v3storage[0] = argStorage[0] * v0 + argStorage[3] * v1 + argStorage[6] * v2;
     _v3storage[1] = argStorage[1] * v0 + argStorage[4] * v1 + argStorage[7] * v2;
     _v3storage[2] = argStorage[2] * v0 + argStorage[5] * v1 + argStorage[8] * v2;
 }
 
 void Vector3Cls::applyMatrix4(Matrix4 arg) {
-    Unknown argStorage = arg->storage();
-    Unknown v0 = _v3storage[0];
-    Unknown v1 = _v3storage[1];
-    Unknown v2 = _v3storage[2];
+    auto argStorage = arg->storage();
+    auto v0 = _v3storage[0];
+    auto v1 = _v3storage[1];
+    auto v2 = _v3storage[2];
     _v3storage[0] = argStorage[0] * v0 + argStorage[4] * v1 + argStorage[8] * v2 + argStorage[12];
     _v3storage[1] = argStorage[1] * v0 + argStorage[5] * v1 + argStorage[9] * v2 + argStorage[13];
     _v3storage[2] = argStorage[2] * v0 + argStorage[6] * v1 + argStorage[10] * v2 + argStorage[14];
 }
 
 double Vector3Cls::relativeError(Vector3 correct) {
-    Unknown correct_norm = correct->length;
-    Unknown diff_norm = (this - correct)->length;
+    auto correct_norm = correct->length;
+    auto diff_norm = (this - correct)->length;
     return diff_norm / correct_norm;
 }
 
@@ -317,35 +317,35 @@ bool Vector3Cls::isNaN() {
 }
 
 void Vector3Cls::add(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] + argStorage[0];
     _v3storage[1] = _v3storage[1] + argStorage[1];
     _v3storage[2] = _v3storage[2] + argStorage[2];
 }
 
 void Vector3Cls::addScaled(Vector3 arg, double factor) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] + argStorage[0] * factor;
     _v3storage[1] = _v3storage[1] + argStorage[1] * factor;
     _v3storage[2] = _v3storage[2] + argStorage[2] * factor;
 }
 
 void Vector3Cls::sub(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] - argStorage[0];
     _v3storage[1] = _v3storage[1] - argStorage[1];
     _v3storage[2] = _v3storage[2] - argStorage[2];
 }
 
 void Vector3Cls::multiply(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] * argStorage[0];
     _v3storage[1] = _v3storage[1] * argStorage[1];
     _v3storage[2] = _v3storage[2] * argStorage[2];
 }
 
 void Vector3Cls::divide(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = _v3storage[0] / argStorage[0];
     _v3storage[1] = _v3storage[1] / argStorage[1];
     _v3storage[2] = _v3storage[2] / argStorage[2];
@@ -374,8 +374,8 @@ void Vector3Cls::absolute() {
 }
 
 void Vector3Cls::clamp(Vector3 min, Vector3 max) {
-    Unknown minStorage = min->storage();
-    Unknown maxStorage = max->storage();
+    auto minStorage = min->storage();
+    auto maxStorage = max->storage();
     _v3storage[0] = _v3storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v3storage[1] = _v3storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
     _v3storage[2] = _v3storage[2]->clamp(minStorage[2], maxStorage[2])->toDouble();
@@ -416,7 +416,7 @@ Vector3 Vector3Cls::clone() {
 }
 
 Vector3 Vector3Cls::copyInto(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     argStorage[0] = _v3storage[0];
     argStorage[1] = _v3storage[1];
     argStorage[2] = _v3storage[2];
@@ -436,78 +436,78 @@ void Vector3Cls::copyFromArray(List<double> array, int offset) {
 }
 
 void Vector3Cls::xy(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v3storage[0] = argStorage[0];
     _v3storage[1] = argStorage[1];
 }
 
 void Vector3Cls::xz(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v3storage[0] = argStorage[0];
     _v3storage[2] = argStorage[1];
 }
 
 void Vector3Cls::yx(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v3storage[1] = argStorage[0];
     _v3storage[0] = argStorage[1];
 }
 
 void Vector3Cls::yz(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v3storage[1] = argStorage[0];
     _v3storage[2] = argStorage[1];
 }
 
 void Vector3Cls::zx(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v3storage[2] = argStorage[0];
     _v3storage[0] = argStorage[1];
 }
 
 void Vector3Cls::zy(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v3storage[2] = argStorage[0];
     _v3storage[1] = argStorage[1];
 }
 
 void Vector3Cls::xyz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = argStorage[0];
     _v3storage[1] = argStorage[1];
     _v3storage[2] = argStorage[2];
 }
 
 void Vector3Cls::xzy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[0] = argStorage[0];
     _v3storage[2] = argStorage[1];
     _v3storage[1] = argStorage[2];
 }
 
 void Vector3Cls::yxz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[1] = argStorage[0];
     _v3storage[0] = argStorage[1];
     _v3storage[2] = argStorage[2];
 }
 
 void Vector3Cls::yzx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[1] = argStorage[0];
     _v3storage[2] = argStorage[1];
     _v3storage[0] = argStorage[2];
 }
 
 void Vector3Cls::zxy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[2] = argStorage[0];
     _v3storage[0] = argStorage[1];
     _v3storage[1] = argStorage[2];
 }
 
 void Vector3Cls::zyx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v3storage[2] = argStorage[0];
     _v3storage[1] = argStorage[1];
     _v3storage[0] = argStorage[2];

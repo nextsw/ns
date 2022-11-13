@@ -1,8 +1,8 @@
 #include "linked_hash_map.hpp"
 template<typename K, typename V>
-void LinkedHashMapCls<K, V>::from(Map<dynamic, dynamic> other) {
+void LinkedHashMapCls<K, V>::from(Map<Object, Object> other) {
     LinkedHashMap<K, V> result = <K, V>make<LinkedHashMapCls>();
-    other->forEach([=] (dynamic k,dynamic v) {
+    other->forEach([=] (Object k,Object v) {
         result[as<K>(k)] = as<V>(v);
     });
     return result;
@@ -14,7 +14,7 @@ void LinkedHashMapCls<K, V>::of(Map<K, V> other) {
 }
 
 template<typename K, typename V>
-void LinkedHashMapCls<K, V>::fromIterable(Iterable<any> iterable, std::function<K(dynamic element)> key, std::function<V(dynamic element)> value) {
+void LinkedHashMapCls<K, V>::fromIterable(Iterable<any> iterable, std::function<K(Object element)> key, std::function<V(Object element)> value) {
     auto _c1 = <K, V>make<LinkedHashMapCls>();_c1.addAll(other);LinkedHashMap<K, V> map = <K, V>make<LinkedHashMapCls>();
     MapBaseCls->_fillMapWithMappedIterable(map, iterable, key, value);
     return map;

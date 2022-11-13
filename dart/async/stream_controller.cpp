@@ -128,9 +128,9 @@ template<typename T>
 _PendingEvents<T> _StreamControllerCls<T>::_pendingEvents() {
     assert(_isInitialState());
     if (!_isAddingStream()) {
-        return as<dynamic>(_varData);
+        return as<Object>(_varData);
     }
-    _StreamControllerAddStreamState<T> state = as<dynamic>(_varData);
+    _StreamControllerAddStreamState<T> state = as<Object>(_varData);
     return state->varData;
 }
 
@@ -142,14 +142,14 @@ _PendingEvents<T> _StreamControllerCls<T>::_ensurePendingEvents() {
         if (events == nullptr) {
             _varData = events = <T>make<_PendingEventsCls>();
         }
-        return as<dynamic>(events);
+        return as<Object>(events);
     }
-    _StreamControllerAddStreamState<T> state = as<dynamic>(_varData);
+    _StreamControllerAddStreamState<T> state = as<Object>(_varData);
     Object events = state->varData;
     if (events == nullptr) {
         state->varData = events = <T>make<_PendingEventsCls>();
     }
-    return as<dynamic>(events);
+    return as<Object>(events);
 }
 
 template<typename T>
@@ -157,10 +157,10 @@ _ControllerSubscription<T> _StreamControllerCls<T>::_subscription() {
     assert(hasListener());
     Object varData = _varData;
     if (_isAddingStream()) {
-        _StreamControllerAddStreamState<Object> streamState = as<dynamic>(varData);
+        _StreamControllerAddStreamState<Object> streamState = as<Object>(varData);
         varData = streamState->varData;
     }
-    return as<dynamic>(varData);
+    return as<Object>(varData);
 }
 
 template<typename T>
@@ -214,7 +214,7 @@ void _StreamControllerCls<T>::_addError(Object error, StackTrace stackTrace) {
 template<typename T>
 void _StreamControllerCls<T>::_close() {
     assert(_isAddingStream());
-    _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
+    _StreamControllerAddStreamState<T> addState = as<Object>(_varData);
     _varData = addState->varData;
     _state &= ~_STATE_ADDSTREAM;
     addState->complete();
@@ -229,7 +229,7 @@ StreamSubscription<T> _StreamControllerCls<T>::_subscribe(std::function<void(T d
     _PendingEvents<T> pendingEvents = _pendingEvents();
     _state |= _STATE_SUBSCRIBED;
     if (_isAddingStream()) {
-        _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
+        _StreamControllerAddStreamState<T> addState = as<Object>(_varData);
         addState->varData = subscription;
         addState->resume();
     } else {
@@ -246,7 +246,7 @@ template<typename T>
 Future<void> _StreamControllerCls<T>::_recordCancel(StreamSubscription<T> subscription) {
     Future<void> result;
     if (_isAddingStream()) {
-        _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
+        _StreamControllerAddStreamState<T> addState = as<Object>(_varData);
         result = addState->cancel();
     }
     _varData = nullptr;
@@ -278,7 +278,7 @@ Future<void> _StreamControllerCls<T>::_recordCancel(StreamSubscription<T> subscr
 template<typename T>
 void _StreamControllerCls<T>::_recordPause(StreamSubscription<T> subscription) {
     if (_isAddingStream()) {
-        _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
+        _StreamControllerAddStreamState<T> addState = as<Object>(_varData);
         addState->pause();
     }
     _runGuarded(onPause);
@@ -287,7 +287,7 @@ void _StreamControllerCls<T>::_recordPause(StreamSubscription<T> subscription) {
 template<typename T>
 void _StreamControllerCls<T>::_recordResume(StreamSubscription<T> subscription) {
     if (_isAddingStream()) {
-        _StreamControllerAddStreamState<T> addState = as<dynamic>(_varData);
+        _StreamControllerAddStreamState<T> addState = as<Object>(_varData);
         addState->resume();
     }
     _runGuarded(onResume);

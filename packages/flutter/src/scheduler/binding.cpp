@@ -126,7 +126,7 @@ bool SchedulerBindingCls::handleEventLoopCallback() {
     if (_taskQueue->isEmpty() || locked) {
         return false;
     }
-    _TaskEntry<dynamic> entry = _taskQueue->first();
+    _TaskEntry<Object> entry = _taskQueue->first();
     if (schedulingStrategy(entry->priority, this)) {
         try {
             _taskQueue->removeFirst();
@@ -283,7 +283,7 @@ void SchedulerBindingCls::scheduleWarmUpFrame() {
         }
     });
     lockEvents([=] () {
-        await await endOfFrame();
+        await endOfFrame();
         timelineTask->finish();
     });
 }
@@ -392,7 +392,7 @@ void SchedulerBindingCls::_executeTimingsCallbacks(List<FrameTiming> timings) {
     }
 }
 
-int SchedulerBindingCls::_taskSorter(_TaskEntry<dynamic> e1, _TaskEntry<dynamic> e2) {
+int SchedulerBindingCls::_taskSorter(_TaskEntry<Object> e1, _TaskEntry<Object> e2) {
     return -e1->priority->compareTo(e2->priority);
 }
 
@@ -450,7 +450,7 @@ void SchedulerBindingCls::_handleDrawFrame() {
 }
 
 void SchedulerBindingCls::_profileFramePostEvent(FrameTiming frameTiming) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("number"), frameTiming->frameNumber());map1.set(__s("startTime"), frameTiming->timestampInMicroseconds(FramePhaseCls::buildStart));map1.set(__s("elapsed"), frameTiming->totalSpan()->inMicroseconds());map1.set(__s("build"), frameTiming->buildDuration()->inMicroseconds());map1.set(__s("raster"), frameTiming->rasterDuration()->inMicroseconds());map1.set(__s("vsyncOverhead"), frameTiming->vsyncOverhead()->inMicroseconds());postEvent(__s("Flutter.Frame"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("number"), frameTiming->frameNumber());map1.set(__s("startTime"), frameTiming->timestampInMicroseconds(FramePhaseCls::buildStart));map1.set(__s("elapsed"), frameTiming->totalSpan()->inMicroseconds());map1.set(__s("build"), frameTiming->buildDuration()->inMicroseconds());map1.set(__s("raster"), frameTiming->rasterDuration()->inMicroseconds());map1.set(__s("vsyncOverhead"), frameTiming->vsyncOverhead()->inMicroseconds());postEvent(__s("Flutter.Frame"), list1);
 }
 
 void SchedulerBindingCls::_debugDescribeTimeStamp(Duration timeStamp, StringBuffer buffer) {

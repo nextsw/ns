@@ -9,7 +9,7 @@ class StringSinkCls : public ObjectCls {
 public:
 
     virtual void write(Object object);
-    virtual void writeAll(Iterable<dynamic> objects, String separator);
+    virtual void writeAll(Iterable<Object> objects, String separator);
     virtual void writeln(Object object);
     virtual void writeCharCode(int charCode);
 private:

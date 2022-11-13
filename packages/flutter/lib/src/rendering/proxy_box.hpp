@@ -1067,10 +1067,10 @@ using RenderAbsorbPointer = std::shared_ptr<RenderAbsorbPointerCls>;
 
 class RenderMetaDataCls : public RenderProxyBoxWithHitTestBehaviorCls {
 public:
-    dynamic metaData;
+    Object metaData;
 
 
-     RenderMetaDataCls(HitTestBehavior behavior, Unknown child, dynamic metaData);
+     RenderMetaDataCls(HitTestBehavior behavior, Unknown child, Object metaData);
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:

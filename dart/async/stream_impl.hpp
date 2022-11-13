@@ -164,7 +164,7 @@ private:
 };
 template<typename T>
 using _StreamImpl = std::shared_ptr<_StreamImplCls<T>>;
-void _nullDataHandler(dynamic value);
+void _nullDataHandler(Object value);
 
 void _nullErrorHandler(Object error, StackTrace stackTrace);
 

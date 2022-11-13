@@ -13,17 +13,17 @@
 
 class _PendingCls : public ObjectCls {
 public:
-    LocalizationsDelegate<dynamic> delegate;
+    LocalizationsDelegate<Object> delegate;
 
-    Future<dynamic> futureValue;
+    Future<Object> futureValue;
 
 
 private:
 
-     _PendingCls(LocalizationsDelegate<dynamic> delegate, Future<dynamic> futureValue);
+     _PendingCls(LocalizationsDelegate<Object> delegate, Future<Object> futureValue);
 };
 using _Pending = std::shared_ptr<_PendingCls>;
-Future<Map<Type, dynamic>> _loadAll(Locale locale, Iterable<LocalizationsDelegate<dynamic>> allDelegates);
+Future<Map<Type, Object>> _loadAll(Locale locale, Iterable<LocalizationsDelegate<Object>> allDelegates);
 
 
 template<typename T>
@@ -93,14 +93,14 @@ public:
 
     _LocalizationsState localizationsState;
 
-    Map<Type, dynamic> typeToResources;
+    Map<Type, Object> typeToResources;
 
 
     virtual bool updateShouldNotify(_LocalizationsScope old);
 
 private:
 
-     _LocalizationsScopeCls(Widget child, Key key, Locale locale, _LocalizationsState localizationsState, Map<Type, dynamic> typeToResources);
+     _LocalizationsScopeCls(Widget child, Key key, Locale locale, _LocalizationsState localizationsState, Map<Type, Object> typeToResources);
 
 };
 using _LocalizationsScope = std::shared_ptr<_LocalizationsScopeCls>;
@@ -109,14 +109,14 @@ class LocalizationsCls : public StatefulWidgetCls {
 public:
     Locale locale;
 
-    List<LocalizationsDelegate<dynamic>> delegates;
+    List<LocalizationsDelegate<Object>> delegates;
 
     Widget child;
 
 
-     LocalizationsCls(Widget child, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale);
+     LocalizationsCls(Widget child, List<LocalizationsDelegate<Object>> delegates, Key key, Locale locale);
 
-    virtual void  override(Widget child, BuildContext context, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale);
+    virtual void  override(Widget child, BuildContext context, List<LocalizationsDelegate<Object>> delegates, Key key, Locale locale);
 
     static Locale localeOf(BuildContext context);
 
@@ -131,7 +131,7 @@ public:
 
 private:
 
-    static List<LocalizationsDelegate<dynamic>> _delegatesOf(BuildContext context);
+    static List<LocalizationsDelegate<Object>> _delegatesOf(BuildContext context);
 
 };
 using Localizations = std::shared_ptr<LocalizationsCls>;
@@ -155,7 +155,7 @@ public:
 private:
     GlobalKey<any> _localizedResourcesScopeKey;
 
-    Map<Type, dynamic> _typeToResources;
+    Map<Type, Object> _typeToResources;
 
     Locale _locale;
 

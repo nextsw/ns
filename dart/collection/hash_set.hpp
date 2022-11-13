@@ -9,9 +9,9 @@ template<typename E>
 class HashSetCls : public ObjectCls {
 public:
 
-     HashSetCls(std::function<bool(E , E )> equals, std::function<int(E )> hashCode, std::function<bool(dynamic )> isValidKey);
+     HashSetCls(std::function<bool(E , E )> equals, std::function<int(E )> hashCode, std::function<bool(Object )> isValidKey);
     void  identity();
-    virtual void  from(Iterable<dynamic> elements);
+    virtual void  from(Iterable<Object> elements);
 
     virtual void  of(Iterable<E> elements);
 

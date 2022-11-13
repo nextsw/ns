@@ -55,7 +55,7 @@ public:
 
     virtual void registerNumericServiceExtension(AsyncValueGetter<double> getter, String name, AsyncValueSetter<double> setter);
 
-    virtual void postEvent(String eventKind, Map<String, dynamic> eventData);
+    virtual void postEvent(String eventKind, Map<String, Object> eventData);
 
     virtual void registerStringServiceExtension(AsyncValueGetter<String> getter, String name, AsyncValueSetter<String> setter);
 
@@ -73,7 +73,7 @@ private:
     int _lockCount;
 
 
-    virtual void _postExtensionStateChangedEvent(String name, dynamic value);
+    virtual void _postExtensionStateChangedEvent(String name, Object value);
 
 };
 using BindingBase = std::shared_ptr<BindingBaseCls>;

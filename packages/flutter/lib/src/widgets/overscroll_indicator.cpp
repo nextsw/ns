@@ -112,7 +112,7 @@ bool _GlowingOverscrollIndicatorStateCls::_handleScrollNotification(ScrollNotifi
         }
     } else {
         if (is<ScrollEndNotification>(notification) || is<ScrollUpdateNotification>(notification)) {
-        if ((as<dynamic>(notification))->dragDetails != nullptr) {
+        if ((as<Object>(notification))->dragDetails != nullptr) {
             _leadingController!->scrollEnd();
             _trailingController!->scrollEnd();
         }

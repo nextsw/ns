@@ -36,7 +36,7 @@ public:
     virtual Widget build(BuildContext context);
 
 private:
-    ModalRoute<dynamic> _route;
+    ModalRoute<Object> _route;
 
 
 };

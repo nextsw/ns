@@ -27,7 +27,7 @@ public:
 
      TextEditingDeltaCls(TextRange composing, String oldText, TextSelection selection);
 
-    virtual void  fromJSON(Map<String, dynamic> encoded);
+    virtual void  fromJSON(Map<String, Object> encoded);
 
     virtual TextEditingValue apply(TextEditingValue value);
 private:

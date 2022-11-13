@@ -222,7 +222,7 @@ void RendererBindingCls::drawFrame() {
 }
 
 Future<void> RendererBindingCls::performReassemble() {
-    await await super->performReassemble();
+    await super->performReassemble();
     if (BindingBaseCls::debugReassembleConfig?->widgetName == nullptr) {
         if (!kReleaseMode) {
             TimelineCls->startSync(__s("Preparing Hot Reload (layout)"));
@@ -236,7 +236,7 @@ Future<void> RendererBindingCls::performReassemble() {
         };
     }
     scheduleWarmUpFrame();
-    await await endOfFrame;
+    await endOfFrame;
 }
 
 void RendererBindingCls::hitTest(HitTestResult result, Offset position) {

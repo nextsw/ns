@@ -85,7 +85,7 @@ void StreamCls<T>::periodic(Duration period, std::function<T(int computationCoun
 }
 
 template<typename T>
-void StreamCls<T>::eventTransformed(Stream<dynamic> source, std::function<EventSink<dynamic>(EventSink<T> sink)> mapSink) {
+void StreamCls<T>::eventTransformed(Stream<Object> source, std::function<EventSink<Object>(EventSink<T> sink)> mapSink) {
     return make<_BoundSinkStreamCls>(source, mapSink);
 }
 
@@ -128,8 +128,8 @@ Stream<E> StreamCls<T>::asyncMap(std::function<FutureOr<E>(T event)> convert) {
     controller->onListen = [=] () {
         StreamSubscription<T> subscription = this->listen(nullptr, controller->_addError, controller->close);
         InlineMethod;
-        Unknown addError = controller->_addError;
-        Unknown resume = subscription->resume;
+        auto addError = controller->_addError;
+        auto resume = subscription->resume;
         subscription->onData([=] (T event) {
             FutureOr<E> newValue;
             try {
@@ -142,7 +142,7 @@ Stream<E> StreamCls<T>::asyncMap(std::function<FutureOr<E>(T event)> convert) {
                 subscription->pause();
                 as<FutureCls>(newValue)->then(add, addError)->whenComplete(resume);
             } else {
-                controller->add(as<dynamic>(newValue));
+                controller->add(as<Object>(newValue));
             }
         });
         controller->onCancel = subscription->cancel;

@@ -394,11 +394,11 @@ void _UriCls::notSimple(String uri, int start, int end, int schemeEnd, int hostS
     return _UriCls->_internal(scheme, userInfo, host, port, path, query, fragment);
 }
 
-void _UriCls::http(String authority, String unencodedPath, Map<String, dynamic> queryParameters) {
+void _UriCls::http(String authority, String unencodedPath, Map<String, Object> queryParameters) {
     return _makeHttpUri(__s("http"), authority, unencodedPath, queryParameters);
 }
 
-void _UriCls::https(String authority, String unencodedPath, Map<String, dynamic> queryParameters) {
+void _UriCls::https(String authority, String unencodedPath, Map<String, Object> queryParameters) {
     return _makeHttpUri(__s("https"), authority, unencodedPath, queryParameters);
 }
 
@@ -457,7 +457,7 @@ void _UriCls::directory(String path, bool windows) {
     return (windows | _UriCls::_isWindows)? _makeWindowsFileUrl(path, true) : _makeFileUri(path, true);
 }
 
-Uri _UriCls::replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo) {
+Uri _UriCls::replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo) {
     bool schemeChanged = false;
     if (scheme != nullptr) {
         scheme = _makeScheme(scheme, 0, scheme->length());
@@ -696,7 +696,7 @@ bool _UriCls::==(Object other) {
     return is<Uri>(other) && scheme == other->scheme && hasAuthority() == other->hasAuthority && userInfo() == other->userInfo && host() == other->host && port() == other->port && path == other->path && hasQuery() == other->hasQuery && query() == other->query && hasFragment() == other->hasFragment && fragment() == other->fragment;
 }
 
-_UriCls::_UriCls(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo) {
+_UriCls::_UriCls(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo) {
     {
         if (scheme == nullptr) {
             scheme = __s("");
@@ -750,7 +750,7 @@ Never _UriCls::_fail(String uri, int index, String message) {
     throw make<FormatExceptionCls>(message, uri, index);
 }
 
-_Uri _UriCls::_makeHttpUri(String scheme, String authority, String unencodedPath, Map<String, dynamic> queryParameters) {
+_Uri _UriCls::_makeHttpUri(String scheme, String authority, String unencodedPath, Map<String, Object> queryParameters) {
     auto userInfo = __s("");
     String host;
     int port;
@@ -1213,7 +1213,7 @@ String _UriCls::_normalizePath(String path, String scheme, bool hasAuthority) {
     return _removeDotSegments(path);
 }
 
-String _UriCls::_makeQuery(String query, int start, int end, Map<String, dynamic> queryParameters) {
+String _UriCls::_makeQuery(String query, int start, int end, Map<String, Object> queryParameters) {
     if (query != nullptr) {
         if (queryParameters != nullptr) {
             throw make<ArgumentErrorCls>(__s("Both query and queryParameters specified"));
@@ -2406,7 +2406,7 @@ Uri _SimpleUriCls::removeFragment() {
     return make<_SimpleUriCls>(_uri->substring(0, _fragmentStart), _schemeEnd, _hostStart, _portStart, _pathStart, _queryStart, _fragmentStart, _schemeCache);
 }
 
-Uri _SimpleUriCls::replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, dynamic> queryParameters, String scheme, String userInfo) {
+Uri _SimpleUriCls::replace(String fragment, String host, String path, Iterable<String> pathSegments, int port, String query, Map<String, Object> queryParameters, String scheme, String userInfo) {
     bool schemeChanged = false;
     if (scheme != nullptr) {
         scheme = _UriCls->_makeScheme(scheme, 0, scheme->length());

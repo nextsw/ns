@@ -44,9 +44,9 @@ T TweenCls<T>::lerp(double t) {
     assert(begin != nullptr);
     assert(end != nullptr);
     assert([=] () {
-        dynamic result;
+        Object result;
         try {
-            result = (as<dynamic>(begin)) + ((as<dynamic>(end)) - (as<dynamic>(begin))) * t;
+            result = (as<Object>(begin)) + ((as<Object>(end)) - (as<Object>(begin))) * t;
             as<T>(result);
             return true;
         } catch (NoSuchMethodError null) {
@@ -55,7 +55,7 @@ T TweenCls<T>::lerp(double t) {
                     List<DiagnosticsNode> list2 = make<ListCls<>>();        list2.add(ArrayItem);        list2.add(ArrayItem);        if (is<int>(begin) || is<int>(end)) {            list2.add(ArrayItem);        } else {            list2.add(ArrayItem);        }throw FlutterErrorCls->fromParts(list2);
         };
     }());
-    return as<T>((as<dynamic>(begin)) + ((as<dynamic>(end)) - (as<dynamic>(begin))) * t);
+    return as<T>((as<Object>(begin)) + ((as<Object>(end)) - (as<Object>(begin))) * t);
 }
 
 template<typename T>

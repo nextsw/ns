@@ -321,7 +321,7 @@ public:
 
     virtual void performAction(TextInputAction action);
 
-    virtual void performPrivateCommand(String action, Map<String, dynamic> data);
+    virtual void performPrivateCommand(String action, Map<String, Object> data);
 
     virtual void updateFloatingCursor(RawFloatingCursorPoint point);
 

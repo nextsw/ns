@@ -26,7 +26,7 @@ public:
 
     virtual void computeSemanticsInformation(List<InlineSpanSemanticsInformation> collector);
 
-    virtual void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements);
+    virtual void describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<Object> semanticsElements);
 
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 

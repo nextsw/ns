@@ -1,6 +1,6 @@
 #include "platform_impl.hpp"
 String _PlatformCls::localeName() {
-    Unknown result = (_localeClosure == nullptr)? _localeName() : _localeClosure!();
+    auto result = (_localeClosure == nullptr)? _localeName() : _localeClosure!();
     if (is<OSError>(result)) {
         throw as<OSErrorCls>(result);
     }

@@ -125,15 +125,15 @@ public:
 
     virtual Matrix4 operator-();
 
-    virtual dynamic operator*(dynamic arg);
+    virtual Object operator*(Object arg);
 
     virtual Matrix4 operator+(Matrix4 arg);
 
     virtual Matrix4 operator-(Matrix4 arg);
 
-    virtual void translate(dynamic x, double y, double z);
+    virtual void translate(Object x, double y, double z);
 
-    virtual void leftTranslate(dynamic x, double y, double z);
+    virtual void leftTranslate(Object x, double y, double z);
 
     virtual void rotate(Vector3 axis, double angle);
 
@@ -143,9 +143,9 @@ public:
 
     virtual void rotateZ(double angle);
 
-    virtual void scale(dynamic x, double y, double z);
+    virtual void scale(Object x, double y, double z);
 
-    virtual Matrix4 scaled(dynamic x, double y, double z);
+    virtual Matrix4 scaled(Object x, double y, double z);
 
     virtual void setZero();
 

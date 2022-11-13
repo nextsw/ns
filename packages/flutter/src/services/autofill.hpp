@@ -166,7 +166,7 @@ public:
 
      AutofillConfigurationCls(List<String> autofillHints, TextEditingValue currentEditingValue, String hintText, String uniqueIdentifier);
 
-    virtual Map<String, dynamic> toJson();
+    virtual Map<String, Object> toJson();
 
 private:
 
@@ -202,7 +202,7 @@ public:
     Iterable<TextInputConfiguration> allConfigurations;
 
 
-    virtual Map<String, dynamic> toJson();
+    virtual Map<String, Object> toJson();
 
 private:
 

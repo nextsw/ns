@@ -2473,7 +2473,7 @@ bool RenderAbsorbPointerCls::_effectiveIgnoringSemantics() {
 
 void RenderMetaDataCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<dynamic>make<DiagnosticsPropertyCls>(__s("metaData"), metaData));
+    properties->add(<Object>make<DiagnosticsPropertyCls>(__s("metaData"), metaData));
 }
 
 RenderSemanticsGestureHandlerCls::RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor) {

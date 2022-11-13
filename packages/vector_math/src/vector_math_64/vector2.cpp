@@ -50,7 +50,7 @@ void Vector2Cls::setZero() {
 }
 
 void Vector2Cls::setFrom(Vector2 other) {
-    Unknown otherStorage = other->_v2storage;
+    auto otherStorage = other->_v2storage;
     _v2storage[1] = otherStorage[1];
     _v2storage[0] = otherStorage[0];
 }
@@ -126,11 +126,11 @@ double Vector2Cls::length2() {
 }
 
 double Vector2Cls::normalize() {
-    Unknown l = length;
+    auto l = length;
     if (l == 0.0) {
         return 0.0;
     }
-    Unknown d = 1.0 / l;
+    auto d = 1.0 / l;
     _v2storage[0] *= d;
     _v2storage[1] *= d;
     return l;
@@ -154,32 +154,32 @@ double Vector2Cls::distanceTo(Vector2 arg) {
 }
 
 double Vector2Cls::distanceToSquared(Vector2 arg) {
-    Unknown dx = x - arg->x;
-    Unknown dy = y - arg->y;
+    auto dx = x - arg->x;
+    auto dy = y - arg->y;
     return dx * dx + dy * dy;
 }
 
 double Vector2Cls::angleTo(Vector2 other) {
-    Unknown otherStorage = other->_v2storage;
+    auto otherStorage = other->_v2storage;
     if (_v2storage[0] == otherStorage[0] && _v2storage[1] == otherStorage[1]) {
         return 0.0;
     }
-    Unknown d = dot(other) / (length * other->length);
+    auto d = dot(other) / (length * other->length);
     return math->acos(d->clamp(-1.0, 1.0));
 }
 
 double Vector2Cls::angleToSigned(Vector2 other) {
-    Unknown otherStorage = other->_v2storage;
+    auto otherStorage = other->_v2storage;
     if (_v2storage[0] == otherStorage[0] && _v2storage[1] == otherStorage[1]) {
         return 0.0;
     }
-    Unknown s = cross(other);
-    Unknown c = dot(other);
+    auto s = cross(other);
+    auto c = dot(other);
     return math->atan2(s, c);
 }
 
 double Vector2Cls::dot(Vector2 other) {
-    Unknown otherStorage = other->_v2storage;
+    auto otherStorage = other->_v2storage;
     double sum;
     sum = _v2storage[0] * otherStorage[0];
     sum += _v2storage[1] * otherStorage[1];
@@ -187,15 +187,15 @@ double Vector2Cls::dot(Vector2 other) {
 }
 
 void Vector2Cls::postmultiply(Matrix2 arg) {
-    Unknown argStorage = arg->storage();
-    Unknown v0 = _v2storage[0];
-    Unknown v1 = _v2storage[1];
+    auto argStorage = arg->storage();
+    auto v0 = _v2storage[0];
+    auto v1 = _v2storage[1];
     _v2storage[0] = v0 * argStorage[0] + v1 * argStorage[1];
     _v2storage[1] = v0 * argStorage[2] + v1 * argStorage[3];
 }
 
 double Vector2Cls::cross(Vector2 other) {
-    Unknown otherStorage = other->_v2storage;
+    auto otherStorage = other->_v2storage;
     return _v2storage[0] * otherStorage[1] - _v2storage[1] * otherStorage[0];
 }
 
@@ -213,8 +213,8 @@ Vector2 Vector2Cls::reflected(Vector2 normal) {
 }
 
 double Vector2Cls::relativeError(Vector2 correct) {
-    auto _c1 = clone();_c1.reflect(normal);Unknown correct_norm = correct->length;
-    Unknown diff_norm = (this - correct)->length;
+    auto _c1 = clone();_c1.reflect(normal);auto correct_norm = correct->length;
+    auto diff_norm = (this - correct)->length;
     return diff_norm / correct_norm;
 }
 
@@ -237,31 +237,31 @@ bool Vector2Cls::isNaN() {
 }
 
 void Vector2Cls::add(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[0] = _v2storage[0] + argStorage[0];
     _v2storage[1] = _v2storage[1] + argStorage[1];
 }
 
 void Vector2Cls::addScaled(Vector2 arg, double factor) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[0] = _v2storage[0] + argStorage[0] * factor;
     _v2storage[1] = _v2storage[1] + argStorage[1] * factor;
 }
 
 void Vector2Cls::sub(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[0] = _v2storage[0] - argStorage[0];
     _v2storage[1] = _v2storage[1] - argStorage[1];
 }
 
 void Vector2Cls::multiply(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[0] = _v2storage[0] * argStorage[0];
     _v2storage[1] = _v2storage[1] * argStorage[1];
 }
 
 void Vector2Cls::divide(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[0] = _v2storage[0] / argStorage[0];
     _v2storage[1] = _v2storage[1] / argStorage[1];
 }
@@ -286,8 +286,8 @@ void Vector2Cls::absolute() {
 }
 
 void Vector2Cls::clamp(Vector2 min, Vector2 max) {
-    Unknown minStorage = min->storage();
-    Unknown maxStorage = max->storage();
+    auto minStorage = min->storage();
+    auto maxStorage = max->storage();
     _v2storage[0] = _v2storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v2storage[1] = _v2storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
 }
@@ -322,7 +322,7 @@ Vector2 Vector2Cls::clone() {
 }
 
 Vector2 Vector2Cls::copyInto(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     argStorage[1] = _v2storage[1];
     argStorage[0] = _v2storage[0];
     return arg;
@@ -339,13 +339,13 @@ void Vector2Cls::copyFromArray(List<double> array, int offset) {
 }
 
 void Vector2Cls::xy(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[0] = argStorage[0];
     _v2storage[1] = argStorage[1];
 }
 
 void Vector2Cls::yx(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v2storage[1] = argStorage[0];
     _v2storage[0] = argStorage[1];
 }

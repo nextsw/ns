@@ -441,7 +441,7 @@ public:
     virtual void invoke(PrioritizedIntents intent);
 
 private:
-    Action<dynamic> _selectedAction;
+    Action<Object> _selectedAction;
 
     Intent _selectedIntent;
 

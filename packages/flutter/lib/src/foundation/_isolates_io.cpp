@@ -7,23 +7,23 @@ Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) 
     RawReceivePort port = make<RawReceivePortCls>();
     TimelineCls->finishSync();
     InlineMethod;
-    Completer<dynamic> completer = <dynamic>make<CompleterCls>();
-    port->handler = [=] (dynamic msg) {
+    Completer<Object> completer = <Object>make<CompleterCls>();
+    port->handler = [=] (Object msg) {
         timeEndAndCleanup();
         completer->complete(msg);
     };
     try {
-        await await IsolateCls-><_IsolateConfiguration<Q, R>>spawn(_spawn, <Q, R>make<_IsolateConfigurationCls>(callback, message, port->sendPort(), debugLabel, flow->id), port->sendPort(), port->sendPort(), debugLabel);
+        await IsolateCls-><_IsolateConfiguration<Q, R>>spawn(_spawn, <Q, R>make<_IsolateConfigurationCls>(callback, message, port->sendPort(), debugLabel, flow->id), port->sendPort(), port->sendPort(), debugLabel);
     } catch (Object null) {
         timeEndAndCleanup();
         throw;
     };
-    dynamic response = await completer->future();
+    Object response = await completer->future();
     if (response == nullptr) {
         throw make<RemoteErrorCls>(__s("Isolate exited without result or error."), __s(""));
     }
-    assert(is<List<dynamic>>(response));
-    as<List<dynamic>>(response);
+    assert(is<List<Object>>(response));
+    as<List<Object>>(response);
     int type = response->length;
     assert(1 <= type && type <= 3);
     ;
@@ -38,7 +38,7 @@ FutureOr<R> _IsolateConfigurationCls<Q, R>::applyAndTime() {
 
 template<typename Q, typename R>
 Future<void> _spawn(_IsolateConfiguration<Q, R> configuration) {
-    List<dynamic> computationResult;
+    List<Object> computationResult;
     try {
         computationResult = _buildSuccessResponse(await configuration->applyAndTime());
     } catch (Unknown e) {
@@ -52,6 +52,6 @@ List<R> _buildSuccessResponse(R result) {
     return <R>filled(1, result);
 }
 
-List<dynamic> _buildErrorResponse(Object error, StackTrace stack) {
-    auto _c1 = <dynamic>filled(3, nullptr);_c1[0] =auto _c2 = error;_c2[1] =stack;_c2;return _c1;
+List<Object> _buildErrorResponse(Object error, StackTrace stack) {
+    auto _c1 = <Object>filled(3, nullptr);_c1[0] =auto _c2 = error;_c2[1] =stack;_c2;return _c1;
 }

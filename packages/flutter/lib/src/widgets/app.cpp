@@ -55,7 +55,7 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
     return resolvedLocale;
 }
 
-WidgetsAppCls::WidgetsAppCls(Map<Type, Action<Intent>> actions, TransitionBuilder builder, bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Color color, bool debugShowCheckedModeBanner, bool debugShowWidgetInspector, Widget home, String initialRoute, InspectorSelectButtonBuilder inspectorSelectButtonBuilder, Key key, Locale locale, LocaleListResolutionCallback localeListResolutionCallback, LocaleResolutionCallback localeResolutionCallback, Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates, GlobalKey<NavigatorState> navigatorKey, List<NavigatorObserver> navigatorObservers, InitialRouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, GenerateAppTitle onGenerateTitle, RouteFactory onUnknownRoute, PageRouteFactory pageRouteBuilder, String restorationScopeId, Map<String, WidgetBuilder> routes, Map<ShortcutActivator, Intent> shortcuts, bool showPerformanceOverlay, bool showSemanticsDebugger, Iterable<Locale> supportedLocales, TextStyle textStyle, String title, bool useInheritedMediaQuery) {
+WidgetsAppCls::WidgetsAppCls(Map<Type, Action<Intent>> actions, TransitionBuilder builder, bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Color color, bool debugShowCheckedModeBanner, bool debugShowWidgetInspector, Widget home, String initialRoute, InspectorSelectButtonBuilder inspectorSelectButtonBuilder, Key key, Locale locale, LocaleListResolutionCallback localeListResolutionCallback, LocaleResolutionCallback localeResolutionCallback, Iterable<LocalizationsDelegate<Object>> localizationsDelegates, GlobalKey<NavigatorState> navigatorKey, List<NavigatorObserver> navigatorObservers, InitialRouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, GenerateAppTitle onGenerateTitle, RouteFactory onUnknownRoute, PageRouteFactory pageRouteBuilder, String restorationScopeId, Map<String, WidgetBuilder> routes, Map<ShortcutActivator, Intent> shortcuts, bool showPerformanceOverlay, bool showSemanticsDebugger, Iterable<Locale> supportedLocales, TextStyle textStyle, String title, bool useInheritedMediaQuery) {
     {
         assert(navigatorObservers != nullptr);
         assert(routes != nullptr);
@@ -81,7 +81,7 @@ WidgetsAppCls::WidgetsAppCls(Map<Type, Action<Intent>> actions, TransitionBuilde
     }
 }
 
-void WidgetsAppCls::router(Map<Type, Action<Intent>> actions, BackButtonDispatcher backButtonDispatcher, TransitionBuilder builder, bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Color color, bool debugShowCheckedModeBanner, bool debugShowWidgetInspector, InspectorSelectButtonBuilder inspectorSelectButtonBuilder, Key key, Locale locale, LocaleListResolutionCallback localeListResolutionCallback, LocaleResolutionCallback localeResolutionCallback, Iterable<LocalizationsDelegate<dynamic>> localizationsDelegates, GenerateAppTitle onGenerateTitle, String restorationScopeId, RouteInformationParser<Object> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterConfig<Object> routerConfig, RouterDelegate<Object> routerDelegate, Map<ShortcutActivator, Intent> shortcuts, bool showPerformanceOverlay, bool showSemanticsDebugger, Iterable<Locale> supportedLocales, TextStyle textStyle, String title, bool useInheritedMediaQuery)
+void WidgetsAppCls::router(Map<Type, Action<Intent>> actions, BackButtonDispatcher backButtonDispatcher, TransitionBuilder builder, bool checkerboardOffscreenLayers, bool checkerboardRasterCacheImages, Color color, bool debugShowCheckedModeBanner, bool debugShowWidgetInspector, InspectorSelectButtonBuilder inspectorSelectButtonBuilder, Key key, Locale locale, LocaleListResolutionCallback localeListResolutionCallback, LocaleResolutionCallback localeResolutionCallback, Iterable<LocalizationsDelegate<Object>> localizationsDelegates, GenerateAppTitle onGenerateTitle, String restorationScopeId, RouteInformationParser<Object> routeInformationParser, RouteInformationProvider routeInformationProvider, RouterConfig<Object> routerConfig, RouterDelegate<Object> routerDelegate, Map<ShortcutActivator, Intent> shortcuts, bool showPerformanceOverlay, bool showSemanticsDebugger, Iterable<Locale> supportedLocales, TextStyle textStyle, String title, bool useInheritedMediaQuery)
 
 Map<ShortcutActivator, Intent> WidgetsAppCls::defaultShortcuts() {
     if (kIsWeb) {
@@ -282,14 +282,14 @@ BackButtonDispatcher _WidgetsAppStateCls::_effectiveBackButtonDispatcher() {
     return widget()->backButtonDispatcher | _defaultBackButtonDispatcher!;
 }
 
-Route<dynamic> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {
+Route<Object> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {
     String name = settings->name;
     WidgetBuilder pageContentBuilder = name == NavigatorCls::defaultRouteName && widget()->home != nullptr? [=] (BuildContext context) {
     widget()->home!;
 } : widget()->routes![name];
     if (pageContentBuilder != nullptr) {
         assert(widget()->pageRouteBuilder != nullptr, __s("The default onGenerateRoute handler for WidgetsApp must have a pageRouteBuilder set if the home or routes properties are set."));
-        Route<dynamic> route = widget()->pageRouteBuilder;
+        Route<Object> route = widget()->pageRouteBuilder;
         assert(route != nullptr, __s("The pageRouteBuilder for WidgetsApp must return a valid non-null Route."));
         return route;
     }
@@ -299,14 +299,14 @@ Route<dynamic> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {
     return nullptr;
 }
 
-Route<dynamic> _WidgetsAppStateCls::_onUnknownRoute(RouteSettings settings) {
+Route<Object> _WidgetsAppStateCls::_onUnknownRoute(RouteSettings settings) {
     assert([=] () {
         if (widget()->onUnknownRoute == nullptr) {
             throw make<FlutterErrorCls>(__sf("Could not find a generator for route %s in the %s.\nMake sure your root app widget has provided a way to generate \nthis route.\nGenerators for routes are searched for in the following order:\n 1. For the "/" route, the "home" property, if non-null, is used.\n 2. Otherwise, the "routes" table is used, if it has an entry for the route.\n 3. Otherwise, onGenerateRoute is called. It should return a non-null value for any valid route not handled by "home" and "routes".\n 4. Finally if all else fails onUnknownRoute is called.\nUnfortunately, onUnknownRoute was not set.", settings, runtimeType));
         }
         return true;
     }());
-    Route<dynamic> result = widget()->onUnknownRoute!(settings);
+    Route<Object> result = widget()->onUnknownRoute!(settings);
     assert([=] () {
         if (result == nullptr) {
             throw make<FlutterErrorCls>(__sf("The onUnknownRoute callback returned null.\nWhen the %s requested the route %s from its onUnknownRoute callback, the callback returned null. Such callbacks must never return null.", runtimeType, settings));
@@ -332,16 +332,16 @@ Locale _WidgetsAppStateCls::_resolveLocales(List<Locale> preferredLocales, Itera
     return basicLocaleListResolution(preferredLocales, supportedLocales);
 }
 
-Iterable<LocalizationsDelegate<dynamic>> _WidgetsAppStateCls::_localizationsDelegates() {
-    List<LocalizationsDelegate<dynamic>> list1 = make<ListCls<>>();if (widget()->localizationsDelegates != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);return list1;
+Iterable<LocalizationsDelegate<Object>> _WidgetsAppStateCls::_localizationsDelegates() {
+    List<LocalizationsDelegate<Object>> list1 = make<ListCls<>>();if (widget()->localizationsDelegates != nullptr) {    list1.add(ArrayItem);}list1.add(ArrayItem);return list1;
 }
 
 bool _WidgetsAppStateCls::_debugCheckLocalizations(Locale appLocale) {
     assert([=] () {
-        Set<Type> unsupportedTypes = _localizationsDelegates()-><Type>map([=] (LocalizationsDelegate<dynamic> delegate) {
+        Set<Type> unsupportedTypes = _localizationsDelegates()-><Type>map([=] (LocalizationsDelegate<Object> delegate) {
     delegate->type;
 })->toSet();
-        for (LocalizationsDelegate<dynamic> delegate : _localizationsDelegates()) {
+        for (LocalizationsDelegate<Object> delegate : _localizationsDelegates()) {
             if (!unsupportedTypes->contains(delegate->type)) {
                 continue;
             }

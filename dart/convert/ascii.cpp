@@ -162,7 +162,7 @@ void _SimpleAsciiDecoderSinkCls::add(List<int> source) {
 }
 
 void _SimpleAsciiDecoderSinkCls::addSlice(List<int> source, int start, int end, bool isLast) {
-    Unknown length = source->length();
+    auto length = source->length();
     RangeErrorCls->checkValidRange(start, end, length);
     if ( < end) {
         if (start != 0 || end != length) {

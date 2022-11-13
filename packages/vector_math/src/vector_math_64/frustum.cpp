@@ -52,11 +52,11 @@ void FrustumCls::copyFrom(Frustum other) {
 }
 
 void FrustumCls::setFromMatrix(Matrix4 matrix) {
-    Unknown me = matrix->storage();
-    Unknown me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
-    Unknown me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
-    Unknown me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
-    Unknown me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
+    auto me = matrix->storage();
+    auto me0 = me[0], me1 = me[1], me2 = me[2], me3 = me[3];
+    auto me4 = me[4], me5 = me[5], me6 = me[6], me7 = me[7];
+    auto me8 = me[8], me9 = me[9], me10 = me[10], me11 = me[11];
+    auto me12 = me[12], me13 = me[13], me14 = me[14], me15 = me[15];
     auto _c1 = _plane0;_c1.auto _c2 = setFromComponents(me3 - me0, me7 - me4, me11 - me8, me15 - me12);_c2.normalize();_c2;_c1;
     auto _c3 = _plane1;_c3.auto _c4 = setFromComponents(me3 + me0, me7 + me4, me11 + me8, me15 + me12);_c4.normalize();_c4;_c3;
     auto _c5 = _plane2;_c5.auto _c6 = setFromComponents(me3 + me1, me7 + me5, me11 + me9, me15 + me13);_c6.normalize();_c6;_c5;
@@ -110,8 +110,8 @@ bool FrustumCls::intersectsWithAabb3(Aabb3 aabb) {
 }
 
 bool FrustumCls::intersectsWithSphere(Sphere sphere) {
-    Unknown negativeRadius = -sphere->radius;
-    Unknown center = sphere->center();
+    auto negativeRadius = -sphere->radius;
+    auto center = sphere->center();
     if (_plane0->distanceToVector3(center) < negativeRadius) {
         return false;
     }
@@ -167,7 +167,7 @@ bool FrustumCls::_intersectsWithAabb3CheckPlane(Aabb3 aabb, Plane plane) {
         outPz = aabb->max()->z;
         outNz = aabb->min()->z;
     }
-    Unknown d1 = plane->_normal->x * outPx + plane->_normal->y * outPy + plane->_normal->z * outPz + plane->constant;
-    Unknown d2 = plane->_normal->x * outNx + plane->_normal->y * outNy + plane->_normal->z * outNz + plane->constant;
+    auto d1 = plane->_normal->x * outPx + plane->_normal->y * outPy + plane->_normal->z * outPz + plane->constant;
+    auto d2 = plane->_normal->x * outNx + plane->_normal->y * outNy + plane->_normal->z * outNz + plane->constant;
     return  < 0 &&  < 0;
 }

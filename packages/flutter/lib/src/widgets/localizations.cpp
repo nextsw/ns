@@ -1,19 +1,19 @@
 #include "localizations.hpp"
-Future<Map<Type, dynamic>> _loadAll(Locale locale, Iterable<LocalizationsDelegate<dynamic>> allDelegates) {
-    Map<Type, dynamic> output = makeMap(makeList(), makeList();
+Future<Map<Type, Object>> _loadAll(Locale locale, Iterable<LocalizationsDelegate<Object>> allDelegates) {
+    Map<Type, Object> output = makeMap(makeList(), makeList();
     List<_Pending> pendingList;
     Set<Type> types = makeSet();
-    List<LocalizationsDelegate<dynamic>> delegates = makeList();
-    for (LocalizationsDelegate<dynamic> delegate : allDelegates) {
+    List<LocalizationsDelegate<Object>> delegates = makeList();
+    for (LocalizationsDelegate<Object> delegate : allDelegates) {
         if (!types->contains(delegate->type) && delegate->isSupported(locale)) {
             types->add(delegate->type);
             delegates->add(delegate);
         }
     }
-    for (LocalizationsDelegate<dynamic> delegate : delegates) {
-        Future<dynamic> inputValue = delegate->load(locale);
-        dynamic completedValue;
-        Future<dynamic> futureValue = inputValue-><dynamic>then([=] (dynamic value) {
+    for (LocalizationsDelegate<Object> delegate : delegates) {
+        Future<Object> inputValue = delegate->load(locale);
+        Object completedValue;
+        Future<Object> futureValue = inputValue-><Object>then([=] (Object value) {
     return completedValue = value;
 });
         if (completedValue != nullptr) {
@@ -26,11 +26,11 @@ Future<Map<Type, dynamic>> _loadAll(Locale locale, Iterable<LocalizationsDelegat
         }
     }
     if (pendingList == nullptr) {
-        return <Map<Type, dynamic>>make<SynchronousFutureCls>(output);
+        return <Map<Type, Object>>make<SynchronousFutureCls>(output);
     }
-    return FutureCls-><dynamic>wait(pendingList-><Future<dynamic>>map([=] (_Pending p) {
+    return FutureCls-><Object>wait(pendingList-><Future<Object>>map([=] (_Pending p) {
         p->futureValue;
-    }))-><Map<Type, dynamic>>then([=] (List<dynamic> values) {
+    }))-><Map<Type, Object>>then([=] (List<Object> values) {
         assert(values->length == pendingList!->length());
         for (;  < values->length; i += 1) {
             Type type = pendingList![i]->delegate->type();
@@ -84,25 +84,25 @@ bool _LocalizationsScopeCls::updateShouldNotify(_LocalizationsScope old) {
     return typeToResources != old->typeToResources;
 }
 
-_LocalizationsScopeCls::_LocalizationsScopeCls(Widget child, Key key, Locale locale, _LocalizationsState localizationsState, Map<Type, dynamic> typeToResources) {
+_LocalizationsScopeCls::_LocalizationsScopeCls(Widget child, Key key, Locale locale, _LocalizationsState localizationsState, Map<Type, Object> typeToResources) {
     {
         assert(localizationsState != nullptr);
         assert(typeToResources != nullptr);
     }
 }
 
-LocalizationsCls::LocalizationsCls(Widget child, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale) {
+LocalizationsCls::LocalizationsCls(Widget child, List<LocalizationsDelegate<Object>> delegates, Key key, Locale locale) {
     {
         assert(locale != nullptr);
         assert(delegates != nullptr);
-        assert(delegates->any([=] (LocalizationsDelegate<dynamic> delegate) {
+        assert(delegates->any([=] (LocalizationsDelegate<Object> delegate) {
             is<LocalizationsDelegate<WidgetsLocalizations>>(delegate);
         }));
     }
 }
 
-void LocalizationsCls::override(Widget child, BuildContext context, List<LocalizationsDelegate<dynamic>> delegates, Key key, Locale locale) {
-    List<LocalizationsDelegate<dynamic>> mergedDelegates = LocalizationsCls->_delegatesOf(context);
+void LocalizationsCls::override(Widget child, BuildContext context, List<LocalizationsDelegate<Object>> delegates, Key key, Locale locale) {
+    List<LocalizationsDelegate<Object>> mergedDelegates = LocalizationsCls->_delegatesOf(context);
     if (delegates != nullptr) {
         mergedDelegates->insertAll(0, delegates);
     }
@@ -145,14 +145,14 @@ State<Localizations> LocalizationsCls::createState() {
 void LocalizationsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<Locale>make<DiagnosticsPropertyCls>(__s("locale"), locale));
-    properties->add(<LocalizationsDelegate<dynamic>>make<IterablePropertyCls>(__s("delegates"), delegates));
+    properties->add(<LocalizationsDelegate<Object>>make<IterablePropertyCls>(__s("delegates"), delegates));
 }
 
-List<LocalizationsDelegate<dynamic>> LocalizationsCls::_delegatesOf(BuildContext context) {
+List<LocalizationsDelegate<Object>> LocalizationsCls::_delegatesOf(BuildContext context) {
     assert(context != nullptr);
     _LocalizationsScope scope = context-><_LocalizationsScope>dependOnInheritedWidgetOfExactType();
     assert(scope != nullptr, __s("a Localizations ancestor was not found"));
-    return <LocalizationsDelegate<dynamic>>of(scope!->localizationsState->widget()->delegates);
+    return <LocalizationsDelegate<Object>>of(scope!->localizationsState->widget()->delegates);
 }
 
 Locale _LocalizationsStateCls::locale() {
@@ -172,13 +172,13 @@ void _LocalizationsStateCls::didUpdateWidget(Localizations old) {
 }
 
 void _LocalizationsStateCls::load(Locale locale) {
-    Iterable<LocalizationsDelegate<dynamic>> delegates = widget()->delegates;
+    Iterable<LocalizationsDelegate<Object>> delegates = widget()->delegates;
     if (delegates == nullptr || delegates->isEmpty()) {
         _locale = locale;
         return;
     }
-    Map<Type, dynamic> typeToResources;
-    Future<Map<Type, dynamic>> typeToResourcesFuture = _loadAll(locale, delegates)-><Map<Type, dynamic>>then([=] (Map<Type, dynamic> value) {
+    Map<Type, Object> typeToResources;
+    Future<Map<Type, Object>> typeToResourcesFuture = _loadAll(locale, delegates)-><Map<Type, Object>>then([=] (Map<Type, Object> value) {
     return typeToResources = value;
 });
     if (typeToResources != nullptr) {
@@ -186,7 +186,7 @@ void _LocalizationsStateCls::load(Locale locale) {
         _locale = locale;
     } else {
         RendererBindingCls::instance->deferFirstFrame();
-        typeToResourcesFuture-><void>then([=] (Map<Type, dynamic> value) {
+        typeToResourcesFuture-><void>then([=] (Map<Type, Object> value) {
             if (mounted()) {
                 setState([=] () {
                     _typeToResources = value;
@@ -216,11 +216,11 @@ bool _LocalizationsStateCls::_anyDelegatesShouldReload(Localizations old) {
     if (widget()->delegates->length != old->delegates->length()) {
         return true;
     }
-    List<LocalizationsDelegate<dynamic>> delegates = widget()->delegates->toList();
-    List<LocalizationsDelegate<dynamic>> oldDelegates = old->delegates->toList();
+    List<LocalizationsDelegate<Object>> delegates = widget()->delegates->toList();
+    List<LocalizationsDelegate<Object>> oldDelegates = old->delegates->toList();
     for (;  < delegates->length(); i += 1) {
-        LocalizationsDelegate<dynamic> delegate = delegates[i];
-        LocalizationsDelegate<dynamic> oldDelegate = oldDelegates[i];
+        LocalizationsDelegate<Object> delegate = delegates[i];
+        LocalizationsDelegate<Object> oldDelegate = oldDelegates[i];
         if (delegate->runtimeType != oldDelegate->runtimeType || delegate->shouldReload(oldDelegate)) {
             return true;
         }

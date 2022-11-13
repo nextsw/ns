@@ -25,7 +25,7 @@ public:
 
     virtual void  periodic(Duration period, std::function<T(int computationCount)> computation);
 
-    virtual void  eventTransformed(Stream<dynamic> source, std::function<EventSink<dynamic>(EventSink<T> sink)> mapSink);
+    virtual void  eventTransformed(Stream<Object> source, std::function<EventSink<Object>(EventSink<T> sink)> mapSink);
 
     template<typename S, typename T>
  static Stream<T> castFrom(Stream<S> source);

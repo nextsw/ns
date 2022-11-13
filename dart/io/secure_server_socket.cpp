@@ -95,5 +95,5 @@ void RawSecureServerSocketCls::_onSubscriptionStateChange() {
 }
 
 void RawSecureServerSocketCls::_owner(owner ) {
-    (as<dynamic>(_socket))->_owner = owner;
+    (as<Object>(_socket))->_owner = owner;
 }

@@ -77,7 +77,7 @@ public:
 
      ReceivePortCls(String debugName);
     void  fromRawReceivePort(RawReceivePort rawPort);
-    virtual StreamSubscription<dynamic> listen(std::function<void(auto message)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
+    virtual StreamSubscription<Object> listen(std::function<void(auto message)> onData, bool cancelOnError, std::function<void()> onDone, std::function<void ()> onError);
     virtual void close();
     virtual SendPort sendPort();
 private:

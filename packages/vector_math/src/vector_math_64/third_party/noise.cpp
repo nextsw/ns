@@ -2,7 +2,7 @@
 SimplexNoiseCls::SimplexNoiseCls(Random r) {
     {
         r |= math->make<RandomCls>();
-        Unknown p = <int>generate(256, [=] (Unknown  _) {
+        auto p = <int>generate(256, [=] (Unknown  _) {
     r!->nextInt(256);
 }, false);
         _perm = <int>generate(p->length * 2, [=] (int i) {
@@ -16,14 +16,14 @@ SimplexNoiseCls::SimplexNoiseCls(Random r) {
 
 double SimplexNoiseCls::noise2D(double xin, double yin) {
     double n0, n1, n2;
-    Unknown s = (xin + yin) * _F2;
-    Unknown i = (xin + s)->floor();
-    Unknown j = (yin + s)->floor();
-    Unknown t = (i + j) * _G2;
-    Unknown X0 = i - t;
-    Unknown Y0 = j - t;
-    Unknown x0 = xin - X0;
-    Unknown y0 = yin - Y0;
+    auto s = (xin + yin) * _F2;
+    auto i = (xin + s)->floor();
+    auto j = (yin + s)->floor();
+    auto t = (i + j) * _G2;
+    auto X0 = i - t;
+    auto Y0 = j - t;
+    auto x0 = xin - X0;
+    auto y0 = yin - Y0;
     int i1, j1;
     if (x0 > y0) {
         i1 = 1;
@@ -32,15 +32,15 @@ double SimplexNoiseCls::noise2D(double xin, double yin) {
         i1 = 0;
         j1 = 1;
     }
-    Unknown x1 = x0 - i1 + _G2;
-    Unknown y1 = y0 - j1 + _G2;
-    Unknown x2 = x0 - 1.0 + 2.0 * _G2;
-    Unknown y2 = y0 - 1.0 + 2.0 * _G2;
-    Unknown ii = i & 255;
-    Unknown jj = j & 255;
-    Unknown gi0 = _permMod12[ii + _perm[jj]];
-    Unknown gi1 = _permMod12[ii + i1 + _perm[jj + j1]];
-    Unknown gi2 = _permMod12[ii + 1 + _perm[jj + 1]];
+    auto x1 = x0 - i1 + _G2;
+    auto y1 = y0 - j1 + _G2;
+    auto x2 = x0 - 1.0 + 2.0 * _G2;
+    auto y2 = y0 - 1.0 + 2.0 * _G2;
+    auto ii = i & 255;
+    auto jj = j & 255;
+    auto gi0 = _permMod12[ii + _perm[jj]];
+    auto gi1 = _permMod12[ii + i1 + _perm[jj + j1]];
+    auto gi2 = _permMod12[ii + 1 + _perm[jj + 1]];
     auto t0 = 0.5 - x0 * x0 - y0 * y0;
     if ( < 0) {
         n0 = 0.0;
@@ -67,17 +67,17 @@ double SimplexNoiseCls::noise2D(double xin, double yin) {
 
 double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
     double n0, n1, n2, n3;
-    Unknown s = (xin + yin + zin) * _f3;
-    Unknown i = (xin + s)->floor();
-    Unknown j = (yin + s)->floor();
-    Unknown k = (zin + s)->floor();
-    Unknown t = (i + j + k) * _g3;
-    Unknown X0 = i - t;
-    Unknown Y0 = j - t;
-    Unknown Z0 = k - t;
-    Unknown x0 = xin - X0;
-    Unknown y0 = yin - Y0;
-    Unknown z0 = zin - Z0;
+    auto s = (xin + yin + zin) * _f3;
+    auto i = (xin + s)->floor();
+    auto j = (yin + s)->floor();
+    auto k = (zin + s)->floor();
+    auto t = (i + j + k) * _g3;
+    auto X0 = i - t;
+    auto Y0 = j - t;
+    auto Z0 = k - t;
+    auto x0 = xin - X0;
+    auto y0 = yin - Y0;
+    auto z0 = zin - Z0;
     int i1, j1, k1;
     int i2, j2, k2;
     if (x0 >= y0) {
@@ -131,22 +131,22 @@ double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
         }
 ;
         }    }
-    Unknown x1 = x0 - i1 + _g3;
-    Unknown y1 = y0 - j1 + _g3;
-    Unknown z1 = z0 - k1 + _g3;
-    Unknown x2 = x0 - i2 + 2.0 * _g3;
-    Unknown y2 = y0 - j2 + 2.0 * _g3;
-    Unknown z2 = z0 - k2 + 2.0 * _g3;
-    Unknown x3 = x0 - 1.0 + 3.0 * _g3;
-    Unknown y3 = y0 - 1.0 + 3.0 * _g3;
-    Unknown z3 = z0 - 1.0 + 3.0 * _g3;
-    Unknown ii = i & 255;
-    Unknown jj = j & 255;
-    Unknown kk = k & 255;
-    Unknown gi0 = _permMod12[ii + _perm[jj + _perm[kk]]];
-    Unknown gi1 = _permMod12[ii + i1 + _perm[jj + j1 + _perm[kk + k1]]];
-    Unknown gi2 = _permMod12[ii + i2 + _perm[jj + j2 + _perm[kk + k2]]];
-    Unknown gi3 = _permMod12[ii + 1 + _perm[jj + 1 + _perm[kk + 1]]];
+    auto x1 = x0 - i1 + _g3;
+    auto y1 = y0 - j1 + _g3;
+    auto z1 = z0 - k1 + _g3;
+    auto x2 = x0 - i2 + 2.0 * _g3;
+    auto y2 = y0 - j2 + 2.0 * _g3;
+    auto z2 = z0 - k2 + 2.0 * _g3;
+    auto x3 = x0 - 1.0 + 3.0 * _g3;
+    auto y3 = y0 - 1.0 + 3.0 * _g3;
+    auto z3 = z0 - 1.0 + 3.0 * _g3;
+    auto ii = i & 255;
+    auto jj = j & 255;
+    auto kk = k & 255;
+    auto gi0 = _permMod12[ii + _perm[jj + _perm[kk]]];
+    auto gi1 = _permMod12[ii + i1 + _perm[jj + j1 + _perm[kk + k1]]];
+    auto gi2 = _permMod12[ii + i2 + _perm[jj + j2 + _perm[kk + k2]]];
+    auto gi3 = _permMod12[ii + 1 + _perm[jj + 1 + _perm[kk + 1]]];
     auto t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0;
     if ( < 0) {
         n0 = 0.0;
@@ -180,20 +180,20 @@ double SimplexNoiseCls::noise3D(double xin, double yin, double zin) {
 
 double SimplexNoiseCls::noise4D(double x, double y, double z, double w) {
     double n0, n1, n2, n3, n4;
-    Unknown s = (x + y + z + w) * _F4;
-    Unknown i = (x + s)->floor();
-    Unknown j = (y + s)->floor();
-    Unknown k = (z + s)->floor();
-    Unknown l = (w + s)->floor();
-    Unknown t = (i + j + k + l) * _G4;
-    Unknown X0 = i - t;
-    Unknown Y0 = j - t;
-    Unknown Z0 = k - t;
-    Unknown W0 = l - t;
-    Unknown x0 = x - X0;
-    Unknown y0 = y - Y0;
-    Unknown z0 = z - Z0;
-    Unknown w0 = w - W0;
+    auto s = (x + y + z + w) * _F4;
+    auto i = (x + s)->floor();
+    auto j = (y + s)->floor();
+    auto k = (z + s)->floor();
+    auto l = (w + s)->floor();
+    auto t = (i + j + k + l) * _G4;
+    auto X0 = i - t;
+    auto Y0 = j - t;
+    auto Z0 = k - t;
+    auto W0 = l - t;
+    auto x0 = x - X0;
+    auto y0 = y - Y0;
+    auto z0 = z - Z0;
+    auto w0 = w - W0;
     auto rankx = 0;
     auto ranky = 0;
     auto rankz = 0;
@@ -243,31 +243,31 @@ double SimplexNoiseCls::noise4D(double x, double y, double z, double w) {
     j3 = ranky >= 1? 1 : 0;
     k3 = rankz >= 1? 1 : 0;
     l3 = rankw >= 1? 1 : 0;
-    Unknown x1 = x0 - i1 + _G4;
-    Unknown y1 = y0 - j1 + _G4;
-    Unknown z1 = z0 - k1 + _G4;
-    Unknown w1 = w0 - l1 + _G4;
-    Unknown x2 = x0 - i2 + 2.0 * _G4;
-    Unknown y2 = y0 - j2 + 2.0 * _G4;
-    Unknown z2 = z0 - k2 + 2.0 * _G4;
-    Unknown w2 = w0 - l2 + 2.0 * _G4;
-    Unknown x3 = x0 - i3 + 3.0 * _G4;
-    Unknown y3 = y0 - j3 + 3.0 * _G4;
-    Unknown z3 = z0 - k3 + 3.0 * _G4;
-    Unknown w3 = w0 - l3 + 3.0 * _G4;
-    Unknown x4 = x0 - 1.0 + 4.0 * _G4;
-    Unknown y4 = y0 - 1.0 + 4.0 * _G4;
-    Unknown z4 = z0 - 1.0 + 4.0 * _G4;
-    Unknown w4 = w0 - 1.0 + 4.0 * _G4;
-    Unknown ii = i & 255;
-    Unknown jj = j & 255;
-    Unknown kk = k & 255;
-    Unknown ll = l & 255;
-    Unknown gi0 = _perm[ii + _perm[jj + _perm[kk + _perm[ll]]]] % 32;
-    Unknown gi1 = _perm[ii + i1 + _perm[jj + j1 + _perm[kk + k1 + _perm[ll + l1]]]] % 32;
-    Unknown gi2 = _perm[ii + i2 + _perm[jj + j2 + _perm[kk + k2 + _perm[ll + l2]]]] % 32;
-    Unknown gi3 = _perm[ii + i3 + _perm[jj + j3 + _perm[kk + k3 + _perm[ll + l3]]]] % 32;
-    Unknown gi4 = _perm[ii + 1 + _perm[jj + 1 + _perm[kk + 1 + _perm[ll + 1]]]] % 32;
+    auto x1 = x0 - i1 + _G4;
+    auto y1 = y0 - j1 + _G4;
+    auto z1 = z0 - k1 + _G4;
+    auto w1 = w0 - l1 + _G4;
+    auto x2 = x0 - i2 + 2.0 * _G4;
+    auto y2 = y0 - j2 + 2.0 * _G4;
+    auto z2 = z0 - k2 + 2.0 * _G4;
+    auto w2 = w0 - l2 + 2.0 * _G4;
+    auto x3 = x0 - i3 + 3.0 * _G4;
+    auto y3 = y0 - j3 + 3.0 * _G4;
+    auto z3 = z0 - k3 + 3.0 * _G4;
+    auto w3 = w0 - l3 + 3.0 * _G4;
+    auto x4 = x0 - 1.0 + 4.0 * _G4;
+    auto y4 = y0 - 1.0 + 4.0 * _G4;
+    auto z4 = z0 - 1.0 + 4.0 * _G4;
+    auto w4 = w0 - 1.0 + 4.0 * _G4;
+    auto ii = i & 255;
+    auto jj = j & 255;
+    auto kk = k & 255;
+    auto ll = l & 255;
+    auto gi0 = _perm[ii + _perm[jj + _perm[kk + _perm[ll]]]] % 32;
+    auto gi1 = _perm[ii + i1 + _perm[jj + j1 + _perm[kk + k1 + _perm[ll + l1]]]] % 32;
+    auto gi2 = _perm[ii + i2 + _perm[jj + j2 + _perm[kk + k2 + _perm[ll + l2]]]] % 32;
+    auto gi3 = _perm[ii + i3 + _perm[jj + j3 + _perm[kk + k3 + _perm[ll + l3]]]] % 32;
+    auto gi4 = _perm[ii + 1 + _perm[jj + 1 + _perm[kk + 1 + _perm[ll + 1]]]] % 32;
     auto t0 = 0.6 - x0 * x0 - y0 * y0 - z0 * z0 - w0 * w0;
     if ( < 0) {
         n0 = 0.0;

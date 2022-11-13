@@ -464,7 +464,7 @@ void EditableTextStateCls::performAction(TextInputAction action) {
     ;
 }
 
-void EditableTextStateCls::performPrivateCommand(String action, Map<String, dynamic> data) {
+void EditableTextStateCls::performPrivateCommand(String action, Map<String, Object> data) {
     widget()->onAppPrivateCommand!(action, data);
 }
 

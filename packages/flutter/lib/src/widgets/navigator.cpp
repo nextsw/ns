@@ -45,7 +45,7 @@ void RouteCls<T>::didAdd() {
 }
 
 template<typename T>
-void RouteCls<T>::didReplace(Route<dynamic> oldRoute) {
+void RouteCls<T>::didReplace(Route<Object> oldRoute) {
 }
 
 template<typename T>
@@ -80,15 +80,15 @@ void RouteCls<T>::didComplete(T result) {
 }
 
 template<typename T>
-void RouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
+void RouteCls<T>::didPopNext(Route<Object> nextRoute) {
 }
 
 template<typename T>
-void RouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
+void RouteCls<T>::didChangeNext(Route<Object> nextRoute) {
 }
 
 template<typename T>
-void RouteCls<T>::didChangePrevious(Route<dynamic> previousRoute) {
+void RouteCls<T>::didChangePrevious(Route<Object> previousRoute) {
 }
 
 template<typename T>
@@ -187,7 +187,7 @@ String RouteSettingsCls::toString() {
 }
 
 template<typename T>
-bool PageCls<T>::canUpdate(Page<dynamic> other) {
+bool PageCls<T>::canUpdate(Page<Object> other) {
     return other->runtimeType == runtimeType && other->key == key;
 }
 
@@ -200,19 +200,19 @@ NavigatorState NavigatorObserverCls::navigator() {
     return _navigator;
 }
 
-void NavigatorObserverCls::didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+void NavigatorObserverCls::didPush(Route<Object> route, Route<Object> previousRoute) {
 }
 
-void NavigatorObserverCls::didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+void NavigatorObserverCls::didPop(Route<Object> route, Route<Object> previousRoute) {
 }
 
-void NavigatorObserverCls::didRemove(Route<dynamic> route, Route<dynamic> previousRoute) {
+void NavigatorObserverCls::didRemove(Route<Object> route, Route<Object> previousRoute) {
 }
 
-void NavigatorObserverCls::didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute) {
+void NavigatorObserverCls::didReplace(Route<Object> newRoute, Route<Object> oldRoute) {
 }
 
-void NavigatorObserverCls::didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute) {
+void NavigatorObserverCls::didStartUserGesture(Route<Object> route, Route<Object> previousRoute) {
 }
 
 void NavigatorObserverCls::didStopUserGesture() {
@@ -290,7 +290,7 @@ Iterable<RouteTransitionRecord> DefaultTransitionDelegateCls<T>::resolve(Map<Rou
     return results;
 }
 
-NavigatorCls::NavigatorCls(String initialRoute, Key key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<dynamic>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<dynamic> transitionDelegate) {
+NavigatorCls::NavigatorCls(String initialRoute, Key key, List<NavigatorObserver> observers, RouteListFactory onGenerateInitialRoutes, RouteFactory onGenerateRoute, PopPageCallback onPopPage, RouteFactory onUnknownRoute, List<Page<Object>> pages, bool reportsRouteUpdateToEngine, bool requestFocus, String restorationScopeId, TransitionDelegate<Object> transitionDelegate) {
     {
         assert(pages != nullptr);
         assert(onGenerateInitialRoutes != nullptr);
@@ -371,22 +371,22 @@ String NavigatorCls::restorablePushAndRemoveUntil(BuildContext context, Restorab
 }
 
 template<typename T>
-void NavigatorCls::replace(BuildContext context, Route<T> newRoute, Route<dynamic> oldRoute) {
+void NavigatorCls::replace(BuildContext context, Route<T> newRoute, Route<Object> oldRoute) {
     return NavigatorCls->of(context)-><T>replace(oldRoute, newRoute);
 }
 
 template<typename T>
-String NavigatorCls::restorableReplace(BuildContext context, Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute) {
+String NavigatorCls::restorableReplace(BuildContext context, Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<Object> oldRoute) {
     return NavigatorCls->of(context)-><T>restorableReplace(oldRoute, newRouteBuilder, arguments);
 }
 
 template<typename T>
-void NavigatorCls::replaceRouteBelow(BuildContext context, Route<dynamic> anchorRoute, Route<T> newRoute) {
+void NavigatorCls::replaceRouteBelow(BuildContext context, Route<Object> anchorRoute, Route<T> newRoute) {
     return NavigatorCls->of(context)-><T>replaceRouteBelow(anchorRoute, newRoute);
 }
 
 template<typename T>
-String NavigatorCls::restorableReplaceRouteBelow(BuildContext context, Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder) {
+String NavigatorCls::restorableReplaceRouteBelow(BuildContext context, Route<Object> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder) {
     return NavigatorCls->of(context)-><T>restorableReplaceRouteBelow(anchorRoute, newRouteBuilder, arguments);
 }
 
@@ -409,11 +409,11 @@ void NavigatorCls::popUntil(BuildContext context, RoutePredicate predicate) {
     NavigatorCls->of(context)->popUntil(predicate);
 }
 
-void NavigatorCls::removeRoute(BuildContext context, Route<dynamic> route) {
+void NavigatorCls::removeRoute(BuildContext context, Route<Object> route) {
     return NavigatorCls->of(context)->removeRoute(route);
 }
 
-void NavigatorCls::removeRouteBelow(BuildContext context, Route<dynamic> anchorRoute) {
+void NavigatorCls::removeRouteBelow(BuildContext context, Route<Object> anchorRoute) {
     return NavigatorCls->of(context)->removeRouteBelow(anchorRoute);
 }
 
@@ -449,8 +449,8 @@ NavigatorState NavigatorCls::maybeOf(BuildContext context, bool rootNavigator) {
     return navigator;
 }
 
-List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState navigator, String initialRouteName) {
-    List<Route<dynamic>> result = makeList();
+List<Route<Object>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState navigator, String initialRouteName) {
+    List<Route<Object>> result = makeList();
     if (initialRouteName->startsWith(__s("/")) && initialRouteName->length() > 1) {
         initialRouteName = initialRouteName->substring(1);
         assert(NavigatorCls::defaultRouteName == __s("/"));
@@ -459,7 +459,7 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
             debugRouteNames = makeList(ArrayItem);
             return true;
         }());
-        result->add(navigator-><dynamic>_routeNamed(NavigatorCls::defaultRouteName, nullptr, true));
+        result->add(navigator-><Object>_routeNamed(NavigatorCls::defaultRouteName, nullptr, true));
         List<String> routeParts = initialRouteName->split(__s("/"));
         if (initialRouteName->isNotEmpty()) {
             String routeName = __s("");
@@ -469,7 +469,7 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
                     debugRouteNames!->add(routeName);
                     return true;
                 }());
-                result->add(navigator-><dynamic>_routeNamed(routeName, nullptr, true));
+                result->add(navigator-><Object>_routeNamed(routeName, nullptr, true));
             }
         }
         if (result->last == nullptr) {
@@ -481,16 +481,16 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
         }
     } else {
         if (initialRouteName != NavigatorCls::defaultRouteName) {
-        result->add(navigator-><dynamic>_routeNamed(initialRouteName, nullptr, true));
+        result->add(navigator-><Object>_routeNamed(initialRouteName, nullptr, true));
     }
 ;
-    }    result->removeWhere([=] (Route<dynamic> route) {
+    }    result->removeWhere([=] (Route<Object> route) {
         route == nullptr;
     });
     if (result->isEmpty()) {
-        result->add(navigator-><dynamic>_routeNamed(NavigatorCls::defaultRouteName, nullptr));
+        result->add(navigator-><Object>_routeNamed(NavigatorCls::defaultRouteName, nullptr));
     }
-    return result-><Route<dynamic>>cast();
+    return result-><Route<Object>>cast();
 }
 
 NavigatorState NavigatorCls::createState() {
@@ -512,18 +512,18 @@ bool _RouteEntryCls::hasPage() {
     return is<Page<any>>(route->settings());
 }
 
-bool _RouteEntryCls::canUpdateFrom(Page<dynamic> page) {
+bool _RouteEntryCls::canUpdateFrom(Page<Object> page) {
     if (!willBePresent()) {
         return false;
     }
     if (!hasPage()) {
         return false;
     }
-    Page<dynamic> routePage = as<Page<dynamic>>(route->settings());
+    Page<Object> routePage = as<Page<Object>>(route->settings());
     return page->canUpdate(routePage);
 }
 
-void _RouteEntryCls::handleAdd(NavigatorState navigator, Route<dynamic> previousPresent) {
+void _RouteEntryCls::handleAdd(NavigatorState navigator, Route<Object> previousPresent) {
     assert(currentState == _RouteLifecycleCls::add);
     assert(navigator != nullptr);
     assert(navigator->_debugLocked);
@@ -535,7 +535,7 @@ void _RouteEntryCls::handleAdd(NavigatorState navigator, Route<dynamic> previous
     navigator->_observedRouteAdditions->add(make<_NavigatorPushObservationCls>(route, previousPresent));
 }
 
-void _RouteEntryCls::handlePush(bool isNewFirst, NavigatorState navigator, Route<dynamic> previous, Route<dynamic> previousPresent) {
+void _RouteEntryCls::handlePush(bool isNewFirst, NavigatorState navigator, Route<Object> previous, Route<Object> previousPresent) {
     assert(currentState == _RouteLifecycleCls::push || currentState == _RouteLifecycleCls::pushReplace || currentState == _RouteLifecycleCls::replace);
     assert(navigator != nullptr);
     assert(navigator->_debugLocked);
@@ -578,12 +578,12 @@ void _RouteEntryCls::handlePush(bool isNewFirst, NavigatorState navigator, Route
     }
 }
 
-void _RouteEntryCls::handleDidPopNext(Route<dynamic> poppedRoute) {
+void _RouteEntryCls::handleDidPopNext(Route<Object> poppedRoute) {
     route->didPopNext(poppedRoute);
     lastAnnouncedPoppedNextRoute = poppedRoute;
 }
 
-bool _RouteEntryCls::handlePop(NavigatorState navigator, Route<dynamic> previousPresent) {
+bool _RouteEntryCls::handlePop(NavigatorState navigator, Route<Object> previousPresent) {
     assert(navigator != nullptr);
     assert(navigator->_debugLocked);
     assert(route->_navigator == navigator);
@@ -608,7 +608,7 @@ void _RouteEntryCls::handleComplete() {
     currentState = _RouteLifecycleCls::remove;
 }
 
-void _RouteEntryCls::handleRemoval(NavigatorState navigator, Route<dynamic> previousPresent) {
+void _RouteEntryCls::handleRemoval(NavigatorState navigator, Route<Object> previousPresent) {
     assert(navigator != nullptr);
     assert(navigator->_debugLocked);
     assert(route->_navigator == navigator);
@@ -710,7 +710,7 @@ bool _RouteEntryCls::suitableForTransitionAnimation() {
     return currentState->index <= _RouteLifecycleCls::remove->index && currentState->index >= _RouteLifecycleCls::push->index;
 }
 
-bool _RouteEntryCls::shouldAnnounceChangeToNext(Route<dynamic> nextRoute) {
+bool _RouteEntryCls::shouldAnnounceChangeToNext(Route<Object> nextRoute) {
     assert(nextRoute != lastAnnouncedNextRoute);
     return !(nextRoute == nullptr && lastAnnouncedPoppedNextRoute != nullptr && lastAnnouncedPoppedNextRoute == lastAnnouncedNextRoute);
 }
@@ -727,7 +727,7 @@ bool _RouteEntryCls::willBePresentPredicate(_RouteEntry entry) {
     return entry->willBePresent();
 }
 
-_RouteEntryPredicate _RouteEntryCls::isRoutePredicate(Route<dynamic> route) {
+_RouteEntryPredicate _RouteEntryCls::isRoutePredicate(Route<Object> route) {
     return [=] (_RouteEntry entry) {
         entry->route == route;
     };
@@ -755,15 +755,15 @@ void _RouteEntryCls::markForAdd() {
     currentState = _RouteLifecycleCls::add;
 }
 
-void _RouteEntryCls::markForPop(dynamic result) {
+void _RouteEntryCls::markForPop(Object result) {
     assert(!isWaitingForEnteringDecision() && isWaitingForExitingDecision() && isPresent(), __s("This route cannot be marked for pop. Either a decision has already been made or it does not require an explicit decision on how to transition out."));
-    <dynamic>pop(result);
+    <Object>pop(result);
     _isWaitingForExitingDecision = false;
 }
 
-void _RouteEntryCls::markForComplete(dynamic result) {
+void _RouteEntryCls::markForComplete(Object result) {
     assert(!isWaitingForEnteringDecision() && isWaitingForExitingDecision() && isPresent(), __s("This route cannot be marked for complete. Either a decision has already been made or it does not require an explicit decision on how to transition out."));
-    <dynamic>complete(result);
+    <Object>complete(result);
     _isWaitingForExitingDecision = false;
 }
 
@@ -782,7 +782,7 @@ void _RouteEntryCls::restorationEnabled(bool value) {
     route->_updateRestorationId(value? restorationId() : nullptr);
 }
 
-_RouteEntryCls::_RouteEntryCls(Route<dynamic> route, _RouteLifecycle initialState, _RestorationInformation restorationInformation) {
+_RouteEntryCls::_RouteEntryCls(Route<Object> route, _RouteLifecycle initialState, _RestorationInformation restorationInformation) {
     {
         assert(route != nullptr);
         assert(initialState != nullptr);
@@ -842,7 +842,7 @@ void NavigatorStateCls::restoreState(RestorationBucket oldBucket, bool initialRe
     assert(_history->isEmpty());
     _overlayKey = <OverlayState>make<GlobalKeyCls>();
     _history->addAll(_serializableHistory->restoreEntriesForPage(nullptr, this));
-    for (Page<dynamic> page : widget()->pages) {
+    for (Page<Object> page : widget()->pages) {
         _RouteEntry entry = make<_RouteEntryCls>(page->createRoute(context()), _RouteLifecycleCls::add);
         assert(entry->route->settings() == page, __s("The settings getter of a page-based Route must return a Page object. Please set the settings to the Page in the Page.createRoute method."));
         _history->add(entry);
@@ -854,7 +854,7 @@ void NavigatorStateCls::restoreState(RestorationBucket oldBucket, bool initialRe
             initialRoute = initialRoute | NavigatorCls::defaultRouteName;
         }
         if (initialRoute != nullptr) {
-            _history->addAll(widget()->onGenerateInitialRoutes(this, widget()->initialRoute | NavigatorCls::defaultRouteName)->map([=] (Route<dynamic> route) {
+            _history->addAll(widget()->onGenerateInitialRoutes(this, widget()->initialRoute | NavigatorCls::defaultRouteName)->map([=] (Route<Object> route) {
                 make<_RouteEntryCls>(route, _RouteLifecycleCls::add, route->settings->name != nullptr? _RestorationInformationCls->named(route->settings->name!, nullptr, _nextPagelessRestorationScopeId()) : nullptr);
             }));
         }
@@ -1082,7 +1082,7 @@ String NavigatorStateCls::restorablePushAndRemoveUntil(RestorableRouteBuilder<T>
 }
 
 template<typename T>
-void NavigatorStateCls::replace(Route<T> newRoute, Route<dynamic> oldRoute) {
+void NavigatorStateCls::replace(Route<T> newRoute, Route<Object> oldRoute) {
     assert(!_debugLocked);
     assert(oldRoute != nullptr);
     assert(oldRoute->_navigator == this);
@@ -1091,7 +1091,7 @@ void NavigatorStateCls::replace(Route<T> newRoute, Route<dynamic> oldRoute) {
 }
 
 template<typename T>
-String NavigatorStateCls::restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<dynamic> oldRoute) {
+String NavigatorStateCls::restorableReplace(Object arguments, RestorableRouteBuilder<T> newRouteBuilder, Route<Object> oldRoute) {
     assert(oldRoute != nullptr);
     assert(oldRoute->_navigator == this);
     assert(newRouteBuilder != nullptr);
@@ -1104,7 +1104,7 @@ String NavigatorStateCls::restorableReplace(Object arguments, RestorableRouteBui
 }
 
 template<typename T>
-void NavigatorStateCls::replaceRouteBelow(Route<dynamic> anchorRoute, Route<T> newRoute) {
+void NavigatorStateCls::replaceRouteBelow(Route<Object> anchorRoute, Route<T> newRoute) {
     assert(newRoute != nullptr);
     assert(newRoute->_navigator == nullptr);
     assert(anchorRoute != nullptr);
@@ -1113,7 +1113,7 @@ void NavigatorStateCls::replaceRouteBelow(Route<dynamic> anchorRoute, Route<T> n
 }
 
 template<typename T>
-String NavigatorStateCls::restorableReplaceRouteBelow(Route<dynamic> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder) {
+String NavigatorStateCls::restorableReplaceRouteBelow(Route<Object> anchorRoute, Object arguments, RestorableRouteBuilder<T> newRouteBuilder) {
     assert(anchorRoute != nullptr);
     assert(anchorRoute->_navigator == this);
     assert(newRouteBuilder != nullptr);
@@ -1213,7 +1213,7 @@ void NavigatorStateCls::popUntil(RoutePredicate predicate) {
     }
 }
 
-void NavigatorStateCls::removeRoute(Route<dynamic> route) {
+void NavigatorStateCls::removeRoute(Route<Object> route) {
     assert(route != nullptr);
     assert(!_debugLocked);
     assert([=] () {
@@ -1239,7 +1239,7 @@ void NavigatorStateCls::removeRoute(Route<dynamic> route) {
     }
 }
 
-void NavigatorStateCls::removeRouteBelow(Route<dynamic> anchorRoute) {
+void NavigatorStateCls::removeRouteBelow(Route<Object> anchorRoute) {
     assert(!_debugLocked);
     assert([=] () {
         _debugLocked = true;
@@ -1266,7 +1266,7 @@ void NavigatorStateCls::removeRouteBelow(Route<dynamic> anchorRoute) {
     }());
 }
 
-void NavigatorStateCls::finalizeRoute(Route<dynamic> route) {
+void NavigatorStateCls::finalizeRoute(Route<Object> route) {
     bool wasDebugLocked;
     assert([=] () {
         wasDebugLocked = _debugLocked;
@@ -1300,8 +1300,8 @@ void NavigatorStateCls::didStartUserGesture() {
     if (_userGesturesInProgress() == 1) {
         int routeIndex = _getIndexBefore(_history->length() - 1, _RouteEntryCls::willBePresentPredicate);
         assert(routeIndex != nullptr);
-        Route<dynamic> route = _history[routeIndex]->route;
-        Route<dynamic> previousRoute;
+        Route<Object> route = _history[routeIndex]->route;
+        Route<Object> previousRoute;
         if (!route->willHandlePopInternally() && routeIndex > 0) {
             previousRoute = _getRouteBefore(routeIndex - 1, _RouteEntryCls::willBePresentPredicate)!->route;
         }
@@ -1370,7 +1370,7 @@ void NavigatorStateCls::_updateEffectiveObservers() {
 void NavigatorStateCls::_debugCheckDuplicatedPageKeys() {
     assert([=] () {
         Set<Key> keyReservation = makeSet();
-        for (Page<dynamic> page : widget()->pages) {
+        for (Page<Object> page : widget()->pages) {
             LocalKey key = page->key;
             if (key != nullptr) {
                 assert(!keyReservation->contains(key));
@@ -1414,7 +1414,7 @@ void NavigatorStateCls::_updatePages() {
         if (newPagesBottom > newPagesTop) {
             break;
         }
-        Page<dynamic> newPage = widget()->pages[newPagesBottom];
+        Page<Object> newPage = widget()->pages[newPagesBottom];
         if (!oldEntry->canUpdateFrom(newPage)) {
             break;
         }
@@ -1433,7 +1433,7 @@ void NavigatorStateCls::_updatePages() {
             oldEntriesTop -= 1;
             continue;
         }
-        Page<dynamic> newPage = widget()->pages[newPagesTop];
+        Page<Object> newPage = widget()->pages[newPagesTop];
         if (!oldEntry->canUpdateFrom(newPage)) {
             break;
         }
@@ -1453,7 +1453,7 @@ void NavigatorStateCls::_updatePages() {
             continue;
         }
         assert(oldEntry->hasPage());
-        Page<dynamic> page = as<Page<dynamic>>(oldEntry->route->settings());
+        Page<Object> page = as<Page<Object>>(oldEntry->route->settings());
         if (page->key == nullptr) {
             continue;
         }
@@ -1465,7 +1465,7 @@ void NavigatorStateCls::_updatePages() {
         pageKeyToOldEntry[page->key!] = oldEntry;
     }
     while (newPagesBottom <= newPagesTop) {
-        Page<dynamic> nextPage = widget()->pages[newPagesBottom];
+        Page<Object> nextPage = widget()->pages[newPagesBottom];
         newPagesBottom += 1;
         if (nextPage->key == nullptr || !pageKeyToOldEntry->containsKey(nextPage->key) || !pageKeyToOldEntry[nextPage->key]!->canUpdateFrom(nextPage)) {
             _RouteEntry newEntry = make<_RouteEntryCls>(nextPage->createRoute(context()), _RouteLifecycleCls::staging);
@@ -1494,7 +1494,7 @@ void NavigatorStateCls::_updatePages() {
             }
             continue;
         }
-        Page<dynamic> potentialPageToRemove = as<Page<dynamic>>(potentialEntryToRemove->route->settings());
+        Page<Object> potentialPageToRemove = as<Page<Object>>(potentialEntryToRemove->route->settings());
         if (potentialPageToRemove->key == nullptr || pageKeyToOldEntry->containsKey(potentialPageToRemove->key) || phantomEntries->contains(potentialEntryToRemove)) {
             locationToExitingPageRoute[previousOldPageRouteEntry] = potentialEntryToRemove;
             if (potentialEntryToRemove->willBePresent()) {
@@ -1526,7 +1526,7 @@ void NavigatorStateCls::_updatePages() {
             continue;
         }
         previousOldPageRouteEntry = oldEntry;
-        Page<dynamic> newPage = widget()->pages[newPagesBottom];
+        Page<Object> newPage = widget()->pages[newPagesBottom];
         assert(oldEntry->canUpdateFrom(newPage));
         oldEntry->route->_updateSettings(newPage);
         newHistory->add(oldEntry);
@@ -1571,7 +1571,7 @@ void NavigatorStateCls::_flushHistoryUpdates(bool rearrangeOverlay) {
     _RouteEntry entry = _history[index];
     _RouteEntry previous = index > 0? _history[index - 1] : nullptr;
     bool canRemoveOrAdd = false;
-    Route<dynamic> poppedRoute;
+    Route<Object> poppedRoute;
     bool seenTopActiveRoute = false;
     List<_RouteEntry> toBeDisposed = makeList();
     while (index >= 0) {
@@ -1703,7 +1703,7 @@ Route<T> NavigatorStateCls::_routeNamed(String name, bool allowNull, Object argu
     return route;
 }
 
-bool NavigatorStateCls::_debugCheckIsPagelessRoute(Route<dynamic> route) {
+bool NavigatorStateCls::_debugCheckIsPagelessRoute(Route<Object> route) {
     assert([=] () {
         if (is<Page<any>>(route->settings())) {
             FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("A page-based route should not be added using the imperative api. Provide a new list with the corresponding Page to Navigator.pages instead.")), __s("widget library"), StackTraceCls::current));
@@ -1740,21 +1740,21 @@ void NavigatorStateCls::_pushEntry(_RouteEntry entry) {
     _afterNavigation(entry->route);
 }
 
-void NavigatorStateCls::_afterNavigation(Route<dynamic> route) {
+void NavigatorStateCls::_afterNavigation(Route<Object> route) {
     if (!kReleaseMode) {
-        Map<String, dynamic> routeJsonable;
+        Map<String, Object> routeJsonable;
         if (route != nullptr) {
             routeJsonable = makeMap(makeList(), makeList();
             String description;
-            if (is<TransitionRoute<dynamic>>(route)) {
-                TransitionRoute<dynamic> transitionRoute = as<TransitionRouteCls>(route);
+            if (is<TransitionRoute<Object>>(route)) {
+                TransitionRoute<Object> transitionRoute = as<TransitionRouteCls>(route);
                 description = transitionRoute->debugLabel();
             } else {
                 description = __sf("%s", route);
             }
             routeJsonable[__s("description")] = description;
             RouteSettings settings = route->settings();
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("name"), settings->name);Map<String, dynamic> settingsJsonable = list1;
+                    Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("name"), settings->name);Map<String, Object> settingsJsonable = list1;
             if (settings->arguments != nullptr) {
                 settingsJsonable[__s("arguments")] = jsonEncode(settings->arguments, [=] (Object object) {
                     __sf("%s", object);
@@ -1762,7 +1762,7 @@ void NavigatorStateCls::_afterNavigation(Route<dynamic> route) {
             }
             routeJsonable[__s("settings")] = settingsJsonable;
         }
-            Map<String, dynamic> map2 = make<MapCls<>>();    map2.set(__s("route"), routeJsonable);developer->postEvent(__s("Flutter.Navigation"), list2);
+            Map<String, Object> map2 = make<MapCls<>>();    map2.set(__s("route"), routeJsonable);developer->postEvent(__s("Flutter.Navigation"), list2);
     }
     _cancelActivePointers();
 }
@@ -1816,7 +1816,7 @@ void NavigatorStateCls::_pushEntryAndRemoveUntil(_RouteEntry entry, RoutePredica
     _afterNavigation(entry->route);
 }
 
-void NavigatorStateCls::_replaceEntry(_RouteEntry entry, Route<dynamic> oldRoute) {
+void NavigatorStateCls::_replaceEntry(_RouteEntry entry, Route<Object> oldRoute) {
     assert(!_debugLocked);
     if (oldRoute == entry->route) {
         return;
@@ -1843,7 +1843,7 @@ void NavigatorStateCls::_replaceEntry(_RouteEntry entry, Route<dynamic> oldRoute
     }
 }
 
-void NavigatorStateCls::_replaceEntryBelow(_RouteEntry entry, Route<dynamic> anchorRoute) {
+void NavigatorStateCls::_replaceEntryBelow(_RouteEntry entry, Route<Object> anchorRoute) {
     assert(!_debugLocked);
     assert([=] () {
         _debugLocked = true;
@@ -1951,8 +1951,8 @@ List<Object> _NamedRestorationInformationCls::computeSerializableData() {
     auto _c1 = super->computeSerializableData();_c1.addAll(List<Object> list2 = make<ListCls<>>();list2.add(ArrayItem);list2.add(ArrayItem);if (arguments != nullptr) {    list2.add(ArrayItem);}list2);return _c1;
 }
 
-Route<dynamic> _NamedRestorationInformationCls::createRoute(NavigatorState navigator) {
-    Route<dynamic> route = navigator-><dynamic>_routeNamed(name, arguments)!;
+Route<Object> _NamedRestorationInformationCls::createRoute(NavigatorState navigator) {
+    Route<Object> route = navigator-><Object>_routeNamed(name, arguments)!;
     assert(route != nullptr);
     return route;
 }
@@ -1980,8 +1980,8 @@ List<Object> _AnonymousRestorationInformationCls::computeSerializableData() {
     auto _c1 = super->computeSerializableData();_c1.addAll(List<Object> list2 = make<ListCls<>>();list2.add(ArrayItem);list2.add(ArrayItem);if (arguments != nullptr) {    list2.add(ArrayItem);}list2);return _c1;
 }
 
-Route<dynamic> _AnonymousRestorationInformationCls::createRoute(NavigatorState navigator) {
-    Route<dynamic> result = routeBuilder(navigator->context(), arguments);
+Route<Object> _AnonymousRestorationInformationCls::createRoute(NavigatorState navigator) {
+    Route<Object> result = routeBuilder(navigator->context(), arguments);
     assert(result != nullptr);
     return result;
 }
@@ -2082,9 +2082,9 @@ Map<String, List<Object>> _HistoryPropertyCls::createDefaultValue() {
 }
 
 Map<String, List<Object>> _HistoryPropertyCls::fromPrimitives(Object data) {
-    Map<dynamic, dynamic> casted = as<Map<dynamic, dynamic>>(data!);
-    return casted-><String, List<Object>>map([=] (dynamic key,dynamic value) {
-        <String, List<Object>>make<MapEntryCls>(as<String>(key), <Object>from(as<List<dynamic>>(value)));
+    Map<Object, Object> casted = as<Map<Object, Object>>(data!);
+    return casted-><String, List<Object>>map([=] (Object key,Object value) {
+        <String, List<Object>>make<MapEntryCls>(as<String>(key), <Object>from(as<List<Object>>(value)));
     });
 }
 
@@ -2202,7 +2202,7 @@ void RestorableRouteFutureCls<T>::_hookOntoRouteFuture(String id) {
     _route = _navigator()-><T>_getRouteById(id);
     assert(_route != nullptr);
     route()!->restorationScopeId()->addListener(notifyListeners);
-    route()!->popped()->then([=] (dynamic result) {
+    route()!->popped()->then([=] (Object result) {
         if (_disposed) {
             return;
         }

@@ -92,7 +92,7 @@ public:
 
     virtual Future<void> timeout(Duration timeLimit, std::function<FutureOr<void>()> onTimeout);
 
-    virtual Future<void> whenComplete(std::function<dynamic()> action);
+    virtual Future<void> whenComplete(std::function<Object()> action);
 
     virtual String toString();
 

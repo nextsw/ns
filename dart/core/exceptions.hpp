@@ -17,14 +17,14 @@ using Exception = std::shared_ptr<ExceptionCls>;
 
 class _ExceptionCls : public ObjectCls {
 public:
-    dynamic message;
+    Object message;
 
 
     virtual String toString();
 
 private:
 
-     _ExceptionCls(dynamic message);
+     _ExceptionCls(Object message);
 };
 using _Exception = std::shared_ptr<_ExceptionCls>;
 
@@ -32,12 +32,12 @@ class FormatExceptionCls : public ObjectCls {
 public:
     String message;
 
-    dynamic source;
+    Object source;
 
     int offset;
 
 
-     FormatExceptionCls(String message, dynamic source, int offset);
+     FormatExceptionCls(String message, Object source, int offset);
     virtual String toString();
 
 private:

@@ -79,11 +79,11 @@ public:
 
 private:
 
-    virtual Map<String, dynamic> _toMap();
+    virtual Map<String, Object> _toMap();
 
 };
 using SystemUiOverlayStyle = std::shared_ptr<SystemUiOverlayStyleCls>;
-List<String> _stringify(List<dynamic> list);
+List<String> _stringify(List<Object> list);
 
 
 class SystemChromeCls : public ObjectCls {

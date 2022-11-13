@@ -122,7 +122,7 @@ Future<void> ChannelBuffersCls::drain(String name, DrainChannelCallback callback
     _Channel channel = _channels[name];
     while (channel != nullptr && !channel->_queue->isEmpty()) {
         _StoredMessage message = channel->pop();
-        await await callback(message->data, message->invoke);
+        await callback(message->data, message->invoke);
     }
 }
 

@@ -1,6 +1,6 @@
 #include "semantics_event.hpp"
-Map<String, dynamic> SemanticsEventCls::toMap(int nodeId) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("type"), type);map1.set(__s("data"), getDataMap());Map<String, dynamic> event = list1;
+Map<String, Object> SemanticsEventCls::toMap(int nodeId) {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("type"), type);map1.set(__s("data"), getDataMap());Map<String, Object> event = list1;
     if (nodeId != nullptr) {
         event[__s("nodeId")] = nodeId;
     }
@@ -9,7 +9,7 @@ Map<String, dynamic> SemanticsEventCls::toMap(int nodeId) {
 
 String SemanticsEventCls::toString() {
     List<String> pairs = makeList();
-    Map<String, dynamic> dataMap = getDataMap();
+    Map<String, Object> dataMap = getDataMap();
     auto _c1 = dataMap->keys()->toList();_c1.sort();List<String> sortedKeys = _c1;
     for (String key : sortedKeys) {
         pairs->add(__sf("%s: %s", key, dataMap[key]));
@@ -24,27 +24,27 @@ AnnounceSemanticsEventCls::AnnounceSemanticsEventCls(String message, TextDirecti
     }
 }
 
-Map<String, dynamic> AnnounceSemanticsEventCls::getDataMap() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("message"), message);map1.set(__s("textDirection"), textDirection->index);return list1;
+Map<String, Object> AnnounceSemanticsEventCls::getDataMap() {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("message"), message);map1.set(__s("textDirection"), textDirection->index);return list1;
 }
 
 TooltipSemanticsEventCls::TooltipSemanticsEventCls(String message) : SemanticsEvent(__s("tooltip")) {
 }
 
-Map<String, dynamic> TooltipSemanticsEventCls::getDataMap() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("message"), message);return list1;
+Map<String, Object> TooltipSemanticsEventCls::getDataMap() {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("message"), message);return list1;
 }
 
 LongPressSemanticsEventCls::LongPressSemanticsEventCls() : SemanticsEvent(__s("longPress")) {
 }
 
-Map<String, dynamic> LongPressSemanticsEventCls::getDataMap() {
+Map<String, Object> LongPressSemanticsEventCls::getDataMap() {
     return makeMap(makeList(), makeList();
 }
 
 TapSemanticEventCls::TapSemanticEventCls() : SemanticsEvent(__s("tap")) {
 }
 
-Map<String, dynamic> TapSemanticEventCls::getDataMap() {
+Map<String, Object> TapSemanticEventCls::getDataMap() {
     return makeMap(makeList(), makeList();
 }

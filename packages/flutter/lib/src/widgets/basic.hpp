@@ -1375,12 +1375,12 @@ using AbsorbPointer = std::shared_ptr<AbsorbPointerCls>;
 
 class MetaDataCls : public SingleChildRenderObjectWidgetCls {
 public:
-    dynamic metaData;
+    Object metaData;
 
     HitTestBehavior behavior;
 
 
-     MetaDataCls(HitTestBehavior behavior, Widget child, Key key, dynamic metaData);
+     MetaDataCls(HitTestBehavior behavior, Widget child, Key key, Object metaData);
     virtual RenderMetaData createRenderObject(BuildContext context);
 
     virtual void updateRenderObject(BuildContext context, RenderMetaData renderObject);

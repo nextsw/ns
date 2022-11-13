@@ -361,7 +361,7 @@ int SystemHashCls::smear(int x) {
 
 template<typename T>
 T checkNotNullable(T value, String name) {
-    if ((as<dynamic>(value)) == nullptr) {
+    if ((as<Object>(value)) == nullptr) {
         throw <T>make<NotNullableErrorCls>(name);
     }
     return value;
@@ -374,7 +374,7 @@ String NotNullableErrorCls<T>::toString() {
 
 template<typename T>
 T valueOfNonNullableParamWithDefault(T value, T defaultVal) {
-    if ((as<dynamic>(value)) == nullptr) {
+    if ((as<Object>(value)) == nullptr) {
         return defaultVal;
     } else {
         return value;

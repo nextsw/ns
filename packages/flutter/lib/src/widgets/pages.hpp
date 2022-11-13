@@ -19,9 +19,9 @@ public:
 
     virtual bool barrierDismissible();
 
-    virtual bool canTransitionTo(TransitionRoute<dynamic> nextRoute);
+    virtual bool canTransitionTo(TransitionRoute<Object> nextRoute);
 
-    virtual bool canTransitionFrom(TransitionRoute<dynamic> previousRoute);
+    virtual bool canTransitionFrom(TransitionRoute<Object> previousRoute);
 
 private:
 

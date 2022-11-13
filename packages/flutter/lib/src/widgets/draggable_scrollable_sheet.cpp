@@ -42,7 +42,7 @@ Future<void> DraggableScrollableControllerCls::animateTo(double size, Curve curv
             animationController->stop(false);
         }
     });
-    await await animationController->animateTo(size, duration, curve);
+    await animationController->animateTo(size, duration, curve);
 }
 
 void DraggableScrollableControllerCls::jumpTo(double size) {

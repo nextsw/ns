@@ -77,7 +77,7 @@ String _HeroFlightManifestCls::toString() {
     return __sf("_HeroFlightManifest(%s tag: %s from route: %s to route: %s with hero: %s to %s)%s", type, tag(), fromRoute->settings(), toRoute->settings(), fromHero, toHero, isValid? __s("") : __s(", INVALID"));
 }
 
-_HeroFlightManifestCls::_HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<dynamic> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<dynamic> toRoute, HeroFlightDirection type) {
+_HeroFlightManifestCls::_HeroFlightManifestCls(CreateRectTween createRectTween, _HeroState fromHero, PageRoute<Object> fromRoute, bool isDiverted, bool isUserGestureTransition, Size navigatorSize, OverlayState overlay, HeroFlightShuttleBuilder shuttleBuilder, _HeroState toHero, PageRoute<Object> toRoute, HeroFlightDirection type) {
     {
         assert(fromHero->widget()->tag() == toHero->widget()->tag());
     }
@@ -224,13 +224,13 @@ void _HeroFlightCls::_handleAnimationUpdate(AnimationStatus status) {
     navigator->userGestureInProgressNotifier->addListener(delayedPerformAnimationUpdate);
 }
 
-void HeroControllerCls::didPush(Route<dynamic> route, Route<dynamic> previousRoute) {
+void HeroControllerCls::didPush(Route<Object> route, Route<Object> previousRoute) {
     assert(navigator() != nullptr);
     assert(route != nullptr);
     _maybeStartHeroTransition(previousRoute, route, HeroFlightDirectionCls::push, false);
 }
 
-void HeroControllerCls::didPop(Route<dynamic> route, Route<dynamic> previousRoute) {
+void HeroControllerCls::didPop(Route<Object> route, Route<Object> previousRoute) {
     assert(navigator() != nullptr);
     assert(route != nullptr);
     if (!navigator()!->userGestureInProgress()) {
@@ -238,14 +238,14 @@ void HeroControllerCls::didPop(Route<dynamic> route, Route<dynamic> previousRout
     }
 }
 
-void HeroControllerCls::didReplace(Route<dynamic> newRoute, Route<dynamic> oldRoute) {
+void HeroControllerCls::didReplace(Route<Object> newRoute, Route<Object> oldRoute) {
     assert(navigator() != nullptr);
     if (newRoute?->isCurrent() | false) {
         _maybeStartHeroTransition(oldRoute, newRoute, HeroFlightDirectionCls::push, false);
     }
 }
 
-void HeroControllerCls::didStartUserGesture(Route<dynamic> route, Route<dynamic> previousRoute) {
+void HeroControllerCls::didStartUserGesture(Route<Object> route, Route<Object> previousRoute) {
     assert(navigator() != nullptr);
     assert(route != nullptr);
     _maybeStartHeroTransition(route, previousRoute, HeroFlightDirectionCls::pop, true);
@@ -262,10 +262,10 @@ void HeroControllerCls::didStopUserGesture() {
     }
 }
 
-void HeroControllerCls::_maybeStartHeroTransition(Route<dynamic> fromRoute, Route<dynamic> toRoute, HeroFlightDirection flightType, bool isUserGestureTransition) {
-    if (toRoute != fromRoute && is<PageRoute<dynamic>>(toRoute) && is<PageRoute<dynamic>>(fromRoute)) {
-        PageRoute<dynamic> from = fromRoute;
-        PageRoute<dynamic> to = toRoute;
+void HeroControllerCls::_maybeStartHeroTransition(Route<Object> fromRoute, Route<Object> toRoute, HeroFlightDirection flightType, bool isUserGestureTransition) {
+    if (toRoute != fromRoute && is<PageRoute<Object>>(toRoute) && is<PageRoute<Object>>(fromRoute)) {
+        PageRoute<Object> from = fromRoute;
+        PageRoute<Object> to = toRoute;
         ;
         if (isUserGestureTransition && flightType == HeroFlightDirectionCls::pop && to->maintainState()) {
             _startHeroTransition(from, to, flightType, isUserGestureTransition);
@@ -278,7 +278,7 @@ void HeroControllerCls::_maybeStartHeroTransition(Route<dynamic> fromRoute, Rout
     }
 }
 
-void HeroControllerCls::_startHeroTransition(PageRoute<dynamic> from, PageRoute<dynamic> to, HeroFlightDirection flightType, bool isUserGestureTransition) {
+void HeroControllerCls::_startHeroTransition(PageRoute<Object> from, PageRoute<Object> to, HeroFlightDirection flightType, bool isUserGestureTransition) {
     to->offstage() = false;
     NavigatorState navigator = this->navigator();
     OverlayState overlay = navigator?->overlay();

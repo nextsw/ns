@@ -429,12 +429,12 @@ Future<void> EdgeDraggingAutoScrollerCls::_scroll() {
         return;
     }
     Duration duration = make<DurationCls>((1000 / velocityScalar)->round());
-    await await scrollable->position()->animateTo(newOffset, duration, CurvesCls::linear);
+    await scrollable->position()->animateTo(newOffset, duration, CurvesCls::linear);
     if (onScrollViewScrolled != nullptr) {
         onScrollViewScrolled!();
     }
     if (_scrolling) {
-        await await _scroll();
+        await _scroll();
     }
 }
 

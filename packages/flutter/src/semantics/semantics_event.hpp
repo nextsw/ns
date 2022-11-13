@@ -14,9 +14,9 @@ public:
 
 
      SemanticsEventCls(String type);
-    virtual Map<String, dynamic> toMap(int nodeId);
+    virtual Map<String, Object> toMap(int nodeId);
 
-    virtual Map<String, dynamic> getDataMap();
+    virtual Map<String, Object> getDataMap();
     virtual String toString();
 
 private:
@@ -33,7 +33,7 @@ public:
 
      AnnounceSemanticsEventCls(String message, TextDirection textDirection);
 
-    virtual Map<String, dynamic> getDataMap();
+    virtual Map<String, Object> getDataMap();
 
 private:
 
@@ -47,7 +47,7 @@ public:
 
      TooltipSemanticsEventCls(String message);
 
-    virtual Map<String, dynamic> getDataMap();
+    virtual Map<String, Object> getDataMap();
 
 private:
 
@@ -59,7 +59,7 @@ public:
 
      LongPressSemanticsEventCls();
 
-    virtual Map<String, dynamic> getDataMap();
+    virtual Map<String, Object> getDataMap();
 
 private:
 
@@ -71,7 +71,7 @@ public:
 
      TapSemanticEventCls();
 
-    virtual Map<String, dynamic> getDataMap();
+    virtual Map<String, Object> getDataMap();
 
 private:
 

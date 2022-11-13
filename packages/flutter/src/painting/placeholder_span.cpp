@@ -9,7 +9,7 @@ void PlaceholderSpanCls::computeSemanticsInformation(List<InlineSpanSemanticsInf
     collector->add(InlineSpanSemanticsInformationCls::placeholder);
 }
 
-void PlaceholderSpanCls::describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<dynamic> semanticsElements) {
+void PlaceholderSpanCls::describeSemantics(Accumulator offset, List<int> semanticsOffsets, List<Object> semanticsElements) {
     semanticsOffsets->add(offset->value());
     semanticsOffsets->add(offset->value() + 1);
     semanticsElements->add(nullptr);

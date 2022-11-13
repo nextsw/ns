@@ -138,7 +138,7 @@ public:
 
     virtual void dispose();
 
-    virtual dynamic lastDetails();
+    virtual Object lastDetails();
 
     virtual String toString();
 
@@ -153,7 +153,7 @@ private:
 
     static double _bigThresholdBreakDistance;
 
-    dynamic _lastDetails;
+    Object _lastDetails;
 
 
     virtual bool _reversed();

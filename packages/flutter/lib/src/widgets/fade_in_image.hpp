@@ -115,7 +115,7 @@ using _AnimatedFadeOutFadeIn = std::shared_ptr<_AnimatedFadeOutFadeInCls>;
 class _AnimatedFadeOutFadeInStateCls : public ImplicitlyAnimatedWidgetStateCls<_AnimatedFadeOutFadeIn> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual void didUpdateTweens();
 

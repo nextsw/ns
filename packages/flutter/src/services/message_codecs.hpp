@@ -46,7 +46,7 @@ public:
      JSONMessageCodecCls();
     virtual ByteData encodeMessage(Object message);
 
-    virtual dynamic decodeMessage(ByteData message);
+    virtual Object decodeMessage(ByteData message);
 
 private:
 
@@ -61,7 +61,7 @@ public:
 
     virtual MethodCall decodeMethodCall(ByteData methodCall);
 
-    virtual dynamic decodeEnvelope(ByteData envelope);
+    virtual Object decodeEnvelope(ByteData envelope);
 
     virtual ByteData encodeSuccessEnvelope(Object result);
 
@@ -78,7 +78,7 @@ public:
      StandardMessageCodecCls();
     virtual ByteData encodeMessage(Object message);
 
-    virtual dynamic decodeMessage(ByteData message);
+    virtual Object decodeMessage(ByteData message);
 
     virtual void writeValue(WriteBuffer buffer, Object value);
 
@@ -139,7 +139,7 @@ public:
 
     virtual ByteData encodeErrorEnvelope(String code, Object details, String message);
 
-    virtual dynamic decodeEnvelope(ByteData envelope);
+    virtual Object decodeEnvelope(ByteData envelope);
 
 private:
 

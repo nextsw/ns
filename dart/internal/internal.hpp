@@ -14,7 +14,7 @@
 template<typename T>
  bool typeAcceptsNull();
 template<typename T>
- T unsafeCast(dynamic value);
+ T unsafeCast(Object value);
 auto  POWERS_OF_TEN;
 
 

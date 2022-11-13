@@ -76,7 +76,7 @@ void Obb3Cls::copyCorner(int cornerIndex, Vector3 corner) {
 }
 
 void Obb3Cls::closestPointTo(Vector3 p, Vector3 q) {
-    Unknown d = p - _center;
+    auto d = p - _center;
     q->setFrom(_center);
     auto dist = d->dot(_axis0);
     dist = dist->clamp(-_halfExtents->x, _halfExtents->x)->toDouble();

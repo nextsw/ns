@@ -356,7 +356,7 @@ template<typename E>
 class MapKeySetCls : public _DelegatingIterableBaseCls<E> {
 public:
 
-     MapKeySetCls(Map<E, dynamic> _baseMap);
+     MapKeySetCls(Map<E, Object> _baseMap);
     template<typename T>
  virtual Set<T> cast();
 
@@ -384,7 +384,7 @@ public:
     virtual Set<E> union(Set<E> other);
 
 private:
-    Map<E, dynamic> _baseMap;
+    Map<E, Object> _baseMap;
 
 
     virtual Iterable<E> _base();

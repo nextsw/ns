@@ -54,7 +54,7 @@ double _PlatformChannelStatsCls::averageDownPayload() {
 Future<void> _debugLaunchProfilePlatformChannels() {
     if (!_debugProfilePlatformChannelsIsRunning) {
         _debugProfilePlatformChannelsIsRunning = true;
-        await await <dynamic>delayed(_debugProfilePlatformChannelsRate);
+        await <Object>delayed(_debugProfilePlatformChannelsRate);
         _debugProfilePlatformChannelsIsRunning = false;
         StringBuffer log = make<StringBufferCls>();
         log->writeln(__s("Platform Channel Stats:"));
@@ -127,23 +127,23 @@ BinaryMessenger MethodChannelCls::binaryMessenger() {
 }
 
 template<typename T>
-Future<T> MethodChannelCls::invokeMethod(String method, dynamic arguments) {
+Future<T> MethodChannelCls::invokeMethod(String method, Object arguments) {
     return <T>_invokeMethod(method, false, arguments);
 }
 
 template<typename T>
-Future<List<T>> MethodChannelCls::invokeListMethod(String method, dynamic arguments) {
-    List<dynamic> result = await <List<dynamic>>invokeMethod(method, arguments);
+Future<List<T>> MethodChannelCls::invokeListMethod(String method, Object arguments) {
+    List<Object> result = await <List<Object>>invokeMethod(method, arguments);
     return result?-><T>cast();
 }
 
 template<typename K, typename V>
-Future<Map<K, V>> MethodChannelCls::invokeMapMethod(String method, dynamic arguments) {
-    Map<dynamic, dynamic> result = await <Map<dynamic, dynamic>>invokeMethod(method, arguments);
+Future<Map<K, V>> MethodChannelCls::invokeMapMethod(String method, Object arguments) {
+    Map<Object, Object> result = await <Map<Object, Object>>invokeMethod(method, arguments);
     return result?-><K, V>cast();
 }
 
-void MethodChannelCls::setMethodCallHandler(std::function<Future<dynamic>(MethodCall call)> handler) {
+void MethodChannelCls::setMethodCallHandler(std::function<Future<Object>(MethodCall call)> handler) {
     assert(_binaryMessenger != nullptr || ServicesBindingCls::instance != nullptr, __s("Cannot set the method call handler before the binary messenger has been initialized. This happens when you call setMethodCallHandler() before the WidgetsFlutterBinding has been initialized. You can fix this by either calling WidgetsFlutterBinding.ensureInitialized() before this or by passing a custom BinaryMessenger instance to MethodChannel()."));
     binaryMessenger()->setMessageHandler(name, handler == nullptr? nullptr : [=] (ByteData message) {
         _handleAsMethodCall(message, handler);
@@ -151,7 +151,7 @@ void MethodChannelCls::setMethodCallHandler(std::function<Future<dynamic>(Method
 }
 
 template<typename T>
-Future<T> MethodChannelCls::_invokeMethod(String method, dynamic arguments, bool missingOk) {
+Future<T> MethodChannelCls::_invokeMethod(String method, Object arguments, bool missingOk) {
     assert(method != nullptr);
     ByteData input = codec->encodeMethodCall(make<MethodCallCls>(method, arguments));
     ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger()))->sendWithPostfix(name, __sf("#%s", method), input) : await binaryMessenger()->send(name, input);
@@ -164,7 +164,7 @@ Future<T> MethodChannelCls::_invokeMethod(String method, dynamic arguments, bool
     return as<T>(codec->decodeEnvelope(result));
 }
 
-Future<ByteData> MethodChannelCls::_handleAsMethodCall(ByteData message, std::function<Future<dynamic>(MethodCall call)> handler) {
+Future<ByteData> MethodChannelCls::_handleAsMethodCall(ByteData message, std::function<Future<Object>(MethodCall call)> handler) {
     MethodCall call = codec->decodeMethodCall(message);
     try {
         return codec->encodeSuccessEnvelope(await handler(call));
@@ -178,7 +178,7 @@ Future<ByteData> MethodChannelCls::_handleAsMethodCall(ByteData message, std::fu
 }
 
 template<typename T>
-Future<T> OptionalMethodChannelCls::invokeMethod(String method, dynamic arguments) {
+Future<T> OptionalMethodChannelCls::invokeMethod(String method, Object arguments) {
     return super-><T>_invokeMethod(method, true, arguments);
 }
 
@@ -194,10 +194,10 @@ BinaryMessenger EventChannelCls::binaryMessenger() {
     return _binaryMessenger | ServicesBindingCls::instance->defaultBinaryMessenger;
 }
 
-Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {
+Stream<Object> EventChannelCls::receiveBroadcastStream(Object arguments) {
     MethodChannel methodChannel = make<MethodChannelCls>(name, codec);
-    StreamController<dynamic> controller;
-    controller = <dynamic>broadcast([=] () {
+    StreamController<Object> controller;
+    controller = <Object>broadcast([=] () {
         binaryMessenger()->setMessageHandler(name, [=] (ByteData reply) {
             if (reply == nullptr) {
                 controller->close();
@@ -211,14 +211,14 @@ Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {
             return nullptr;
         });
         try {
-            await await methodChannel-><void>invokeMethod(__s("listen"), arguments);
+            await methodChannel-><void>invokeMethod(__s("listen"), arguments);
         } catch (Unknown exception) {
             FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__sf("while activating platform stream on channel %s", name))));
         };
     }, [=] () {
         binaryMessenger()->setMessageHandler(name, nullptr);
         try {
-            await await methodChannel-><void>invokeMethod(__s("cancel"), arguments);
+            await methodChannel-><void>invokeMethod(__s("cancel"), arguments);
         } catch (Unknown exception) {
             FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__sf("while de-activating platform stream on channel %s", name))));
         };

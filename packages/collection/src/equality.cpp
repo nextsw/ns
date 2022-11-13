@@ -20,7 +20,7 @@ int EqualityByCls<E, F>::hash(E e) {
 template<typename E, typename F>
 bool EqualityByCls<E, F>::isValidKey(Object o) {
     if (is<E>(o)) {
-        Unknown value = _comparisonKey(o);
+        auto value = _comparisonKey(o);
         return _inner->isValidKey(value);
     }
     return false;

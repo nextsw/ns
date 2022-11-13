@@ -239,7 +239,7 @@ Future<void> _NestedScrollCoordinatorCls::animateTo(double to, Curve curve, Dura
         resultFutures->add(innerActivity->done());
         return innerActivity;
     });
-    await await FutureCls-><void>wait(resultFutures);
+    await FutureCls-><void>wait(resultFutures);
 }
 
 void _NestedScrollCoordinatorCls::jumpTo(double to) {

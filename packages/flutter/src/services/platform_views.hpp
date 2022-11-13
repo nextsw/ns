@@ -32,15 +32,15 @@ using PlatformViewsRegistry = std::shared_ptr<PlatformViewsRegistryCls>;
 class PlatformViewsServiceCls : public ObjectCls {
 public:
 
-    static AndroidViewController initAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
+    static AndroidViewController initAndroidView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
 
-    static SurfaceAndroidViewController initSurfaceAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
+    static SurfaceAndroidViewController initSurfaceAndroidView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
 
-    static ExpensiveAndroidViewController initExpensiveAndroidView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
+    static ExpensiveAndroidViewController initExpensiveAndroidView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
 
     static Future<void> synchronizeToNativeViewHierarchy(bool yes);
 
-    static Future<UiKitViewController> initUiKitView(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
+    static Future<UiKitViewController> initUiKitView(Object creationParams, MessageCodec<Object> creationParamsCodec, int id, TextDirection layoutDirection, VoidCallback onFocus, String viewType);
 
 private:
     static PlatformViewsService _instance;
@@ -154,7 +154,7 @@ public:
 
 private:
 
-    virtual List<dynamic> _asList(int viewId);
+    virtual List<Object> _asList(int viewId);
 
 };
 using AndroidMotionEvent = std::shared_ptr<AndroidMotionEventCls>;
@@ -267,14 +267,14 @@ private:
 
     _AndroidViewState _state;
 
-    dynamic _creationParams;
+    Object _creationParams;
 
-    MessageCodec<dynamic> _creationParamsCodec;
+    MessageCodec<Object> _creationParamsCodec;
 
     List<PlatformViewCreatedCallback> _platformViewCreatedCallbacks;
 
 
-    virtual void  _(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, TextDirection layoutDirection, int viewId, String viewType);
+    virtual void  _(Object creationParams, MessageCodec<Object> creationParamsCodec, TextDirection layoutDirection, int viewId, String viewType);
 
     static int _getAndroidDirection(TextDirection direction);
 

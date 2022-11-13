@@ -137,7 +137,7 @@ public:
 
     virtual void dispose();
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
     virtual void didUpdateTweens();
 
 private:
@@ -148,9 +148,9 @@ private:
 
     virtual CurvedAnimation _createCurve();
 
-    virtual bool _shouldAnimateTween(Tween<dynamic> tween, dynamic targetValue);
+    virtual bool _shouldAnimateTween(Tween<Object> tween, Object targetValue);
 
-    virtual void _updateTween(Tween<dynamic> tween, dynamic targetValue);
+    virtual void _updateTween(Tween<Object> tween, Object targetValue);
 
     virtual bool _constructTweens();
 
@@ -209,7 +209,7 @@ using AnimatedContainer = std::shared_ptr<AnimatedContainerCls>;
 class _AnimatedContainerStateCls : public AnimatedWidgetBaseStateCls<AnimatedContainer> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -257,7 +257,7 @@ using AnimatedPadding = std::shared_ptr<AnimatedPaddingCls>;
 class _AnimatedPaddingStateCls : public AnimatedWidgetBaseStateCls<AnimatedPadding> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -295,7 +295,7 @@ using AnimatedAlign = std::shared_ptr<AnimatedAlignCls>;
 class _AnimatedAlignStateCls : public AnimatedWidgetBaseStateCls<AnimatedAlign> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -345,7 +345,7 @@ using AnimatedPositioned = std::shared_ptr<AnimatedPositionedCls>;
 class _AnimatedPositionedStateCls : public AnimatedWidgetBaseStateCls<AnimatedPositioned> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -399,7 +399,7 @@ using AnimatedPositionedDirectional = std::shared_ptr<AnimatedPositionedDirectio
 class _AnimatedPositionedDirectionalStateCls : public AnimatedWidgetBaseStateCls<AnimatedPositionedDirectional> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -447,7 +447,7 @@ using AnimatedScale = std::shared_ptr<AnimatedScaleCls>;
 class _AnimatedScaleStateCls : public ImplicitlyAnimatedWidgetStateCls<AnimatedScale> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual void didUpdateTweens();
 
@@ -487,7 +487,7 @@ using AnimatedRotation = std::shared_ptr<AnimatedRotationCls>;
 class _AnimatedRotationStateCls : public ImplicitlyAnimatedWidgetStateCls<AnimatedRotation> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual void didUpdateTweens();
 
@@ -522,7 +522,7 @@ using AnimatedSlide = std::shared_ptr<AnimatedSlideCls>;
 class _AnimatedSlideStateCls : public ImplicitlyAnimatedWidgetStateCls<AnimatedSlide> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual void didUpdateTweens();
 
@@ -560,7 +560,7 @@ using AnimatedOpacity = std::shared_ptr<AnimatedOpacityCls>;
 class _AnimatedOpacityStateCls : public ImplicitlyAnimatedWidgetStateCls<AnimatedOpacity> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual void didUpdateTweens();
 
@@ -598,7 +598,7 @@ using SliverAnimatedOpacity = std::shared_ptr<SliverAnimatedOpacityCls>;
 class _SliverAnimatedOpacityStateCls : public ImplicitlyAnimatedWidgetStateCls<SliverAnimatedOpacity> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual void didUpdateTweens();
 
@@ -646,7 +646,7 @@ using AnimatedDefaultTextStyle = std::shared_ptr<AnimatedDefaultTextStyleCls>;
 class _AnimatedDefaultTextStyleStateCls : public AnimatedWidgetBaseStateCls<AnimatedDefaultTextStyle> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -692,7 +692,7 @@ using AnimatedPhysicalModel = std::shared_ptr<AnimatedPhysicalModelCls>;
 class _AnimatedPhysicalModelStateCls : public AnimatedWidgetBaseStateCls<AnimatedPhysicalModel> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 
@@ -734,7 +734,7 @@ using AnimatedFractionallySizedBox = std::shared_ptr<AnimatedFractionallySizedBo
 class _AnimatedFractionallySizedBoxStateCls : public AnimatedWidgetBaseStateCls<AnimatedFractionallySizedBox> {
 public:
 
-    virtual void forEachTween(TweenVisitor<dynamic> visitor);
+    virtual void forEachTween(TweenVisitor<Object> visitor);
 
     virtual Widget build(BuildContext context);
 

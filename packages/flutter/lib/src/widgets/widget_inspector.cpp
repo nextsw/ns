@@ -172,7 +172,7 @@ void _MulticastCanvasCls::translate(double dx, double dy) {
     _screenshot->translate(dx, dy);
 }
 
-dynamic _MulticastCanvasCls::noSuchMethod(Invocation invocation) {
+Object _MulticastCanvasCls::noSuchMethod(Invocation invocation) {
     super->noSuchMethod(invocation);
 }
 
@@ -471,7 +471,7 @@ void WidgetInspectorServiceCls::initServiceExtensions(RegisterServiceExtensionCa
             if (value) {
                 assert(debugOnRebuildDirtyWidget == nullptr);
                 debugOnRebuildDirtyWidget = _onRebuildWidget;
-                await await forceRebuild();
+                await forceRebuild();
                 return;
             } else {
                 debugOnRebuildDirtyWidget = nullptr;
@@ -704,7 +704,7 @@ bool WidgetInspectorServiceCls::setSelection(Object object, String groupName) {
 String WidgetInspectorServiceCls::devToolsInspectorUri(String inspectorRef) {
     assert(activeDevToolsServerAddress != nullptr);
     assert(connectedVmServiceUri != nullptr);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("uri"), connectedVmServiceUri);map1.set(__s("inspectorRef"), inspectorRef);Uri uri = UriCls->parse(activeDevToolsServerAddress!)->replace(list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("uri"), connectedVmServiceUri);map1.set(__s("inspectorRef"), inspectorRef);Uri uri = UriCls->parse(activeDevToolsServerAddress!)->replace(list1);
     String devToolsInspectorUri = uri->toString();
     int startQueryParamIndex = devToolsInspectorUri->indexOf(__s("?"));
     assert(startQueryParamIndex != -1);
@@ -820,10 +820,10 @@ void WidgetInspectorServiceCls::_registerBoolServiceExtension(AsyncValueGetter<b
     registerServiceExtension(name, [=] (Map<String, String> parameters) {
         if (parameters->containsKey(__s("enabled"))) {
             bool value = parameters[__s("enabled")] == __s("true");
-            await await setter(value);
+            await setter(value);
             _postExtensionStateChangedEvent(name, value);
         }
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("enabled"), await getter()? __s("true") : __s("false"));return list1;
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("enabled"), await getter()? __s("true") : __s("false"));return list1;
     });
 }
 
@@ -1196,14 +1196,14 @@ void _ElementLocationStatsTrackerCls::resetCounts() {
     active->clear();
 }
 
-Map<String, dynamic> _ElementLocationStatsTrackerCls::exportToJson(Duration startTime) {
+Map<String, Object> _ElementLocationStatsTrackerCls::exportToJson(Duration startTime) {
     List<int> events = <int>filled(active->length() * 2, 0);
     int j = 0;
     for (_LocationCount stat : active) {
         events[j++] = stat->id;
         events[j++] = stat->count;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("startTime"), startTime->inMicroseconds());map1.set(__s("events"), events);Map<String, dynamic> json = list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("startTime"), startTime->inMicroseconds());map1.set(__s("events"), events);Map<String, Object> json = list1;
     if (newLocations->isNotEmpty()) {
         Map<String, List<int>> locationsJson = makeMap(makeList(), makeList();
         for (_LocationCount entry : newLocations) {

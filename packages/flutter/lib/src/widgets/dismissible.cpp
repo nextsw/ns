@@ -195,7 +195,7 @@ void _DismissibleStateCls::_handleDragEnd(DragEndDetails details) {
 
 Future<void> _DismissibleStateCls::_handleDismissStatusChanged(AnimationStatus status) {
     if (status == AnimationStatusCls::completed && !_dragUnderway) {
-        await await _handleMoveCompleted();
+        await _handleMoveCompleted();
     }
     if (mounted()) {
         updateKeepAlive();

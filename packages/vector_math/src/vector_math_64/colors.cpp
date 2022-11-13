@@ -4,36 +4,36 @@ void ColorsCls::fromRgba(int r, int g, int b, int a, Vector4 result) {
 }
 
 void ColorsCls::fromHexString(String value, Vector4 result) {
-    Unknown fullMatch = _hexStringFullRegex->matchAsPrefix(value);
+    auto fullMatch = _hexStringFullRegex->matchAsPrefix(value);
     if (fullMatch != nullptr) {
         if (fullMatch[4] == nullptr) {
-            Unknown r = intValue->parse(fullMatch[1]!, 16);
-            Unknown g = intValue->parse(fullMatch[2]!, 16);
-            Unknown b = intValue->parse(fullMatch[3]!, 16);
+            auto r = intValue->parse(fullMatch[1]!, 16);
+            auto g = intValue->parse(fullMatch[2]!, 16);
+            auto b = intValue->parse(fullMatch[3]!, 16);
             fromRgba(r, g, b, 255, result);
             return;
         } else {
-            Unknown a = intValue->parse(fullMatch[1]!, 16);
-            Unknown r = intValue->parse(fullMatch[2]!, 16);
-            Unknown g = intValue->parse(fullMatch[3]!, 16);
-            Unknown b = intValue->parse(fullMatch[4]!, 16);
+            auto a = intValue->parse(fullMatch[1]!, 16);
+            auto r = intValue->parse(fullMatch[2]!, 16);
+            auto g = intValue->parse(fullMatch[3]!, 16);
+            auto b = intValue->parse(fullMatch[4]!, 16);
             fromRgba(r, g, b, a, result);
             return;
         }
     }
-    Unknown smallMatch = _hexStringSmallRegex->matchAsPrefix(value);
+    auto smallMatch = _hexStringSmallRegex->matchAsPrefix(value);
     if (smallMatch != nullptr) {
         if (smallMatch[4] == nullptr) {
-            Unknown r = intValue->parse(smallMatch[1]! + smallMatch[1]!, 16);
-            Unknown g = intValue->parse(smallMatch[2]! + smallMatch[2]!, 16);
-            Unknown b = intValue->parse(smallMatch[3]! + smallMatch[3]!, 16);
+            auto r = intValue->parse(smallMatch[1]! + smallMatch[1]!, 16);
+            auto g = intValue->parse(smallMatch[2]! + smallMatch[2]!, 16);
+            auto b = intValue->parse(smallMatch[3]! + smallMatch[3]!, 16);
             fromRgba(r, g, b, 255, result);
             return;
         } else {
-            Unknown a = intValue->parse(smallMatch[1]! + smallMatch[1]!, 16);
-            Unknown r = intValue->parse(smallMatch[2]! + smallMatch[2]!, 16);
-            Unknown g = intValue->parse(smallMatch[3]! + smallMatch[3]!, 16);
-            Unknown b = intValue->parse(smallMatch[4]! + smallMatch[4]!, 16);
+            auto a = intValue->parse(smallMatch[1]! + smallMatch[1]!, 16);
+            auto r = intValue->parse(smallMatch[2]! + smallMatch[2]!, 16);
+            auto g = intValue->parse(smallMatch[3]! + smallMatch[3]!, 16);
+            auto b = intValue->parse(smallMatch[4]! + smallMatch[4]!, 16);
             fromRgba(r, g, b, a, result);
             return;
         }
@@ -42,36 +42,36 @@ void ColorsCls::fromHexString(String value, Vector4 result) {
 }
 
 String ColorsCls::toHexString(Vector4 input, bool alpha, bool short) {
-    Unknown r = (input->r * 0xFF)->floor() & 0xFF;
-    Unknown g = (input->g * 0xFF)->floor() & 0xFF;
-    Unknown b = (input->b * 0xFF)->floor() & 0xFF;
-    Unknown a = (input->a * 0xFF)->floor() & 0xFF;
-    Unknown isShort = short && ((r >> 4) == (r & 0xF)) && ((g >> 4) == (g & 0xF)) && ((b >> 4) == (b & 0xF)) && (!alpha || (a >> 4) == (a & 0xF));
+    auto r = (input->r * 0xFF)->floor() & 0xFF;
+    auto g = (input->g * 0xFF)->floor() & 0xFF;
+    auto b = (input->b * 0xFF)->floor() & 0xFF;
+    auto a = (input->a * 0xFF)->floor() & 0xFF;
+    auto isShort = short && ((r >> 4) == (r & 0xF)) && ((g >> 4) == (g & 0xF)) && ((b >> 4) == (b & 0xF)) && (!alpha || (a >> 4) == (a & 0xF));
     if (isShort) {
-        Unknown rgb = (r & 0xF)->toRadixString(16) + (g & 0xF)->toRadixString(16) + (b & 0xF)->toRadixString(16);
+        auto rgb = (r & 0xF)->toRadixString(16) + (g & 0xF)->toRadixString(16) + (b & 0xF)->toRadixString(16);
         return alpha? (a & 0xF)->toRadixString(16) + rgb : rgb;
     } else {
-        Unknown rgb = r->toRadixString(16)->padLeft(2, __s("0")) + g->toRadixString(16)->padLeft(2, __s("0")) + b->toRadixString(16)->padLeft(2, __s("0"));
+        auto rgb = r->toRadixString(16)->padLeft(2, __s("0")) + g->toRadixString(16)->padLeft(2, __s("0")) + b->toRadixString(16)->padLeft(2, __s("0"));
         return alpha? a->toRadixString(16)->padLeft(2, __s("0")) + rgb : rgb;
     }
 }
 
 void ColorsCls::alphaBlend(Vector4 foreground, Vector4 background, Vector4 result) {
-    Unknown a = foreground->a + (1.0 - foreground->a) * background->a;
-    Unknown factor = 1.0 / a;
-    Unknown r = factor * (foreground->a * foreground->r + (1.0 - foreground->a) * background->a * background->r);
-    Unknown g = factor * (foreground->a * foreground->g + (1.0 - foreground->a) * background->a * background->g);
-    Unknown b = factor * (foreground->a * foreground->b + (1.0 - foreground->a) * background->a * background->b);
+    auto a = foreground->a + (1.0 - foreground->a) * background->a;
+    auto factor = 1.0 / a;
+    auto r = factor * (foreground->a * foreground->r + (1.0 - foreground->a) * background->a * background->r);
+    auto g = factor * (foreground->a * foreground->g + (1.0 - foreground->a) * background->a * background->g);
+    auto b = factor * (foreground->a * foreground->b + (1.0 - foreground->a) * background->a * background->b);
     result->setValues(r, g, b, a);
 }
 
 void ColorsCls::toGrayscale(Vector4 input, Vector4 result) {
-    Unknown value = 0.21 * input->r + 0.71 * input->g + 0.07 * input->b;
+    auto value = 0.21 * input->r + 0.71 * input->g + 0.07 * input->b;
     auto _c1 = result;_c1.r = auto _c2 = value;_c2.g = auto _c3 = value;_c3.b = auto _c4 = value;_c4.a = input->a;_c4;_c3;_c2;_c1;
 }
 
 void ColorsCls::linearToGamma(Vector4 linearColor, Vector4 gammaColor, double gamma) {
-    Unknown exponent = 1.0 / gamma;
+    auto exponent = 1.0 / gamma;
     auto _c1 = gammaColor;_c1.r = auto _c2 = math->pow(linearColor->r, exponent)->toDouble();_c2.g = auto _c3 = math->pow(linearColor->g, exponent)->toDouble();_c3.b = auto _c4 = math->pow(linearColor->b, exponent)->toDouble();_c4.a = linearColor->a;_c4;_c3;_c2;_c1;
 }
 
@@ -80,11 +80,11 @@ void ColorsCls::gammaToLinear(Vector4 gammaColor, Vector4 linearColor, double ga
 }
 
 void ColorsCls::rgbToHsv(Vector4 rgbColor, Vector4 hsvColor) {
-    Unknown max = math->max(math->max(rgbColor->r, rgbColor->g), rgbColor->b);
-    Unknown min = math->min(math->min(rgbColor->r, rgbColor->g), rgbColor->b);
-    Unknown d = max - min;
-    Unknown v = max;
-    Unknown s = max == 0.0? 0.0 : d / max;
+    auto max = math->max(math->max(rgbColor->r, rgbColor->g), rgbColor->b);
+    auto min = math->min(math->min(rgbColor->r, rgbColor->g), rgbColor->b);
+    auto d = max - min;
+    auto v = max;
+    auto s = max == 0.0? 0.0 : d / max;
     auto h = 0.0;
     if (max != min) {
         if (max == rgbColor->r) {
@@ -102,22 +102,22 @@ void ColorsCls::rgbToHsv(Vector4 rgbColor, Vector4 hsvColor) {
 }
 
 void ColorsCls::hsvToRgb(Vector4 hsvColor, Vector4 rgbColor) {
-    Unknown i = (hsvColor->x * 6.0)->floor();
-    Unknown f = hsvColor->x * 6.0 - i->toDouble();
-    Unknown p = hsvColor->z * (1.0 - hsvColor->y);
-    Unknown q = hsvColor->z * (1.0 - f * hsvColor->y);
-    Unknown t = hsvColor->z * (1.0 - (1.0 - f) * hsvColor->y);
+    auto i = (hsvColor->x * 6.0)->floor();
+    auto f = hsvColor->x * 6.0 - i->toDouble();
+    auto p = hsvColor->z * (1.0 - hsvColor->y);
+    auto q = hsvColor->z * (1.0 - f * hsvColor->y);
+    auto t = hsvColor->z * (1.0 - (1.0 - f) * hsvColor->y);
     ;
 }
 
 void ColorsCls::rgbToHsl(Vector4 rgbColor, Vector4 hslColor) {
-    Unknown max = math->max(math->max(rgbColor->r, rgbColor->g), rgbColor->b);
-    Unknown min = math->min(math->min(rgbColor->r, rgbColor->g), rgbColor->b);
-    Unknown l = (max + min) / 2.0;
+    auto max = math->max(math->max(rgbColor->r, rgbColor->g), rgbColor->b);
+    auto min = math->min(math->min(rgbColor->r, rgbColor->g), rgbColor->b);
+    auto l = (max + min) / 2.0;
     auto h = 0.0;
     auto s = 0.0;
     if (max != min) {
-        Unknown d = max - min;
+        auto d = max - min;
         s = l > 0.5? d / (2.0 - max - min) : d / (max + min);
         if (max == rgbColor->r) {
             h = (rgbColor->g - rgbColor->b) / d + (rgbColor->g < rgbColor->b? 6.0 : 0.0);
@@ -137,11 +137,11 @@ void ColorsCls::hslToRgb(Vector4 hslColor, Vector4 rgbColor) {
     if (hslColor->y == 0.0) {
         rgbColor->setValues(hslColor->z, hslColor->z, hslColor->z, hslColor->a);
     } else {
-        Unknown q = hslColor->z < 0.5? hslColor->z * (1.0 + hslColor->y) : hslColor->z + hslColor->y - hslColor->z * hslColor->y;
-        Unknown p = 2.0 * hslColor->z - q;
-        Unknown r = _hueToRgb(p, q, hslColor->x + 1.0 / 3.0);
-        Unknown g = _hueToRgb(p, q, hslColor->x);
-        Unknown b = _hueToRgb(p, q, hslColor->x - 1.0 / 3.0);
+        auto q = hslColor->z < 0.5? hslColor->z * (1.0 + hslColor->y) : hslColor->z + hslColor->y - hslColor->z * hslColor->y;
+        auto p = 2.0 * hslColor->z - q;
+        auto r = _hueToRgb(p, q, hslColor->x + 1.0 / 3.0);
+        auto g = _hueToRgb(p, q, hslColor->x);
+        auto b = _hueToRgb(p, q, hslColor->x - 1.0 / 3.0);
         rgbColor->setValues(r, g, b, hslColor->a);
     }
 }

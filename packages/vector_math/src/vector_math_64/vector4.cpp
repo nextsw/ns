@@ -65,7 +65,7 @@ void Vector4Cls::setIdentity() {
 }
 
 void Vector4Cls::setFrom(Vector4 other) {
-    Unknown otherStorage = other->_v4storage;
+    auto otherStorage = other->_v4storage;
     _v4storage[3] = otherStorage[3];
     _v4storage[2] = otherStorage[2];
     _v4storage[1] = otherStorage[1];
@@ -149,11 +149,11 @@ double Vector4Cls::length2() {
 }
 
 double Vector4Cls::normalize() {
-    Unknown l = length;
+    auto l = length;
     if (l == 0.0) {
         return 0.0;
     }
-    Unknown d = 1.0 / l;
+    auto d = 1.0 / l;
     _v4storage[0] *= d;
     _v4storage[1] *= d;
     _v4storage[2] *= d;
@@ -179,16 +179,16 @@ double Vector4Cls::distanceTo(Vector4 arg) {
 }
 
 double Vector4Cls::distanceToSquared(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
-    Unknown dx = _v4storage[0] - argStorage[0];
-    Unknown dy = _v4storage[1] - argStorage[1];
-    Unknown dz = _v4storage[2] - argStorage[2];
-    Unknown dw = _v4storage[3] - argStorage[3];
+    auto argStorage = arg->_v4storage;
+    auto dx = _v4storage[0] - argStorage[0];
+    auto dy = _v4storage[1] - argStorage[1];
+    auto dz = _v4storage[2] - argStorage[2];
+    auto dw = _v4storage[3] - argStorage[3];
     return dx * dx + dy * dy + dz * dz + dw * dw;
 }
 
 double Vector4Cls::dot(Vector4 other) {
-    Unknown otherStorage = other->_v4storage;
+    auto otherStorage = other->_v4storage;
     double sum;
     sum = _v4storage[0] * otherStorage[0];
     sum += _v4storage[1] * otherStorage[1];
@@ -198,11 +198,11 @@ double Vector4Cls::dot(Vector4 other) {
 }
 
 void Vector4Cls::applyMatrix4(Matrix4 arg) {
-    Unknown v1 = _v4storage[0];
-    Unknown v2 = _v4storage[1];
-    Unknown v3 = _v4storage[2];
-    Unknown v4 = _v4storage[3];
-    Unknown argStorage = arg->storage();
+    auto v1 = _v4storage[0];
+    auto v2 = _v4storage[1];
+    auto v3 = _v4storage[2];
+    auto v4 = _v4storage[3];
+    auto argStorage = arg->storage();
     _v4storage[0] = argStorage[0] * v1 + argStorage[4] * v2 + argStorage[8] * v3 + argStorage[12] * v4;
     _v4storage[1] = argStorage[1] * v1 + argStorage[5] * v2 + argStorage[9] * v3 + argStorage[13] * v4;
     _v4storage[2] = argStorage[2] * v1 + argStorage[6] * v2 + argStorage[10] * v3 + argStorage[14] * v4;
@@ -210,8 +210,8 @@ void Vector4Cls::applyMatrix4(Matrix4 arg) {
 }
 
 double Vector4Cls::relativeError(Vector4 correct) {
-    Unknown correct_norm = correct->length;
-    Unknown diff_norm = (this - correct)->length;
+    auto correct_norm = correct->length;
+    auto diff_norm = (this - correct)->length;
     return diff_norm / correct_norm;
 }
 
@@ -238,7 +238,7 @@ bool Vector4Cls::isNaN() {
 }
 
 void Vector4Cls::add(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = _v4storage[0] + argStorage[0];
     _v4storage[1] = _v4storage[1] + argStorage[1];
     _v4storage[2] = _v4storage[2] + argStorage[2];
@@ -246,7 +246,7 @@ void Vector4Cls::add(Vector4 arg) {
 }
 
 void Vector4Cls::addScaled(Vector4 arg, double factor) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = _v4storage[0] + argStorage[0] * factor;
     _v4storage[1] = _v4storage[1] + argStorage[1] * factor;
     _v4storage[2] = _v4storage[2] + argStorage[2] * factor;
@@ -254,7 +254,7 @@ void Vector4Cls::addScaled(Vector4 arg, double factor) {
 }
 
 void Vector4Cls::sub(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = _v4storage[0] - argStorage[0];
     _v4storage[1] = _v4storage[1] - argStorage[1];
     _v4storage[2] = _v4storage[2] - argStorage[2];
@@ -262,7 +262,7 @@ void Vector4Cls::sub(Vector4 arg) {
 }
 
 void Vector4Cls::multiply(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = _v4storage[0] * argStorage[0];
     _v4storage[1] = _v4storage[1] * argStorage[1];
     _v4storage[2] = _v4storage[2] * argStorage[2];
@@ -270,7 +270,7 @@ void Vector4Cls::multiply(Vector4 arg) {
 }
 
 void Vector4Cls::div(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = _v4storage[0] / argStorage[0];
     _v4storage[1] = _v4storage[1] / argStorage[1];
     _v4storage[2] = _v4storage[2] / argStorage[2];
@@ -303,8 +303,8 @@ void Vector4Cls::absolute() {
 }
 
 void Vector4Cls::clamp(Vector4 min, Vector4 max) {
-    Unknown minStorage = min->storage();
-    Unknown maxStorage = max->storage();
+    auto minStorage = min->storage();
+    auto maxStorage = max->storage();
     _v4storage[0] = _v4storage[0]->clamp(minStorage[0], maxStorage[0])->toDouble();
     _v4storage[1] = _v4storage[1]->clamp(minStorage[1], maxStorage[1])->toDouble();
     _v4storage[2] = _v4storage[2]->clamp(minStorage[2], maxStorage[2])->toDouble();
@@ -351,7 +351,7 @@ Vector4 Vector4Cls::clone() {
 }
 
 Vector4 Vector4Cls::copyInto(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     argStorage[0] = _v4storage[0];
     argStorage[1] = _v4storage[1];
     argStorage[2] = _v4storage[2];
@@ -374,247 +374,247 @@ void Vector4Cls::copyFromArray(List<double> array, int offset) {
 }
 
 void Vector4Cls::xy(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[0] = argStorage[0];
     _v4storage[1] = argStorage[1];
 }
 
 void Vector4Cls::xz(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[0] = argStorage[0];
     _v4storage[2] = argStorage[1];
 }
 
 void Vector4Cls::xw(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[0] = argStorage[0];
     _v4storage[3] = argStorage[1];
 }
 
 void Vector4Cls::yx(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[1] = argStorage[0];
     _v4storage[0] = argStorage[1];
 }
 
 void Vector4Cls::yz(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[1] = argStorage[0];
     _v4storage[2] = argStorage[1];
 }
 
 void Vector4Cls::yw(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[1] = argStorage[0];
     _v4storage[3] = argStorage[1];
 }
 
 void Vector4Cls::zx(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[2] = argStorage[0];
     _v4storage[0] = argStorage[1];
 }
 
 void Vector4Cls::zy(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[2] = argStorage[0];
     _v4storage[1] = argStorage[1];
 }
 
 void Vector4Cls::zw(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[2] = argStorage[0];
     _v4storage[3] = argStorage[1];
 }
 
 void Vector4Cls::wx(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[3] = argStorage[0];
     _v4storage[0] = argStorage[1];
 }
 
 void Vector4Cls::wy(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[3] = argStorage[0];
     _v4storage[1] = argStorage[1];
 }
 
 void Vector4Cls::wz(Vector2 arg) {
-    Unknown argStorage = arg->_v2storage;
+    auto argStorage = arg->_v2storage;
     _v4storage[3] = argStorage[0];
     _v4storage[2] = argStorage[1];
 }
 
 void Vector4Cls::xyz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[0] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[2] = argStorage[2];
 }
 
 void Vector4Cls::xyw(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[0] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[3] = argStorage[2];
 }
 
 void Vector4Cls::xzy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[0] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[1] = argStorage[2];
 }
 
 void Vector4Cls::xzw(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[0] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[3] = argStorage[2];
 }
 
 void Vector4Cls::xwy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[0] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[1] = argStorage[2];
 }
 
 void Vector4Cls::xwz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[0] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[2] = argStorage[2];
 }
 
 void Vector4Cls::yxz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[1] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[2] = argStorage[2];
 }
 
 void Vector4Cls::yxw(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[1] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[3] = argStorage[2];
 }
 
 void Vector4Cls::yzx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[1] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[0] = argStorage[2];
 }
 
 void Vector4Cls::yzw(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[1] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[3] = argStorage[2];
 }
 
 void Vector4Cls::ywx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[1] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[0] = argStorage[2];
 }
 
 void Vector4Cls::ywz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[1] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[2] = argStorage[2];
 }
 
 void Vector4Cls::zxy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[2] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[1] = argStorage[2];
 }
 
 void Vector4Cls::zxw(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[2] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[3] = argStorage[2];
 }
 
 void Vector4Cls::zyx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[2] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[0] = argStorage[2];
 }
 
 void Vector4Cls::zyw(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[2] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[3] = argStorage[2];
 }
 
 void Vector4Cls::zwx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[2] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[0] = argStorage[2];
 }
 
 void Vector4Cls::zwy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[2] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[1] = argStorage[2];
 }
 
 void Vector4Cls::wxy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[3] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[1] = argStorage[2];
 }
 
 void Vector4Cls::wxz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[3] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[2] = argStorage[2];
 }
 
 void Vector4Cls::wyx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[3] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[0] = argStorage[2];
 }
 
 void Vector4Cls::wyz(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[3] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[2] = argStorage[2];
 }
 
 void Vector4Cls::wzx(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[3] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[0] = argStorage[2];
 }
 
 void Vector4Cls::wzy(Vector3 arg) {
-    Unknown argStorage = arg->_v3storage;
+    auto argStorage = arg->_v3storage;
     _v4storage[3] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[1] = argStorage[2];
 }
 
 void Vector4Cls::xyzw(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[2] = argStorage[2];
@@ -622,7 +622,7 @@ void Vector4Cls::xyzw(Vector4 arg) {
 }
 
 void Vector4Cls::xywz(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[3] = argStorage[2];
@@ -630,7 +630,7 @@ void Vector4Cls::xywz(Vector4 arg) {
 }
 
 void Vector4Cls::xzyw(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[1] = argStorage[2];
@@ -638,7 +638,7 @@ void Vector4Cls::xzyw(Vector4 arg) {
 }
 
 void Vector4Cls::xzwy(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[3] = argStorage[2];
@@ -646,7 +646,7 @@ void Vector4Cls::xzwy(Vector4 arg) {
 }
 
 void Vector4Cls::xwyz(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[1] = argStorage[2];
@@ -654,7 +654,7 @@ void Vector4Cls::xwyz(Vector4 arg) {
 }
 
 void Vector4Cls::xwzy(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[0] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[2] = argStorage[2];
@@ -662,7 +662,7 @@ void Vector4Cls::xwzy(Vector4 arg) {
 }
 
 void Vector4Cls::yxzw(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[1] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[2] = argStorage[2];
@@ -670,7 +670,7 @@ void Vector4Cls::yxzw(Vector4 arg) {
 }
 
 void Vector4Cls::yxwz(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[1] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[3] = argStorage[2];
@@ -678,7 +678,7 @@ void Vector4Cls::yxwz(Vector4 arg) {
 }
 
 void Vector4Cls::yzxw(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[1] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[0] = argStorage[2];
@@ -686,7 +686,7 @@ void Vector4Cls::yzxw(Vector4 arg) {
 }
 
 void Vector4Cls::yzwx(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[1] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[3] = argStorage[2];
@@ -694,7 +694,7 @@ void Vector4Cls::yzwx(Vector4 arg) {
 }
 
 void Vector4Cls::ywxz(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[1] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[0] = argStorage[2];
@@ -702,7 +702,7 @@ void Vector4Cls::ywxz(Vector4 arg) {
 }
 
 void Vector4Cls::ywzx(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[1] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[2] = argStorage[2];
@@ -710,7 +710,7 @@ void Vector4Cls::ywzx(Vector4 arg) {
 }
 
 void Vector4Cls::zxyw(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[2] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[1] = argStorage[2];
@@ -718,7 +718,7 @@ void Vector4Cls::zxyw(Vector4 arg) {
 }
 
 void Vector4Cls::zxwy(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[2] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[3] = argStorage[2];
@@ -726,7 +726,7 @@ void Vector4Cls::zxwy(Vector4 arg) {
 }
 
 void Vector4Cls::zyxw(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[2] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[0] = argStorage[2];
@@ -734,7 +734,7 @@ void Vector4Cls::zyxw(Vector4 arg) {
 }
 
 void Vector4Cls::zywx(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[2] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[3] = argStorage[2];
@@ -742,7 +742,7 @@ void Vector4Cls::zywx(Vector4 arg) {
 }
 
 void Vector4Cls::zwxy(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[2] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[0] = argStorage[2];
@@ -750,7 +750,7 @@ void Vector4Cls::zwxy(Vector4 arg) {
 }
 
 void Vector4Cls::zwyx(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[2] = argStorage[0];
     _v4storage[3] = argStorage[1];
     _v4storage[1] = argStorage[2];
@@ -758,7 +758,7 @@ void Vector4Cls::zwyx(Vector4 arg) {
 }
 
 void Vector4Cls::wxyz(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[3] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[1] = argStorage[2];
@@ -766,7 +766,7 @@ void Vector4Cls::wxyz(Vector4 arg) {
 }
 
 void Vector4Cls::wxzy(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[3] = argStorage[0];
     _v4storage[0] = argStorage[1];
     _v4storage[2] = argStorage[2];
@@ -774,7 +774,7 @@ void Vector4Cls::wxzy(Vector4 arg) {
 }
 
 void Vector4Cls::wyxz(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[3] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[0] = argStorage[2];
@@ -782,7 +782,7 @@ void Vector4Cls::wyxz(Vector4 arg) {
 }
 
 void Vector4Cls::wyzx(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[3] = argStorage[0];
     _v4storage[1] = argStorage[1];
     _v4storage[2] = argStorage[2];
@@ -790,7 +790,7 @@ void Vector4Cls::wyzx(Vector4 arg) {
 }
 
 void Vector4Cls::wzxy(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[3] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[0] = argStorage[2];
@@ -798,7 +798,7 @@ void Vector4Cls::wzxy(Vector4 arg) {
 }
 
 void Vector4Cls::wzyx(Vector4 arg) {
-    Unknown argStorage = arg->_v4storage;
+    auto argStorage = arg->_v4storage;
     _v4storage[3] = argStorage[0];
     _v4storage[2] = argStorage[1];
     _v4storage[1] = argStorage[2];

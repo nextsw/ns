@@ -151,7 +151,7 @@ public:
     virtual Timer createTimer(Duration duration, std::function<void()> callback);
     virtual Timer createPeriodicTimer(Duration period, std::function<void(Timer timer)> callback);
     virtual void print(String line);
-    virtual dynamic operator[](Object key);
+    virtual Object operator[](Object key);
 private:
     static _Zone _current;
 
@@ -269,7 +269,7 @@ public:
     template<typename T1, typename T2>
  virtual std::function<void(T1 , T2 )> bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f);
 
-    virtual dynamic operator[](Object key);
+    virtual Object operator[](Object key);
 
     virtual void handleUncaughtError(Object error, StackTrace stackTrace);
 
@@ -412,7 +412,7 @@ public:
     template<typename T1, typename T2>
  virtual std::function<void(T1 , T2 )> bindBinaryCallbackGuarded(std::function<void(T1 arg1, T2 arg2)> f);
 
-    virtual dynamic operator[](Object key);
+    virtual Object operator[](Object key);
 
     virtual void handleUncaughtError(Object error, StackTrace stackTrace);
 

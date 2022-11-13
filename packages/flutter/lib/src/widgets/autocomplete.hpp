@@ -42,7 +42,7 @@ public:
     template<typename T>
  static void onFieldSubmitted(GlobalKey<any> key);
 
-    static String defaultStringForOption(dynamic option);
+    static String defaultStringForOption(Object option);
 
     virtual State<RawAutocomplete<T>> createState();
 

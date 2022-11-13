@@ -143,7 +143,7 @@ void ScrollDragControllerCls::dispose() {
     onDragCanceled?->call();
 }
 
-dynamic ScrollDragControllerCls::lastDetails() {
+Object ScrollDragControllerCls::lastDetails() {
     return _lastDetails;
 }
 
@@ -196,25 +196,25 @@ DragScrollActivityCls::DragScrollActivityCls(Unknown delegate, ScrollDragControl
 }
 
 void DragScrollActivityCls::dispatchScrollStartNotification(ScrollMetrics metrics, BuildContext context) {
-    dynamic lastDetails = _controller!->lastDetails();
+    Object lastDetails = _controller!->lastDetails();
     assert(is<DragStartDetails>(lastDetails));
     make<ScrollStartNotificationCls>(metrics, context, as<DragStartDetails>(lastDetails))->dispatch(context);
 }
 
 void DragScrollActivityCls::dispatchScrollUpdateNotification(ScrollMetrics metrics, BuildContext context, double scrollDelta) {
-    dynamic lastDetails = _controller!->lastDetails();
+    Object lastDetails = _controller!->lastDetails();
     assert(is<DragUpdateDetails>(lastDetails));
     make<ScrollUpdateNotificationCls>(metrics, context, scrollDelta, as<DragUpdateDetails>(lastDetails))->dispatch(context);
 }
 
 void DragScrollActivityCls::dispatchOverscrollNotification(ScrollMetrics metrics, BuildContext context, double overscroll) {
-    dynamic lastDetails = _controller!->lastDetails();
+    Object lastDetails = _controller!->lastDetails();
     assert(is<DragUpdateDetails>(lastDetails));
     make<OverscrollNotificationCls>(metrics, context, overscroll, as<DragUpdateDetails>(lastDetails))->dispatch(context);
 }
 
 void DragScrollActivityCls::dispatchScrollEndNotification(ScrollMetrics metrics, BuildContext context) {
-    dynamic lastDetails = _controller!->lastDetails();
+    Object lastDetails = _controller!->lastDetails();
     make<ScrollEndNotificationCls>(metrics, context, is<DragEndDetails>(lastDetails)? lastDetails : nullptr)->dispatch(context);
 }
 

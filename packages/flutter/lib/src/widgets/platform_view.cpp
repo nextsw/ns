@@ -1,5 +1,5 @@
 #include "platform_view.hpp"
-AndroidViewCls::AndroidViewCls(Clip clipBehavior, dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
+AndroidViewCls::AndroidViewCls(Clip clipBehavior, Object creationParams, MessageCodec<Object> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
     {
         assert(viewType != nullptr);
         assert(hitTestBehavior != nullptr);
@@ -12,7 +12,7 @@ State<AndroidView> AndroidViewCls::createState() {
     return make<_AndroidViewStateCls>();
 }
 
-UiKitViewCls::UiKitViewCls(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
+UiKitViewCls::UiKitViewCls(Object creationParams, MessageCodec<Object> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType) {
     {
         assert(viewType != nullptr);
         assert(hitTestBehavior != nullptr);
@@ -54,13 +54,13 @@ Future<void> _HtmlElementViewControllerCls::dispatchPointerEvent(PointerEvent ev
 
 Future<void> _HtmlElementViewControllerCls::dispose() {
     if (_initialized) {
-        await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), viewId);
+        await SystemChannelsCls::platform_views-><void>invokeMethod(__s("dispose"), viewId);
     }
 }
 
 Future<void> _HtmlElementViewControllerCls::_initialize() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), viewType);Map<String, dynamic> args = list1;
-    await await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("viewType"), viewType);Map<String, Object> args = list1;
+    await SystemChannelsCls::platform_views-><void>invokeMethod(__s("create"), args);
     _initialized = true;
 }
 
@@ -128,16 +128,16 @@ void _AndroidViewStateCls::_onFocusChange(bool isFocused) {
         return;
     }
     if (!isFocused) {
-        _controller->clearFocus()->catchError([=] (dynamic e) {
+        _controller->clearFocus()->catchError([=] (Object e) {
             if (is<MissingPluginException>(e)) {
                 return;
             }
         });
         return;
     }
-    SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1)->catchError([=] (dynamic e) {
+    SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1)->catchError([=] (Object e) {
         if (is<MissingPluginException>(e)) {
-                    Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("platformViewId"), _id);return;
+                    Map<String, Object> map1 = make<MapCls<>>();        map1.set(__s("platformViewId"), _id);return;
         }
     });
 }
@@ -216,7 +216,7 @@ void _UiKitViewStateCls::_onFocusChange(bool isFocused, UiKitViewController cont
     if (!isFocused) {
         return;
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("platformViewId"), controller->id);SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("platformViewId"), controller->id);SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1);
 }
 
 RenderObject _AndroidPlatformViewCls::createRenderObject(BuildContext context) {
@@ -325,7 +325,7 @@ void _PlatformViewLinkStateCls::_handleFrameworkFocusChanged(bool isFocused) {
     if (!isFocused) {
         _controller?->clearFocus();
     }
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("platformViewId"), _id);SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("platformViewId"), _id);SystemChannelsCls::textInput-><void>invokeMethod(__s("TextInput.setPlatformViewClient"), list1);
 }
 
 void _PlatformViewLinkStateCls::_handlePlatformFocusChanged(bool isFocused) {

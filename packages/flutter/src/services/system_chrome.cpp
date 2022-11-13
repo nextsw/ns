@@ -18,44 +18,44 @@ bool SystemUiOverlayStyleCls::==(Object other) {
     return is<SystemUiOverlayStyle>(other) && other->systemNavigationBarColor == systemNavigationBarColor && other->systemNavigationBarDividerColor == systemNavigationBarDividerColor && other->systemNavigationBarContrastEnforced == systemNavigationBarContrastEnforced && other->statusBarColor == statusBarColor && other->statusBarIconBrightness == statusBarIconBrightness && other->statusBarBrightness == statusBarBrightness && other->systemStatusBarContrastEnforced == systemStatusBarContrastEnforced && other->systemNavigationBarIconBrightness == systemNavigationBarIconBrightness;
 }
 
-Map<String, dynamic> SystemUiOverlayStyleCls::_toMap() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("systemNavigationBarColor"), systemNavigationBarColor?->value);map1.set(__s("systemNavigationBarDividerColor"), systemNavigationBarDividerColor?->value);map1.set(__s("systemStatusBarContrastEnforced"), systemStatusBarContrastEnforced);map1.set(__s("statusBarColor"), statusBarColor?->value);map1.set(__s("statusBarBrightness"), statusBarBrightness?->toString());map1.set(__s("statusBarIconBrightness"), statusBarIconBrightness?->toString());map1.set(__s("systemNavigationBarIconBrightness"), systemNavigationBarIconBrightness?->toString());map1.set(__s("systemNavigationBarContrastEnforced"), systemNavigationBarContrastEnforced);return list1;
+Map<String, Object> SystemUiOverlayStyleCls::_toMap() {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("systemNavigationBarColor"), systemNavigationBarColor?->value);map1.set(__s("systemNavigationBarDividerColor"), systemNavigationBarDividerColor?->value);map1.set(__s("systemStatusBarContrastEnforced"), systemStatusBarContrastEnforced);map1.set(__s("statusBarColor"), statusBarColor?->value);map1.set(__s("statusBarBrightness"), statusBarBrightness?->toString());map1.set(__s("statusBarIconBrightness"), statusBarIconBrightness?->toString());map1.set(__s("systemNavigationBarIconBrightness"), systemNavigationBarIconBrightness?->toString());map1.set(__s("systemNavigationBarContrastEnforced"), systemNavigationBarContrastEnforced);return list1;
 }
 
-List<String> _stringify(List<dynamic> list) {
+List<String> _stringify(List<Object> list) {
     return list1;
 }
 
 Future<void> SystemChromeCls::setPreferredOrientations(List<DeviceOrientation> orientations) {
-    List<String> list1 = make<ListCls<>>();for (dynamic item : list) {        ;    }{    list1.add(ArrayItem);}await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setPreferredOrientations"), _stringify(orientations));
+    List<String> list1 = make<ListCls<>>();for (Object item : list) {        ;    }{    list1.add(ArrayItem);}await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setPreferredOrientations"), _stringify(orientations));
 }
 
 Future<void> SystemChromeCls::setApplicationSwitcherDescription(ApplicationSwitcherDescription description) {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("label"), description->label);map1.set(__s("primaryColor"), description->primaryColor);await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setApplicationSwitcherDescription"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("label"), description->label);map1.set(__s("primaryColor"), description->primaryColor);await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setApplicationSwitcherDescription"), list1);
 }
 
 Future<void> SystemChromeCls::setEnabledSystemUIOverlays(List<SystemUiOverlay> overlays) {
-    await await setEnabledSystemUIMode(SystemUiModeCls::manual, overlays);
+    await setEnabledSystemUIMode(SystemUiModeCls::manual, overlays);
 }
 
 Future<void> SystemChromeCls::setEnabledSystemUIMode(SystemUiMode mode, List<SystemUiOverlay> overlays) {
     if (mode != SystemUiModeCls::manual) {
-        await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setEnabledSystemUIMode"), mode->toString());
+        await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setEnabledSystemUIMode"), mode->toString());
     } else {
         assert(mode == SystemUiModeCls::manual && overlays != nullptr);
-        await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setEnabledSystemUIOverlays"), _stringify(overlays!));
+        await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setEnabledSystemUIOverlays"), _stringify(overlays!));
     }
 }
 
 Future<void> SystemChromeCls::setSystemUIChangeCallback(SystemUiChangeCallback callback) {
     ServicesBindingCls::instance->setSystemUiChangeCallback(callback);
     if (callback != nullptr) {
-        await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setSystemUIChangeListener"));
+        await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.setSystemUIChangeListener"));
     }
 }
 
 Future<void> SystemChromeCls::restoreSystemUIOverlays() {
-    await await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.restoreSystemUIOverlays"));
+    await SystemChannelsCls::platform-><void>invokeMethod(__s("SystemChrome.restoreSystemUIOverlays"));
 }
 
 void SystemChromeCls::setSystemUIOverlayStyle(SystemUiOverlayStyle style) {

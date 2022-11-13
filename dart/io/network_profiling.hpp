@@ -52,7 +52,7 @@ private:
 using _NetworkProfiling = std::shared_ptr<_NetworkProfilingCls>;
 String _success();
 
-String _invalidArgument(String argument, dynamic value);
+String _invalidArgument(String argument, Object value);
 
 String _missingArgument(String argument);
 
@@ -76,7 +76,7 @@ public:
 
     static void collectNewSocket(int id, String type, InternetAddress addr, int port);
 
-    static void collectStatistic(int id, _SocketProfileType type, dynamic object);
+    static void collectStatistic(int id, _SocketProfileType type, Object object);
 
     static String start();
 
@@ -128,12 +128,12 @@ public:
     int lastReadTime;
 
 
-    virtual Map<String, dynamic> toMap();
+    virtual Map<String, Object> toMap();
 
 private:
 
      _SocketStatisticCls(int id);
-    virtual void _setIfNotNull(Map<String, dynamic> json, String key, Object value);
+    virtual void _setIfNotNull(Map<String, Object> json, String key, Object value);
 
 };
 using _SocketStatistic = std::shared_ptr<_SocketStatisticCls>;

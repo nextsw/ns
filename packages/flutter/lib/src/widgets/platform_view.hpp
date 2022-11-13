@@ -26,14 +26,14 @@ public:
 
     Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
-    dynamic creationParams;
+    Object creationParams;
 
-    MessageCodec<dynamic> creationParamsCodec;
+    MessageCodec<Object> creationParamsCodec;
 
     Clip clipBehavior;
 
 
-     AndroidViewCls(Clip clipBehavior, dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
+     AndroidViewCls(Clip clipBehavior, Object creationParams, MessageCodec<Object> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
 
     virtual State<AndroidView> createState();
 
@@ -52,14 +52,14 @@ public:
 
     TextDirection layoutDirection;
 
-    dynamic creationParams;
+    Object creationParams;
 
-    MessageCodec<dynamic> creationParamsCodec;
+    MessageCodec<Object> creationParamsCodec;
 
     Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers;
 
 
-     UiKitViewCls(dynamic creationParams, MessageCodec<dynamic> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
+     UiKitViewCls(Object creationParams, MessageCodec<Object> creationParamsCodec, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key, TextDirection layoutDirection, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
 
     virtual State<UiKitView> createState();
 

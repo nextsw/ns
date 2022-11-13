@@ -1,8 +1,8 @@
 #include "text_input.hpp"
 void TextInputTypeCls::numberWithOptions(bool decimal, bool signed)
 
-Map<String, dynamic> TextInputTypeCls::toJson() {
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("name"), _name());map1.set(__s("signed"), signed);map1.set(__s("decimal"), decimal);return list1;
+Map<String, Object> TextInputTypeCls::toJson() {
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("name"), _name());map1.set(__s("signed"), signed);map1.set(__s("decimal"), decimal);return list1;
 }
 
 String TextInputTypeCls::toString() {
@@ -43,9 +43,9 @@ TextInputConfiguration TextInputConfigurationCls::copyWith(String actionLabel, b
     return make<TextInputConfigurationCls>(inputType | this->inputType, readOnly | this->readOnly, obscureText | this->obscureText, autocorrect | this->autocorrect, smartDashesType | this->smartDashesType, smartQuotesType | this->smartQuotesType, enableSuggestions | this->enableSuggestions, enableInteractiveSelection | this->enableInteractiveSelection, inputAction | this->inputAction, textCapitalization | this->textCapitalization, keyboardAppearance | this->keyboardAppearance, enableIMEPersonalizedLearning | this->enableIMEPersonalizedLearning, autofillConfiguration | this->autofillConfiguration, enableDeltaModel | this->enableDeltaModel);
 }
 
-Map<String, dynamic> TextInputConfigurationCls::toJson() {
-    Map<String, dynamic> autofill = autofillConfiguration->toJson();
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("inputType"), inputType->toJson());map1.set(__s("readOnly"), readOnly);map1.set(__s("obscureText"), obscureText);map1.set(__s("autocorrect"), autocorrect);map1.set(__s("smartDashesType"), smartDashesType->index->toString());map1.set(__s("smartQuotesType"), smartQuotesType->index->toString());map1.set(__s("enableSuggestions"), enableSuggestions);map1.set(__s("enableInteractiveSelection"), enableInteractiveSelection);map1.set(__s("actionLabel"), actionLabel);map1.set(__s("inputAction"), inputAction->toString());map1.set(__s("textCapitalization"), textCapitalization->toString());map1.set(__s("keyboardAppearance"), keyboardAppearance->toString());map1.set(__s("enableIMEPersonalizedLearning"), enableIMEPersonalizedLearning);if (autofill != nullptr) {    map1.set(__s("autofill"), autofill);}map1.set(__s("enableDeltaModel"), enableDeltaModel);return list1;
+Map<String, Object> TextInputConfigurationCls::toJson() {
+    Map<String, Object> autofill = autofillConfiguration->toJson();
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("inputType"), inputType->toJson());map1.set(__s("readOnly"), readOnly);map1.set(__s("obscureText"), obscureText);map1.set(__s("autocorrect"), autocorrect);map1.set(__s("smartDashesType"), smartDashesType->index->toString());map1.set(__s("smartQuotesType"), smartQuotesType->index->toString());map1.set(__s("enableSuggestions"), enableSuggestions);map1.set(__s("enableInteractiveSelection"), enableInteractiveSelection);map1.set(__s("actionLabel"), actionLabel);map1.set(__s("inputAction"), inputAction->toString());map1.set(__s("textCapitalization"), textCapitalization->toString());map1.set(__s("keyboardAppearance"), keyboardAppearance->toString());map1.set(__s("enableIMEPersonalizedLearning"), enableIMEPersonalizedLearning);if (autofill != nullptr) {    map1.set(__s("autofill"), autofill);}map1.set(__s("enableDeltaModel"), enableDeltaModel);return list1;
 }
 
 TextAffinity _toTextAffinity(String affinity) {
@@ -68,7 +68,7 @@ TextEditingValueCls::TextEditingValueCls(TextRange composing, TextSelection sele
     }
 }
 
-void TextEditingValueCls::fromJSON(Map<String, dynamic> encoded) {
+void TextEditingValueCls::fromJSON(Map<String, Object> encoded) {
     String text = as<String>(encoded[__s("text")]);
     TextSelection selection = make<TextSelectionCls>(as<int>(encoded[__s("selectionBase")]) | -1, as<int>(encoded[__s("selectionExtent")]) | -1, _toTextAffinity(as<String>(encoded[__s("selectionAffinity")])) | TextAffinityCls::downstream, as<bool>(encoded[__s("selectionIsDirectional")]) | false);
     TextRange composing = make<TextRangeCls>(as<int>(encoded[__s("composingBase")]) | -1, as<int>(encoded[__s("composingExtent")]) | -1);
@@ -101,10 +101,10 @@ TextEditingValue TextEditingValueCls::replaced(TextRange replacementRange, Strin
     return make<TextEditingValueCls>(newText, adjustedSelection, adjustedComposing);
 }
 
-Map<String, dynamic> TextEditingValueCls::toJSON() {
+Map<String, Object> TextEditingValueCls::toJSON() {
     assert(_textRangeIsValid(selection, text));
     assert(_textRangeIsValid(composing, text));
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("text"), text);map1.set(__s("selectionBase"), selection->baseOffset);map1.set(__s("selectionExtent"), selection->extentOffset);map1.set(__s("selectionAffinity"), selection->affinity->toString());map1.set(__s("selectionIsDirectional"), selection->isDirectional);map1.set(__s("composingBase"), composing->start);map1.set(__s("composingExtent"), composing->end);return list1;
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("text"), text);map1.set(__s("selectionBase"), selection->baseOffset);map1.set(__s("selectionExtent"), selection->extentOffset);map1.set(__s("selectionAffinity"), selection->affinity->toString());map1.set(__s("selectionIsDirectional"), selection->isDirectional);map1.set(__s("composingBase"), composing->start);map1.set(__s("composingExtent"), composing->end);return list1;
 }
 
 String TextEditingValueCls::toString() {
@@ -214,7 +214,7 @@ void TextInputConnectionCls::setEditableSizeAndTransform(Size editableBoxSize, M
     if (editableBoxSize != _cachedSize || transform != _cachedTransform) {
         _cachedSize = editableBoxSize;
         _cachedTransform = transform;
-            Map<String, dynamic> map1 = make<MapCls<>>();    map1.set(__s("width"), editableBoxSize->width());    map1.set(__s("height"), editableBoxSize->height());    map1.set(__s("transform"), transform->storage());TextInputCls::_instance->_setEditableSizeAndTransform(list1);
+            Map<String, Object> map1 = make<MapCls<>>();    map1.set(__s("width"), editableBoxSize->width());    map1.set(__s("height"), editableBoxSize->height());    map1.set(__s("transform"), transform->storage());TextInputCls::_instance->_setEditableSizeAndTransform(list1);
     }
 }
 
@@ -225,7 +225,7 @@ void TextInputConnectionCls::setComposingRect(Rect rect) {
     }
     _cachedRect = rect;
     Rect validRect = rect->isFinite()? rect : OffsetCls::zero & make<SizeCls>(-1, -1);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width());map1.set(__s("height"), validRect->height());map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setComposingTextRect(list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width());map1.set(__s("height"), validRect->height());map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setComposingTextRect(list1);
 }
 
 void TextInputConnectionCls::setCaretRect(Rect rect) {
@@ -235,7 +235,7 @@ void TextInputConnectionCls::setCaretRect(Rect rect) {
     }
     _cachedCaretRect = rect;
     Rect validRect = rect->isFinite()? rect : OffsetCls::zero & make<SizeCls>(-1, -1);
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width());map1.set(__s("height"), validRect->height());map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setCaretRect(list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("width"), validRect->width());map1.set(__s("height"), validRect->height());map1.set(__s("x"), validRect->left);map1.set(__s("y"), validRect->top);TextInputCls::_instance->_setCaretRect(list1);
 }
 
 void TextInputConnectionCls::setSelectionRects(List<SelectionRect> selectionRects) {
@@ -249,7 +249,7 @@ void TextInputConnectionCls::setSelectionRects(List<SelectionRect> selectionRect
 
 void TextInputConnectionCls::setStyle(String fontFamily, double fontSize, FontWeight fontWeight, TextAlign textAlign, TextDirection textDirection) {
     assert(attached());
-    Map<String, dynamic> map1 = make<MapCls<>>();map1.set(__s("fontFamily"), fontFamily);map1.set(__s("fontSize"), fontSize);map1.set(__s("fontWeightIndex"), fontWeight?->index);map1.set(__s("textAlignIndex"), textAlign->index);map1.set(__s("textDirectionIndex"), textDirection->index);TextInputCls::_instance->_setStyle(list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("fontFamily"), fontFamily);map1.set(__s("fontSize"), fontSize);map1.set(__s("fontWeightIndex"), fontWeight?->index);map1.set(__s("textAlignIndex"), textAlign->index);map1.set(__s("textDirectionIndex"), textDirection->index);TextInputCls::_instance->_setStyle(list1);
 }
 
 void TextInputConnectionCls::close() {
@@ -276,7 +276,7 @@ FloatingCursorDragState _toTextCursorAction(String state) {
     throw FlutterErrorCls->fromParts(makeList(ArrayItem));
 }
 
-RawFloatingCursorPoint _toTextPoint(FloatingCursorDragState state, Map<String, dynamic> encoded) {
+RawFloatingCursorPoint _toTextPoint(FloatingCursorDragState state, Map<String, Object> encoded) {
     assert(state != nullptr, __s("You must provide a state to set a new editing point."));
     assert(encoded[__s("X")] != nullptr, __s("You must provide a value for the horizontal location of the floating cursor."));
     assert(encoded[__s("Y")] != nullptr, __s("You must provide a value for the vertical location of the floating cursor."));
@@ -356,7 +356,7 @@ bool TextInputCls::_debugEnsureInputActionWorksOnPlatform(TextInputAction inputA
     return true;
 }
 
-Future<dynamic> TextInputCls::_loudlyHandleTextInputInvocation(MethodCall call) {
+Future<Object> TextInputCls::_loudlyHandleTextInputInvocation(MethodCall call) {
     try {
         return await _handleTextInputInvocation(call);
     } catch (Unknown exception) {
@@ -367,15 +367,15 @@ Future<dynamic> TextInputCls::_loudlyHandleTextInputInvocation(MethodCall call) 
     };
 }
 
-Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) {
+Future<Object> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) {
     String method = methodCall->method;
     if (method == __s("TextInputClient.focusElement")) {
-        List<dynamic> args = as<List<dynamic>>(methodCall->arguments);
+        List<Object> args = as<List<Object>>(methodCall->arguments);
         _scribbleClients[args[0]]?->onScribbleFocus(make<OffsetCls>((as<num>(args[1]))->toDouble(), (as<num>(args[2]))->toDouble()));
         return;
     } else {
         if (method == __s("TextInputClient.requestElementsInRect")) {
-        List<double> args = (as<List<dynamic>>(methodCall->arguments))-><num>cast()-><double>map([=] (num value) {
+        List<double> args = (as<List<Object>>(methodCall->arguments))-><num>cast()-><double>map([=] (num value) {
     value->toDouble();
 })->toList();
         return _scribbleClients->keys()->where([=] (String elementIdentifier) {
@@ -387,7 +387,7 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
             return !(bounds == RectCls::zero || bounds->hasNaN() || bounds->isInfinite());
         })->map([=] (String elementIdentifier) {
             Rect bounds = _scribbleClients[elementIdentifier]!->bounds;
-                    List<dynamic> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)) {        {            list1.add(_x1);        }return list1;
+                    List<Object> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem)) {        {            list1.add(_x1);        }return list1;
         })->toList();
     } else {
         if (method == __s("TextInputClient.scribbleInteractionBegan")) {
@@ -413,14 +413,14 @@ Future<dynamic> TextInputCls::_handleTextInputInvocation(MethodCall methodCall) 
         }
         return;
     }
-    List<dynamic> args = as<List<dynamic>>(methodCall->arguments);
+    List<Object> args = as<List<Object>>(methodCall->arguments);
     if (method == __s("TextInputClient.updateEditingStateWithTag")) {
         assert(_currentConnection!->_client != nullptr);
         TextInputClient client = _currentConnection!->_client;
         AutofillScope scope = client->currentAutofillScope();
-        Map<String, dynamic> editingValue = as<Map<String, dynamic>>(args[1]);
+        Map<String, Object> editingValue = as<Map<String, Object>>(args[1]);
         for (String tag : editingValue->keys()) {
-            TextEditingValue textEditingValue = TextEditingValueCls->fromJSON(as<Map<String, dynamic>>(editingValue[tag]));
+            TextEditingValue textEditingValue = TextEditingValueCls->fromJSON(as<Map<String, Object>>(editingValue[tag]));
             AutofillClient client = scope?->getAutofillClient(tag);
             if (client != nullptr && client->textInputConfiguration()->autofillConfiguration->enabled) {
                 client->autofill(textEditingValue);
@@ -481,15 +481,15 @@ void TextInputCls::_requestAutofill() {
     _channel-><void>invokeMethod(__s("TextInput.requestAutofill"));
 }
 
-void TextInputCls::_setEditableSizeAndTransform(Map<String, dynamic> args) {
+void TextInputCls::_setEditableSizeAndTransform(Map<String, Object> args) {
     _channel-><void>invokeMethod(__s("TextInput.setEditableSizeAndTransform"), args);
 }
 
-void TextInputCls::_setComposingTextRect(Map<String, dynamic> args) {
+void TextInputCls::_setComposingTextRect(Map<String, Object> args) {
     _channel-><void>invokeMethod(__s("TextInput.setMarkedTextRect"), args);
 }
 
-void TextInputCls::_setCaretRect(Map<String, dynamic> args) {
+void TextInputCls::_setCaretRect(Map<String, Object> args) {
     _channel-><void>invokeMethod(__s("TextInput.setCaretRect"), args);
 }
 
@@ -497,6 +497,6 @@ void TextInputCls::_setSelectionRects(List<List<num>> args) {
     _channel-><void>invokeMethod(__s("TextInput.setSelectionRects"), args);
 }
 
-void TextInputCls::_setStyle(Map<String, dynamic> args) {
+void TextInputCls::_setStyle(Map<String, Object> args) {
     _channel-><void>invokeMethod(__s("TextInput.setStyle"), args);
 }

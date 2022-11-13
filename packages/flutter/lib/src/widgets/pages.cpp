@@ -10,12 +10,12 @@ bool PageRouteCls<T>::barrierDismissible() {
 }
 
 template<typename T>
-bool PageRouteCls<T>::canTransitionTo(TransitionRoute<dynamic> nextRoute) {
+bool PageRouteCls<T>::canTransitionTo(TransitionRoute<Object> nextRoute) {
     return is<PageRoute<any>>(nextRoute);
 }
 
 template<typename T>
-bool PageRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousRoute) {
+bool PageRouteCls<T>::canTransitionFrom(TransitionRoute<Object> previousRoute) {
     return is<PageRoute<any>>(previousRoute);
 }
 
