@@ -54,7 +54,7 @@ _LineBetweenPointersCls::_LineBetweenPointersCls(int pointerEndId, Offset pointe
     }
 }
 
-ScaleGestureRecognizerCls::ScaleGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, Unknown kind, Unknown supportedDevices) {
+ScaleGestureRecognizerCls::ScaleGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices) {
     {
         assert(dragStartBehavior != nullptr);
     }

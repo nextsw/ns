@@ -141,7 +141,7 @@ void _SliverPersistentHeaderElementCls::visitChildren(ElementVisitor visitor) {
     }
 }
 
-_SliverPersistentHeaderElementCls::_SliverPersistentHeaderElementCls(_SliverPersistentHeaderRenderObjectWidget widget, bool floating) {
+_SliverPersistentHeaderElementCls::_SliverPersistentHeaderElementCls(Widget widget, bool floating) {
     {
         assert(floating != nullptr);
     }

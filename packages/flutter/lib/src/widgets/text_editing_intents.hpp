@@ -187,7 +187,7 @@ public:
 
 private:
 
-    virtual void  _(SelectionChangedCause cause, bool collapseSelection);
+    virtual void  _(Unknown cause, Unknown collapseSelection);
 };
 using CopySelectionTextIntent = std::shared_ptr<CopySelectionTextIntentCls>;
 

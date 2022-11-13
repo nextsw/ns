@@ -85,11 +85,11 @@ using _ErrorDiagnostic = std::shared_ptr<_ErrorDiagnosticCls>;
 class ErrorDescriptionCls : public _ErrorDiagnosticCls {
 public:
 
-     ErrorDescriptionCls(Unknown message);
+     ErrorDescriptionCls(String message);
 
 private:
 
-    virtual void  _fromParts(Unknown messageParts);
+    virtual void  _fromParts(String messageParts);
 
 };
 using ErrorDescription = std::shared_ptr<ErrorDescriptionCls>;
@@ -97,11 +97,11 @@ using ErrorDescription = std::shared_ptr<ErrorDescriptionCls>;
 class ErrorSummaryCls : public _ErrorDiagnosticCls {
 public:
 
-     ErrorSummaryCls(Unknown message);
+     ErrorSummaryCls(String message);
 
 private:
 
-    virtual void  _fromParts(Unknown messageParts);
+    virtual void  _fromParts(String messageParts);
 
 };
 using ErrorSummary = std::shared_ptr<ErrorSummaryCls>;
@@ -109,11 +109,11 @@ using ErrorSummary = std::shared_ptr<ErrorSummaryCls>;
 class ErrorHintCls : public _ErrorDiagnosticCls {
 public:
 
-     ErrorHintCls(Unknown message);
+     ErrorHintCls(String message);
 
 private:
 
-    virtual void  _fromParts(Unknown messageParts);
+    virtual void  _fromParts(String messageParts);
 
 };
 using ErrorHint = std::shared_ptr<ErrorHintCls>;
@@ -221,9 +221,9 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace);
 class DiagnosticsStackTraceCls : public DiagnosticsBlockCls {
 public:
 
-     DiagnosticsStackTraceCls(String name, StackTrace stack, bool showSeparator, IterableFilter<String> stackFilter);
+     DiagnosticsStackTraceCls(String name, StackTrace stack, Unknown showSeparator, IterableFilter<String> stackFilter);
 
-    virtual void  singleFrame(String name, String frame, bool showSeparator);
+    virtual void  singleFrame(String name, String frame, Unknown showSeparator);
 
     virtual bool allowTruncate();
 
@@ -243,7 +243,7 @@ public:
 
 private:
 
-     _FlutterErrorDetailsNodeCls(String name, Unknown style, T value);
+     _FlutterErrorDetailsNodeCls(Unknown name, Unknown style, Unknown value);
 };
 using _FlutterErrorDetailsNode = std::shared_ptr<_FlutterErrorDetailsNodeCls>;
 

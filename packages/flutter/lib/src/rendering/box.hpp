@@ -22,7 +22,7 @@ private:
     bool _canBeUsedByParent;
 
 
-     _DebugSizeCls(Unknown source, RenderBox _owner, bool _canBeUsedByParent);
+     _DebugSizeCls(double source, RenderBox _owner, bool _canBeUsedByParent);
 
 };
 using _DebugSize = std::shared_ptr<_DebugSizeCls>;

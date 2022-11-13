@@ -18,7 +18,7 @@ InteractiveViewerCls::InteractiveViewerCls(bool alignPanAxis, EdgeInsets boundar
     }
 }
 
-void InteractiveViewerCls::builder(bool alignPanAxis, EdgeInsets boundaryMargin, InteractiveViewerWidgetBuilder builder, Clip clipBehavior, Key key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController)
+void InteractiveViewerCls::builder(Unknown alignPanAxis, Unknown boundaryMargin, InteractiveViewerWidgetBuilder builder, Unknown clipBehavior, Unknown key, Unknown maxScale, Unknown minScale, Unknown onInteractionEnd, Unknown onInteractionStart, Unknown onInteractionUpdate, Unknown panEnabled, Unknown scaleEnabled, Unknown scaleFactor, Unknown transformationController)
 
 Vector3 InteractiveViewerCls::getNearestPointOnLine(Vector3 point, Vector3 l1, Vector3 l2) {
     double lengthSquared = math->pow(l2->x - l1->x, 2.0)->toDouble() + math->pow(l2->y - l1->y, 2.0)->toDouble();

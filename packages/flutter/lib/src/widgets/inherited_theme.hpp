@@ -29,7 +29,7 @@ private:
     List<InheritedTheme> _themes;
 
 
-    virtual void  _(List<InheritedTheme> _themes);
+    virtual void  _(Unknown _themes);
 };
 using CapturedThemes = std::shared_ptr<CapturedThemesCls>;
 

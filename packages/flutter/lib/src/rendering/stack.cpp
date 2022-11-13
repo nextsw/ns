@@ -1,5 +1,5 @@
 #include "stack.hpp"
-void RelativeRectCls::fromLTRB(double left, double top, double right, double bottom)
+void RelativeRectCls::fromLTRB(Unknown left, Unknown top, Unknown right, Unknown bottom)
 
 void RelativeRectCls::fromSize(Rect rect, Size container) {
     return RelativeRectCls->fromLTRB(rect->left, rect->top, container->width() - rect->right, container->height() - rect->bottom);
@@ -365,7 +365,7 @@ Size RenderStackCls::_computeSize(BoxConstraints constraints, ChildLayouter layo
     return size;
 }
 
-RenderIndexedStackCls::RenderIndexedStackCls(Unknown alignment, Unknown children, int index, Unknown textDirection) {
+RenderIndexedStackCls::RenderIndexedStackCls(AlignmentGeometry alignment, List<RenderBox> children, int index, TextDirection textDirection) {
     {
         _index = index;
     }

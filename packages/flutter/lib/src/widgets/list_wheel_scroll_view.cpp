@@ -128,7 +128,7 @@ FixedExtentMetrics _FixedExtentScrollPositionCls::copyWith(AxisDirection axisDir
     return make<FixedExtentMetricsCls>(minScrollExtent | (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels | (hasPixels()? this->pixels : nullptr), viewportDimension | (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection | this->axisDirection, itemIndex | this->itemIndex);
 }
 
-_FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(ScrollContext context, int initialItem, Unknown oldPosition, ScrollPhysics physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
+_FixedExtentScrollPositionCls::_FixedExtentScrollPositionCls(ScrollContext context, int initialItem, ScrollPosition oldPosition, ScrollPhysics physics) : ScrollPositionWithSingleContext(_getItemExtentFromScrollContext(context) * initialItem) {
     {
         assert(is<_FixedExtentScrollableState>(context), __s("FixedExtentScrollController can only be used with ListWheelScrollViews"));
     }
@@ -195,7 +195,7 @@ ListWheelScrollViewCls::ListWheelScrollViewCls(List<Widget> children, Clip clipB
     }
 }
 
-void ListWheelScrollViewCls::useDelegate(ListWheelChildDelegate childDelegate, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Key key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier)
+void ListWheelScrollViewCls::useDelegate(Unknown childDelegate, Unknown clipBehavior, Unknown controller, Unknown diameterRatio, Unknown itemExtent, Unknown key, Unknown magnification, Unknown offAxisFraction, Unknown onSelectedItemChanged, Unknown overAndUnderCenterOpacity, Unknown perspective, Unknown physics, Unknown renderChildrenOutsideViewport, Unknown restorationId, Unknown scrollBehavior, Unknown squeeze, Unknown useMagnifier)
 
 State<ListWheelScrollView> ListWheelScrollViewCls::createState() {
     return make<_ListWheelScrollViewStateCls>();

@@ -55,7 +55,7 @@ private:
     FocusNode _node;
 
 
-    virtual void  _(FocusNode _node);
+    virtual void  _(Unknown _node);
 
 };
 using FocusAttachment = std::shared_ptr<FocusAttachmentCls>;
@@ -196,7 +196,7 @@ using FocusNode = std::shared_ptr<FocusNodeCls>;
 class FocusScopeNodeCls : public FocusNodeCls {
 public:
 
-     FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, Unknown skipTraversal);
+     FocusScopeNodeCls(bool canRequestFocus, String debugLabel, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal);
 
     virtual FocusScopeNode nearestScope();
 

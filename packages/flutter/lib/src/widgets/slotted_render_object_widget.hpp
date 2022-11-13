@@ -60,7 +60,7 @@ template<typename S>
 class SlottedRenderObjectElementCls : public RenderObjectElementCls {
 public:
 
-     SlottedRenderObjectElementCls(SlottedMultiChildRenderObjectWidgetMixin<S> widget);
+     SlottedRenderObjectElementCls(Widget widget);
     virtual SlottedContainerRenderObjectMixin<S> renderObject();
 
     virtual void visitChildren(ElementVisitor visitor);

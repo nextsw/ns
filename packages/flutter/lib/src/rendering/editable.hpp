@@ -70,7 +70,7 @@ private:
     Map<int, MapEntry<Offset, TextPosition>> _positionCache;
 
 
-    virtual void  _(RenderEditable _editable, List<LineMetrics> _lineMetrics, TextPosition _currentTextPosition, int _currentLine, Offset _currentOffset);
+    virtual void  _(Unknown _editable, Unknown _lineMetrics, Unknown _currentTextPosition, Unknown _currentLine, Unknown _currentOffset);
     virtual MapEntry<Offset, TextPosition> _getTextPositionForLine(int lineNumber);
 
 };

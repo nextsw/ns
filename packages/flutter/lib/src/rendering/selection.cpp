@@ -89,9 +89,9 @@ SelectWordSelectionEventCls::SelectWordSelectionEventCls(Offset globalPosition) 
     }
 }
 
-void SelectionEdgeUpdateEventCls::forStart(Offset globalPosition)
+void SelectionEdgeUpdateEventCls::forStart(Unknown globalPosition)
 
-void SelectionEdgeUpdateEventCls::forEnd(Offset globalPosition)
+void SelectionEdgeUpdateEventCls::forEnd(Unknown globalPosition)
 
 SelectionGeometryCls::SelectionGeometryCls(SelectionPoint endSelectionPoint, bool hasContent, SelectionPoint startSelectionPoint, SelectionStatus status) {
     {

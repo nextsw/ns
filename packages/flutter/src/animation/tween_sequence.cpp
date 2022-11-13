@@ -47,7 +47,7 @@ T TweenSequenceCls<T>::_evaluateAt(double t, int index) {
     return element->tween->transform(tInterval);
 }
 
-FlippedTweenSequenceCls::FlippedTweenSequenceCls(Unknown items) {
+FlippedTweenSequenceCls::FlippedTweenSequenceCls(List<TweenSequenceItem<T>> items) {
     {
         assert(items != nullptr);
     }

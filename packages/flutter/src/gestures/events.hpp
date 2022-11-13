@@ -256,7 +256,7 @@ using _CopyPointerRemovedEvent = std::shared_ptr<_CopyPointerRemovedEventCls>;
 class PointerRemovedEventCls : public PointerEventCls {
 public:
 
-     PointerRemovedEventCls(int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, PointerRemovedEvent original, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMax, double radiusMin, Duration timeStamp);
+     PointerRemovedEventCls(int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, PointerEvent original, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMax, double radiusMin, Duration timeStamp);
 
     virtual PointerRemovedEvent transformed(Matrix4 transform);
 

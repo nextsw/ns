@@ -164,7 +164,7 @@ FloatingHeaderSnapConfigurationCls::FloatingHeaderSnapConfigurationCls(Curve cur
     }
 }
 
-RenderSliverFloatingPersistentHeaderCls::RenderSliverFloatingPersistentHeaderCls(Unknown child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync) {
+RenderSliverFloatingPersistentHeaderCls::RenderSliverFloatingPersistentHeaderCls(RenderBox child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync) {
     {
         _vsync = vsync;
     }

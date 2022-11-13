@@ -100,7 +100,7 @@ public:
 
 private:
 
-    virtual void  _(SelectionEventType type);
+    virtual void  _(Unknown type);
 };
 using SelectionEvent = std::shared_ptr<SelectionEventCls>;
 
@@ -141,9 +141,9 @@ public:
     Offset globalPosition;
 
 
-    virtual void  forStart(Offset globalPosition);
+    virtual void  forStart(Unknown globalPosition);
 
-    virtual void  forEnd(Offset globalPosition);
+    virtual void  forEnd(Unknown globalPosition);
 
 private:
 

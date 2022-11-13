@@ -121,7 +121,7 @@ private:
     PipelineOwner _owner;
 
 
-    virtual void  _(PipelineOwner owner, VoidCallback listener);
+    virtual void  _(PipelineOwner owner, Unknown listener);
 
 };
 using SemanticsHandle = std::shared_ptr<SemanticsHandleCls>;
@@ -601,7 +601,7 @@ private:
     List<_InterestingSemanticsFragment> _children;
 
 
-     _RootSemanticsFragmentCls(bool dropsSemanticsOfPreviousSiblings, Unknown owner);
+     _RootSemanticsFragmentCls(bool dropsSemanticsOfPreviousSiblings, RenderObject owner);
 };
 using _RootSemanticsFragment = std::shared_ptr<_RootSemanticsFragmentCls>;
 
@@ -628,7 +628,7 @@ private:
     bool _isExplicit;
 
 
-     _SwitchableSemanticsFragmentCls(SemanticsConfiguration config, bool dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, Unknown owner);
+     _SwitchableSemanticsFragmentCls(SemanticsConfiguration config, bool dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, RenderObject owner);
 
     virtual void _ensureConfigIsWritable();
 

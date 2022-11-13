@@ -257,7 +257,7 @@ _UiKitPlatformViewCls::_UiKitPlatformViewCls(UiKitViewController controller, Set
     }
 }
 
-void PlatformViewCreationParamsCls::_(int id, ValueChanged<bool> onFocusChanged, PlatformViewCreatedCallback onPlatformViewCreated, String viewType)
+void PlatformViewCreationParamsCls::_(Unknown id, Unknown onFocusChanged, Unknown onPlatformViewCreated, Unknown viewType)
 
 PlatformViewLinkCls::PlatformViewLinkCls(Key key, CreatePlatformViewCallback onCreatePlatformView, PlatformViewSurfaceFactory surfaceFactory, String viewType) {
     {
@@ -350,7 +350,7 @@ void PlatformViewSurfaceCls::updateRenderObject(BuildContext context, PlatformVi
     auto _c1 = renderObject;_c1.controller = auto _c2 = controller;_c2.hitTestBehavior = auto _c3 = hitTestBehavior;_c3.updateGestureRecognizers(gestureRecognizers);_c3;_c2;_c1;
 }
 
-AndroidViewSurfaceCls::AndroidViewSurfaceCls(AndroidViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key) {
+AndroidViewSurfaceCls::AndroidViewSurfaceCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key) {
     {
         assert(controller != nullptr);
         assert(hitTestBehavior != nullptr);

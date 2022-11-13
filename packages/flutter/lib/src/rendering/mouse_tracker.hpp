@@ -49,9 +49,9 @@ public:
     PointerEvent triggeringEvent;
 
 
-    virtual void  byNewFrame(LinkedHashMap<MouseTrackerAnnotation, Matrix4> lastAnnotations, LinkedHashMap<MouseTrackerAnnotation, Matrix4> nextAnnotations, PointerEvent previousEvent);
+    virtual void  byNewFrame(Unknown lastAnnotations, Unknown nextAnnotations, PointerEvent previousEvent);
 
-    virtual void  byPointerEvent(LinkedHashMap<MouseTrackerAnnotation, Matrix4> lastAnnotations, LinkedHashMap<MouseTrackerAnnotation, Matrix4> nextAnnotations, PointerEvent previousEvent, PointerEvent triggeringEvent);
+    virtual void  byPointerEvent(Unknown lastAnnotations, Unknown nextAnnotations, Unknown previousEvent, PointerEvent triggeringEvent);
 
     virtual int device();
 

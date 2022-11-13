@@ -5,7 +5,7 @@ PrimaryScrollControllerCls::PrimaryScrollControllerCls(Set<TargetPlatform> autom
     }
 }
 
-void PrimaryScrollControllerCls::none(Widget child, Key key)
+void PrimaryScrollControllerCls::none(Unknown child, Unknown key)
 
 bool PrimaryScrollControllerCls::shouldInherit(BuildContext context, Axis scrollDirection) {
     PrimaryScrollController result = context-><PrimaryScrollController>findAncestorWidgetOfExactType();

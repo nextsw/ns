@@ -13,7 +13,7 @@
 class RenderSliverFixedExtentBoxAdaptorCls : public RenderSliverMultiBoxAdaptorCls {
 public:
 
-     RenderSliverFixedExtentBoxAdaptorCls(Unknown childManager);
+     RenderSliverFixedExtentBoxAdaptorCls(RenderSliverBoxChildManager childManager);
     virtual double itemExtent();
     virtual double indexToLayoutOffset(double itemExtent, int index);
 
@@ -39,7 +39,7 @@ using RenderSliverFixedExtentBoxAdaptor = std::shared_ptr<RenderSliverFixedExten
 class RenderSliverFixedExtentListCls : public RenderSliverFixedExtentBoxAdaptorCls {
 public:
 
-     RenderSliverFixedExtentListCls(Unknown childManager, double itemExtent);
+     RenderSliverFixedExtentListCls(RenderSliverBoxChildManager childManager, double itemExtent);
 
     virtual double itemExtent();
 

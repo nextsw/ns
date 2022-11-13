@@ -335,7 +335,7 @@ int AndroidViewControllerCls::_getAndroidDirection(TextDirection direction) {
     ;
 }
 
-void SurfaceAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
+void SurfaceAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
 
 int ExpensiveAndroidViewControllerCls::textureId() {
     throw make<UnimplementedErrorCls>(__sf("Not supported for %s.", SurfaceAndroidViewControllerCls));
@@ -345,7 +345,7 @@ Future<void> ExpensiveAndroidViewControllerCls::setOffset(Offset off) {
     throw make<UnimplementedErrorCls>(__sf("Not supported for %s.", SurfaceAndroidViewControllerCls));
 }
 
-void ExpensiveAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
+void ExpensiveAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
 
 bool ExpensiveAndroidViewControllerCls::_createRequiresSize() {
     return false;
@@ -383,7 +383,7 @@ Future<void> TextureAndroidViewControllerCls::setOffset(Offset off) {
     Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("id"), viewId);map1.set(__s("top"), off->dy());map1.set(__s("left"), off->dx());await SystemChannelsCls::platform_views-><void>invokeMethod(__s("offset"), list1);
 }
 
-void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, int viewId, Unknown viewType)
+void TextureAndroidViewControllerCls::_(Unknown creationParams, Unknown creationParamsCodec, Unknown layoutDirection, Unknown viewId, Unknown viewType)
 
 Future<Size> TextureAndroidViewControllerCls::_sendResizeMessage(Size size) {
     assert(_state != _AndroidViewStateCls::waitingForSize, __sf("Android view must have an initial size. View id: %s", viewId));

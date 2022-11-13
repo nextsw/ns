@@ -25,7 +25,7 @@ public:
     double bottom;
 
 
-    virtual void  fromLTRB(double left, double top, double right, double bottom);
+    virtual void  fromLTRB(Unknown left, Unknown top, Unknown right, Unknown bottom);
 
     virtual void  fromSize(Rect rect, Size container);
 
@@ -175,7 +175,7 @@ using RenderStack = std::shared_ptr<RenderStackCls>;
 class RenderIndexedStackCls : public RenderStackCls {
 public:
 
-     RenderIndexedStackCls(Unknown alignment, Unknown children, int index, Unknown textDirection);
+     RenderIndexedStackCls(AlignmentGeometry alignment, List<RenderBox> children, int index, TextDirection textDirection);
 
     virtual void visitChildrenForSemantics(RenderObjectVisitor visitor);
 

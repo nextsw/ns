@@ -51,7 +51,7 @@ double BannerPainterCls::_rotation() {
     ;
 }
 
-BannerCls::BannerCls(Widget child, Color color, Key key, TextDirection layoutDirection, BannerLocation location, String message, TextDirection textDirection, TextStyle textStyle) {
+BannerCls::BannerCls(Widget child, Color color, Unknown key, TextDirection layoutDirection, BannerLocation location, String message, TextDirection textDirection, TextStyle textStyle) {
     {
         assert(message != nullptr);
         assert(location != nullptr);

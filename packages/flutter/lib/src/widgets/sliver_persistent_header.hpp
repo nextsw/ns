@@ -114,7 +114,7 @@ public:
 
 private:
 
-     _SliverPersistentHeaderElementCls(_SliverPersistentHeaderRenderObjectWidget widget, bool floating);
+     _SliverPersistentHeaderElementCls(Widget widget, bool floating);
 
     virtual void _build(double shrinkOffset, bool overlapsContent);
 
@@ -217,7 +217,7 @@ public:
 
 private:
 
-     _RenderSliverFloatingPinnedPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, Unknown vsync);
+     _RenderSliverFloatingPinnedPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync);
 };
 using _RenderSliverFloatingPinnedPersistentHeaderForWidgets = std::shared_ptr<_RenderSliverFloatingPinnedPersistentHeaderForWidgetsCls>;
 
@@ -240,7 +240,7 @@ public:
 
 private:
 
-     _RenderSliverFloatingPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, Unknown vsync);
+     _RenderSliverFloatingPersistentHeaderForWidgetsCls(PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync);
 };
 using _RenderSliverFloatingPersistentHeaderForWidgets = std::shared_ptr<_RenderSliverFloatingPersistentHeaderForWidgetsCls>;
 

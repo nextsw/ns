@@ -319,7 +319,7 @@ void SemanticsHandleCls::dispose() {
     _owner->_didDisposeSemanticsHandle();
 }
 
-void SemanticsHandleCls::_(PipelineOwner owner, VoidCallback listener) {
+void SemanticsHandleCls::_(PipelineOwner owner, Unknown listener) {
     if (listener != nullptr) {
         _owner->semanticsOwner()!->addListener(listener!);
     }
@@ -2076,7 +2076,7 @@ void _SwitchableSemanticsFragmentCls::markAsExplicit() {
     _isExplicit = true;
 }
 
-_SwitchableSemanticsFragmentCls::_SwitchableSemanticsFragmentCls(SemanticsConfiguration config, bool dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, Unknown owner) {
+_SwitchableSemanticsFragmentCls::_SwitchableSemanticsFragmentCls(SemanticsConfiguration config, bool dropsSemanticsOfPreviousSiblings, bool mergeIntoParent, RenderObject owner) {
     {
         _mergeIntoParent = mergeIntoParent;
         _config = config;

@@ -79,7 +79,7 @@ public:
 
 private:
 
-     _ConvertedScrollMetricsNotificationCls(BuildContext context, Unknown depth, ScrollMetrics metrics);
+     _ConvertedScrollMetricsNotificationCls(BuildContext context, int depth, ScrollMetrics metrics);
 };
 using _ConvertedScrollMetricsNotification = std::shared_ptr<_ConvertedScrollMetricsNotificationCls>;
 

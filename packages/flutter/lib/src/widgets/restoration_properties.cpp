@@ -67,7 +67,7 @@ Object _RestorablePrimitiveValueCls<T>::toPrimitives() {
 }
 
 template<typename T>
-_RestorablePrimitiveValueCls<T>::_RestorablePrimitiveValueCls(Unknown defaultValue) {
+_RestorablePrimitiveValueCls<T>::_RestorablePrimitiveValueCls(T defaultValue) {
     {
         assert(defaultValue != nullptr);
         assert(debugIsSerializableForRestoration(defaultValue));
@@ -75,31 +75,31 @@ _RestorablePrimitiveValueCls<T>::_RestorablePrimitiveValueCls(Unknown defaultVal
 }
 
 template<typename T>
-RestorableNumCls<T>::RestorableNumCls(Unknown defaultValue) {
+RestorableNumCls<T>::RestorableNumCls(T defaultValue) {
     {
         assert(defaultValue != nullptr);
     }
 }
 
-RestorableDoubleCls::RestorableDoubleCls(Unknown defaultValue) {
+RestorableDoubleCls::RestorableDoubleCls(T defaultValue) {
     {
         assert(defaultValue != nullptr);
     }
 }
 
-RestorableIntCls::RestorableIntCls(Unknown defaultValue) {
+RestorableIntCls::RestorableIntCls(T defaultValue) {
     {
         assert(defaultValue != nullptr);
     }
 }
 
-RestorableStringCls::RestorableStringCls(Unknown defaultValue) {
+RestorableStringCls::RestorableStringCls(T defaultValue) {
     {
         assert(defaultValue != nullptr);
     }
 }
 
-RestorableBoolCls::RestorableBoolCls(Unknown defaultValue) {
+RestorableBoolCls::RestorableBoolCls(T defaultValue) {
     {
         assert(defaultValue != nullptr);
     }

@@ -170,7 +170,7 @@ PageMetrics _PagePositionCls::copyWith(AxisDirection axisDirection, double maxSc
     return make<PageMetricsCls>(minScrollExtent | (hasContentDimensions()? this->minScrollExtent : nullptr), maxScrollExtent | (hasContentDimensions()? this->maxScrollExtent : nullptr), pixels | (hasPixels()? this->pixels : nullptr), viewportDimension | (hasViewportDimension()? this->viewportDimension : nullptr), axisDirection | this->axisDirection, viewportFraction | this->viewportFraction);
 }
 
-_PagePositionCls::_PagePositionCls(ScrollContext context, int initialPage, bool keepPage, Unknown oldPosition, ScrollPhysics physics, double viewportFraction) : ScrollPositionWithSingleContext(nullptr, keepPage) {
+_PagePositionCls::_PagePositionCls(ScrollContext context, int initialPage, bool keepPage, ScrollPosition oldPosition, ScrollPhysics physics, double viewportFraction) : ScrollPositionWithSingleContext(nullptr, keepPage) {
     {
         assert(initialPage != nullptr);
         assert(keepPage != nullptr);
@@ -250,9 +250,9 @@ PageViewCls::PageViewCls(bool allowImplicitScrolling, List<Widget> children, Cli
     }
 }
 
-void PageViewCls::builder(bool allowImplicitScrolling, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, Key key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection)
+void PageViewCls::builder(Unknown allowImplicitScrolling, Unknown clipBehavior, PageController controller, Unknown dragStartBehavior, ChildIndexGetter findChildIndexCallback, IndexedWidgetBuilder itemBuilder, int itemCount, Unknown key, Unknown onPageChanged, Unknown padEnds, Unknown pageSnapping, Unknown physics, Unknown restorationId, Unknown reverse, Unknown scrollBehavior, Unknown scrollDirection)
 
-void PageViewCls::custom(bool allowImplicitScrolling, SliverChildDelegate childrenDelegate, Clip clipBehavior, PageController controller, DragStartBehavior dragStartBehavior, Key key, ValueChanged<int> onPageChanged, bool padEnds, bool pageSnapping, ScrollPhysics physics, String restorationId, bool reverse, ScrollBehavior scrollBehavior, Axis scrollDirection)
+void PageViewCls::custom(Unknown allowImplicitScrolling, Unknown childrenDelegate, Unknown clipBehavior, PageController controller, Unknown dragStartBehavior, Unknown key, Unknown onPageChanged, Unknown padEnds, Unknown pageSnapping, Unknown physics, Unknown restorationId, Unknown reverse, Unknown scrollBehavior, Unknown scrollDirection)
 
 State<PageView> PageViewCls::createState() {
     return make<_PageViewStateCls>();

@@ -169,7 +169,7 @@ public:
     static SemanticsTag excludeFromScrolling;
 
 
-     RenderViewportCls(double anchor, Unknown axisDirection, Unknown cacheExtent, Unknown cacheExtentStyle, RenderSliver center, List<RenderSliver> children, Unknown clipBehavior, Unknown crossAxisDirection, Unknown offset);
+     RenderViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, RenderSliver center, List<RenderSliver> children, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset);
 
     virtual void setupParentData(RenderObject child);
 
@@ -235,7 +235,7 @@ using RenderViewport = std::shared_ptr<RenderViewportCls>;
 class RenderShrinkWrappingViewportCls : public RenderViewportBaseCls<SliverLogicalContainerParentData> {
 public:
 
-     RenderShrinkWrappingViewportCls(Unknown axisDirection, List<RenderSliver> children, Unknown clipBehavior, Unknown crossAxisDirection, Unknown offset);
+     RenderShrinkWrappingViewportCls(AxisDirection axisDirection, List<RenderSliver> children, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset);
 
     virtual void setupParentData(RenderObject child);
 

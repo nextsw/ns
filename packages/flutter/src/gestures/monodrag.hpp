@@ -47,7 +47,7 @@ public:
     GestureVelocityTrackerBuilder velocityTrackerBuilder;
 
 
-     DragGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, Unknown kind, Unknown supportedDevices, GestureVelocityTrackerBuilder velocityTrackerBuilder);
+     DragGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices, GestureVelocityTrackerBuilder velocityTrackerBuilder);
 
     virtual bool isFlingGesture(VelocityEstimate estimate, PointerDeviceKind kind);
     virtual bool isPointerAllowed(PointerEvent event);
@@ -113,7 +113,7 @@ using DragGestureRecognizer = std::shared_ptr<DragGestureRecognizerCls>;
 class VerticalDragGestureRecognizerCls : public DragGestureRecognizerCls {
 public:
 
-     VerticalDragGestureRecognizerCls(Object debugOwner, Unknown kind, Unknown supportedDevices);
+     VerticalDragGestureRecognizerCls(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices);
     virtual bool isFlingGesture(VelocityEstimate estimate, PointerDeviceKind kind);
 
     virtual String debugDescription();
@@ -132,7 +132,7 @@ using VerticalDragGestureRecognizer = std::shared_ptr<VerticalDragGestureRecogni
 class HorizontalDragGestureRecognizerCls : public DragGestureRecognizerCls {
 public:
 
-     HorizontalDragGestureRecognizerCls(Object debugOwner, Unknown kind, Unknown supportedDevices);
+     HorizontalDragGestureRecognizerCls(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices);
     virtual bool isFlingGesture(VelocityEstimate estimate, PointerDeviceKind kind);
 
     virtual String debugDescription();
@@ -151,7 +151,7 @@ using HorizontalDragGestureRecognizer = std::shared_ptr<HorizontalDragGestureRec
 class PanGestureRecognizerCls : public DragGestureRecognizerCls {
 public:
 
-     PanGestureRecognizerCls(Object debugOwner, Unknown supportedDevices);
+     PanGestureRecognizerCls(Object debugOwner, Set<PointerDeviceKind> supportedDevices);
     virtual bool isFlingGesture(VelocityEstimate estimate, PointerDeviceKind kind);
 
     virtual String debugDescription();

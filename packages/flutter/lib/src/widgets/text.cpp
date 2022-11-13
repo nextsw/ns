@@ -10,7 +10,7 @@ DefaultTextStyleCls::DefaultTextStyleCls(Widget child, Key key, int maxLines, Te
     }
 }
 
-void DefaultTextStyleCls::fallback(Key key)
+void DefaultTextStyleCls::fallback(Unknown key)
 
 Widget DefaultTextStyleCls::merge(Widget child, Key key, int maxLines, TextOverflow overflow, bool softWrap, TextStyle style, TextAlign textAlign, TextWidthBasis textWidthBasis) {
     assert(child != nullptr);
@@ -78,7 +78,7 @@ TextCls::TextCls(String data, Key key, Locale locale, int maxLines, TextOverflow
     }
 }
 
-void TextCls::rich(InlineSpan textSpan, Key key, Locale locale, int maxLines, TextOverflow overflow, Color selectionColor, String semanticsLabel, bool softWrap, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis)
+void TextCls::rich(InlineSpan textSpan, Unknown key, Unknown locale, Unknown maxLines, Unknown overflow, Unknown selectionColor, Unknown semanticsLabel, Unknown softWrap, Unknown strutStyle, Unknown style, Unknown textAlign, Unknown textDirection, Unknown textHeightBehavior, Unknown textScaleFactor, Unknown textWidthBasis)
 
 Widget TextCls::build(BuildContext context) {
     DefaultTextStyle defaultTextStyle = DefaultTextStyleCls->of(context);

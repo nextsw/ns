@@ -1,5 +1,5 @@
 #include "box.hpp"
-_DebugSizeCls::_DebugSizeCls(Unknown source, RenderBox _owner, bool _canBeUsedByParent) {
+_DebugSizeCls::_DebugSizeCls(double source, RenderBox _owner, bool _canBeUsedByParent) {
     {
         super->copy();
     }

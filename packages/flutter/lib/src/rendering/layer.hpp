@@ -482,7 +482,7 @@ using ImageFilterLayer = std::shared_ptr<ImageFilterLayerCls>;
 class TransformLayerCls : public OffsetLayerCls {
 public:
 
-     TransformLayerCls(Unknown offset, Matrix4 transform);
+     TransformLayerCls(Offset offset, Matrix4 transform);
 
     virtual Matrix4 transform();
 
@@ -515,7 +515,7 @@ using TransformLayer = std::shared_ptr<TransformLayerCls>;
 class OpacityLayerCls : public OffsetLayerCls {
 public:
 
-     OpacityLayerCls(int alpha, Unknown offset);
+     OpacityLayerCls(int alpha, Offset offset);
 
     virtual int alpha();
 

@@ -122,7 +122,7 @@ public:
     GestureLongPressEndCallback onTertiaryLongPressEnd;
 
 
-     LongPressGestureRecognizerCls(Object debugOwner, Duration duration, Unknown kind, double postAcceptSlopTolerance, Unknown supportedDevices);
+     LongPressGestureRecognizerCls(Object debugOwner, Duration duration, PointerDeviceKind kind, double postAcceptSlopTolerance, Set<PointerDeviceKind> supportedDevices);
 
     virtual bool isPointerAllowed(PointerDownEvent event);
 

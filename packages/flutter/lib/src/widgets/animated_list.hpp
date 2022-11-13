@@ -24,10 +24,10 @@ public:
     int itemIndex;
 
 
-    virtual void  incoming(AnimationController controller, int itemIndex);
+    virtual void  incoming(Unknown controller, Unknown itemIndex);
 
-    virtual void  outgoing(AnimationController controller, int itemIndex, AnimatedListRemovedItemBuilder removedItemBuilder);
-    virtual void  index(int itemIndex);
+    virtual void  outgoing(Unknown controller, Unknown itemIndex, Unknown removedItemBuilder);
+    virtual void  index(Unknown itemIndex);
 
     virtual int compareTo(_ActiveItem other);
 

@@ -305,7 +305,7 @@ void _DelayedPointerStateCls::_ensureTimerStopped() {
     _timer = nullptr;
 }
 
-DelayedMultiDragGestureRecognizerCls::DelayedMultiDragGestureRecognizerCls(Object debugOwner, Duration delay, Unknown kind, Unknown supportedDevices) {
+DelayedMultiDragGestureRecognizerCls::DelayedMultiDragGestureRecognizerCls(Object debugOwner, Duration delay, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices) {
     {
         assert(delay != nullptr);
     }

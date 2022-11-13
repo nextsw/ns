@@ -47,7 +47,7 @@ public:
 
 private:
 
-     _NotificationElementCls(NotificationListener<T> widget);
+     _NotificationElementCls(Widget widget);
 };
 template<typename T>
 using _NotificationElement = std::shared_ptr<_NotificationElementCls<T>>;

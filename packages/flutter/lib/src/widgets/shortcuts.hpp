@@ -59,7 +59,7 @@ using ShortcutActivator = std::shared_ptr<ShortcutActivatorCls>;
 class LogicalKeySetCls : public KeySetCls<LogicalKeyboardKey> {
 public:
 
-     LogicalKeySetCls(Unknown key1, Unknown key2, Unknown key3, Unknown key4);
+     LogicalKeySetCls(T key1, T key2, T key3, T key4);
     virtual void  fromSet(Unknown keys);
 
     virtual Iterable<LogicalKeyboardKey> triggers();
@@ -84,7 +84,7 @@ using LogicalKeySet = std::shared_ptr<LogicalKeySetCls>;
 class ShortcutMapPropertyCls : public DiagnosticsPropertyCls<Map<ShortcutActivator, Intent>> {
 public:
 
-     ShortcutMapPropertyCls(String name, Map<ShortcutActivator, Intent> value, Object defaultValue, Unknown description, Unknown level, bool showName);
+     ShortcutMapPropertyCls(String name, T value, Object defaultValue, String description, DiagnosticLevel level, bool showName);
 
     virtual Map<ShortcutActivator, Intent> value();
 
@@ -204,7 +204,7 @@ public:
 
      ShortcutsCls(Widget child, String debugLabel, Key key, Map<ShortcutActivator, Intent> shortcuts);
 
-    virtual void  manager(Widget child, String debugLabel, Key key, ShortcutManager manager);
+    virtual void  manager(Unknown child, Unknown debugLabel, Unknown key, ShortcutManager manager);
 
     virtual Map<ShortcutActivator, Intent> shortcuts();
 
@@ -269,7 +269,7 @@ public:
 
 private:
 
-    virtual void  _(ShortcutRegistry registry);
+    virtual void  _(Unknown registry);
 };
 using ShortcutRegistryEntry = std::shared_ptr<ShortcutRegistryEntryCls>;
 

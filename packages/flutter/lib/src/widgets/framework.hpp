@@ -657,7 +657,7 @@ public:
 
 private:
 
-     _ElementDiagnosticableTreeNodeCls(String name, bool stateful, Unknown style, Element value);
+     _ElementDiagnosticableTreeNodeCls(String name, bool stateful, DiagnosticsTreeStyle style, T value);
 };
 using _ElementDiagnosticableTreeNode = std::shared_ptr<_ElementDiagnosticableTreeNodeCls>;
 
@@ -670,7 +670,7 @@ public:
 
      ErrorWidgetCls(Object exception);
 
-    virtual void  withDetails(FlutterError error, String message);
+    virtual void  withDetails(FlutterError error, Unknown message);
 
     virtual RenderBox createRenderObject(BuildContext context);
 
@@ -690,7 +690,7 @@ using ErrorWidget = std::shared_ptr<ErrorWidgetCls>;
 class ComponentElementCls : public ElementCls {
 public:
 
-     ComponentElementCls(Unknown widget);
+     ComponentElementCls(Widget widget);
     virtual bool debugDoingBuild();
 
     virtual void mount(Element parent, Object newSlot);
@@ -716,7 +716,7 @@ using ComponentElement = std::shared_ptr<ComponentElementCls>;
 class StatelessElementCls : public ComponentElementCls {
 public:
 
-     StatelessElementCls(StatelessWidget widget);
+     StatelessElementCls(Widget widget);
     virtual Widget build();
 
     virtual void update(StatelessWidget newWidget);
@@ -769,7 +769,7 @@ using StatefulElement = std::shared_ptr<StatefulElementCls>;
 class ProxyElementCls : public ComponentElementCls {
 public:
 
-     ProxyElementCls(ProxyWidget widget);
+     ProxyElementCls(Widget widget);
     virtual Widget build();
 
     virtual void update(ProxyWidget newWidget);
@@ -786,7 +786,7 @@ template<typename T>
 class ParentDataElementCls : public ProxyElementCls {
 public:
 
-     ParentDataElementCls(ParentDataWidget<T> widget);
+     ParentDataElementCls(Widget widget);
     virtual void applyWidgetOutOfTurn(ParentDataWidget<T> newWidget);
 
     virtual void notifyClients(ParentDataWidget<T> oldWidget);
@@ -802,7 +802,7 @@ using ParentDataElement = std::shared_ptr<ParentDataElementCls<T>>;
 class InheritedElementCls : public ProxyElementCls {
 public:
 
-     InheritedElementCls(InheritedWidget widget);
+     InheritedElementCls(Widget widget);
     virtual void debugDeactivated();
 
     virtual Object getDependencies(Element dependent);
@@ -829,7 +829,7 @@ using InheritedElement = std::shared_ptr<InheritedElementCls>;
 class RenderObjectElementCls : public ElementCls {
 public:
 
-     RenderObjectElementCls(RenderObjectWidget widget);
+     RenderObjectElementCls(Widget widget);
     virtual RenderObject renderObject();
 
     virtual bool debugDoingBuild();
@@ -884,7 +884,7 @@ using RenderObjectElement = std::shared_ptr<RenderObjectElementCls>;
 class RootRenderObjectElementCls : public RenderObjectElementCls {
 public:
 
-     RootRenderObjectElementCls(Unknown widget);
+     RootRenderObjectElementCls(Widget widget);
     virtual void assignOwner(BuildOwner owner);
 
     virtual void mount(Element parent, Object newSlot);
@@ -897,7 +897,7 @@ using RootRenderObjectElement = std::shared_ptr<RootRenderObjectElementCls>;
 class LeafRenderObjectElementCls : public RenderObjectElementCls {
 public:
 
-     LeafRenderObjectElementCls(LeafRenderObjectWidget widget);
+     LeafRenderObjectElementCls(Widget widget);
     virtual void forgetChild(Element child);
 
     virtual void insertRenderObjectChild(RenderObject child, Object slot);
@@ -916,7 +916,7 @@ using LeafRenderObjectElement = std::shared_ptr<LeafRenderObjectElementCls>;
 class SingleChildRenderObjectElementCls : public RenderObjectElementCls {
 public:
 
-     SingleChildRenderObjectElementCls(SingleChildRenderObjectWidget widget);
+     SingleChildRenderObjectElementCls(Widget widget);
     virtual void visitChildren(ElementVisitor visitor);
 
     virtual void forgetChild(Element child);
@@ -941,7 +941,7 @@ using SingleChildRenderObjectElement = std::shared_ptr<SingleChildRenderObjectEl
 class MultiChildRenderObjectElementCls : public RenderObjectElementCls {
 public:
 
-     MultiChildRenderObjectElementCls(MultiChildRenderObjectWidget widget);
+     MultiChildRenderObjectElementCls(Widget widget);
 
     virtual ContainerRenderObjectMixin<RenderObject, ContainerParentDataMixin<RenderObject>> renderObject();
 

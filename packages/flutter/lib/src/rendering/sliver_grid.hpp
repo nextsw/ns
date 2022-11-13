@@ -157,7 +157,7 @@ using SliverGridParentData = std::shared_ptr<SliverGridParentDataCls>;
 class RenderSliverGridCls : public RenderSliverMultiBoxAdaptorCls {
 public:
 
-     RenderSliverGridCls(Unknown childManager, SliverGridDelegate gridDelegate);
+     RenderSliverGridCls(RenderSliverBoxChildManager childManager, SliverGridDelegate gridDelegate);
 
     virtual void setupParentData(RenderObject child);
 

@@ -189,7 +189,7 @@ double ScrollDragControllerCls::_adjustForScrollStartThreshold(double offset, Du
     }
 }
 
-DragScrollActivityCls::DragScrollActivityCls(Unknown delegate, ScrollDragController controller) {
+DragScrollActivityCls::DragScrollActivityCls(ScrollActivityDelegate delegate, ScrollDragController controller) {
     {
         _controller = controller;
     }
@@ -239,7 +239,7 @@ String DragScrollActivityCls::toString() {
     return __sf("%s(%s)", describeIdentity(this), _controller);
 }
 
-BallisticScrollActivityCls::BallisticScrollActivityCls(Unknown delegate, Simulation simulation, TickerProvider vsync) {
+BallisticScrollActivityCls::BallisticScrollActivityCls(ScrollActivityDelegate delegate, Simulation simulation, TickerProvider vsync) {
     {
             auto _c1 = AnimationControllerCls->unbounded(kDebugMode? objectRuntimeType(this, __s("BallisticScrollActivity")) : nullptr, vsync);    _c1.auto _c2 = addListener(_tick);    _c2.animateWith(simulation)->whenComplete(_end);    _c2;_controller = _c1;
     }
@@ -292,7 +292,7 @@ void BallisticScrollActivityCls::_end() {
     delegate()->goBallistic(0.0);
 }
 
-DrivenScrollActivityCls::DrivenScrollActivityCls(Unknown delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync) {
+DrivenScrollActivityCls::DrivenScrollActivityCls(ScrollActivityDelegate delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync) {
     {
         assert(from != nullptr);
         assert(to != nullptr);

@@ -255,11 +255,11 @@ ColorSwatch<T> ColorSwatchCls<T>::lerp(ColorSwatch<T> a, ColorSwatch<T> b, doubl
     return <T>make<ColorSwatchCls>(ColorCls->lerp(a, b, t)!->value, swatch);
 }
 
-ColorPropertyCls::ColorPropertyCls(String name, Unknown value, Object defaultValue, Unknown level, bool showName, DiagnosticsTreeStyle style) {
+ColorPropertyCls::ColorPropertyCls(String name, T value, Object defaultValue, DiagnosticLevel level, bool showName, DiagnosticsTreeStyle style) : DiagnosticsProperty<Color>(name, valuename, value) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 

@@ -1011,9 +1011,9 @@ void _RenderCustomClipCls<T>::_updateClip() {
     _clip |= _clipper?->getClip(size()) | _defaultClip();
 }
 
-RenderClipRectCls::RenderClipRectCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
+RenderClipRectCls::RenderClipRectCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) {
     {
-        assert(clipBehavior() != nullptr);
+        assert(clipBehavior != nullptr);
     }
 }
 
@@ -1059,9 +1059,9 @@ Rect RenderClipRectCls::_defaultClip() {
     return OffsetCls::zero & size();
 }
 
-RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) : _RenderCustomClip<RRect>(clipper) {
+RenderClipRRectCls::RenderClipRRectCls(BorderRadiusGeometry borderRadius, RenderBox child, Clip clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection) : _RenderCustomClip<RRect>(clipper) {
     {
-        assert(clipBehavior() != nullptr);
+        assert(clipBehavior != nullptr);
         _borderRadius = borderRadius;
         _textDirection = textDirection;
     }
@@ -1137,9 +1137,9 @@ RRect RenderClipRRectCls::_defaultClip() {
     return _borderRadius->resolve(textDirection())->toRRect(OffsetCls::zero & size());
 }
 
-RenderClipOvalCls::RenderClipOvalCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
+RenderClipOvalCls::RenderClipOvalCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) {
     {
-        assert(clipBehavior() != nullptr);
+        assert(clipBehavior != nullptr);
     }
 }
 
@@ -1193,9 +1193,9 @@ Rect RenderClipOvalCls::_defaultClip() {
     return OffsetCls::zero & size();
 }
 
-RenderClipPathCls::RenderClipPathCls(Unknown child, Unknown clipBehavior, Unknown clipper) {
+RenderClipPathCls::RenderClipPathCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper) {
     {
-        assert(clipBehavior() != nullptr);
+        assert(clipBehavior != nullptr);
     }
 }
 
@@ -1305,25 +1305,25 @@ void _RenderPhysicalModelBaseCls<T>::debugFillProperties(DiagnosticPropertiesBui
 }
 
 template<typename T>
-_RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(Unknown child, Unknown clipBehavior, Unknown clipper, Color color, double elevation, Color shadowColor) {
+_RenderPhysicalModelBaseCls<T>::_RenderPhysicalModelBaseCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper, Color color, double elevation, Color shadowColor) {
     {
         assert(elevation != nullptr && elevation >= 0.0);
         assert(color != nullptr);
         assert(shadowColor != nullptr);
-        assert(clipBehavior() != nullptr);
+        assert(clipBehavior != nullptr);
         _elevation = elevation;
         _color = color;
         _shadowColor = shadowColor;
     }
 }
 
-RenderPhysicalModelCls::RenderPhysicalModelCls(BorderRadius borderRadius, Unknown child, Unknown clipBehavior, Unknown color, Unknown elevation, Unknown shadowColor, BoxShape shape) {
+RenderPhysicalModelCls::RenderPhysicalModelCls(BorderRadius borderRadius, RenderBox child, Clip clipBehavior, Color color, double elevation, Color shadowColor, BoxShape shape) {
     {
         assert(shape != nullptr);
-        assert(clipBehavior() != nullptr);
-        assert(elevation() != nullptr && elevation() >= 0.0);
-        assert(color() != nullptr);
-        assert(shadowColor() != nullptr);
+        assert(clipBehavior != nullptr);
+        assert(elevation != nullptr && elevation >= 0.0);
+        assert(color != nullptr);
+        assert(shadowColor != nullptr);
         _shape = shape;
         _borderRadius = borderRadius;
     }
@@ -1417,12 +1417,12 @@ RRect RenderPhysicalModelCls::_defaultClip() {
     ;
 }
 
-RenderPhysicalShapeCls::RenderPhysicalShapeCls(Unknown child, Unknown clipBehavior, CustomClipper<Path> clipper, Unknown color, Unknown elevation, Unknown shadowColor) {
+RenderPhysicalShapeCls::RenderPhysicalShapeCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper, Color color, double elevation, Color shadowColor) {
     {
         assert(clipper != nullptr);
-        assert(elevation() != nullptr && elevation() >= 0.0);
-        assert(color() != nullptr);
-        assert(shadowColor() != nullptr);
+        assert(elevation != nullptr && elevation >= 0.0);
+        assert(color != nullptr);
+        assert(shadowColor != nullptr);
     }
 }
 
@@ -2074,7 +2074,7 @@ void RenderPointerListenerCls::debugFillProperties(DiagnosticPropertiesBuilder p
     Map<String, std::function<void ()>> map1 = make<MapCls<>>();map1.set(__s("down"), onPointerDown);map1.set(__s("move"), onPointerMove);map1.set(__s("up"), onPointerUp);map1.set(__s("hover"), onPointerHover);map1.set(__s("cancel"), onPointerCancel);map1.set(__s("panZoomStart"), onPointerPanZoomStart);map1.set(__s("panZoomUpdate"), onPointerPanZoomUpdate);map1.set(__s("panZoomEnd"), onPointerPanZoomEnd);map1.set(__s("signal"), onPointerSignal);properties->add(<std::function<void ()>>make<FlagsSummaryCls>(__s("listeners"), list1, __s("<none>")));
 }
 
-RenderMouseRegionCls::RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) : RenderProxyBoxWithHitTestBehavior(hitTestBehavior | HitTestBehaviorCls::opaque) {
+RenderMouseRegionCls::RenderMouseRegionCls(RenderBox child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker) : RenderProxyBoxWithHitTestBehavior(hitTestBehavior | HitTestBehaviorCls::opaque) {
     {
         assert(opaque != nullptr);
         assert(cursor != nullptr);
@@ -2476,7 +2476,7 @@ void RenderMetaDataCls::debugFillProperties(DiagnosticPropertiesBuilder properti
     properties->add(<Object>make<DiagnosticsPropertyCls>(__s("metaData"), metaData));
 }
 
-RenderSemanticsGestureHandlerCls::RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor) {
+RenderSemanticsGestureHandlerCls::RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, RenderBox child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor) {
     {
         assert(scrollFactor != nullptr);
         _onTap = onTap;

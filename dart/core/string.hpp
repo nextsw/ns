@@ -53,7 +53,7 @@ public:
     String string;
 
 
-     RunesCls(String string);
+     RunesCls(String stringValue);
     virtual RuneIterator iterator();
 
     virtual int last();

@@ -103,7 +103,7 @@ public:
 
 private:
 
-    virtual void  _(ConnectionState connectionState, T data, Object error, StackTrace stackTrace);
+    virtual void  _(Unknown connectionState, Unknown data, Unknown error, Unknown stackTrace);
 
 };
 template<typename T>

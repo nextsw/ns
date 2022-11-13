@@ -1,7 +1,7 @@
 #include "animated_list.hpp"
-void _ActiveItemCls::incoming(AnimationController controller, int itemIndex)
+void _ActiveItemCls::incoming(Unknown controller, Unknown itemIndex)
 
-void _ActiveItemCls::index(int itemIndex)
+void _ActiveItemCls::index(Unknown itemIndex)
 
 int _ActiveItemCls::compareTo(_ActiveItem other) {
     return itemIndex - other->itemIndex;

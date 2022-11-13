@@ -143,7 +143,7 @@ using _FocusState = std::shared_ptr<_FocusStateCls>;
 class FocusScopeCls : public FocusCls {
 public:
 
-     FocusScopeCls(bool autofocus, Unknown canRequestFocus, Widget child, Unknown debugLabel, Key key, FocusScopeNode node, ValueChanged<bool> onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal);
+     FocusScopeCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, Key key, FocusScopeNode node, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal);
 
     virtual void  withExternalFocusNode(bool autofocus, Widget child, FocusScopeNode focusScopeNode, Key key, ValueChanged<bool> onFocusChange) override;
     static FocusScopeNode of(BuildContext context);
@@ -198,7 +198,7 @@ public:
 
 private:
 
-     _FocusMarkerCls(Widget child, FocusNode node);
+     _FocusMarkerCls(Unknown child, FocusNode node);
 
 };
 using _FocusMarker = std::shared_ptr<_FocusMarkerCls>;

@@ -32,7 +32,7 @@ using TweenSequence = std::shared_ptr<TweenSequenceCls<T>>;
 class FlippedTweenSequenceCls : public TweenSequenceCls<double> {
 public:
 
-     FlippedTweenSequenceCls(Unknown items);
+     FlippedTweenSequenceCls(List<TweenSequenceItem<T>> items);
 
     virtual double transform(double t);
 

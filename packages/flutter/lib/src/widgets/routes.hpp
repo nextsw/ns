@@ -30,7 +30,7 @@ template<typename T>
 class OverlayRouteCls : public RouteCls<T> {
 public:
 
-     OverlayRouteCls(Unknown settings);
+     OverlayRouteCls(RouteSettings settings);
     virtual Iterable<OverlayEntry> createOverlayEntries();
     virtual List<OverlayEntry> overlayEntries();
 
@@ -56,7 +56,7 @@ public:
     bool willDisposeAnimationController;
 
 
-     TransitionRouteCls(Unknown settings);
+     TransitionRouteCls(RouteSettings settings);
     virtual Future<T> completed();
 
     virtual Duration transitionDuration();
@@ -262,7 +262,7 @@ public:
     ImageFilter filter;
 
 
-     ModalRouteCls(ImageFilter filter, Unknown settings);
+     ModalRouteCls(ImageFilter filter, RouteSettings settings);
     template<typename T>
  static ModalRoute<T> of(BuildContext context);
 
@@ -353,7 +353,7 @@ template<typename T>
 class PopupRouteCls : public ModalRouteCls<T> {
 public:
 
-     PopupRouteCls(ImageFilter filter, Unknown settings);
+     PopupRouteCls(ImageFilter filter, RouteSettings settings);
     virtual bool opaque();
 
     virtual bool maintainState();
@@ -408,7 +408,7 @@ public:
     Offset anchorPoint;
 
 
-     RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, Unknown settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration);
+     RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, RouteSettings settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration);
 
     virtual bool barrierDismissible();
 

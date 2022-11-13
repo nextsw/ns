@@ -96,7 +96,7 @@ double _DiscreteKeyFrameSimulationCls::x(double time) {
     return _keyFrames[_lastKeyFrameIndex]->value;
 }
 
-void _DiscreteKeyFrameSimulationCls::_(List<_KeyFrame> _keyFrames, double maxDuration)
+void _DiscreteKeyFrameSimulationCls::_(Unknown _keyFrames, Unknown maxDuration)
 
 EditableTextCls::EditableTextCls(bool autocorrect, Color autocorrectionTextRectColor, AutofillClient autofillClient, Iterable<String> autofillHints, bool autofocus, Color backgroundCursorColor, Clip clipBehavior, TextEditingController controller, Color cursorColor, double cursorHeight, Offset cursorOffset, bool cursorOpacityAnimates, Radius cursorRadius, double cursorWidth, DragStartBehavior dragStartBehavior, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, bool expands, FocusNode focusNode, bool forceLine, List<TextInputFormatter> inputFormatters, Key key, Brightness keyboardAppearance, TextInputType keyboardType, Locale locale, int maxLines, int minLines, MouseCursor mouseCursor, bool obscureText, String obscuringCharacter, AppPrivateCommandCallback onAppPrivateCommand, ValueChanged<String> onChanged, VoidCallback onEditingComplete, SelectionChangedCallback onSelectionChanged, VoidCallback onSelectionHandleTapped, ValueChanged<String> onSubmitted, bool paintCursorAboveText, bool readOnly, bool rendererIgnoresPointer, String restorationId, bool scribbleEnabled, ScrollBehavior scrollBehavior, ScrollController scrollController, EdgeInsets scrollPadding, ScrollPhysics scrollPhysics, Color selectionColor, TextSelectionControls selectionControls, BoxHeightStyle selectionHeightStyle, BoxWidthStyle selectionWidthStyle, bool showCursor, bool showSelectionHandles, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, StrutStyle strutStyle, TextStyle style, TextAlign textAlign, TextCapitalization textCapitalization, TextDirection textDirection, TextHeightBehavior textHeightBehavior, TextInputAction textInputAction, double textScaleFactor, TextWidthBasis textWidthBasis, ToolbarOptions toolbarOptions) {
     {
@@ -1449,7 +1449,7 @@ void _ScribblePlaceholderCls::build(ParagraphBuilder builder, List<PlaceholderDi
     }
 }
 
-_ScribblePlaceholderCls::_ScribblePlaceholderCls(PlaceholderAlignment alignment, TextBaseline baseline, Widget child, Size size) {
+_ScribblePlaceholderCls::_ScribblePlaceholderCls(Unknown alignment, Unknown baseline, Unknown child, Size size) {
     {
         assert(child != nullptr);
         assert(baseline != nullptr || !(identical(alignment, ui->PlaceholderAlignmentCls::aboveBaseline) || identical(alignment, ui->PlaceholderAlignmentCls::belowBaseline) || identical(alignment, ui->PlaceholderAlignmentCls::baseline)));

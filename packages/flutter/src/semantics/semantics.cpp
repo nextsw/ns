@@ -43,7 +43,7 @@ CustomSemanticsAction CustomSemanticsActionCls::getAction(int id) {
     return _actions[id];
 }
 
-AttributedStringCls::AttributedStringCls(String string, List<StringAttribute> attributes) {
+AttributedStringCls::AttributedStringCls(String stringValue, List<StringAttribute> attributes) {
     {
         assert(stringValue->isNotEmpty() || attributes->isEmpty());
         assert([=] () {
@@ -87,10 +87,10 @@ String AttributedStringCls::toString() {
     return __sf("%s('%s', attributes: %s)", objectRuntimeType(this, __s("AttributedString")), stringValue, attributes);
 }
 
-AttributedStringPropertyCls::AttributedStringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, Unknown level, bool showName, bool showWhenEmpty) {
+AttributedStringPropertyCls::AttributedStringPropertyCls(String name, T value, Object defaultValue, String description, DiagnosticLevel level, bool showName, bool showWhenEmpty) : DiagnosticsProperty<AttributedString>(name, valuename, value) {
     {
         assert(showName != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 

@@ -21,7 +21,7 @@ enum RenderAnimatedSizeState{
 class RenderAnimatedSizeCls : public RenderAligningShiftedBoxCls {
 public:
 
-     RenderAnimatedSizeCls(Unknown alignment, Unknown child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, Unknown textDirection, TickerProvider vsync);
+     RenderAnimatedSizeCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TextDirection textDirection, TickerProvider vsync);
 
     virtual RenderAnimatedSizeState state();
 

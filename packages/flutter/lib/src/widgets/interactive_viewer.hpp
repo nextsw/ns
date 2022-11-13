@@ -50,7 +50,7 @@ public:
 
      InteractiveViewerCls(bool alignPanAxis, EdgeInsets boundaryMargin, Widget child, Clip clipBehavior, bool constrained, Key key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController);
 
-    virtual void  builder(bool alignPanAxis, EdgeInsets boundaryMargin, InteractiveViewerWidgetBuilder builder, Clip clipBehavior, Key key, double maxScale, double minScale, GestureScaleEndCallback onInteractionEnd, GestureScaleStartCallback onInteractionStart, GestureScaleUpdateCallback onInteractionUpdate, bool panEnabled, bool scaleEnabled, double scaleFactor, TransformationController transformationController);
+    virtual void  builder(Unknown alignPanAxis, Unknown boundaryMargin, InteractiveViewerWidgetBuilder builder, Unknown clipBehavior, Unknown key, Unknown maxScale, Unknown minScale, Unknown onInteractionEnd, Unknown onInteractionStart, Unknown onInteractionUpdate, Unknown panEnabled, Unknown scaleEnabled, Unknown scaleFactor, Unknown transformationController);
 
     static Vector3 getNearestPointOnLine(Vector3 point, Vector3 l1, Vector3 l2);
 

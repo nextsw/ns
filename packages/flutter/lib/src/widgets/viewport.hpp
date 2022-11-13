@@ -70,7 +70,7 @@ private:
     int _centerSlotIndex;
 
 
-     _ViewportElementCls(Viewport widget);
+     _ViewportElementCls(Widget widget);
     virtual void _updateCenter();
 
 };

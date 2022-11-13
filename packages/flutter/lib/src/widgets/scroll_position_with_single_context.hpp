@@ -19,7 +19,7 @@
 class ScrollPositionWithSingleContextCls : public ScrollPositionCls {
 public:
 
-     ScrollPositionWithSingleContextCls(ScrollContext context, String debugLabel, double initialPixels, bool keepScrollOffset, Unknown oldPosition, ScrollPhysics physics);
+     ScrollPositionWithSingleContextCls(ScrollContext context, String debugLabel, double initialPixels, bool keepScrollOffset, ScrollPosition oldPosition, ScrollPhysics physics);
 
     virtual AxisDirection axisDirection();
 

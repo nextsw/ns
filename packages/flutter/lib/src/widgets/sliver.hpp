@@ -43,7 +43,7 @@ public:
 
 private:
 
-     _SaltedValueKeyCls(Unknown key);
+     _SaltedValueKeyCls(T key);
 
 };
 using _SaltedValueKey = std::shared_ptr<_SaltedValueKeyCls>;
@@ -99,7 +99,7 @@ public:
 
      SliverChildListDelegateCls(List<Widget> children, bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
 
-    virtual void  fixed(List<Widget> children, bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset);
+    virtual void  fixed(Unknown children, Unknown addAutomaticKeepAlives, Unknown addRepaintBoundaries, Unknown addSemanticIndexes, Unknown semanticIndexCallback, Unknown semanticIndexOffset);
 
     virtual int findIndexByKey(Key key);
 
@@ -230,9 +230,9 @@ public:
 
 
      SliverGridCls(SliverChildDelegate delegate, SliverGridDelegate gridDelegate, Key key);
-    virtual void  count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Key key, double mainAxisSpacing);
+    virtual void  count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Unknown key, double mainAxisSpacing);
 
-    virtual void  extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Key key, double mainAxisSpacing, double maxCrossAxisExtent);
+    virtual void  extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Unknown key, double mainAxisSpacing, double maxCrossAxisExtent);
 
     virtual RenderSliverGrid createRenderObject(BuildContext context);
 
@@ -248,7 +248,7 @@ using SliverGrid = std::shared_ptr<SliverGridCls>;
 class SliverMultiBoxAdaptorElementCls : public RenderObjectElementCls {
 public:
 
-     SliverMultiBoxAdaptorElementCls(SliverMultiBoxAdaptorWidget widget, bool replaceMovedChildren);
+     SliverMultiBoxAdaptorElementCls(Widget widget, bool replaceMovedChildren);
 
     virtual RenderSliverMultiBoxAdaptor renderObject();
 
@@ -376,7 +376,7 @@ public:
 
 private:
 
-     _SliverOffstageElementCls(SliverOffstage widget);
+     _SliverOffstageElementCls(Widget widget);
 };
 using _SliverOffstageElement = std::shared_ptr<_SliverOffstageElementCls>;
 

@@ -285,7 +285,7 @@ public:
     bool quoted;
 
 
-     StringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, String ifEmpty, Unknown level, bool quoted, bool showName, DiagnosticsTreeStyle style, String tooltip);
+     StringPropertyCls(String name, T value, Unknown defaultValue, String description, Unknown ifEmpty, DiagnosticLevel level, bool quoted, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
@@ -302,7 +302,7 @@ public:
     String unit;
 
 
-    virtual void  lazy(String name, Unknown computeValue, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit);
+    virtual void  lazy(String name, T computeValue, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip, String unit);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 
@@ -311,7 +311,8 @@ public:
 
 private:
 
-     _NumPropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit);
+     _NumPropertyCls(String name, T value, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip, String unit);
+
 };
 template<typename T>
 using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
@@ -319,9 +320,9 @@ using _NumProperty = std::shared_ptr<_NumPropertyCls<T>>;
 class DoublePropertyCls : public _NumPropertyCls<double> {
 public:
 
-     DoublePropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit);
+     DoublePropertyCls(String name, T value, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip, String unit);
 
-    virtual void  lazy(String name, Unknown computeValue, Object defaultValue, String ifNull, Unknown level, bool showName, String tooltip, String unit);
+    virtual void  lazy(String name, T computeValue, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, Unknown tooltip, String unit);
 
     virtual String numberToString();
 
@@ -333,7 +334,7 @@ using DoubleProperty = std::shared_ptr<DoublePropertyCls>;
 class IntPropertyCls : public _NumPropertyCls<int> {
 public:
 
-     IntPropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String unit);
+     IntPropertyCls(String name, T value, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, String unit);
 
     virtual String numberToString();
 
@@ -345,7 +346,7 @@ using IntProperty = std::shared_ptr<IntPropertyCls>;
 class PercentPropertyCls : public DoublePropertyCls {
 public:
 
-     PercentPropertyCls(String name, Unknown fraction, String ifNull, Unknown level, bool showName, String tooltip, String unit);
+     PercentPropertyCls(String name, T fraction, String ifNull, DiagnosticLevel level, Unknown showName, Unknown tooltip, String unit);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -382,7 +383,7 @@ template<typename T>
 class IterablePropertyCls : public DiagnosticsPropertyCls<Iterable<T>> {
 public:
 
-     IterablePropertyCls(String name, Unknown value, Object defaultValue, String ifEmpty, String ifNull, Unknown level, bool showName, bool showSeparator, DiagnosticsTreeStyle style);
+     IterablePropertyCls(String name, T value, Unknown defaultValue, Unknown ifEmpty, String ifNull, DiagnosticLevel level, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -400,7 +401,7 @@ template<typename T>
 class EnumPropertyCls : public DiagnosticsPropertyCls<T> {
 public:
 
-     EnumPropertyCls(String name, Unknown value, Object defaultValue, Unknown level);
+     EnumPropertyCls(String name, T value, Unknown defaultValue, DiagnosticLevel level);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -416,9 +417,9 @@ public:
     String ifPresent;
 
 
-     ObjectFlagPropertyCls(String name, Unknown value, String ifNull, String ifPresent, Unknown level, Unknown showName);
+     ObjectFlagPropertyCls(String name, T value, String ifNull, String ifPresent, DiagnosticLevel level, Unknown showName);
 
-    virtual void  has(String name, Unknown value, Unknown level);
+    virtual void  has(String name, T value, DiagnosticLevel level);
 
     virtual String valueToString(TextTreeConfiguration parentConfiguration);
 
@@ -438,7 +439,7 @@ template<typename T>
 class FlagsSummaryCls : public DiagnosticsPropertyCls<Map<String, T>> {
 public:
 
-     FlagsSummaryCls(String name, Map<String, T> value, String ifEmpty, Unknown level, bool showName, bool showSeparator);
+     FlagsSummaryCls(String name, T value, Unknown ifEmpty, DiagnosticLevel level, Unknown showName, Unknown showSeparator);
 
     virtual Map<String, T> value();
 
@@ -530,7 +531,7 @@ public:
     T value;
 
 
-     DiagnosticableNodeCls(String name, Unknown style, T value);
+     DiagnosticableNodeCls(String name, DiagnosticsTreeStyle style, T value);
 
     virtual DiagnosticPropertiesBuilder builder();
 
@@ -555,7 +556,7 @@ using DiagnosticableNode = std::shared_ptr<DiagnosticableNodeCls<T>>;
 class DiagnosticableTreeNodeCls : public DiagnosticableNodeCls<DiagnosticableTree> {
 public:
 
-     DiagnosticableTreeNodeCls(String name, Unknown style, T value);
+     DiagnosticableTreeNodeCls(String name, DiagnosticsTreeStyle style, T value);
     virtual List<DiagnosticsNode> getChildren();
 
 private:

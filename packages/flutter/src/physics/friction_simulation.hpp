@@ -46,7 +46,7 @@ using FrictionSimulation = std::shared_ptr<FrictionSimulationCls>;
 class BoundedFrictionSimulationCls : public FrictionSimulationCls {
 public:
 
-     BoundedFrictionSimulationCls(Unknown drag, Unknown position, Unknown velocity, double _minX, double _maxX);
+     BoundedFrictionSimulationCls(double drag, double position, double velocity, double _minX, double _maxX);
 
     virtual double x(double time);
 

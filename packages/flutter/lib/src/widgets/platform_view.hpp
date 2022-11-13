@@ -234,7 +234,7 @@ public:
 
 private:
 
-    virtual void  _(int id, ValueChanged<bool> onFocusChanged, PlatformViewCreatedCallback onPlatformViewCreated, String viewType);
+    virtual void  _(Unknown id, Unknown onFocusChanged, Unknown onPlatformViewCreated, Unknown viewType);
 
 };
 using PlatformViewCreationParams = std::shared_ptr<PlatformViewCreationParamsCls>;
@@ -314,7 +314,7 @@ using PlatformViewSurface = std::shared_ptr<PlatformViewSurfaceCls>;
 class AndroidViewSurfaceCls : public PlatformViewSurfaceCls {
 public:
 
-     AndroidViewSurfaceCls(AndroidViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key);
+     AndroidViewSurfaceCls(PlatformViewController controller, Set<Factory<OneSequenceGestureRecognizer>> gestureRecognizers, PlatformViewHitTestBehavior hitTestBehavior, Key key);
 
     virtual RenderObject createRenderObject(BuildContext context);
 

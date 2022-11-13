@@ -12,7 +12,7 @@
 class RenderSliverListCls : public RenderSliverMultiBoxAdaptorCls {
 public:
 
-     RenderSliverListCls(Unknown childManager);
+     RenderSliverListCls(RenderSliverBoxChildManager childManager);
     virtual void performLayout();
 
 private:

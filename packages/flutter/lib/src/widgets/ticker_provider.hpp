@@ -134,7 +134,8 @@ private:
     TickerProviderStateMixin<any> _creator;
 
 
-     _WidgetTickerCls(Unknown onTick, TickerProviderStateMixin<any> _creator, String debugLabel);
+     _WidgetTickerCls(TickerCallback onTick, TickerProviderStateMixin<any> _creator, String debugLabel);
+
 };
 using _WidgetTicker = std::shared_ptr<_WidgetTickerCls>;
 

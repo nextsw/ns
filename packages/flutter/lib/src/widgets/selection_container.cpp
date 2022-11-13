@@ -6,7 +6,7 @@ SelectionContainerCls::SelectionContainerCls(Widget child, SelectionContainerDel
     }
 }
 
-void SelectionContainerCls::disabled(Widget child, Key key)
+void SelectionContainerCls::disabled(Unknown child, Unknown key)
 
 SelectionRegistrar SelectionContainerCls::maybeOf(BuildContext context) {
     SelectionRegistrarScope scope = context-><SelectionRegistrarScope>dependOnInheritedWidgetOfExactType();
@@ -133,7 +133,7 @@ bool SelectionRegistrarScopeCls::updateShouldNotify(SelectionRegistrarScope oldW
     return oldWidget->registrar != registrar;
 }
 
-void SelectionRegistrarScopeCls::_disabled(Widget child)
+void SelectionRegistrarScopeCls::_disabled(Unknown child)
 
 Matrix4 SelectionContainerDelegateCls::getTransformFrom(Selectable child) {
     assert(_selectionContainerContext?->findRenderObject() != nullptr, __s("getTransformFrom cannot be called before SelectionContainer is laid out."));

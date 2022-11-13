@@ -493,12 +493,12 @@ void RenderViewportBaseCls<ParentDataClass>::_paintContents(PaintingContext cont
     }
 }
 
-RenderViewportCls::RenderViewportCls(double anchor, Unknown axisDirection, Unknown cacheExtent, Unknown cacheExtentStyle, RenderSliver center, List<RenderSliver> children, Unknown clipBehavior, Unknown crossAxisDirection, Unknown offset) {
+RenderViewportCls::RenderViewportCls(double anchor, AxisDirection axisDirection, double cacheExtent, CacheExtentStyle cacheExtentStyle, RenderSliver center, List<RenderSliver> children, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset) {
     {
         assert(anchor != nullptr);
         assert(anchor >= 0.0 && anchor <= 1.0);
-        assert(cacheExtentStyle() != CacheExtentStyleCls::viewport || cacheExtent() != nullptr);
-        assert(clipBehavior() != nullptr);
+        assert(cacheExtentStyle != CacheExtentStyleCls::viewport || cacheExtent != nullptr);
+        assert(clipBehavior != nullptr);
         _anchor = anchor;
         _center = center;
     }
@@ -732,7 +732,7 @@ double RenderViewportCls::_attemptLayout(double mainAxisExtent, double crossAxis
     return layoutChildSequence(center(), math->max(0.0, -centerOffset), leadingNegativeChild == nullptr? math->min(0.0, -centerOffset) : 0.0, centerOffset >= mainAxisExtent? centerOffset : reverseDirectionRemainingPaintExtent, forwardDirectionRemainingPaintExtent, mainAxisExtent, crossAxisExtent, GrowthDirectionCls::forward, childAfter, forwardDirectionRemainingCacheExtent, clampDouble(centerOffset, -_calculatedCacheExtent!, 0.0));
 }
 
-RenderShrinkWrappingViewportCls::RenderShrinkWrappingViewportCls(Unknown axisDirection, List<RenderSliver> children, Unknown clipBehavior, Unknown crossAxisDirection, Unknown offset) {
+RenderShrinkWrappingViewportCls::RenderShrinkWrappingViewportCls(AxisDirection axisDirection, List<RenderSliver> children, Clip clipBehavior, AxisDirection crossAxisDirection, ViewportOffset offset) {
     {
         addAll(children);
     }

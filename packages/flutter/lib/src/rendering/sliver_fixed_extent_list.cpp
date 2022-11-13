@@ -143,7 +143,7 @@ int RenderSliverFixedExtentBoxAdaptorCls::_calculateTrailingGarbage(int targetLa
     return trailingGarbage;
 }
 
-RenderSliverFixedExtentListCls::RenderSliverFixedExtentListCls(Unknown childManager, double itemExtent) {
+RenderSliverFixedExtentListCls::RenderSliverFixedExtentListCls(RenderSliverBoxChildManager childManager, double itemExtent) {
     {
         _itemExtent = itemExtent;
     }

@@ -74,7 +74,7 @@ using GestureRecognizer = std::shared_ptr<GestureRecognizerCls>;
 class OneSequenceGestureRecognizerCls : public GestureRecognizerCls {
 public:
 
-     OneSequenceGestureRecognizerCls(Object debugOwner, Unknown kind, Unknown supportedDevices);
+     OneSequenceGestureRecognizerCls(Object debugOwner, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices);
     virtual void addAllowedPointer(PointerDownEvent event);
 
     virtual void handleNonAllowedPointer(PointerDownEvent event);
@@ -129,7 +129,7 @@ public:
     double postAcceptSlopTolerance;
 
 
-     PrimaryPointerGestureRecognizerCls(Duration deadline, Object debugOwner, Unknown kind, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Unknown supportedDevices);
+     PrimaryPointerGestureRecognizerCls(Duration deadline, Object debugOwner, PointerDeviceKind kind, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Set<PointerDeviceKind> supportedDevices);
 
     virtual GestureRecognizerState state();
 

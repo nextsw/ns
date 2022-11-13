@@ -76,7 +76,7 @@ public:
     Widget child;
 
 
-     ActionListenerCls(Action<Intent> action, Widget child, Key key, ActionListenerCallback listener);
+     ActionListenerCls(Action<Intent> action, Widget child, Unknown key, ActionListenerCallback listener);
 
     virtual State<ActionListener> createState();
 
@@ -150,7 +150,7 @@ public:
     Widget child;
 
 
-     ActionsCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Key key);
+     ActionsCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Unknown key);
 
     template<typename T>
  static VoidCallback handler(BuildContext context, T intent);
@@ -225,7 +225,7 @@ public:
 
 private:
 
-     _ActionsMarkerCls(Map<Type, Action<Intent>> actions, Widget child, ActionDispatcher dispatcher, Object rebuildKey);
+     _ActionsMarkerCls(Map<Type, Action<Intent>> actions, Unknown child, ActionDispatcher dispatcher, Object rebuildKey);
 
 };
 using _ActionsMarker = std::shared_ptr<_ActionsMarkerCls>;
@@ -257,7 +257,7 @@ public:
     Widget child;
 
 
-     FocusableActionDetectorCls(Map<Type, Action<Intent>> actions, bool autofocus, Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, bool enabled, FocusNode focusNode, Key key, MouseCursor mouseCursor, ValueChanged<bool> onFocusChange, ValueChanged<bool> onShowFocusHighlight, ValueChanged<bool> onShowHoverHighlight, Map<ShortcutActivator, Intent> shortcuts);
+     FocusableActionDetectorCls(Map<Type, Action<Intent>> actions, bool autofocus, Widget child, bool descendantsAreFocusable, bool descendantsAreTraversable, bool enabled, FocusNode focusNode, Unknown key, MouseCursor mouseCursor, ValueChanged<bool> onFocusChange, ValueChanged<bool> onShowFocusHighlight, ValueChanged<bool> onShowHoverHighlight, Map<ShortcutActivator, Intent> shortcuts);
 
     virtual State<FocusableActionDetector> createState();
 

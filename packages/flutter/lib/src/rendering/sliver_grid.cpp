@@ -118,7 +118,7 @@ String SliverGridParentDataCls::toString() {
     return __sf("crossAxisOffset=%s; %s", crossAxisOffset, super->toString());
 }
 
-RenderSliverGridCls::RenderSliverGridCls(Unknown childManager, SliverGridDelegate gridDelegate) {
+RenderSliverGridCls::RenderSliverGridCls(RenderSliverBoxChildManager childManager, SliverGridDelegate gridDelegate) {
     {
         assert(gridDelegate != nullptr);
         _gridDelegate = gridDelegate;

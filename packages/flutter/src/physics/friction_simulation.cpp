@@ -49,7 +49,7 @@ double FrictionSimulationCls::_dragFor(double startPosition, double endPosition,
     return as<double>(math->pow(math->e, (startVelocity - endVelocity) / (startPosition - endPosition)));
 }
 
-BoundedFrictionSimulationCls::BoundedFrictionSimulationCls(Unknown drag, Unknown position, Unknown velocity, double _minX, double _maxX) {
+BoundedFrictionSimulationCls::BoundedFrictionSimulationCls(double drag, double position, double velocity, double _minX, double _maxX) {
     {
         assert(clampDouble(position, _minX, _maxX) == position);
     }

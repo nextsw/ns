@@ -67,20 +67,20 @@ _ErrorDiagnosticCls::_ErrorDiagnosticCls(String message, DiagnosticLevel level, 
 
 void _ErrorDiagnosticCls::_fromParts(List<Object> messageParts, DiagnosticLevel level, DiagnosticsTreeStyle style)
 
-ErrorDescriptionCls::ErrorDescriptionCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::info) {
+ErrorDescriptionCls::ErrorDescriptionCls(String message) : _ErrorDiagnostic(DiagnosticLevelCls::info) {
 }
 
-void ErrorDescriptionCls::_fromParts(Unknown messageParts)
+void ErrorDescriptionCls::_fromParts(String messageParts)
 
-ErrorSummaryCls::ErrorSummaryCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::summary) {
+ErrorSummaryCls::ErrorSummaryCls(String message) : _ErrorDiagnostic(DiagnosticLevelCls::summary) {
 }
 
-void ErrorSummaryCls::_fromParts(Unknown messageParts)
+void ErrorSummaryCls::_fromParts(String messageParts)
 
-ErrorHintCls::ErrorHintCls(Unknown message) : _ErrorDiagnostic(DiagnosticLevelCls::hint) {
+ErrorHintCls::ErrorHintCls(String message) : _ErrorDiagnostic(DiagnosticLevelCls::hint) {
 }
 
-void ErrorHintCls::_fromParts(Unknown messageParts)
+void ErrorHintCls::_fromParts(String messageParts)
 
 ErrorSpacerCls::ErrorSpacerCls() : DiagnosticsProperty<void>(__s(""), nullptr__s(""), false) {
 }
@@ -409,10 +409,10 @@ void debugPrintStack(String label, int maxFrames, StackTrace stackTrace) {
     debugPrint(FlutterErrorCls->defaultStackFilter(lines)->join(__s("\n")));
 }
 
-DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, StackTrace stack, bool showSeparator, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
+DiagnosticsStackTraceCls::DiagnosticsStackTraceCls(String name, StackTrace stack, Unknown showSeparator, IterableFilter<String> stackFilter) : DiagnosticsBlock(name, stack, _applyStackFilter(stack, stackFilter), DiagnosticsTreeStyleCls::flat, true) {
 }
 
-void DiagnosticsStackTraceCls::singleFrame(String name, String frame, bool showSeparator)
+void DiagnosticsStackTraceCls::singleFrame(String name, String frame, Unknown showSeparator)
 
 bool DiagnosticsStackTraceCls::allowTruncate() {
     return false;

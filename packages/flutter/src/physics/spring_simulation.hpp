@@ -62,7 +62,8 @@ using SpringSimulation = std::shared_ptr<SpringSimulationCls>;
 class ScrollSpringSimulationCls : public SpringSimulationCls {
 public:
 
-     ScrollSpringSimulationCls(Unknown spring, Unknown start, Unknown end, Unknown velocity, Tolerance tolerance);
+     ScrollSpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Tolerance tolerance);
+
     virtual double x(double time);
 
 private:

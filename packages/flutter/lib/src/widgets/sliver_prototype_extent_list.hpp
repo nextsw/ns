@@ -49,7 +49,7 @@ private:
     static Object _prototypeSlot;
 
 
-     _SliverPrototypeExtentListElementCls(SliverPrototypeExtentList widget);
+     _SliverPrototypeExtentListElementCls(Widget widget);
 };
 using _SliverPrototypeExtentListElement = std::shared_ptr<_SliverPrototypeExtentListElementCls>;
 

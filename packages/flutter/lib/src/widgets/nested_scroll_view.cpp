@@ -661,7 +661,7 @@ Drag _NestedScrollPositionCls::drag(DragStartDetails details, VoidCallback dragC
     return coordinator->drag(details, dragCancelCallback);
 }
 
-_NestedScrollPositionCls::_NestedScrollPositionCls(ScrollContext context, _NestedScrollCoordinator coordinator, String debugLabel, double initialPixels, Unknown oldPosition, ScrollPhysics physics) {
+_NestedScrollPositionCls::_NestedScrollPositionCls(ScrollContext context, _NestedScrollCoordinator coordinator, String debugLabel, double initialPixels, ScrollPosition oldPosition, ScrollPhysics physics) {
     {
         if (!hasPixels() && initialPixels != nullptr) {
             correctPixels(initialPixels);
@@ -944,7 +944,7 @@ void RenderSliverOverlapInjectorCls::debugFillProperties(DiagnosticPropertiesBui
     properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle()));
 }
 
-NestedScrollViewViewportCls::NestedScrollViewViewportCls(double anchor, AxisDirection axisDirection, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, SliverOverlapAbsorberHandle handle, Key key, ViewportOffset offset, Unknown slivers) {
+NestedScrollViewViewportCls::NestedScrollViewViewportCls(double anchor, AxisDirection axisDirection, Key center, Clip clipBehavior, AxisDirection crossAxisDirection, SliverOverlapAbsorberHandle handle, Key key, ViewportOffset offset, List<Widget> slivers) {
     {
         assert(handle != nullptr);
     }
@@ -963,7 +963,7 @@ void NestedScrollViewViewportCls::debugFillProperties(DiagnosticPropertiesBuilde
     properties->add(<SliverOverlapAbsorberHandle>make<DiagnosticsPropertyCls>(__s("handle"), handle));
 }
 
-RenderNestedScrollViewViewportCls::RenderNestedScrollViewViewportCls(Unknown anchor, Unknown axisDirection, Unknown center, Unknown children, Unknown clipBehavior, Unknown crossAxisDirection, SliverOverlapAbsorberHandle handle, Unknown offset) {
+RenderNestedScrollViewViewportCls::RenderNestedScrollViewViewportCls(double anchor, AxisDirection axisDirection, RenderSliver center, List<RenderSliver> children, Clip clipBehavior, AxisDirection crossAxisDirection, SliverOverlapAbsorberHandle handle, ViewportOffset offset) {
     {
         assert(handle != nullptr);
         _handle = handle;

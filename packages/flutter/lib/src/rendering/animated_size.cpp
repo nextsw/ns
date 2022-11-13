@@ -1,5 +1,5 @@
 #include "animated_size.hpp"
-RenderAnimatedSizeCls::RenderAnimatedSizeCls(Unknown alignment, Unknown child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, Unknown textDirection, TickerProvider vsync) {
+RenderAnimatedSizeCls::RenderAnimatedSizeCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, Curve curve, Duration duration, Duration reverseDuration, TextDirection textDirection, TickerProvider vsync) {
     {
         assert(vsync != nullptr);
         assert(duration != nullptr);

@@ -171,7 +171,7 @@ public:
 
      HeroControllerScopeCls(Widget child, HeroController controller, Key key);
 
-    virtual void  none(Widget child, Key key);
+    virtual void  none(Unknown child, Unknown key);
 
     static HeroController of(BuildContext context);
 

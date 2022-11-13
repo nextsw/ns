@@ -129,7 +129,7 @@ private:
     int _lastKeyFrameIndex;
 
 
-    virtual void  _(List<_KeyFrame> _keyFrames, double maxDuration);
+    virtual void  _(Unknown _keyFrames, Unknown maxDuration);
 
 };
 using _DiscreteKeyFrameSimulation = std::shared_ptr<_DiscreteKeyFrameSimulationCls>;
@@ -741,7 +741,7 @@ public:
 
 private:
 
-     _ScribblePlaceholderCls(PlaceholderAlignment alignment, TextBaseline baseline, Widget child, Size size);
+     _ScribblePlaceholderCls(Unknown alignment, Unknown baseline, Unknown child, Size size);
 
 };
 using _ScribblePlaceholder = std::shared_ptr<_ScribblePlaceholderCls>;

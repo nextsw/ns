@@ -96,7 +96,7 @@ template<typename T>
 class ColorSwatchCls : public ColorCls {
 public:
 
-     ColorSwatchCls(Unknown primary, Map<T, Color> _swatch);
+     ColorSwatchCls(int primary, Map<T, Color> _swatch);
     virtual Color operator[](T index);
 
     virtual bool operator==(Object other);
@@ -119,7 +119,7 @@ using ColorSwatch = std::shared_ptr<ColorSwatchCls<T>>;
 class ColorPropertyCls : public DiagnosticsPropertyCls<Color> {
 public:
 
-     ColorPropertyCls(String name, Unknown value, Object defaultValue, Unknown level, bool showName, DiagnosticsTreeStyle style);
+     ColorPropertyCls(String name, T value, Object defaultValue, DiagnosticLevel level, bool showName, DiagnosticsTreeStyle style);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 

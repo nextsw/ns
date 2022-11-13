@@ -90,7 +90,7 @@ using RenderSliverPersistentHeader = std::shared_ptr<RenderSliverPersistentHeade
 class RenderSliverScrollingPersistentHeaderCls : public RenderSliverPersistentHeaderCls {
 public:
 
-     RenderSliverScrollingPersistentHeaderCls(Unknown child, OverScrollHeaderStretchConfiguration stretchConfiguration);
+     RenderSliverScrollingPersistentHeaderCls(RenderBox child, OverScrollHeaderStretchConfiguration stretchConfiguration);
     virtual double updateGeometry();
 
     virtual void performLayout();
@@ -109,7 +109,7 @@ public:
     PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration;
 
 
-     RenderSliverPinnedPersistentHeaderCls(Unknown child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration);
+     RenderSliverPinnedPersistentHeaderCls(RenderBox child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration);
     virtual void performLayout();
 
     virtual double childMainAxisPosition(RenderBox child);
@@ -142,7 +142,7 @@ public:
     PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration;
 
 
-     RenderSliverFloatingPersistentHeaderCls(Unknown child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync);
+     RenderSliverFloatingPersistentHeaderCls(RenderBox child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync);
 
     virtual void detach();
 
@@ -190,7 +190,7 @@ using RenderSliverFloatingPersistentHeader = std::shared_ptr<RenderSliverFloatin
 class RenderSliverFloatingPinnedPersistentHeaderCls : public RenderSliverFloatingPersistentHeaderCls {
 public:
 
-     RenderSliverFloatingPinnedPersistentHeaderCls(Unknown child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, Unknown vsync);
+     RenderSliverFloatingPinnedPersistentHeaderCls(RenderBox child, PersistentHeaderShowOnScreenConfiguration showOnScreenConfiguration, FloatingHeaderSnapConfiguration snapConfiguration, OverScrollHeaderStretchConfiguration stretchConfiguration, TickerProvider vsync);
     virtual double updateGeometry();
 
 private:

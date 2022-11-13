@@ -224,7 +224,7 @@ HeroControllerScopeCls::HeroControllerScopeCls(Widget child, HeroController cont
     }
 }
 
-void HeroControllerScopeCls::none(Widget child, Key key)
+void HeroControllerScopeCls::none(Unknown child, Unknown key)
 
 HeroController HeroControllerScopeCls::of(BuildContext context) {
     HeroControllerScope host = context-><HeroControllerScope>dependOnInheritedWidgetOfExactType();

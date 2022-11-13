@@ -139,7 +139,7 @@ int AsyncSnapshotCls<T>::hashCode() {
 }
 
 template<typename T>
-void AsyncSnapshotCls<T>::_(ConnectionState connectionState, T data, Object error, StackTrace stackTrace)
+void AsyncSnapshotCls<T>::_(Unknown connectionState, Unknown data, Unknown error, Unknown stackTrace)
 
 template<typename T>
 StreamBuilderCls<T>::StreamBuilderCls(AsyncWidgetBuilder<T> builder, T initialData, Key key, Stream<T> stream) {

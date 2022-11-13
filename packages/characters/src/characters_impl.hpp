@@ -14,7 +14,7 @@ public:
     String string;
 
 
-     StringCharactersCls(String string);
+     StringCharactersCls(String stringValue);
     virtual CharacterRange iterator();
 
     virtual CharacterRange iteratorAtEnd();

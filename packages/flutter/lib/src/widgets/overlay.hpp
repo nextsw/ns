@@ -174,7 +174,7 @@ public:
 
 private:
 
-     _TheatreElementCls(_Theatre widget);
+     _TheatreElementCls(Widget widget);
 };
 using _TheatreElement = std::shared_ptr<_TheatreElementCls>;
 

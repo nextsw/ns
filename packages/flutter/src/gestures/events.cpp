@@ -214,7 +214,7 @@ PointerRemovedEvent _CopyPointerRemovedEventCls::copyWith(int buttons, Offset de
     return make<PointerRemovedEventCls>(timeStamp | this->timeStamp, kind | this->kind, device | this->device, position | this->position, obscured | this->obscured, pressureMin | this->pressureMin, pressureMax | this->pressureMax, distanceMax | this->distanceMax, radiusMin | this->radiusMin, radiusMax | this->radiusMax, embedderId | this->embedderId)->transformed(transform);
 }
 
-PointerRemovedEventCls::PointerRemovedEventCls(int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, PointerRemovedEvent original, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMax, double radiusMin, Duration timeStamp) : PointerEvent(0.0) {
+PointerRemovedEventCls::PointerRemovedEventCls(int device, double distanceMax, int embedderId, PointerDeviceKind kind, bool obscured, PointerEvent original, int pointer, Offset position, double pressureMax, double pressureMin, double radiusMax, double radiusMin, Duration timeStamp) : PointerEvent(0.0) {
 }
 
 PointerRemovedEvent PointerRemovedEventCls::transformed(Matrix4 transform) {

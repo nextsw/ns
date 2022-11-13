@@ -60,7 +60,7 @@ void FocusAttachmentCls::reparent(FocusNode parent) {
     }
 }
 
-void FocusAttachmentCls::_(FocusNode _node)
+void FocusAttachmentCls::_(Unknown _node)
 
 FocusNodeCls::FocusNodeCls(bool canRequestFocus, String debugLabel, bool descendantsAreFocusable, bool descendantsAreTraversable, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) {
     {
@@ -446,10 +446,10 @@ void FocusNodeCls::_setAsFocusedChildForScope() {
     }
 }
 
-FocusScopeNodeCls::FocusScopeNodeCls(Unknown canRequestFocus, Unknown debugLabel, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, Unknown skipTraversal) : FocusNode(true) {
+FocusScopeNodeCls::FocusScopeNodeCls(bool canRequestFocus, String debugLabel, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) : FocusNode(true) {
     {
-        assert(skipTraversal() != nullptr);
-        assert(canRequestFocus() != nullptr);
+        assert(skipTraversal != nullptr);
+        assert(canRequestFocus != nullptr);
     }
 }
 

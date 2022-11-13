@@ -133,8 +133,6 @@
 #include "src/widgets/will_pop_scope.hpp"
 
 
-String toString();
-
 
 
 #endif

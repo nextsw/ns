@@ -287,7 +287,7 @@ using RenderSliverSingleBoxAdapter = std::shared_ptr<RenderSliverSingleBoxAdapte
 class RenderSliverToBoxAdapterCls : public RenderSliverSingleBoxAdapterCls {
 public:
 
-     RenderSliverToBoxAdapterCls(Unknown child);
+     RenderSliverToBoxAdapterCls(RenderBox child);
     virtual void performLayout();
 
 private:

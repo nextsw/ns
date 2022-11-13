@@ -14,11 +14,11 @@ String IconDataCls::toString() {
     return __sf("IconData(U+%s)", codePoint->toRadixString(16)->toUpperCase()->padLeft(5, __s("0")));
 }
 
-IconDataPropertyCls::IconDataPropertyCls(String name, Unknown value, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style) {
+IconDataPropertyCls::IconDataPropertyCls(String name, T value, String ifNull, DiagnosticLevel level, bool showName, DiagnosticsTreeStyle style) : DiagnosticsProperty<IconData>(name, valuename, value) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 

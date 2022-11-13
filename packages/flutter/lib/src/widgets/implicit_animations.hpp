@@ -331,7 +331,7 @@ public:
 
      AnimatedPositionedCls(double bottom, Widget child, Curve curve, Duration duration, double height, Key key, double left, VoidCallback onEnd, double right, double top, double width);
 
-    virtual void  fromRect(Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, Rect rect);
+    virtual void  fromRect(Unknown child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, Rect rect);
 
     virtual AnimatedWidgetBaseState<AnimatedPositioned> createState();
 

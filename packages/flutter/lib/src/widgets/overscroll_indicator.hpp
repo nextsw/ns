@@ -192,7 +192,7 @@ public:
 
 private:
 
-     _GlowingOverscrollIndicatorPainterCls(AxisDirection axisDirection, _GlowController leadingController, Unknown repaint, _GlowController trailingController);
+     _GlowingOverscrollIndicatorPainterCls(AxisDirection axisDirection, _GlowController leadingController, Listenable repaint, _GlowController trailingController);
     virtual void _paintSide(Canvas canvas, Size size, _GlowController controller, AxisDirection axisDirection, GrowthDirection growthDirection);
 
 };

@@ -257,7 +257,7 @@ void RenderAligningShiftedBoxCls::_markNeedResolution() {
     markNeedsLayout();
 }
 
-RenderPositionedBoxCls::RenderPositionedBoxCls(Unknown alignment, Unknown child, double heightFactor, Unknown textDirection, double widthFactor) {
+RenderPositionedBoxCls::RenderPositionedBoxCls(AlignmentGeometry alignment, RenderBox child, double heightFactor, TextDirection textDirection, double widthFactor) {
     {
         assert(widthFactor == nullptr || widthFactor >= 0.0);
         assert(heightFactor == nullptr || heightFactor >= 0.0);
@@ -348,7 +348,7 @@ void RenderPositionedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder pro
     properties->add(make<DoublePropertyCls>(__s("heightFactor"), _heightFactor, __s("expand")));
 }
 
-RenderConstrainedOverflowBoxCls::RenderConstrainedOverflowBoxCls(Unknown alignment, Unknown child, double maxHeight, double maxWidth, double minHeight, double minWidth, Unknown textDirection) {
+RenderConstrainedOverflowBoxCls::RenderConstrainedOverflowBoxCls(AlignmentGeometry alignment, RenderBox child, double maxHeight, double maxWidth, double minHeight, double minWidth, TextDirection textDirection) {
     {
         _minWidth = minWidth;
         _maxWidth = maxWidth;
@@ -432,9 +432,9 @@ BoxConstraints RenderConstrainedOverflowBoxCls::_getInnerConstraints(BoxConstrai
     return make<BoxConstraintsCls>(_minWidth | constraints->minWidth, _maxWidth | constraints->maxWidth, _minHeight | constraints->minHeight, _maxHeight | constraints->maxHeight);
 }
 
-RenderConstraintsTransformBoxCls::RenderConstraintsTransformBoxCls(Unknown alignment, Unknown child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, Unknown textDirection) {
+RenderConstraintsTransformBoxCls::RenderConstraintsTransformBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, TextDirection textDirection) {
     {
-        assert(alignment() != nullptr);
+        assert(alignment != nullptr);
         assert(clipBehavior != nullptr);
         assert(constraintsTransform != nullptr);
         _constraintsTransform = constraintsTransform;
@@ -547,10 +547,10 @@ String RenderConstraintsTransformBoxCls::toStringShort() {
     return header;
 }
 
-RenderUnconstrainedBoxCls::RenderUnconstrainedBoxCls(Unknown alignment, Unknown child, Unknown clipBehavior, Axis constrainedAxis, Unknown textDirection) : RenderConstraintsTransformBox(_convertAxis(constrainedAxis)) {
+RenderUnconstrainedBoxCls::RenderUnconstrainedBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, Axis constrainedAxis, TextDirection textDirection) : RenderConstraintsTransformBox(_convertAxis(constrainedAxis)) {
     {
-        assert(alignment() != nullptr);
-        assert(clipBehavior() != nullptr);
+        assert(alignment != nullptr);
+        assert(clipBehavior != nullptr);
         _constrainedAxis = constrainedAxis;
     }
 }
@@ -586,7 +586,7 @@ BoxConstraintsTransform RenderUnconstrainedBoxCls::_convertAxis(Axis constrained
     ;
 }
 
-RenderSizedOverflowBoxCls::RenderSizedOverflowBoxCls(Unknown alignment, Unknown child, Size requestedSize, Unknown textDirection) {
+RenderSizedOverflowBoxCls::RenderSizedOverflowBoxCls(AlignmentGeometry alignment, RenderBox child, Size requestedSize, TextDirection textDirection) {
     {
         assert(requestedSize != nullptr);
         _requestedSize = requestedSize;
@@ -641,7 +641,7 @@ void RenderSizedOverflowBoxCls::performLayout() {
     }
 }
 
-RenderFractionallySizedOverflowBoxCls::RenderFractionallySizedOverflowBoxCls(Unknown alignment, Unknown child, double heightFactor, Unknown textDirection, double widthFactor) {
+RenderFractionallySizedOverflowBoxCls::RenderFractionallySizedOverflowBoxCls(AlignmentGeometry alignment, RenderBox child, double heightFactor, TextDirection textDirection, double widthFactor) {
     {
         _widthFactor = widthFactor;
         _heightFactor = heightFactor;

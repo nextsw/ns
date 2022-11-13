@@ -705,7 +705,7 @@ void RouteAwareCls::didPushNext() {
 }
 
 template<typename T>
-RawDialogRouteCls<T>::RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, Unknown settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration) {
+RawDialogRouteCls<T>::RawDialogRouteCls(Offset anchorPoint, Color barrierColor, bool barrierDismissible, String barrierLabel, RoutePageBuilder pageBuilder, RouteSettings settings, RouteTransitionsBuilder transitionBuilder, Duration transitionDuration) {
     {
         assert(barrierDismissible != nullptr);
         _pageBuilder = pageBuilder;

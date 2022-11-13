@@ -53,7 +53,7 @@ private:
     Element _child;
 
 
-     _LayoutBuilderElementCls(ConstrainedLayoutBuilder<ConstraintType> widget);
+     _LayoutBuilderElementCls(Widget widget);
     virtual void _layout(ConstraintType constraints);
 
 };
@@ -85,7 +85,7 @@ using RenderConstrainedLayoutBuilder = std::shared_ptr<RenderConstrainedLayoutBu
 class LayoutBuilderCls : public ConstrainedLayoutBuilderCls<BoxConstraints> {
 public:
 
-     LayoutBuilderCls(Unknown builder, Key key);
+     LayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Key key);
 
     virtual LayoutWidgetBuilder builder();
 

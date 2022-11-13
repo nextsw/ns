@@ -102,7 +102,7 @@ private:
     Set<Element> _forgottenChildren;
 
 
-     _TableElementCls(Table widget);
+     _TableElementCls(Widget widget);
     virtual void _updateRenderObjectChildren();
 
 };

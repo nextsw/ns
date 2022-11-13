@@ -32,6 +32,9 @@ String SpringSimulationCls::toString() {
     return __sf("%s(end: %s, %s)", objectRuntimeType(this, __s("SpringSimulation")), _endPosition->toStringAsFixed(1), type());
 }
 
+ScrollSpringSimulationCls::ScrollSpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Tolerance tolerance) : SpringSimulation(spring, start, end, velocityspring, start, end, velocity) {
+}
+
 double ScrollSpringSimulationCls::x(double time) {
     return isDone(time)? _endPosition : super->x(time);
 }

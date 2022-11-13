@@ -16,7 +16,7 @@ public:
     BorderRadiusGeometry borderRadius;
 
 
-     BeveledRectangleBorderCls(BorderRadiusGeometry borderRadius, BorderSide side);
+     BeveledRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side);
 
     virtual EdgeInsetsGeometry dimensions();
 

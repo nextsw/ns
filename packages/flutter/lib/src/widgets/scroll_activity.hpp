@@ -64,7 +64,7 @@ using ScrollActivity = std::shared_ptr<ScrollActivityCls>;
 class IdleScrollActivityCls : public ScrollActivityCls {
 public:
 
-     IdleScrollActivityCls(Unknown delegate);
+     IdleScrollActivityCls(ScrollActivityDelegate delegate);
     virtual void applyNewDimensions();
 
     virtual bool shouldIgnorePointer();
@@ -168,7 +168,7 @@ using ScrollDragController = std::shared_ptr<ScrollDragControllerCls>;
 class DragScrollActivityCls : public ScrollActivityCls {
 public:
 
-     DragScrollActivityCls(Unknown delegate, ScrollDragController controller);
+     DragScrollActivityCls(ScrollActivityDelegate delegate, ScrollDragController controller);
 
     virtual void dispatchScrollStartNotification(ScrollMetrics metrics, BuildContext context);
 
@@ -198,7 +198,7 @@ using DragScrollActivity = std::shared_ptr<DragScrollActivityCls>;
 class BallisticScrollActivityCls : public ScrollActivityCls {
 public:
 
-     BallisticScrollActivityCls(Unknown delegate, Simulation simulation, TickerProvider vsync);
+     BallisticScrollActivityCls(ScrollActivityDelegate delegate, Simulation simulation, TickerProvider vsync);
 
     virtual void resetActivity();
 
@@ -232,7 +232,7 @@ using BallisticScrollActivity = std::shared_ptr<BallisticScrollActivityCls>;
 class DrivenScrollActivityCls : public ScrollActivityCls {
 public:
 
-     DrivenScrollActivityCls(Unknown delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync);
+     DrivenScrollActivityCls(ScrollActivityDelegate delegate, Curve curve, Duration duration, double from, double to, TickerProvider vsync);
 
     virtual Future<void> done();
 

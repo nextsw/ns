@@ -275,6 +275,9 @@ _CachedImageBaseCls::_CachedImageBaseCls(ImageStreamCompleter completer, int siz
     }
 }
 
+_CachedImageCls::_CachedImageCls(ImageStreamCompleter completer, int sizeBytes) : _CachedImageBase(completercompleter) {
+}
+
 void _LiveImageCls::dispose() {
     completer->removeOnLastListenerRemovedCallback(_handleRemove);
     super->dispose();

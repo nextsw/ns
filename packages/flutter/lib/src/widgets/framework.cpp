@@ -1631,7 +1631,7 @@ ErrorWidgetCls::ErrorWidgetCls(Object exception) : LeafRenderObjectWidget(make<U
     }
 }
 
-void ErrorWidgetCls::withDetails(FlutterError error, String message)
+void ErrorWidgetCls::withDetails(FlutterError error, Unknown message)
 
 RenderBox ErrorWidgetCls::createRenderObject(BuildContext context) {
     return make<RenderErrorBoxCls>(message);
@@ -2347,7 +2347,7 @@ void SingleChildRenderObjectElementCls::removeRenderObjectChild(RenderObject chi
     assert(renderObject == this->renderObject);
 }
 
-MultiChildRenderObjectElementCls::MultiChildRenderObjectElementCls(MultiChildRenderObjectWidget widget) {
+MultiChildRenderObjectElementCls::MultiChildRenderObjectElementCls(Widget widget) {
     {
         assert(!debugChildrenHaveDuplicateKeys(widget, widget->children));
     }

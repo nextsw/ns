@@ -39,9 +39,9 @@ _MouseStateCls::_MouseStateCls(PointerEvent initialEvent) {
     }
 }
 
-void _MouseTrackerUpdateDetailsCls::byNewFrame(LinkedHashMap<MouseTrackerAnnotation, Matrix4> lastAnnotations, LinkedHashMap<MouseTrackerAnnotation, Matrix4> nextAnnotations, PointerEvent previousEvent)
+void _MouseTrackerUpdateDetailsCls::byNewFrame(Unknown lastAnnotations, Unknown nextAnnotations, PointerEvent previousEvent)
 
-void _MouseTrackerUpdateDetailsCls::byPointerEvent(LinkedHashMap<MouseTrackerAnnotation, Matrix4> lastAnnotations, LinkedHashMap<MouseTrackerAnnotation, Matrix4> nextAnnotations, PointerEvent previousEvent, PointerEvent triggeringEvent)
+void _MouseTrackerUpdateDetailsCls::byPointerEvent(Unknown lastAnnotations, Unknown nextAnnotations, Unknown previousEvent, PointerEvent triggeringEvent)
 
 int _MouseTrackerUpdateDetailsCls::device() {
     int result = (previousEvent | triggeringEvent)!->device;

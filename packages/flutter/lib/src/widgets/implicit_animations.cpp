@@ -309,7 +309,7 @@ AnimatedPositionedCls::AnimatedPositionedCls(double bottom, Widget child, Curve 
     }
 }
 
-void AnimatedPositionedCls::fromRect(Widget child, Curve curve, Duration duration, Key key, VoidCallback onEnd, Rect rect)
+void AnimatedPositionedCls::fromRect(Unknown child, Unknown curve, Unknown duration, Unknown key, Unknown onEnd, Rect rect)
 
 AnimatedWidgetBaseState<AnimatedPositioned> AnimatedPositionedCls::createState() {
     return make<_AnimatedPositionedStateCls>();

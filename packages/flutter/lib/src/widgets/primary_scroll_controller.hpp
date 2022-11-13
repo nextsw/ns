@@ -23,7 +23,7 @@ public:
 
      PrimaryScrollControllerCls(Set<TargetPlatform> automaticallyInheritForPlatforms, Widget child, ScrollController controller, Key key, Axis scrollDirection);
 
-    virtual void  none(Widget child, Key key);
+    virtual void  none(Unknown child, Unknown key);
 
     static bool shouldInherit(BuildContext context, Axis scrollDirection);
 

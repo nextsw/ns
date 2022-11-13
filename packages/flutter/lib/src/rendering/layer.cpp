@@ -945,7 +945,7 @@ void ImageFilterLayerCls::debugFillProperties(DiagnosticPropertiesBuilder proper
     properties->add(<ImageFilter>make<DiagnosticsPropertyCls>(__s("imageFilter"), imageFilter()));
 }
 
-TransformLayerCls::TransformLayerCls(Unknown offset, Matrix4 transform) {
+TransformLayerCls::TransformLayerCls(Offset offset, Matrix4 transform) {
     {
         _transform = transform;
     }
@@ -1015,7 +1015,7 @@ Offset TransformLayerCls::_transformOffset(Offset localPosition) {
     return MatrixUtilsCls->transformPoint(_invertedTransform!, localPosition);
 }
 
-OpacityLayerCls::OpacityLayerCls(int alpha, Unknown offset) {
+OpacityLayerCls::OpacityLayerCls(int alpha, Offset offset) {
     {
         _alpha = alpha;
     }

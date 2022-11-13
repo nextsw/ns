@@ -31,7 +31,7 @@ using RenderSliverFillViewport = std::shared_ptr<RenderSliverFillViewportCls>;
 class RenderSliverFillRemainingWithScrollableCls : public RenderSliverSingleBoxAdapterCls {
 public:
 
-     RenderSliverFillRemainingWithScrollableCls(Unknown child);
+     RenderSliverFillRemainingWithScrollableCls(RenderBox child);
     virtual void performLayout();
 
 private:
@@ -42,7 +42,7 @@ using RenderSliverFillRemainingWithScrollable = std::shared_ptr<RenderSliverFill
 class RenderSliverFillRemainingCls : public RenderSliverSingleBoxAdapterCls {
 public:
 
-     RenderSliverFillRemainingCls(Unknown child);
+     RenderSliverFillRemainingCls(RenderBox child);
     virtual void performLayout();
 
 private:
@@ -53,7 +53,7 @@ using RenderSliverFillRemaining = std::shared_ptr<RenderSliverFillRemainingCls>;
 class RenderSliverFillRemainingAndOverscrollCls : public RenderSliverSingleBoxAdapterCls {
 public:
 
-     RenderSliverFillRemainingAndOverscrollCls(Unknown child);
+     RenderSliverFillRemainingAndOverscrollCls(RenderBox child);
     virtual void performLayout();
 
 private:

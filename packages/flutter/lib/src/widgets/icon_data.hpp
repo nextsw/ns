@@ -32,7 +32,7 @@ using IconData = std::shared_ptr<IconDataCls>;
 class IconDataPropertyCls : public DiagnosticsPropertyCls<IconData> {
 public:
 
-     IconDataPropertyCls(String name, Unknown value, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style);
+     IconDataPropertyCls(String name, T value, String ifNull, DiagnosticLevel level, bool showName, DiagnosticsTreeStyle style);
 
     virtual Map<String, Object> toJsonMap(DiagnosticsSerializationDelegate delegate);
 

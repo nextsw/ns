@@ -33,7 +33,7 @@ template<typename T>
 class InheritedModelElementCls : public InheritedElementCls {
 public:
 
-     InheritedModelElementCls(InheritedModel<T> widget);
+     InheritedModelElementCls(Widget widget);
     virtual void updateDependencies(Element dependent, Object aspect);
 
     virtual void notifyDependent(InheritedModel<T> oldWidget, Element dependent);

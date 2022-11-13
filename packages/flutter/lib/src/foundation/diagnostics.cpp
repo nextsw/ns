@@ -524,12 +524,12 @@ MessagePropertyCls::MessagePropertyCls(String name, String message, DiagnosticLe
     }
 }
 
-StringPropertyCls::StringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, String ifEmpty, Unknown level, bool quoted, bool showName, DiagnosticsTreeStyle style, String tooltip) {
+StringPropertyCls::StringPropertyCls(String name, T value, Unknown defaultValue, String description, Unknown ifEmpty, DiagnosticLevel level, bool quoted, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip) : DiagnosticsProperty<String>(name, valuename, value) {
     {
         assert(showName != nullptr);
         assert(quoted != nullptr);
         assert(style != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
@@ -554,7 +554,7 @@ String StringPropertyCls::valueToString(TextTreeConfiguration parentConfiguratio
 }
 
 template<typename T>
-void _NumPropertyCls<T>::lazy(String name, Unknown computeValue, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit)
+void _NumPropertyCls<T>::lazy(String name, T computeValue, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip, String unit)
 
 template<typename T>
 Map<String, Object> _NumPropertyCls<T>::toJsonMap(DiagnosticsSerializationDelegate delegate) {
@@ -574,24 +574,28 @@ String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfigurati
     return unit != nullptr? __sf("%s%s", numberToString(), unit) : numberToString();
 }
 
-DoublePropertyCls::DoublePropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit) {
+template<typename T>
+_NumPropertyCls<T>::_NumPropertyCls(String name, T value, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip, String unit) : DiagnosticsProperty<T>(name, valuename, value) {
+}
+
+DoublePropertyCls::DoublePropertyCls(String name, T value, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, Unknown tooltip, String unit) : _NumProperty<double>(name, valuename, value) {
     {
         assert(showName != nullptr);
         assert(style != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
-void DoublePropertyCls::lazy(String name, Unknown computeValue, Object defaultValue, String ifNull, Unknown level, bool showName, String tooltip, String unit)
+void DoublePropertyCls::lazy(String name, T computeValue, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, Unknown tooltip, String unit)
 
 String DoublePropertyCls::numberToString() {
     return debugFormatDouble(value());
 }
 
-IntPropertyCls::IntPropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String unit) {
+IntPropertyCls::IntPropertyCls(String name, T value, Unknown defaultValue, String ifNull, DiagnosticLevel level, Unknown showName, DiagnosticsTreeStyle style, String unit) : _NumProperty<int>(name, valuename, value) {
     {
         assert(showName != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
         assert(style != nullptr);
     }
 }
@@ -600,10 +604,10 @@ String IntPropertyCls::numberToString() {
     return value()->toString();
 }
 
-PercentPropertyCls::PercentPropertyCls(String name, Unknown fraction, String ifNull, Unknown level, bool showName, String tooltip, String unit) {
+PercentPropertyCls::PercentPropertyCls(String name, T fraction, String ifNull, DiagnosticLevel level, Unknown showName, Unknown tooltip, String unit) : DoubleProperty(name, fractionname, fraction) {
     {
         assert(showName != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
@@ -678,12 +682,12 @@ DiagnosticLevel FlagPropertyCls::level() {
 }
 
 template<typename T>
-IterablePropertyCls<T>::IterablePropertyCls(String name, Unknown value, Object defaultValue, String ifEmpty, String ifNull, Unknown level, bool showName, bool showSeparator, DiagnosticsTreeStyle style) {
+IterablePropertyCls<T>::IterablePropertyCls(String name, T value, Unknown defaultValue, Unknown ifEmpty, String ifNull, DiagnosticLevel level, Unknown showName, Unknown showSeparator, DiagnosticsTreeStyle style) : DiagnosticsProperty<Iterable<T>>(name, valuename, value) {
     {
         assert(style != nullptr);
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
@@ -728,9 +732,9 @@ Map<String, Object> IterablePropertyCls<T>::toJsonMap(DiagnosticsSerializationDe
 }
 
 template<typename T>
-EnumPropertyCls<T>::EnumPropertyCls(String name, Unknown value, Object defaultValue, Unknown level) {
+EnumPropertyCls<T>::EnumPropertyCls(String name, T value, Unknown defaultValue, DiagnosticLevel level) : DiagnosticsProperty<T>(name, valuename, value) {
     {
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
@@ -743,16 +747,16 @@ String EnumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfigurati
 }
 
 template<typename T>
-ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(String name, Unknown value, String ifNull, String ifPresent, Unknown level, Unknown showName) {
+ObjectFlagPropertyCls<T>::ObjectFlagPropertyCls(String name, T value, String ifNull, String ifPresent, DiagnosticLevel level, Unknown showName) : DiagnosticsProperty<T>(name, valuename, value) {
     {
         assert(ifPresent != nullptr || ifNull != nullptr);
-        assert(showName() != nullptr);
-        assert(level() != nullptr);
+        assert(showName != nullptr);
+        assert(level != nullptr);
     }
 }
 
 template<typename T>
-void ObjectFlagPropertyCls<T>::has(String name, Unknown value, Unknown level)
+void ObjectFlagPropertyCls<T>::has(String name, T value, DiagnosticLevel level)
 
 template<typename T>
 String ObjectFlagPropertyCls<T>::valueToString(TextTreeConfiguration parentConfiguration) {
@@ -800,12 +804,12 @@ Map<String, Object> ObjectFlagPropertyCls<T>::toJsonMap(DiagnosticsSerialization
 }
 
 template<typename T>
-FlagsSummaryCls<T>::FlagsSummaryCls(String name, Map<String, T> value, String ifEmpty, Unknown level, bool showName, bool showSeparator) {
+FlagsSummaryCls<T>::FlagsSummaryCls(String name, T value, Unknown ifEmpty, DiagnosticLevel level, Unknown showName, Unknown showSeparator) : DiagnosticsProperty<Map<String, T>>(name, valuename, value) {
     {
         assert(value != nullptr);
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
@@ -1034,7 +1038,7 @@ void DiagnosticsPropertyCls<T>::_maybeCacheValue() {
 }
 
 template<typename T>
-DiagnosticableNodeCls<T>::DiagnosticableNodeCls(String name, Unknown style, T value) {
+DiagnosticableNodeCls<T>::DiagnosticableNodeCls(String name, DiagnosticsTreeStyle style, T value) {
     {
         assert(value != nullptr);
     }

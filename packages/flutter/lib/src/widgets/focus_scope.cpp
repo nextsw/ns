@@ -261,7 +261,7 @@ void _FocusStateCls::_handleFocusChanged() {
     }
 }
 
-FocusScopeCls::FocusScopeCls(bool autofocus, Unknown canRequestFocus, Widget child, Unknown debugLabel, Key key, FocusScopeNode node, ValueChanged<bool> onFocusChange, Unknown onKey, Unknown onKeyEvent, Unknown skipTraversal) : Focus(node) {
+FocusScopeCls::FocusScopeCls(bool autofocus, bool canRequestFocus, Widget child, String debugLabel, Key key, FocusScopeNode node, ValueChanged<bool> onFocusChange, FocusOnKeyCallback onKey, FocusOnKeyEventCallback onKeyEvent, bool skipTraversal) : Focus(node) {
     {
         assert(child != nullptr);
         assert(autofocus != nullptr);
@@ -322,7 +322,7 @@ FocusScopeNode _FocusScopeStateCls::_createNode() {
     return make<FocusScopeNodeCls>(widget()->debugLabel, widget()->canRequestFocus, widget()->skipTraversal);
 }
 
-_FocusMarkerCls::_FocusMarkerCls(Widget child, FocusNode node) : InheritedNotifier<FocusNode>(node) {
+_FocusMarkerCls::_FocusMarkerCls(Unknown child, FocusNode node) : InheritedNotifier<FocusNode>(node) {
     {
         assert(node != nullptr);
         assert(child != nullptr);

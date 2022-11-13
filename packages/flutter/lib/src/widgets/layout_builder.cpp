@@ -110,9 +110,9 @@ void RenderConstrainedLayoutBuilderCls<ConstraintType, ChildType>::rebuildIfNece
     }
 }
 
-LayoutBuilderCls::LayoutBuilderCls(Unknown builder, Key key) {
+LayoutBuilderCls::LayoutBuilderCls(std::function<Widget(BuildContext , ConstraintType )> builder, Key key) {
     {
-        assert(builder() != nullptr);
+        assert(builder != nullptr);
     }
 }
 

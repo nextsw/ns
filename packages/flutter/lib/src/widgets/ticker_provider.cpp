@@ -211,3 +211,6 @@ void _WidgetTickerCls::dispose() {
     _creator->_removeTicker(this);
     super->dispose();
 }
+
+_WidgetTickerCls::_WidgetTickerCls(TickerCallback onTick, TickerProviderStateMixin<any> _creator, String debugLabel) : Ticker(onTickonTick) {
+}

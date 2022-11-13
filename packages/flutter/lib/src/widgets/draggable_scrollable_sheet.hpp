@@ -251,7 +251,7 @@ private:
     Set<AnimationController> _ballisticControllers;
 
 
-     _DraggableScrollableSheetScrollPositionCls(ScrollContext context, std::function<_DraggableSheetExtent()> getExtent, Unknown oldPosition, ScrollPhysics physics);
+     _DraggableScrollableSheetScrollPositionCls(ScrollContext context, std::function<_DraggableSheetExtent()> getExtent, ScrollPosition oldPosition, ScrollPhysics physics);
     virtual bool _isAtSnapSize();
 
     virtual bool _shouldSnap();
@@ -295,7 +295,7 @@ public:
 
 private:
 
-     _InheritedResetNotifierCls(Widget child, _ResetNotifier notifier);
+     _InheritedResetNotifierCls(Widget child, T notifier);
     virtual bool _sendReset();
 
 };

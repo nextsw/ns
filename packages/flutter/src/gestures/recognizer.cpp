@@ -166,7 +166,7 @@ GestureArenaEntry OneSequenceGestureRecognizerCls::_addPointerToArena(int pointe
     return GestureBindingCls::instance->gestureArena->add(pointer, this);
 }
 
-PrimaryPointerGestureRecognizerCls::PrimaryPointerGestureRecognizerCls(Duration deadline, Object debugOwner, Unknown kind, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Unknown supportedDevices) {
+PrimaryPointerGestureRecognizerCls::PrimaryPointerGestureRecognizerCls(Duration deadline, Object debugOwner, PointerDeviceKind kind, double postAcceptSlopTolerance, double preAcceptSlopTolerance, Set<PointerDeviceKind> supportedDevices) {
     {
         assert(preAcceptSlopTolerance == nullptr || preAcceptSlopTolerance >= 0, __s("The preAcceptSlopTolerance must be positive or null"));
         assert(postAcceptSlopTolerance == nullptr || postAcceptSlopTolerance >= 0, __s("The postAcceptSlopTolerance must be positive or null"));

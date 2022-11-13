@@ -476,7 +476,7 @@ using _RenderCustomClip = std::shared_ptr<_RenderCustomClipCls<T>>;
 class RenderClipRectCls : public _RenderCustomClipCls<Rect> {
 public:
 
-     RenderClipRectCls(Unknown child, Unknown clipBehavior, Unknown clipper);
+     RenderClipRectCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper);
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
@@ -494,7 +494,7 @@ using RenderClipRect = std::shared_ptr<RenderClipRectCls>;
 class RenderClipRRectCls : public _RenderCustomClipCls<RRect> {
 public:
 
-     RenderClipRRectCls(BorderRadiusGeometry borderRadius, Unknown child, Unknown clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection);
+     RenderClipRRectCls(BorderRadiusGeometry borderRadius, RenderBox child, Clip clipBehavior, CustomClipper<RRect> clipper, TextDirection textDirection);
 
     virtual BorderRadiusGeometry borderRadius();
 
@@ -524,7 +524,7 @@ using RenderClipRRect = std::shared_ptr<RenderClipRRectCls>;
 class RenderClipOvalCls : public _RenderCustomClipCls<Rect> {
 public:
 
-     RenderClipOvalCls(Unknown child, Unknown clipBehavior, Unknown clipper);
+     RenderClipOvalCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper);
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
@@ -548,7 +548,7 @@ using RenderClipOval = std::shared_ptr<RenderClipOvalCls>;
 class RenderClipPathCls : public _RenderCustomClipCls<Path> {
 public:
 
-     RenderClipPathCls(Unknown child, Unknown clipBehavior, Unknown clipper);
+     RenderClipPathCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper);
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
@@ -591,7 +591,7 @@ private:
     Color _color;
 
 
-     _RenderPhysicalModelBaseCls(Unknown child, Unknown clipBehavior, Unknown clipper, Color color, double elevation, Color shadowColor);
+     _RenderPhysicalModelBaseCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper, Color color, double elevation, Color shadowColor);
 
 };
 template<typename T>
@@ -602,7 +602,7 @@ Paint _transparentPaint;
 class RenderPhysicalModelCls : public _RenderPhysicalModelBaseCls<RRect> {
 public:
 
-     RenderPhysicalModelCls(BorderRadius borderRadius, Unknown child, Unknown clipBehavior, Unknown color, Unknown elevation, Unknown shadowColor, BoxShape shape);
+     RenderPhysicalModelCls(BorderRadius borderRadius, RenderBox child, Clip clipBehavior, Color color, double elevation, Color shadowColor, BoxShape shape);
 
     virtual BoxShape shape();
 
@@ -632,7 +632,7 @@ using RenderPhysicalModel = std::shared_ptr<RenderPhysicalModelCls>;
 class RenderPhysicalShapeCls : public _RenderPhysicalModelBaseCls<Path> {
 public:
 
-     RenderPhysicalShapeCls(Unknown child, Unknown clipBehavior, CustomClipper<Path> clipper, Unknown color, Unknown elevation, Unknown shadowColor);
+     RenderPhysicalShapeCls(RenderBox child, Clip clipBehavior, CustomClipper<T> clipper, Color color, double elevation, Color shadowColor);
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
@@ -871,7 +871,7 @@ public:
     PointerSignalEventListener onPointerSignal;
 
 
-     RenderPointerListenerCls(HitTestBehavior behavior, Unknown child, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
+     RenderPointerListenerCls(HitTestBehavior behavior, RenderBox child, PointerCancelEventListener onPointerCancel, PointerDownEventListener onPointerDown, PointerHoverEventListener onPointerHover, PointerMoveEventListener onPointerMove, PointerPanZoomEndEventListener onPointerPanZoomEnd, PointerPanZoomStartEventListener onPointerPanZoomStart, PointerPanZoomUpdateEventListener onPointerPanZoomUpdate, PointerSignalEventListener onPointerSignal, PointerUpEventListener onPointerUp);
     virtual Size computeSizeForNoChild(BoxConstraints constraints);
 
     virtual void handleEvent(PointerEvent event, HitTestEntry<any> entry);
@@ -892,7 +892,7 @@ public:
     PointerExitEventListener onExit;
 
 
-     RenderMouseRegionCls(Unknown child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker);
+     RenderMouseRegionCls(RenderBox child, MouseCursor cursor, HitTestBehavior hitTestBehavior, PointerEnterEventListener onEnter, PointerExitEventListener onExit, PointerHoverEventListener onHover, bool opaque, bool validForMouseTracker);
 
     virtual bool hitTest(BoxHitTestResult result, Offset position);
 
@@ -1070,7 +1070,7 @@ public:
     Object metaData;
 
 
-     RenderMetaDataCls(HitTestBehavior behavior, Unknown child, Object metaData);
+     RenderMetaDataCls(HitTestBehavior behavior, RenderBox child, Object metaData);
     virtual void debugFillProperties(DiagnosticPropertiesBuilder properties);
 
 private:
@@ -1083,7 +1083,7 @@ public:
     double scrollFactor;
 
 
-     RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, Unknown child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor);
+     RenderSemanticsGestureHandlerCls(HitTestBehavior behavior, RenderBox child, GestureDragUpdateCallback onHorizontalDragUpdate, GestureLongPressCallback onLongPress, GestureTapCallback onTap, GestureDragUpdateCallback onVerticalDragUpdate, double scrollFactor);
 
     virtual Set<SemanticsAction> validActions();
 

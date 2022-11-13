@@ -82,7 +82,7 @@ public:
 
 private:
 
-     _SingleChildViewportElementCls(_SingleChildViewport widget);
+     _SingleChildViewportElementCls(Widget widget);
 };
 using _SingleChildViewportElement = std::shared_ptr<_SingleChildViewportElementCls>;
 

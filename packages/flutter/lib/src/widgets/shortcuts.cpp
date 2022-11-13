@@ -108,10 +108,10 @@ void LogicalKeySetCls::debugFillProperties(DiagnosticPropertiesBuilder propertie
     properties->add(<Set<LogicalKeyboardKey>>make<DiagnosticsPropertyCls>(__s("keys"), _keys, debugDescribeKeys()));
 }
 
-ShortcutMapPropertyCls::ShortcutMapPropertyCls(String name, Map<ShortcutActivator, Intent> value, Object defaultValue, Unknown description, Unknown level, bool showName) {
+ShortcutMapPropertyCls::ShortcutMapPropertyCls(String name, T value, Object defaultValue, String description, DiagnosticLevel level, bool showName) : DiagnosticsProperty<Map<ShortcutActivator, Intent>>(name, valuename, value) {
     {
         assert(showName != nullptr);
-        assert(level() != nullptr);
+        assert(level != nullptr);
     }
 }
 
@@ -272,7 +272,7 @@ ShortcutsCls::ShortcutsCls(Widget child, String debugLabel, Key key, Map<Shortcu
     }
 }
 
-void ShortcutsCls::manager(Widget child, String debugLabel, Key key, ShortcutManager manager)
+void ShortcutsCls::manager(Unknown child, Unknown debugLabel, Unknown key, ShortcutManager manager)
 
 Map<ShortcutActivator, Intent> ShortcutsCls::shortcuts() {
     return manager == nullptr? _shortcuts : manager!->shortcuts();

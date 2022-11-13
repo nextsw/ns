@@ -35,7 +35,7 @@ void SliverChildDelegateCls::debugFillDescription(List<String> description) {
     };
 }
 
-_SaltedValueKeyCls::_SaltedValueKeyCls(Unknown key) {
+_SaltedValueKeyCls::_SaltedValueKeyCls(T key) {
     {
         assert(key != nullptr);
     }
@@ -115,7 +115,7 @@ SliverChildListDelegateCls::SliverChildListDelegateCls(List<Widget> children, bo
     }
 }
 
-void SliverChildListDelegateCls::fixed(List<Widget> children, bool addAutomaticKeepAlives, bool addRepaintBoundaries, bool addSemanticIndexes, SemanticIndexCallback semanticIndexCallback, int semanticIndexOffset)
+void SliverChildListDelegateCls::fixed(Unknown children, Unknown addAutomaticKeepAlives, Unknown addRepaintBoundaries, Unknown addSemanticIndexes, Unknown semanticIndexCallback, Unknown semanticIndexOffset)
 
 int SliverChildListDelegateCls::findIndexByKey(Key key) {
     assert(key != nullptr);
@@ -318,9 +318,9 @@ void SliverFixedExtentListCls::updateRenderObject(BuildContext context, RenderSl
     renderObject->itemExtent = itemExtent;
 }
 
-void SliverGridCls::count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Key key, double mainAxisSpacing)
+void SliverGridCls::count(double childAspectRatio, List<Widget> children, int crossAxisCount, double crossAxisSpacing, Unknown key, double mainAxisSpacing)
 
-void SliverGridCls::extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Key key, double mainAxisSpacing, double maxCrossAxisExtent)
+void SliverGridCls::extent(double childAspectRatio, List<Widget> children, double crossAxisSpacing, Unknown key, double mainAxisSpacing, double maxCrossAxisExtent)
 
 RenderSliverGrid SliverGridCls::createRenderObject(BuildContext context) {
     SliverMultiBoxAdaptorElement element = as<SliverMultiBoxAdaptorElement>(context);
@@ -335,7 +335,7 @@ double SliverGridCls::estimateMaxScrollOffset(SliverConstraints constraints, int
     return super->estimateMaxScrollOffset(constraints, firstIndex, lastIndex, leadingScrollOffset, trailingScrollOffset) | gridDelegate->getLayout(constraints!)->computeMaxScrollOffset(delegate->estimatedChildCount()!);
 }
 
-SliverMultiBoxAdaptorElementCls::SliverMultiBoxAdaptorElementCls(SliverMultiBoxAdaptorWidget widget, bool replaceMovedChildren) {
+SliverMultiBoxAdaptorElementCls::SliverMultiBoxAdaptorElementCls(Widget widget, bool replaceMovedChildren) {
     {
         _replaceMovedChildren = replaceMovedChildren;
     }

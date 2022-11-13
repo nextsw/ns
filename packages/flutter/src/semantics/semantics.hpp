@@ -73,7 +73,7 @@ public:
     List<StringAttribute> attributes;
 
 
-     AttributedStringCls(String string, List<StringAttribute> attributes);
+     AttributedStringCls(String stringValue, List<StringAttribute> attributes);
 
     virtual AttributedString operator+(AttributedString other);
 
@@ -93,7 +93,7 @@ public:
     bool showWhenEmpty;
 
 
-     AttributedStringPropertyCls(String name, Unknown value, Object defaultValue, Unknown description, Unknown level, bool showName, bool showWhenEmpty);
+     AttributedStringPropertyCls(String name, T value, Object defaultValue, String description, DiagnosticLevel level, bool showName, bool showWhenEmpty);
 
     virtual bool isInteresting();
 
@@ -195,7 +195,7 @@ public:
 
 private:
 
-     _SemanticsDiagnosticableNodeCls(DebugSemanticsDumpOrder childOrder, String name, Unknown style, T value);
+     _SemanticsDiagnosticableNodeCls(DebugSemanticsDumpOrder childOrder, String name, DiagnosticsTreeStyle style, T value);
 };
 using _SemanticsDiagnosticableNode = std::shared_ptr<_SemanticsDiagnosticableNodeCls>;
 

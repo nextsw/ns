@@ -181,7 +181,7 @@ template<typename T>
 class RenderObjectToWidgetElementCls : public RootRenderObjectElementCls {
 public:
 
-     RenderObjectToWidgetElementCls(RenderObjectToWidgetAdapter<T> widget);
+     RenderObjectToWidgetElementCls(Unknown widget);
     virtual void visitChildren(ElementVisitor visitor);
 
     virtual void forgetChild(Element child);

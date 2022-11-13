@@ -63,7 +63,7 @@ public:
 
 private:
 
-     _RestorablePrimitiveValueCls(Unknown defaultValue);
+     _RestorablePrimitiveValueCls(T defaultValue);
 
 };
 template<typename T>
@@ -73,7 +73,7 @@ template<typename T>
 class RestorableNumCls : public _RestorablePrimitiveValueCls<T> {
 public:
 
-     RestorableNumCls(Unknown defaultValue);
+     RestorableNumCls(T defaultValue);
 
 private:
 
@@ -84,7 +84,7 @@ using RestorableNum = std::shared_ptr<RestorableNumCls<T>>;
 class RestorableDoubleCls : public RestorableNumCls<double> {
 public:
 
-     RestorableDoubleCls(Unknown defaultValue);
+     RestorableDoubleCls(T defaultValue);
 
 private:
 
@@ -94,7 +94,7 @@ using RestorableDouble = std::shared_ptr<RestorableDoubleCls>;
 class RestorableIntCls : public RestorableNumCls<int> {
 public:
 
-     RestorableIntCls(Unknown defaultValue);
+     RestorableIntCls(T defaultValue);
 
 private:
 
@@ -104,7 +104,7 @@ using RestorableInt = std::shared_ptr<RestorableIntCls>;
 class RestorableStringCls : public _RestorablePrimitiveValueCls<String> {
 public:
 
-     RestorableStringCls(Unknown defaultValue);
+     RestorableStringCls(T defaultValue);
 
 private:
 
@@ -114,7 +114,7 @@ using RestorableString = std::shared_ptr<RestorableStringCls>;
 class RestorableBoolCls : public _RestorablePrimitiveValueCls<bool> {
 public:
 
-     RestorableBoolCls(Unknown defaultValue);
+     RestorableBoolCls(T defaultValue);
 
 private:
 
@@ -124,7 +124,7 @@ using RestorableBool = std::shared_ptr<RestorableBoolCls>;
 class RestorableBoolNCls : public _RestorablePrimitiveValueNCls<bool> {
 public:
 
-     RestorableBoolNCls(Unknown defaultValue);
+     RestorableBoolNCls(T defaultValue);
 private:
 
 };
@@ -134,7 +134,7 @@ template<typename T>
 class RestorableNumNCls : public _RestorablePrimitiveValueNCls<T> {
 public:
 
-     RestorableNumNCls(Unknown defaultValue);
+     RestorableNumNCls(T defaultValue);
 private:
 
 };
@@ -144,7 +144,7 @@ using RestorableNumN = std::shared_ptr<RestorableNumNCls<T>>;
 class RestorableDoubleNCls : public RestorableNumNCls<double> {
 public:
 
-     RestorableDoubleNCls(Unknown defaultValue);
+     RestorableDoubleNCls(T defaultValue);
 private:
 
 };
@@ -153,7 +153,7 @@ using RestorableDoubleN = std::shared_ptr<RestorableDoubleNCls>;
 class RestorableIntNCls : public RestorableNumNCls<int> {
 public:
 
-     RestorableIntNCls(Unknown defaultValue);
+     RestorableIntNCls(T defaultValue);
 private:
 
 };
@@ -162,7 +162,7 @@ using RestorableIntN = std::shared_ptr<RestorableIntNCls>;
 class RestorableStringNCls : public _RestorablePrimitiveValueNCls<String> {
 public:
 
-     RestorableStringNCls(Unknown defaultValue);
+     RestorableStringNCls(T defaultValue);
 private:
 
 };

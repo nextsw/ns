@@ -116,7 +116,7 @@ using RenderAligningShiftedBox = std::shared_ptr<RenderAligningShiftedBoxCls>;
 class RenderPositionedBoxCls : public RenderAligningShiftedBoxCls {
 public:
 
-     RenderPositionedBoxCls(Unknown alignment, Unknown child, double heightFactor, Unknown textDirection, double widthFactor);
+     RenderPositionedBoxCls(AlignmentGeometry alignment, RenderBox child, double heightFactor, TextDirection textDirection, double widthFactor);
 
     virtual double widthFactor();
 
@@ -146,7 +146,7 @@ using RenderPositionedBox = std::shared_ptr<RenderPositionedBoxCls>;
 class RenderConstrainedOverflowBoxCls : public RenderAligningShiftedBoxCls {
 public:
 
-     RenderConstrainedOverflowBoxCls(Unknown alignment, Unknown child, double maxHeight, double maxWidth, double minHeight, double minWidth, Unknown textDirection);
+     RenderConstrainedOverflowBoxCls(AlignmentGeometry alignment, RenderBox child, double maxHeight, double maxWidth, double minHeight, double minWidth, TextDirection textDirection);
 
     virtual double minWidth();
 
@@ -190,7 +190,7 @@ using RenderConstrainedOverflowBox = std::shared_ptr<RenderConstrainedOverflowBo
 class RenderConstraintsTransformBoxCls : public RenderAligningShiftedBoxCls {
 public:
 
-     RenderConstraintsTransformBoxCls(Unknown alignment, Unknown child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, Unknown textDirection);
+     RenderConstraintsTransformBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, BoxConstraintsTransform constraintsTransform, TextDirection textDirection);
 
     virtual BoxConstraintsTransform constraintsTransform();
 
@@ -242,7 +242,7 @@ using RenderConstraintsTransformBox = std::shared_ptr<RenderConstraintsTransform
 class RenderUnconstrainedBoxCls : public RenderConstraintsTransformBoxCls {
 public:
 
-     RenderUnconstrainedBoxCls(Unknown alignment, Unknown child, Unknown clipBehavior, Axis constrainedAxis, Unknown textDirection);
+     RenderUnconstrainedBoxCls(AlignmentGeometry alignment, RenderBox child, Clip clipBehavior, Axis constrainedAxis, TextDirection textDirection);
 
     virtual Axis constrainedAxis();
 
@@ -266,7 +266,7 @@ using RenderUnconstrainedBox = std::shared_ptr<RenderUnconstrainedBoxCls>;
 class RenderSizedOverflowBoxCls : public RenderAligningShiftedBoxCls {
 public:
 
-     RenderSizedOverflowBoxCls(Unknown alignment, Unknown child, Size requestedSize, Unknown textDirection);
+     RenderSizedOverflowBoxCls(AlignmentGeometry alignment, RenderBox child, Size requestedSize, TextDirection textDirection);
 
     virtual Size requestedSize();
 
@@ -296,7 +296,7 @@ using RenderSizedOverflowBox = std::shared_ptr<RenderSizedOverflowBoxCls>;
 class RenderFractionallySizedOverflowBoxCls : public RenderAligningShiftedBoxCls {
 public:
 
-     RenderFractionallySizedOverflowBoxCls(Unknown alignment, Unknown child, double heightFactor, Unknown textDirection, double widthFactor);
+     RenderFractionallySizedOverflowBoxCls(AlignmentGeometry alignment, RenderBox child, double heightFactor, TextDirection textDirection, double widthFactor);
 
     virtual double widthFactor();
 

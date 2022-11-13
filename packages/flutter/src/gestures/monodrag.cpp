@@ -1,5 +1,5 @@
 #include "monodrag.hpp"
-DragGestureRecognizerCls::DragGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, Unknown kind, Unknown supportedDevices, GestureVelocityTrackerBuilder velocityTrackerBuilder) {
+DragGestureRecognizerCls::DragGestureRecognizerCls(Object debugOwner, DragStartBehavior dragStartBehavior, PointerDeviceKind kind, Set<PointerDeviceKind> supportedDevices, GestureVelocityTrackerBuilder velocityTrackerBuilder) {
     {
         assert(dragStartBehavior != nullptr);
     }

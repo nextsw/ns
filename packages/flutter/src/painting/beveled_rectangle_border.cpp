@@ -1,5 +1,5 @@
 #include "beveled_rectangle_border.hpp"
-BeveledRectangleBorderCls::BeveledRectangleBorderCls(BorderRadiusGeometry borderRadius, BorderSide side) {
+BeveledRectangleBorderCls::BeveledRectangleBorderCls(BorderRadiusGeometry borderRadius, Unknown side) {
     {
         assert(side != nullptr);
         assert(borderRadius != nullptr);

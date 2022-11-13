@@ -118,7 +118,7 @@ public:
     int itemIndex;
 
 
-     FixedExtentMetricsCls(AxisDirection axisDirection, int itemIndex, Unknown maxScrollExtent, Unknown minScrollExtent, Unknown pixels, Unknown viewportDimension);
+     FixedExtentMetricsCls(AxisDirection axisDirection, int itemIndex, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension);
     virtual FixedExtentMetrics copyWith(AxisDirection axisDirection, int itemIndex, double maxScrollExtent, double minScrollExtent, double pixels, double viewportDimension);
 
 private:
@@ -141,7 +141,7 @@ public:
 
 private:
 
-     _FixedExtentScrollPositionCls(ScrollContext context, int initialItem, Unknown oldPosition, ScrollPhysics physics);
+     _FixedExtentScrollPositionCls(ScrollContext context, int initialItem, ScrollPosition oldPosition, ScrollPhysics physics);
 
     static double _getItemExtentFromScrollContext(ScrollContext context);
 
@@ -221,7 +221,7 @@ public:
 
      ListWheelScrollViewCls(List<Widget> children, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Key key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier);
 
-    virtual void  useDelegate(ListWheelChildDelegate childDelegate, Clip clipBehavior, ScrollController controller, double diameterRatio, double itemExtent, Key key, double magnification, double offAxisFraction, ValueChanged<int> onSelectedItemChanged, double overAndUnderCenterOpacity, double perspective, ScrollPhysics physics, bool renderChildrenOutsideViewport, String restorationId, ScrollBehavior scrollBehavior, double squeeze, bool useMagnifier);
+    virtual void  useDelegate(Unknown childDelegate, Unknown clipBehavior, Unknown controller, Unknown diameterRatio, Unknown itemExtent, Unknown key, Unknown magnification, Unknown offAxisFraction, Unknown onSelectedItemChanged, Unknown overAndUnderCenterOpacity, Unknown perspective, Unknown physics, Unknown renderChildrenOutsideViewport, Unknown restorationId, Unknown scrollBehavior, Unknown squeeze, Unknown useMagnifier);
 
     virtual State<ListWheelScrollView> createState();
 
@@ -253,7 +253,7 @@ using _ListWheelScrollViewState = std::shared_ptr<_ListWheelScrollViewStateCls>;
 class ListWheelElementCls : public RenderObjectElementCls {
 public:
 
-     ListWheelElementCls(ListWheelViewport widget);
+     ListWheelElementCls(Widget widget);
     virtual RenderListWheelViewport renderObject();
 
     virtual void update(ListWheelViewport newWidget);
