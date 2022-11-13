@@ -254,7 +254,7 @@ int ImageCacheStatusCls::hashCode() {
 }
 
 String ImageCacheStatusCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s(pending: %s, live: %s, keepAlive: %s)", objectRuntimeType(this, __s("ImageCacheStatus")), pending, live, keepAlive);
 }
 
 void ImageCacheStatusCls::_(bool keepAlive, bool live, bool pending)

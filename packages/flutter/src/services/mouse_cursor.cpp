@@ -91,7 +91,7 @@ void _SystemMouseCursorSessionCls::dispose() {
 }
 
 String SystemMouseCursorCls::debugDescription() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("SystemMouseCursor")), kind);
 }
 
 MouseCursorSession SystemMouseCursorCls::createSession(int device) {

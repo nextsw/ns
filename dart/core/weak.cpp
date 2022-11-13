@@ -1,5 +1,5 @@
 #include "weak.hpp"
 template<typename T>
 String ExpandoCls<T>::toString() {
-    return __s("Expando:%s;");
+    return __sf("Expando:%s", name);
 }

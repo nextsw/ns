@@ -12,9 +12,9 @@ int ObjectKeyCls::hashCode() {
 
 String ObjectKeyCls::toString() {
     if (runtimeType == ObjectKeyCls) {
-        return __s("[%s;");
+        return __sf("[%s]", describeIdentity(value));
     }
-    return __s("[%s$%s;");
+    return __sf("[%s %s]", objectRuntimeType(this, __s("ObjectKey")), describeIdentity(value));
 }
 
 template<typename T>
@@ -61,11 +61,11 @@ LabeledGlobalKeyCls<T>::LabeledGlobalKeyCls(String _debugLabel) {
 
 template<typename T>
 String LabeledGlobalKeyCls<T>::toString() {
-    String label = _debugLabel != nullptr? __s(" %s:") : __s("");
+    String label = _debugLabel != nullptr? __sf(" %s", _debugLabel) : __s("");
     if (runtimeType == LabeledGlobalKeyCls) {
-        return __s("[GlobalKey#%s$%s;");
+        return __sf("[GlobalKey#%s%s]", shortHash(this), label);
     }
-    return __s("[%s$%s;");
+    return __sf("[%s%s]", describeIdentity(this), label);
 }
 
 template<typename T>
@@ -95,12 +95,12 @@ String GlobalObjectKeyCls<T>::toString() {
     if (selfType->endsWith(suffix)) {
         selfType = selfType->substring(0, selfType->length() - suffix->length());
     }
-    return __s("[%s$%s;");
+    return __sf("[%s %s]", selfType, describeIdentity(value));
 }
 
 String WidgetCls::toStringShort() {
     String type = objectRuntimeType(this, __s("Widget"));
-    return key == nullptr? type : __s("%s$%s;");
+    return key == nullptr? type : __sf("%s-%s", type, key);
 }
 
 void WidgetCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -247,7 +247,7 @@ Iterable<DiagnosticsNode> ParentDataWidgetCls<T>::_debugDescribeIncorrectParentD
     assert(T != dynamic);
     assert(T != ParentDataCls);
     assert(debugTypicalAncestorWidgetClass() != nullptr);
-    String description = __s("The ParentDataWidget %s$%s;");
+    String description = __sf("The ParentDataWidget %s wants to apply ParentData of type %s to a RenderObject", this, T);
     List<DiagnosticsNode> list1 = make<ListCls<>>();if (parentData == nullptr) {    list1.add(ArrayItem);} else {    list1.add(ArrayItem);}list1.add(ArrayItem);if (parentDataCreator != nullptr) {    list1.add(ArrayItem);}if (ownershipChain != nullptr) {    list1.add(ArrayItem);}return list1;
 }
 
@@ -277,7 +277,7 @@ MultiChildRenderObjectWidgetCls::MultiChildRenderObjectWidgetCls(List<Widget> ch
         assert([=] () {
             for (;  < children->length(); index++) {
                 if (children[index] == nullptr) {
-                    throw make<FlutterErrorCls>(__s("%sbut a null value was found at index $%s,"));
+                    throw make<FlutterErrorCls>(__sf("%s's children must not contain any null values, but a null value was found at index %s", runtimeType, index));
                 }
             }
             return true;
@@ -321,7 +321,7 @@ void _InactiveElementsCls::_unmount(Element element) {
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
             if (is<GlobalKey<any>>(element->widget()->key)) {
-                debugPrint(__s("Discarding %s)"));
+                debugPrint(__sf("Discarding %s from inactive elements list.", element));
             }
         }
         return true;
@@ -368,7 +368,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
     assert(element->owner() == this);
     assert([=] () {
         if (debugPrintScheduleBuildForStacks) {
-            debugPrintStack(__s("scheduleBuildFor() called for %s$%s"));
+            debugPrintStack(__sf("scheduleBuildFor() called for %s%s", element, _dirtyElements->contains(element)? __s(" (ALREADY IN LIST)") : __s("")));
         }
         if (!element->dirty()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem));
@@ -378,7 +378,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
     if (element->_inDirtyList) {
         assert([=] () {
             if (debugPrintScheduleBuildForStacks) {
-                debugPrintStack(__s("BuildOwner.scheduleBuildFor() called; _dirtyElementsNeedsResorting was %s$%s)"));
+                debugPrintStack(__sf("BuildOwner.scheduleBuildFor() called; _dirtyElementsNeedsResorting was %s (now true); dirty list is: %s", _dirtyElementsNeedsResorting, _dirtyElements));
             }
             if (!_debugIsInBuildScope()) {
                 throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem));
@@ -396,7 +396,7 @@ void BuildOwnerCls::scheduleBuildFor(Element element) {
     element->_inDirtyList = true;
     assert([=] () {
         if (debugPrintScheduleBuildForStacks) {
-            debugPrint(__s("...dirty list is now: %s)"));
+            debugPrint(__sf("...dirty list is now: %s", _dirtyElements));
         }
         return true;
     }());
@@ -433,7 +433,7 @@ void BuildOwnerCls::buildScope(Element context, VoidCallback callback) {
     assert(!_debugBuilding);
     assert([=] () {
         if (debugPrintBuildScope) {
-            debugPrint(__s("buildScope called with context %s$%s)"));
+            debugPrint(__sf("buildScope called with context %s; dirty list is: %s", context, _dirtyElements));
         }
         _debugStateLockLevel += 1;
         _debugBuilding = true;
@@ -443,7 +443,7 @@ void BuildOwnerCls::buildScope(Element context, VoidCallback callback) {
         Map<String, String> debugTimelineArguments;
         assert([=] () {
             if (debugEnhanceBuildTimelineArguments) {
-                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __s("%s,"));            map1.set(__s("dirty list"), __s("%s,"));            map1.set(__s("lock level"), __s("%s,"));            map1.set(__s("scope context"), __s("%s,"));debugTimelineArguments = list1;
+                            Map<String, String> map1 = make<MapCls<>>();            map1.set(__s("dirty count"), __sf("%s", _dirtyElements->length()));            map1.set(__s("dirty list"), __sf("%s", _dirtyElements));            map1.set(__s("lock level"), __sf("%s", _debugStateLockLevel));            map1.set(__s("scope context"), __sf("%s", context));debugTimelineArguments = list1;
             }
             return true;
         }());
@@ -496,7 +496,7 @@ void BuildOwnerCls::buildScope(Element context, VoidCallback callback) {
                     }
                     return true;
                 }());
-                TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
+                TimelineCls->startSync(__sf("%s", element->widget()->runtimeType), debugTimelineArguments);
             }
             try {
                 element->rebuild();
@@ -589,7 +589,7 @@ void BuildOwnerCls::finalizeTree() {
                             if (count == 1) {
                                 keyLabels->add(key);
                             } else {
-                                keyLabels->add(__s("%s$%s)"));
+                                keyLabels->add(__sf("%s (%s different affected keys had this toString representation)", key, count));
                             }
                         });
                         Iterable<Element> elements = _debugElementsThatWillNeedToBeRebuiltDueToGlobalKeyShenanigans!->keys;
@@ -610,7 +610,7 @@ void BuildOwnerCls::finalizeTree() {
                             if (count == 1) {
                                 elementLabels->add(element);
                             } else {
-                                elementLabels->add(__s("%s$%s)"));
+                                elementLabels->add(__sf("%s (%s different affected elements had this toString representation)", element, count));
                             }
                         });
                         assert(keyLabels->isNotEmpty());
@@ -795,7 +795,7 @@ void BuildOwnerCls::_debugVerifyIllFatedPopulation() {
             information->add(make<ErrorSummaryCls>(__s("Multiple widgets used the same GlobalKey.")));
             for (GlobalKey<any> key : duplicates->keys()) {
                 Set<Element> elements = duplicates[key]!;
-                information->add(ElementCls->describeElements(__s("The key %s$%s,"), elements));
+                information->add(ElementCls->describeElements(__sf("The key %s was used by %s widgets", key, elements->length()), elements));
             }
             information->add(make<ErrorDescriptionCls>(__s("A GlobalKey can only be specified on one widget at a time in the widget tree.")));
             throw FlutterErrorCls->fromParts(information);
@@ -896,11 +896,11 @@ List<DiagnosticsNode> ElementCls::describeMissingAncestor(Type expectedAncestorT
         ancestors->add(element);
         return true;
     });
-    information->add(<Element>make<DiagnosticsPropertyCls>(__s("The specific widget that could not find a %s,"), this, DiagnosticsTreeStyleCls::errorProperty));
+    information->add(<Element>make<DiagnosticsPropertyCls>(__sf("The specific widget that could not find a %s ancestor was", expectedAncestorType), this, DiagnosticsTreeStyleCls::errorProperty));
     if (ancestors->isNotEmpty()) {
         information->add(describeElements(__s("The ancestors of this widget were"), ancestors));
     } else {
-        information->add(make<ErrorDescriptionCls>(__s("This widget is the root of the tree, so it has no ancestors, let alone a "%s,")));
+        information->add(make<ErrorDescriptionCls>(__sf("This widget is the root of the tree, so it has no ancestors, let alone a "%s" ancestor.", expectedAncestorType)));
     }
     return information;
 }
@@ -975,7 +975,7 @@ Element ElementCls::updateChild(Element child, Widget newWidget, Object newSlot)
                     }
                     return true;
                 }());
-                TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
+                TimelineCls->startSync(__sf("%s", newWidget->runtimeType), debugTimelineArguments);
             }
             child->update(newWidget);
             if (isTimelineTracked) {
@@ -1076,7 +1076,7 @@ Element ElementCls::inflateWidget(Widget newWidget, Object newSlot) {
             }
             return true;
         }());
-        TimelineCls->startSync(__s("%s,"), debugTimelineArguments);
+        TimelineCls->startSync(__sf("%s", newWidget->runtimeType), debugTimelineArguments);
     }
     try {
         Key key = newWidget->key;
@@ -1118,7 +1118,7 @@ void ElementCls::deactivateChild(Element child) {
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
             if (is<GlobalKey<any>>(child->widget()->key)) {
-                debugPrint(__s("Deactivated %s$%s)"));
+                debugPrint(__sf("Deactivated %s (keyed child of %s)", child, this));
             }
         }
         return true;
@@ -1357,7 +1357,7 @@ void ElementCls::dispatchNotification(Notification notification) {
 }
 
 String ElementCls::toStringShort() {
-    return _widget?->toStringShort() | __s("%s;");
+    return _widget?->toStringShort() | __sf("%s(DEFUNCT)", describeIdentity(this));
 }
 
 DiagnosticsNode ElementCls::toDiagnosticsNode(String name, DiagnosticsTreeStyle style) {
@@ -1442,10 +1442,10 @@ void ElementCls::rebuild() {
         debugOnRebuildDirtyWidget?->call(this, _debugBuiltOnce);
         if (debugPrintRebuildDirtyWidgets) {
             if (!_debugBuiltOnce) {
-                debugPrint(__s("Building %s)"));
+                debugPrint(__sf("Building %s", this));
                 _debugBuiltOnce = true;
             } else {
-                debugPrint(__s("Rebuilding %s)"));
+                debugPrint(__sf("Rebuilding %s", this));
             }
         }
         return true;
@@ -1528,7 +1528,7 @@ Element ElementCls::_retakeInactiveElement(GlobalKey<any> key, Widget newWidget)
     }
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            debugPrint(__s("Attempting to take %s$%s"));
+            debugPrint(__sf("Attempting to take %s from %s", element, element->_parent | __sf("inactive elements list to put in %s.", this)));
         }
         return true;
     }());
@@ -1566,7 +1566,7 @@ void ElementCls::_activateWithParent(Element parent, Object newSlot) {
     _parent = parent;
     assert([=] () {
         if (debugPrintGlobalKeyedWidgetLifecycle) {
-            debugPrint(__s("Reactivating %s$%s)"));
+            debugPrint(__sf("Reactivating %s (now child of %s).", this, _parent));
         }
         return true;
     }());
@@ -1649,7 +1649,7 @@ void ErrorWidgetCls::debugFillProperties(DiagnosticPropertiesBuilder properties)
 Widget ErrorWidgetCls::_defaultErrorWidgetBuilder(FlutterErrorDetails details) {
     String message = __s("");
     assert([=] () {
-        message = __s("%s;");
+        message = __sf("%s\nSee also: https://flutter.dev/docs/testing/errors", _stringify(details->exception));
         return true;
     }());
     Object exception = details->exception;
@@ -1692,7 +1692,7 @@ void ComponentElementCls::performRebuild() {
         debugWidgetBuilderValue(widget(), built);
     } catch (Unknown e) {
         _debugDoingBuild = false;
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building %s)")), e, stack, [=] () {
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    if (kDebugMode) {        list1.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__sf("building %s", this)), e, stack, [=] () {
             list1;
         }));
     } finally {
@@ -1703,7 +1703,7 @@ void ComponentElementCls::performRebuild() {
         _child = updateChild(_child, built, slot());
         assert(_child != nullptr);
     } catch (Unknown e) {
-            List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__s("building %s)")), e, stack, [=] () {
+            List<DiagnosticsNode> list2 = make<ListCls<>>();    if (kDebugMode) {        list2.add(ArrayItem);    }built = ErrorWidgetCls->builder(_debugReportException(make<ErrorDescriptionCls>(__sf("building %s", this)), e, stack, [=] () {
             list2;
         }));
         _child = updateChild(nullptr, built, slot());
@@ -1750,7 +1750,7 @@ StatefulElementCls::StatefulElementCls(StatefulWidget widget) : ComponentElement
         }());
         assert(state()->_element == nullptr);
         state()->_element = this;
-        assert(state()->_widget == nullptr, __s("The createState function for %sinstance: $%sfor createState.,"));
+        assert(state()->_widget == nullptr, __sf("The createState function for %s returned an old or invalid state instance: %s, which is not null, violating the contract for createState.", widget, state()->_widget));
         state()->_widget = widget;
         assert(state()->_debugLifecycleState == _StateLifecycleCls::created);
     }
@@ -1975,7 +1975,7 @@ void InheritedElementCls::_updateInheritance() {
 }
 
 RenderObject RenderObjectElementCls::renderObject() {
-    assert(_renderObject != nullptr, __s("%s)"));
+    assert(_renderObject != nullptr, __sf("%s unmounted", runtimeType));
     return _renderObject!;
 }
 
@@ -2129,14 +2129,14 @@ List<Element> RenderObjectElementCls::updateChildren(List<Element> oldChildren, 
 
 void RenderObjectElementCls::deactivate() {
     super->deactivate();
-    assert(!renderObject()->attached(), __s("A RenderObject was still attached when attempting to deactivate its RenderObjectElement: %s,"));
+    assert(!renderObject()->attached(), __sf("A RenderObject was still attached when attempting to deactivate its RenderObjectElement: %s", renderObject()));
 }
 
 void RenderObjectElementCls::unmount() {
-    assert(!renderObject()->debugDisposed()!, __s("A RenderObject was disposed prior to its owning element being unmounted: %s,"));
+    assert(!renderObject()->debugDisposed()!, __sf("A RenderObject was disposed prior to its owning element being unmounted: %s", renderObject()));
     RenderObjectWidget oldWidget = as<RenderObjectWidget>(widget());
     super->unmount();
-    assert(!renderObject()->attached(), __s("A RenderObject was still attached when attempting to unmount its RenderObjectElement: %s,"));
+    assert(!renderObject()->attached(), __sf("A RenderObject was still attached when attempting to unmount its RenderObjectElement: %s", renderObject()));
     oldWidget->didUnmountRenderObject(renderObject());
     _renderObject!->dispose();
     _renderObject = nullptr;

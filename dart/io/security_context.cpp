@@ -10,7 +10,7 @@ Uint8List SecurityContextCls::_protocolsToLengthEncoding(List<String> protocols)
         if (length > 0 && length <= 255) {
             expectedLength += length;
         } else {
-            throw make<ArgumentErrorCls>(__s("Length of protocol must be between 1 and 255 (was: %s)"));
+            throw make<ArgumentErrorCls>(__sf("Length of protocol must be between 1 and 255 (was: %s).", length));
         }
     }
     if (expectedLength >= (1 << 13)) {

@@ -141,7 +141,7 @@ void _RawSecureSocketCls::readEventsEnabled(bool value) {
 
 Uint8List _RawSecureSocketCls::read(int length) {
     if (length != nullptr &&  < 0) {
-        throw make<ArgumentErrorCls>(__s("Invalid length parameter in SecureSocket.read (length: %s)"));
+        throw make<ArgumentErrorCls>(__sf("Invalid length parameter in SecureSocket.read (length: %s)", length));
     }
     if (_closedRead) {
         throw make<SocketExceptionCls>(__s("Reading from a closed socket"));
@@ -160,11 +160,11 @@ SocketMessage _RawSecureSocketCls::readMessage(int count) {
 
 int _RawSecureSocketCls::write(List<int> data, int offset, int bytes) {
     if (bytes != nullptr &&  < 0) {
-        throw make<ArgumentErrorCls>(__s("Invalid bytes parameter in SecureSocket.read (bytes: %s)"));
+        throw make<ArgumentErrorCls>(__sf("Invalid bytes parameter in SecureSocket.read (bytes: %s)", bytes));
     }
     offset = _fixOffset(offset);
     if ( < 0) {
-        throw make<ArgumentErrorCls>(__s("Invalid offset parameter in SecureSocket.read (offset: %s)"));
+        throw make<ArgumentErrorCls>(__sf("Invalid offset parameter in SecureSocket.read (offset: %s)", offset));
     }
     if (_closedWrite) {
         _controller->addError(make<SocketExceptionCls>(__s("Writing to a closed socket")));
@@ -591,9 +591,9 @@ Future<_FilterStatus> _RawSecureSocketCls::_pushAllFilterStages() {
     auto response = await _IOServiceCls->_dispatch(_IOServiceCls::sslProcessFilter, args);
     if (response->length == 2) {
         if (wasInHandshake) {
-            _reportError(make<HandshakeExceptionCls>(__s("%s$%s)")), nullptr);
+            _reportError(make<HandshakeExceptionCls>(__sf("%s error %s", response[1], response[0])), nullptr);
         } else {
-            _reportError(make<TlsExceptionCls>(__s("%s$%s)")), nullptr);
+            _reportError(make<TlsExceptionCls>(__sf("%s error %s", response[1], response[0])), nullptr);
         }
     }
     InlineMethod;
@@ -774,13 +774,13 @@ String TlsExceptionCls::toString() {
     StringBuffer sb = make<StringBufferCls>();
     sb->write(type);
     if (message->isNotEmpty()) {
-        sb->write(__s(": %s)"));
+        sb->write(__sf(": %s", message));
         if (osError != nullptr) {
-            sb->write(__s(" (%s)"));
+            sb->write(__sf(" (%s)", osError));
         }
     } else {
         if (osError != nullptr) {
-        sb->write(__s(": %s)"));
+        sb->write(__sf(": %s", osError));
     }
 ;
     }    return sb->toString();

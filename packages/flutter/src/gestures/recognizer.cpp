@@ -60,8 +60,8 @@ T GestureRecognizerCls::invokeCallback(String name, RecognizerCallback<T> callba
         assert([=] () {
             if (debugPrintRecognizerCallbacksTrace) {
                 String report = debugReport != nullptr? debugReport() : nullptr;
-                String prefix = debugPrintGestureArenaDiagnostics? __s("%s:") : __s("");
-                debugPrint(__s("%s$%s$%s$%s"));
+                String prefix = debugPrintGestureArenaDiagnostics? __sf("%s❙ ", __s(" ") * 19) : __s("");
+                debugPrint(__sf("%s%s calling %s callback.%s", prefix, this, name, (report?->isNotEmpty() | false)? __sf(" %s", report) : __s("")));
             }
             return true;
         }());
@@ -289,5 +289,5 @@ OffsetPair OffsetPairCls::-(OffsetPair other) {
 }
 
 String OffsetPairCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(local: %s, global: %s)", objectRuntimeType(this, __s("OffsetPair")), local, global);
 }

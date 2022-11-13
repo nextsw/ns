@@ -26,5 +26,5 @@ bool GravitySimulationCls::isDone(double time) {
 }
 
 String GravitySimulationCls::toString() {
-    return __s("%s$%s$%s$%s$%s;");
+    return __sf("%s(g: %s, x₀: %s, dx₀: %s, xₘₐₓ: ±%s)", objectRuntimeType(this, __s("GravitySimulation")), _a->toStringAsFixed(1), _x->toStringAsFixed(1), _v->toStringAsFixed(1), _end->toStringAsFixed(1));
 }

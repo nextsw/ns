@@ -51,7 +51,7 @@ bool BouncingScrollSimulationCls::isDone(double time) {
 }
 
 String BouncingScrollSimulationCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(leadingExtent: %s, trailingExtent: %s)", objectRuntimeType(this, __s("BouncingScrollSimulation")), leadingExtent, trailingExtent);
 }
 
 Simulation BouncingScrollSimulationCls::_underscrollSimulation(double x, double dx) {

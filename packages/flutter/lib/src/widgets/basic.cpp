@@ -296,7 +296,7 @@ void TransformCls::updateRenderObject(BuildContext context, RenderTransform rend
 }
 
 Matrix4 TransformCls::_computeRotation(double radians) {
-    assert(radians->isFinite(), __s("Cannot compute the rotation matrix for a non-finite angle: %s)"));
+    assert(radians->isFinite(), __sf("Cannot compute the rotation matrix for a non-finite angle: %s", radians));
     if (radians == 0.0) {
         return Matrix4Cls->identity();
     }
@@ -524,15 +524,15 @@ void SizedBoxCls::updateRenderObject(BuildContext context, RenderConstrainedBox 
 String SizedBoxCls::toStringShort() {
     String type;
     if (width == double->infinity && height == double->infinity) {
-        type = __s("%s;");
+        type = __sf("%s.expand", objectRuntimeType(this, __s("SizedBox")));
     } else {
         if (width == 0.0 && height == 0.0) {
-        type = __s("%s;");
+        type = __sf("%s.shrink", objectRuntimeType(this, __s("SizedBox")));
     } else {
         type = objectRuntimeType(this, __s("SizedBox"));
     }
 ;
-    }    return key == nullptr? type : __s("%s$%s;");
+    }    return key == nullptr? type : __sf("%s-%s", type, key);
 }
 
 void SizedBoxCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -897,7 +897,7 @@ void StackCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
 
 bool StackCls::_debugCheckHasDirectionality(BuildContext context) {
     if (is<AlignmentDirectional>(alignment) && textDirection == nullptr) {
-        assert(debugCheckHasDirectionality(context, __s("to resolve the 'alignment' argument"), alignment == AlignmentDirectionalCls::topStart? __s("The default value for 'alignment' is AlignmentDirectional.topStart, which requires a text direction.") : nullptr, __s("Instead of providing a Directionality widget, another solution would be passing a non-directional 'alignment', or an explicit 'textDirection', to the %s,")));
+        assert(debugCheckHasDirectionality(context, __s("to resolve the 'alignment' argument"), alignment == AlignmentDirectionalCls::topStart? __s("The default value for 'alignment' is AlignmentDirectional.topStart, which requires a text direction.") : nullptr, __sf("Instead of providing a Directionality widget, another solution would be passing a non-directional 'alignment', or an explicit 'textDirection', to the %s.", runtimeType)));
     }
     return true;
 }

@@ -118,7 +118,7 @@ Stream<LicenseEntry> ServicesBindingCls::_addLicenses() {
 }
 
 List<LicenseEntry> ServicesBindingCls::_parseLicenses(String rawLicenses) {
-    String licenseSeparator = __s("\n%s;");
+    String licenseSeparator = __sf("\n%s\n", __s("-") * 80);
     List<LicenseEntry> result = makeList();
     List<String> licenses = rawLicenses->split(licenseSeparator);
     for (String license : licenses) {

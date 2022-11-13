@@ -61,5 +61,10 @@ String __s(const char* str) {
     return nullptr;
 }
 
+String __sf(String format, ...) {
+    //TODO
+    return nullptr;
+}
+
 #endif
 #endif

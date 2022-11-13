@@ -94,7 +94,7 @@ int lookAhead(String base, int start, int cursor, int state) {
         }
         return stateExtend;
     }
-    throw make<StateErrorCls>(__s("Unexpected state: %s)"));
+    throw make<StateErrorCls>(__sf("Unexpected state: %s", state->toRadixString(16)));
 }
 
 int lookAheadRegional(String base, int start, int cursor) {

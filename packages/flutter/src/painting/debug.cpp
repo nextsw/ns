@@ -23,7 +23,7 @@ int ImageSizeInfoCls::hashCode() {
 }
 
 String ImageSizeInfoCls::toString() {
-    return __s("ImageSizeInfo(%s$%s$%s;");
+    return __sf("ImageSizeInfo(%s, imageSize: %s, displaySize: %s)", source, imageSize, displaySize);
 }
 
 int ImageSizeInfoCls::_sizeToBytes(Size size) {

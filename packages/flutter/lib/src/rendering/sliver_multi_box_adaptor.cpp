@@ -18,7 +18,7 @@ bool SliverMultiBoxAdaptorParentDataCls::keptAlive() {
 }
 
 String SliverMultiBoxAdaptorParentDataCls::toString() {
-    return __s("index=%s$%s");
+    return __sf("index=%s; %s", index, keepAlive == true? __s("keepAlive; ") : __sf("%s", super->toString()));
 }
 
 RenderSliverMultiBoxAdaptorCls::RenderSliverMultiBoxAdaptorCls(RenderSliverBoxChildManager childManager) {
@@ -284,7 +284,7 @@ void RenderSliverMultiBoxAdaptorCls::paint(PaintingContext context, Offset offse
 
 void RenderSliverMultiBoxAdaptorCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(DiagnosticsNodeCls->message(firstChild != nullptr? __s("currently live children: %s$%s:") : __s("no children current live")));
+    properties->add(DiagnosticsNodeCls->message(firstChild != nullptr? __sf("currently live children: %s to %s", indexOf(firstChild!), indexOf(lastChild!)) : __s("no children current live")));
 }
 
 bool RenderSliverMultiBoxAdaptorCls::debugAssertChildListIsNonEmptyAndContiguous() {
@@ -308,7 +308,7 @@ List<DiagnosticsNode> RenderSliverMultiBoxAdaptorCls::debugDescribeChildren() {
         RenderBox child = firstChild;
         while (true) {
             SliverMultiBoxAdaptorParentData childParentData = as<SliverMultiBoxAdaptorParentData>(child!->parentData!);
-            children->add(child->toDiagnosticsNode(__s("child with index %s)")));
+            children->add(child->toDiagnosticsNode(__sf("child with index %s", childParentData->index)));
             if (child == lastChild) {
                 break;
             }
@@ -318,7 +318,7 @@ List<DiagnosticsNode> RenderSliverMultiBoxAdaptorCls::debugDescribeChildren() {
     if (_keepAliveBucket->isNotEmpty()) {
             auto _c1 = _keepAliveBucket->keys()->toList();    _c1.sort();List<int> indices = _c1;
         for (int index : indices) {
-            children->add(_keepAliveBucket[index]!->toDiagnosticsNode(__s("child with index %s,"), DiagnosticsTreeStyleCls::offstage));
+            children->add(_keepAliveBucket[index]!->toDiagnosticsNode(__sf("child with index %s (kept alive but not laid out)", index), DiagnosticsTreeStyleCls::offstage));
         }
     }
     return children;

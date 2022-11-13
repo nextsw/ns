@@ -67,7 +67,7 @@ void ActionCls<T>::notifyActionListeners() {
                 listener(this);
             }
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for %s)")), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets library"), make<ErrorDescriptionCls>(__sf("while dispatching notifications for %s", runtimeType)), collector));
         };
     }
 }
@@ -172,7 +172,7 @@ Action<T> ActionsCls::find(BuildContext context, T intent) {
     assert([=] () {
         if (action == nullptr) {
             Type type = intent?->runtimeType | T;
-            throw make<FlutterErrorCls>(__s("Unable to find an action for a %s$%sin the given context.\n$%s$%sThe context used was:\n  $%sThe intent type requested was:\n  $%s,"));
+            throw make<FlutterErrorCls>(__sf("Unable to find an action for a %s in an %s widget in the given context.\n%s.find() was called on a context that doesn't contain an %s widget with a mapping for the given intent type.\nThe context used was:\n  %s\nThe intent type requested was:\n  %s", type, ActionsCls, ActionsCls, ActionsCls, context, type));
         }
         return true;
     }());
@@ -218,7 +218,7 @@ Object ActionsCls::invoke(BuildContext context, T intent) {
 });
     assert([=] () {
         if (!actionFound) {
-            throw make<FlutterErrorCls>(__s("Unable to find an action for an Intent with type %s$%s$%s$%scontained a mapping for the given intent, or the intent type isn't the same as the type argument to invoke (which is $%stype argument to invoke if one was not given)\nThe context used was:\n  $%sThe intent type requested was:\n  $%s,"));
+            throw make<FlutterErrorCls>(__sf("Unable to find an action for an Intent with type %s in an %s widget in the given context.\n%s.invoke() was unable to find an %s widget that contained a mapping for the given intent, or the intent type isn't the same as the type argument to invoke (which is %s - try supplying a type argument to invoke if one was not given)\nThe context used was:\n  %s\nThe intent type requested was:\n  %s", intent->runtimeType, ActionsCls, ActionsCls, ActionsCls, T, context, intent->runtimeType));
         }
         return true;
     }());
@@ -299,7 +299,7 @@ Action<T> ActionsCls::_castAction(_ActionsMarker actionsMarker, T intent) {
     if (is<Action<T>>(mappedAction)) {
         return as<ActionCls>(mappedAction);
     } else {
-        assert(false, __s("%s$%s)"));
+        assert(false, __sf("%s cannot be handled by an Action of runtime type %s.", T, mappedAction->runtimeType));
         return nullptr;
     }
 }

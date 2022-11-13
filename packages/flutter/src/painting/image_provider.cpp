@@ -19,42 +19,42 @@ String ImageConfigurationCls::toString() {
     result->write(__s("ImageConfiguration("));
     bool hasArguments = false;
     if (bundle != nullptr) {
-        result->write(__s("bundle: %s)"));
+        result->write(__sf("bundle: %s", bundle));
         hasArguments = true;
     }
     if (devicePixelRatio != nullptr) {
         if (hasArguments) {
             result->write(__s(", "));
         }
-        result->write(__s("devicePixelRatio: %s)"));
+        result->write(__sf("devicePixelRatio: %s", devicePixelRatio!->toStringAsFixed(1)));
         hasArguments = true;
     }
     if (locale != nullptr) {
         if (hasArguments) {
             result->write(__s(", "));
         }
-        result->write(__s("locale: %s)"));
+        result->write(__sf("locale: %s", locale));
         hasArguments = true;
     }
     if (textDirection != nullptr) {
         if (hasArguments) {
             result->write(__s(", "));
         }
-        result->write(__s("textDirection: %s)"));
+        result->write(__sf("textDirection: %s", textDirection));
         hasArguments = true;
     }
     if (size != nullptr) {
         if (hasArguments) {
             result->write(__s(", "));
         }
-        result->write(__s("size: %s)"));
+        result->write(__sf("size: %s", size));
         hasArguments = true;
     }
     if (platform != nullptr) {
         if (hasArguments) {
             result->write(__s(", "));
         }
-        result->write(__s("platform: %s)"));
+        result->write(__sf("platform: %s", platform!->name));
         hasArguments = true;
     }
     result->write(__s(")"));
@@ -149,7 +149,7 @@ ImageStreamCompleter ImageProviderCls<T>::loadBuffer(T key, DecoderBufferCallbac
 
 template<typename T>
 String ImageProviderCls<T>::toString() {
-    return __s("%s;");
+    return __sf("%s()", objectRuntimeType(this, __s("ImageConfiguration")));
 }
 
 template<typename T>
@@ -194,7 +194,7 @@ int AssetBundleImageKeyCls::hashCode() {
 }
 
 String AssetBundleImageKeyCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s(bundle: %s, name: "%s", scale: %s)", objectRuntimeType(this, __s("AssetBundleImageKey")), bundle, name, scale);
 }
 
 ImageStreamCompleter AssetBundleImageProviderCls::loadBuffer(AssetBundleImageKey key, DecoderBufferCallback decode) {
@@ -277,7 +277,7 @@ ImageStreamCompleter ResizeImageCls::load(ResizeImageKey key, DecoderCallback de
     InlineMethod;
     ImageStreamCompleter completer = imageProvider->load(key->_providerCacheKey, decodeResize);
     if (!kReleaseMode) {
-        completer->debugLabel = __s("%s$%s$%s;");
+        completer->debugLabel = __sf("%s - Resized(%s×%s)", completer->debugLabel, key->_width, key->_height);
     }
     return completer;
 }
@@ -286,7 +286,7 @@ ImageStreamCompleter ResizeImageCls::loadBuffer(ResizeImageKey key, DecoderBuffe
     InlineMethod;
     ImageStreamCompleter completer = imageProvider->loadBuffer(key->_providerCacheKey, decodeResize);
     if (!kReleaseMode) {
-        completer->debugLabel = __s("%s$%s$%s;");
+        completer->debugLabel = __sf("%s - Resized(%s×%s)", completer->debugLabel, key->_width, key->_height);
     }
     return completer;
 }
@@ -343,7 +343,7 @@ int FileImageCls::hashCode() {
 }
 
 String FileImageCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s("%s", scale: %s)", objectRuntimeType(this, __s("FileImage")), file->path(), scale);
 }
 
 Future<Codec> FileImageCls::_loadAsync(FileImage key, DecoderBufferCallback decode, DecoderCallback decodeDeprecated) {
@@ -351,7 +351,7 @@ Future<Codec> FileImageCls::_loadAsync(FileImage key, DecoderBufferCallback deco
     Uint8List bytes = await file->readAsBytes();
     if (bytes->lengthInBytes == 0) {
         PaintingBindingCls::instance->imageCache->evict(key);
-        throw make<StateErrorCls>(__s("%s)"));
+        throw make<StateErrorCls>(__sf("%s is empty and cannot be loaded as an image.", file));
     }
     if (decode != nullptr) {
         return decode(await ui->ImmutableBufferCls->fromUint8List(bytes));
@@ -371,11 +371,11 @@ Future<MemoryImage> MemoryImageCls::obtainKey(ImageConfiguration configuration) 
 }
 
 ImageStreamCompleter MemoryImageCls::load(MemoryImage key, DecoderCallback decode) {
-    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(key, nullptr, decode), key->scale, __s("MemoryImage(%s,"));
+    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(key, nullptr, decode), key->scale, __sf("MemoryImage(%s)", describeIdentity(key->bytes)));
 }
 
 ImageStreamCompleter MemoryImageCls::loadBuffer(MemoryImage key, DecoderBufferCallback decode) {
-    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(key, decode, nullptr), key->scale, __s("MemoryImage(%s,"));
+    return make<MultiFrameImageStreamCompleterCls>(_loadAsync(key, decode, nullptr), key->scale, __sf("MemoryImage(%s)", describeIdentity(key->bytes)));
 }
 
 bool MemoryImageCls::==(Object other) {
@@ -390,7 +390,7 @@ int MemoryImageCls::hashCode() {
 }
 
 String MemoryImageCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s, scale: %s)", objectRuntimeType(this, __s("MemoryImage")), describeIdentity(bytes), scale);
 }
 
 Future<Codec> MemoryImageCls::_loadAsync(MemoryImage key, DecoderBufferCallback decode, DecoderCallback decodeDepreacted) {
@@ -410,7 +410,7 @@ ExactAssetImageCls::ExactAssetImageCls(String assetName, AssetBundle bundle, Str
 }
 
 String ExactAssetImageCls::keyName() {
-    return package == nullptr? assetName : __s("packages/%s$%s;");
+    return package == nullptr? assetName : __sf("packages/%s/%s", package, assetName);
 }
 
 Future<AssetBundleImageKey> ExactAssetImageCls::obtainKey(ImageConfiguration configuration) {
@@ -429,14 +429,14 @@ int ExactAssetImageCls::hashCode() {
 }
 
 String ExactAssetImageCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s(name: "%s", scale: %s, bundle: %s)", objectRuntimeType(this, __s("ExactAssetImage")), keyName(), scale, bundle);
 }
 
 NetworkImageLoadExceptionCls::NetworkImageLoadExceptionCls(int statusCode, Uri uri) {
     {
         assert(uri != nullptr);
         assert(statusCode != nullptr);
-        _message = __s("HTTP request failed, statusCode: %s$%s;");
+        _message = __sf("HTTP request failed, statusCode: %s, %s", statusCode, uri);
     }
 }
 

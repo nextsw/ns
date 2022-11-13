@@ -165,7 +165,7 @@ void _SyncBlockCls::finish() {
     _reportTaskEvent(0, __s("E"), category, name, _jsonArguments);
     Flow tempFlow = flow;
     if (tempFlow != nullptr) {
-        _reportFlowEvent(category, __s("%s,"), tempFlow->_type, tempFlow->id, _argumentsAsJson(nullptr));
+        _reportFlowEvent(category, __sf("%s", tempFlow->id), tempFlow->_type, tempFlow->id, _argumentsAsJson(nullptr));
     }
 }
 

@@ -238,7 +238,7 @@ void SchedulerBindingCls::scheduleFrame() {
     }
     assert([=] () {
         if (debugPrintScheduleFrameStacks) {
-            debugPrintStack(__s("scheduleFrame() called. Current phase is %s)"));
+            debugPrintStack(__sf("scheduleFrame() called. Current phase is %s.", schedulerPhase()));
         }
         return true;
     }());
@@ -253,7 +253,7 @@ void SchedulerBindingCls::scheduleForcedFrame() {
     }
     assert([=] () {
         if (debugPrintScheduleFrameStacks) {
-            debugPrintStack(__s("scheduleForcedFrame() called. Current phase is %s)"));
+            debugPrintStack(__sf("scheduleForcedFrame() called. Current phase is %s.", schedulerPhase()));
         }
         return true;
     }());
@@ -319,7 +319,7 @@ void SchedulerBindingCls::handleBeginFrame(Duration rawTimeStamp) {
             } else {
                 frameTimeStampDescription->write(__s("(warm-up frame)"));
             }
-            _debugBanner = __s("▄▄▄▄▄▄▄▄ Frame %s$%s;");
+            _debugBanner = __sf("▄▄▄▄▄▄▄▄ Frame %s   %s ▄▄▄▄▄▄▄▄", _debugFrameNumber->toString()->padRight(7), frameTimeStampDescription->toString()->padLeft(18));
             if (debugPrintBeginFrameBanner) {
                 debugPrint(_debugBanner);
             }
@@ -455,21 +455,21 @@ void SchedulerBindingCls::_profileFramePostEvent(FrameTiming frameTiming) {
 
 void SchedulerBindingCls::_debugDescribeTimeStamp(Duration timeStamp, StringBuffer buffer) {
     if (timeStamp->inDays() > 0) {
-        buffer->write(__s("%s)"));
+        buffer->write(__sf("%sd ", timeStamp->inDays()));
     }
     if (timeStamp->inHours() > 0) {
-        buffer->write(__s("%s)"));
+        buffer->write(__sf("%sh ", timeStamp->inHours() - timeStamp->inDays() * DurationCls::hoursPerDay));
     }
     if (timeStamp->inMinutes() > 0) {
-        buffer->write(__s("%s)"));
+        buffer->write(__sf("%sm ", timeStamp->inMinutes() - timeStamp->inHours() * DurationCls::minutesPerHour));
     }
     if (timeStamp->inSeconds() > 0) {
-        buffer->write(__s("%s)"));
+        buffer->write(__sf("%ss ", timeStamp->inSeconds() - timeStamp->inMinutes() * DurationCls::secondsPerMinute));
     }
-    buffer->write(__s("%s)"));
+    buffer->write(__sf("%s", timeStamp->inMilliseconds() - timeStamp->inSeconds() * DurationCls::millisecondsPerSecond));
     int microseconds = timeStamp->inMicroseconds() - timeStamp->inMilliseconds() * DurationCls::microsecondsPerMillisecond;
     if (microseconds > 0) {
-        buffer->write(__s(".%s)"));
+        buffer->write(__sf(".%s", microseconds->toString()->padLeft(3, __s("0"))));
     }
     buffer->write(__s("ms"));
 }

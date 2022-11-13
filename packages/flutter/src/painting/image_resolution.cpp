@@ -6,7 +6,7 @@ AssetImageCls::AssetImageCls(String assetName, AssetBundle bundle, String packag
 }
 
 String AssetImageCls::keyName() {
-    return package == nullptr? assetName : __s("packages/%s$%s;");
+    return package == nullptr? assetName : __sf("packages/%s/%s", package, assetName);
 }
 
 Future<AssetBundleImageKey> AssetImageCls::obtainKey(ImageConfiguration configuration) {
@@ -46,7 +46,7 @@ int AssetImageCls::hashCode() {
 }
 
 String AssetImageCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(bundle: %s, name: "%s")", objectRuntimeType(this, __s("AssetImage")), bundle, keyName());
 }
 
 Future<Map<String, List<String>>> AssetImageCls::_manifestParser(String jsonData) {

@@ -126,7 +126,7 @@ DraggableScrollableNotificationCls::DraggableScrollableNotificationCls(BuildCont
 
 void DraggableScrollableNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("minExtent: %s$%s$%s$%s)"));
+    description->add(__sf("minExtent: %s, extent: %s, maxExtent: %s, initialExtent: %s", minExtent, extent, maxExtent, initialExtent));
 }
 
 bool _DraggableSheetExtentCls::isAtMin() {
@@ -246,8 +246,8 @@ void _DraggableScrollableSheetStateCls::dispose() {
 List<double> _DraggableScrollableSheetStateCls::_impliedSnapSizes() {
     for (;  < (widget()->snapSizes?->length | 0); index += 1) {
         double snapSize = widget()->snapSizes![index];
-        assert(snapSize >= widget()->minChildSize && snapSize <= widget()->maxChildSize, __s("%s)"));
-        assert(index == 0 || snapSize > widget()->snapSizes![index - 1], __s("%s)"));
+        assert(snapSize >= widget()->minChildSize && snapSize <= widget()->maxChildSize, __sf("%s\nSnap sizes must be between `minChildSize` and `maxChildSize`. ", _snapSizeErrorMessage(index)));
+        assert(index == 0 || snapSize > widget()->snapSizes![index - 1], __sf("%s\nSnap sizes must be in ascending order. ", _snapSizeErrorMessage(index)));
     }
     if (widget()->snapSizes == nullptr || widget()->snapSizes!->isEmpty) {
         return makeList(ArrayItem, ArrayItem);
@@ -280,11 +280,11 @@ String _DraggableScrollableSheetStateCls::_snapSizeErrorMessage(int invalidIndex
     List<String> snapSizesWithIndicator = widget()->snapSizes!->asMap()->keys->map([=] (int index) {
     String snapSizeString = widget()->snapSizes![index]->toString();
     if (index == invalidIndex) {
-        return __s(">>> %s;");
+        return __sf(">>> %s <<<", snapSizeString);
     }
     return snapSizeString;
 })->toList();
-    return __s("Invalid snapSize '%s$%s  $%s;");
+    return __sf("Invalid snapSize '%s' at index %s of:\n  %s", widget()->snapSizes![invalidIndex], invalidIndex, snapSizesWithIndicator);
 }
 
 _DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControllerCls::createScrollPosition(ScrollPhysics physics, ScrollContext context, ScrollPosition oldPosition) {
@@ -295,7 +295,7 @@ _DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControlle
 
 void _DraggableScrollableSheetScrollControllerCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("extent: %s)"));
+    description->add(__sf("extent: %s", extent));
 }
 
 _DraggableScrollableSheetScrollPosition _DraggableScrollableSheetScrollControllerCls::position() {

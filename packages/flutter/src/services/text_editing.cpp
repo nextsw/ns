@@ -37,9 +37,9 @@ TextPosition TextSelectionCls::extent() {
 String TextSelectionCls::toString() {
     String typeName = objectRuntimeType(this, __s("TextSelection"));
     if (!isValid()) {
-        return __s("%s;");
+        return __sf("%s.invalid", typeName);
     }
-    return isCollapsed()? __s("%s$%s$%s$%s:") : __s("%s$%s$%s$%s;");
+    return isCollapsed()? __sf("%s.collapsed(offset: %s, affinity: %s, isDirectional: %s)", typeName, baseOffset, affinity, isDirectional) : __sf("%s(baseOffset: %s, extentOffset: %s, isDirectional: %s)", typeName, baseOffset, extentOffset, isDirectional);
 }
 
 bool TextSelectionCls::==(Object other) {

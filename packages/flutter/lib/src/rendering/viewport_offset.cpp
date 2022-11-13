@@ -16,12 +16,12 @@ Future<void> ViewportOffsetCls::moveTo(double to, bool clamp, Curve curve, Durat
 String ViewportOffsetCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return __s("%s$%s;");
+    return __sf("%s(%s)", describeIdentity(this), description->join(__s(", ")));
 }
 
 void ViewportOffsetCls::debugFillDescription(List<String> description) {
     if (hasPixels()) {
-        description->add(__s("offset: %s)"));
+        description->add(__sf("offset: %s", pixels()->toStringAsFixed(1)));
     }
 }
 

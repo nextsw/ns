@@ -1,7 +1,7 @@
 #include "gesture_detector.hpp"
 template<typename T>
 bool GestureRecognizerFactoryCls<T>::_debugAssertTypeMatches(Type type) {
-    assert(type == T, __s("GestureRecognizerFactory of type %s$%s)"));
+    assert(type == T, __sf("GestureRecognizerFactory of type %s was used where type %s was specified.", T, type));
     return true;
 }
 
@@ -38,7 +38,7 @@ GestureDetectorCls::GestureDetectorCls(HitTestBehavior behavior, Widget child, D
                 }
                 String recognizer = havePan? __s("pan") : __s("scale");
                 if (haveVerticalDrag && haveHorizontalDrag) {
-                    throw make<FlutterErrorCls>(__s("Incorrect GestureDetector arguments.\nSimultaneously having a vertical drag gesture recognizer, a horizontal drag gesture recognizer, and a %swill result in the $%s,"));
+                    throw make<FlutterErrorCls>(__sf("Incorrect GestureDetector arguments.\nSimultaneously having a vertical drag gesture recognizer, a horizontal drag gesture recognizer, and a %s gesture recognizer will result in the %s gesture recognizer being ignored, since the other two will catch all drags.", recognizer, recognizer));
                 }
             }
             return true;
@@ -209,7 +209,7 @@ void RawGestureDetectorStateCls::_syncAll(Map<Type, GestureRecognizerFactory<any
         assert(gestures[type]!->_debugAssertTypeMatches(type));
         assert(!_recognizers!->containsKey(type));
         _recognizers![type] = oldRecognizers[type] | gestures[type]!->constructor();
-        assert(_recognizers![type]->runtimeType == type, __s("GestureRecognizerFactory of type %s$%s)"));
+        assert(_recognizers![type]->runtimeType == type, __sf("GestureRecognizerFactory of type %s created a GestureRecognizer of type %s. The GestureRecognizerFactory must be specialized with the type of the class that it returns from its constructor method.", type, _recognizers![type]->runtimeType));
         gestures[type]!->initializer(_recognizers![type]!);
     }
     for (Type type : oldRecognizers->keys()) {
@@ -261,7 +261,7 @@ _GestureSemanticsCls::_GestureSemanticsCls(_AssignSemantics assignSemantics, Hit
 }
 
 String SemanticsGestureDelegateCls::toString() {
-    return __s("%s;");
+    return __sf("%s()", objectRuntimeType(this, __s("SemanticsGestureDelegate")));
 }
 
 void _DefaultSemanticsGestureDelegateCls::assignSemantics(RenderSemanticsGestureHandler renderObject) {

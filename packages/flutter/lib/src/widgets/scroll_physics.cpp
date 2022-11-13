@@ -92,7 +92,7 @@ String ScrollPhysicsCls::toString() {
     if (parent == nullptr) {
         return objectRuntimeType(this, __s("ScrollPhysics"));
     }
-    return __s("%s$%s;");
+    return __sf("%s -> %s", objectRuntimeType(this, __s("ScrollPhysics")), parent);
 }
 
 RangeMaintainingScrollPhysics RangeMaintainingScrollPhysicsCls::applyTo(ScrollPhysics ancestor) {

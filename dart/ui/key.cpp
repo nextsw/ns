@@ -1,10 +1,10 @@
 #include "key.hpp"
 String KeyDataCls::toString() {
-    return __s("KeyData(key %s$%slogical: $%s$%s$%s$%s");
+    return __sf("KeyData(key %s, physical: 0x%s, logical: %s, character: %s%s%s", _typeToString(type), physical->toRadixString(16), _logicalToString(), _escapeCharacter(), _quotedCharCode(), synthesized? __s(", synthesized") : __s(")"));
 }
 
 String KeyDataCls::toStringFull() {
-    return __s("%stype: $%stimeStamp: $%sphysical: 0x$%slogical: 0x$%scharacter: $%ssynthesized: $%s);");
+    return __sf("%s(type: %s, timeStamp: %s, physical: 0x%s, logical: 0x%s, character: %s, synthesized: %s)", runtimeType, _typeToString(type), timeStamp, physical->toRadixString(16), logical->toRadixString(16), _escapeCharacter(), synthesized);
 }
 
 int KeyDataCls::_nonValueBits(int n) {
@@ -23,13 +23,13 @@ int KeyDataCls::_nonValueBits(int n) {
 }
 
 String KeyDataCls::_logicalToString() {
-    String result = __s("0x%s;");
+    String result = __sf("0x%s", logical->toRadixString(16));
     int planeNum = _nonValueBits(logical) & 0x0FF;
     String planeDescription = ([=] () {
     ;
     return __s("");
 })();
-    return __s("%s$%s;");
+    return __sf("%s%s", result, planeDescription);
 }
 
 String KeyDataCls::_escapeCharacter() {
@@ -46,7 +46,7 @@ String KeyDataCls::_quotedCharCode() {
     Iterable<String> hexChars = character!->codeUnits()->map([=] (int code) {
     code->toRadixString(16)->padLeft(2, __s("0"));
 });
-    return __s(" (0x%s;");
+    return __sf(" (0x%s)", hexChars->join(__s(" ")));
 }
 
 String KeyDataCls::_typeToString(KeyEventType type) {

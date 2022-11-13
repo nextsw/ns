@@ -27,9 +27,9 @@ int _MouseStateCls::device() {
 }
 
 String _MouseStateCls::toString() {
-    String describeLatestEvent = __s("latestEvent: %s;");
-    String describeAnnotations = __s("annotations: [list of %s;");
-    return __s("%s$%s$%s;");
+    String describeLatestEvent = __sf("latestEvent: %s", describeIdentity(latestEvent()));
+    String describeAnnotations = __sf("annotations: [list of %s]", annotations()->length());
+    return __sf("%s(%s, %s)", describeIdentity(this), describeLatestEvent, describeAnnotations);
 }
 
 _MouseStateCls::_MouseStateCls(PointerEvent initialEvent) {

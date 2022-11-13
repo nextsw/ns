@@ -174,7 +174,7 @@ void RenderEditableCls::painter(RenderEditablePainter newPainter) {
 }
 
 void RenderEditableCls::debugAssertLayoutUpToDate() {
-    assert(_textLayoutLastMaxWidth == constraints()->maxWidth && _textLayoutLastMinWidth == constraints()->minWidth, __s("Last width (%s$%s$%s$%s,"));
+    assert(_textLayoutLastMaxWidth == constraints()->maxWidth && _textLayoutLastMinWidth == constraints()->minWidth, __sf("Last width (%s, %s) not the same as max width constraint (%s, %s).", _textLayoutLastMinWidth, _textLayoutLastMaxWidth, constraints()->minWidth, constraints()->maxWidth));
 }
 
 TextHeightBehavior RenderEditableCls::textHeightBehavior() {
@@ -781,7 +781,7 @@ void RenderEditableCls::assembleSemanticsNode(SemanticsNode node, SemanticsConfi
                         configuration->onLongPress() = recognizer->onLongPress;
                     }
                 } else {
-                    assert(false, __s("%s)"));
+                    assert(false, __sf("%s is not supported.", recognizer->runtimeType));
                 }
 ;
                 };
@@ -1542,7 +1542,7 @@ MapEntry<int, Offset> RenderEditableCls::_lineNumberFor(TextPosition startPositi
             return <int, Offset>make<MapEntryCls>(lineMetrics->lineNumber, make<OffsetCls>(offset->dx(), lineMetrics->baseline));
         }
     }
-    assert(startPosition->offset == 0, __s("unable to find the line for %s)"));
+    assert(startPosition->offset == 0, __sf("unable to find the line for %s", startPosition));
     return <int, Offset>make<MapEntryCls>(math->max(0, metrics->length() - 1), make<OffsetCls>(offset->dx(), metrics->isNotEmpty()? metrics->last->baseline + metrics->last->descent : 0.0));
 }
 

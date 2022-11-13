@@ -107,7 +107,7 @@ Uri UriCls::parse(String uri, int start, int end) {
                             fragmentStart += 1;
                             end += 1;
                         } else {
-                            uri = __s("%s$%s;");
+                            uri = __sf("%s/%s", uri->substring(start, pathStart), uri->substring(queryStart, end));
                             schemeEnd -= start;
                             hostStart -= start;
                             portStart -= start;
@@ -652,25 +652,25 @@ bool _UriCls::hasAbsolutePath() {
 
 String _UriCls::origin() {
     if (scheme == __s("")) {
-        throw make<StateErrorCls>(__s("Cannot use origin without a scheme: %s)"));
+        throw make<StateErrorCls>(__sf("Cannot use origin without a scheme: %s", this));
     }
     if (scheme != __s("http") && scheme != __s("https")) {
-        throw make<StateErrorCls>(__s("Origin is only applicable schemes http and https: %s)"));
+        throw make<StateErrorCls>(__sf("Origin is only applicable schemes http and https: %s", this));
     }
     String host = _host;
     if (host == nullptr || host == __s("")) {
-        throw make<StateErrorCls>(__s("A %s$%s)"));
+        throw make<StateErrorCls>(__sf("A %s: URI should have a non-empty host name: %s", scheme, this));
     }
     int port = _port;
     if (port == nullptr) {
-        return __s("%s$%s;");
+        return __sf("%s://%s", scheme, host);
     }
-    return __s("%s$%s$%s;");
+    return __sf("%s://%s:%s", scheme, host, port);
 }
 
 String _UriCls::toFilePath(bool windows) {
     if (scheme != __s("") && scheme != __s("file")) {
-        throw make<UnsupportedErrorCls>(__s("Cannot extract a file path from a %s)"));
+        throw make<UnsupportedErrorCls>(__sf("Cannot extract a file path from a %s URI", scheme));
     }
     if (query() != __s("")) {
         throw make<UnsupportedErrorCls>(__s("Cannot extract a file path from a URI with a query component"));
@@ -807,9 +807,9 @@ void _UriCls::_checkNonWindowsPathReservedCharacters(List<String> segments, bool
     for (auto segment : segments) {
         if (segment->contains(__s("/"))) {
             if (argumentError) {
-                throw make<ArgumentErrorCls>(__s("Illegal path character %s)"));
+                throw make<ArgumentErrorCls>(__sf("Illegal path character %s", segment));
             } else {
-                throw make<UnsupportedErrorCls>(__s("Illegal path character %s)"));
+                throw make<UnsupportedErrorCls>(__sf("Illegal path character %s", segment));
             }
         }
     }
@@ -821,7 +821,7 @@ void _UriCls::_checkWindowsPathReservedCharacters(List<String> segments, bool ar
             if (argumentError) {
                 throw make<ArgumentErrorCls>(__s("Illegal character in path"));
             } else {
-                throw make<UnsupportedErrorCls>(__s("Illegal character in path: %s)"));
+                throw make<UnsupportedErrorCls>(__sf("Illegal character in path: %s", segment));
             }
         }
     }
@@ -959,7 +959,7 @@ String _UriCls::_makeHost(String host, int start, int end, bool strictIPv6) {
                     zoneID = _normalizeZoneID(host, zoneIDstart, end, __s("%25"));
                 }
                 UriCls->parseIPv6Address(host, start, index);
-                return __s("[%s+") + zoneID + __s("]");
+                return __sf("[%s", host->substring(start, index)) + zoneID + __s("]");
             }
         }
     }
@@ -1483,7 +1483,7 @@ String _UriCls::_escapeScheme(String path) {
         for (;  < path->length(); i++) {
             int char = path->codeUnitAt(i);
             if (charValue == _COLON) {
-                return __s("%s$%s;");
+                return __sf("%s%3A%s", path->substring(0, i), path->substring(i + 1));
             }
             if (charValue > 127 || ((_schemeTable[charValue >> 4] & (1 << (charValue & 0x0f))) == 0)) {
                 break;
@@ -1866,7 +1866,7 @@ String UriDataCls::contentAsString(Encoding encoding) {
         auto charset = this->charset();
         encoding = EncodingCls->getByName(charset);
         if (encoding == nullptr) {
-            throw make<UnsupportedErrorCls>(__s("Unknown charset: %s)"));
+            throw make<UnsupportedErrorCls>(__sf("Unknown charset: %s", charset));
         }
     }
     String text = _text;
@@ -1892,7 +1892,7 @@ Map<String, String> UriDataCls::parameters() {
 }
 
 String UriDataCls::toString() {
-    return (_separatorIndices[0] == _noScheme)? __s("data:%s:") : _text;
+    return (_separatorIndices[0] == _noScheme)? __sf("data:%s", _text) : _text;
 }
 
 void UriDataCls::_writeUri(String mimeType, String charsetName, Map<String, String> parameters, StringBuffer buffer, List<int> indices) {
@@ -1920,7 +1920,7 @@ void UriDataCls::_writeUri(String mimeType, String charsetName, Map<String, Stri
             throw ArgumentErrorCls->value(__s(""), __s("Parameter names must not be empty"));
         }
         if (value->isEmpty) {
-            throw ArgumentErrorCls->value(__s(""), __s("Parameter values must not be empty"), __s("parameters["%s)"));
+            throw ArgumentErrorCls->value(__s(""), __s("Parameter values must not be empty"), __sf("parameters["%s"]", key));
         }
         indices?->add(buffer->length());
         buffer->write(__s(";"));
@@ -2094,7 +2094,7 @@ List<Uint8List> _createTables() {
     int notSimple = _notSimpleIndex << 5;
     unreserved = __s("0123456789ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz-._~");
     subDelims = __s("!$&'()*+,;=");
-    pchar = __s("%s$%s;");
+    pchar = __sf("%s%s", unreserved, subDelims);
     auto tables = <Uint8List>generate(stateCount, [=] (Unknown  _) {
     make<Uint8ListCls>(96);
 });
@@ -2344,13 +2344,13 @@ String _SimpleUriCls::fragment() {
 String _SimpleUriCls::origin() {
     bool isHttp = _isHttp();
     if ( < 0) {
-        throw make<StateErrorCls>(__s("Cannot use origin without a scheme: %s)"));
+        throw make<StateErrorCls>(__sf("Cannot use origin without a scheme: %s", this));
     }
     if (!isHttp && !_isHttps()) {
-        throw make<StateErrorCls>(__s("Origin is only applicable to schemes http and https: %s)"));
+        throw make<StateErrorCls>(__sf("Origin is only applicable to schemes http and https: %s", this));
     }
     if (_hostStart == _portStart) {
-        throw make<StateErrorCls>(__s("A %s$%s)"));
+        throw make<StateErrorCls>(__sf("A %s: URI should have a non-empty host name: %s", scheme(), this));
     }
     if (_hostStart == _schemeEnd + 3) {
         return _uri->substring(0, _pathStart);
@@ -2482,7 +2482,7 @@ Uri _SimpleUriCls::resolveUri(Uri reference) {
 
 String _SimpleUriCls::toFilePath(bool windows) {
     if (_schemeEnd >= 0 && !_isFile()) {
-        throw make<UnsupportedErrorCls>(__s("Cannot extract a file path from a %s)"));
+        throw make<UnsupportedErrorCls>(__sf("Cannot extract a file path from a %s URI", scheme()));
     }
     if ( < _uri->length()) {
         if ( < _fragmentStart) {
@@ -2621,7 +2621,7 @@ Uri _SimpleUriCls::_simpleMerge(_SimpleUri base, _SimpleUri ref) {
             refStart += 3;
         }
         auto delta = base->_pathStart - refStart + 1;
-        auto newUri = __s("%s$%s;");
+        auto newUri = __sf("%s/%s", base->_uri->substring(0, base->_pathStart), ref->_uri->substring(refStart));
         return make<_SimpleUriCls>(newUri, base->_schemeEnd, base->_hostStart, base->_portStart, base->_pathStart, ref->_queryStart + delta, ref->_fragmentStart + delta, base->_schemeCache);
     }
     String baseUri = base->_uri;
@@ -2660,7 +2660,7 @@ Uri _SimpleUriCls::_simpleMerge(_SimpleUri base, _SimpleUri ref) {
         refStart -= backCount * 3;
     }
     auto delta = baseEnd - refStart + insert->length();
-    auto newUri = __s("%s$%s$%s;");
+    auto newUri = __sf("%s%s%s", base->_uri->substring(0, baseEnd), insert, ref->_uri->substring(refStart));
     return make<_SimpleUriCls>(newUri, base->_schemeEnd, base->_hostStart, base->_portStart, base->_pathStart, ref->_queryStart + delta, ref->_fragmentStart + delta, base->_schemeCache);
 }
 

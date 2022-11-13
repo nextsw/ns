@@ -8,9 +8,9 @@ PartialStackFrameCls::PartialStackFrameCls(String className, String method, Patt
 }
 
 bool PartialStackFrameCls::matches(StackFrame stackFrame) {
-    String stackFramePackage = __s("%s$%s$%s;");
+    String stackFramePackage = __sf("%s:%s/%s", stackFrame->packageScheme, stackFrame->package, stackFrame->packagePath);
     if (kIsWeb) {
-        return package->allMatches(stackFramePackage)->isNotEmpty() && stackFrame->method == (method->startsWith(__s("_"))? __s("[%s:") : method);
+        return package->allMatches(stackFramePackage)->isNotEmpty() && stackFrame->method == (method->startsWith(__s("_"))? __sf("[%s]", method) : method);
     }
     return package->allMatches(stackFramePackage)->isNotEmpty() && stackFrame->method == method && stackFrame->className == className;
 }
@@ -107,9 +107,9 @@ String FlutterErrorDetailsCls::exceptionAsString() {
                     String body = fullMessage->substring(0, position - 2);
                     int splitPoint = body->indexOf(__s(" Failed assertion:"));
                     if (splitPoint >= 0) {
-                        body = __s("%s$%s;");
+                        body = __sf("%s\n%s", body->substring(0, splitPoint), body->substring(splitPoint + 1));
                     }
-                    longMessage = __s("%s$%s;");
+                    longMessage = __sf("%s\n%s", message->trimRight(), body);
                 }
             }
         }
@@ -121,7 +121,7 @@ String FlutterErrorDetailsCls::exceptionAsString() {
         if (is<Error>(exception) || is<Exception>(exception)) {
         longMessage = exception->toString();
     } else {
-        longMessage = __s("  %s;");
+        longMessage = __sf("  %s", exception);
     }
 ;
     };
@@ -153,13 +153,13 @@ DiagnosticsNode FlutterErrorDetailsCls::summary() {
 
 void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    DiagnosticsNode verb = make<ErrorDescriptionCls>(__s("thrown%s"));
+    DiagnosticsNode verb = make<ErrorDescriptionCls>(__sf("thrown%s", context != nullptr? make<ErrorDescriptionCls>(__sf(" %s", context)) : __s("")));
     Diagnosticable diagnosticable = _exceptionToDiagnosticable();
     if (is<NullThrownError>(exception)) {
-        properties->add(make<ErrorDescriptionCls>(__s("The null value was %s)")));
+        properties->add(make<ErrorDescriptionCls>(__sf("The null value was %s.", verb)));
     } else {
         if (is<num>(exception)) {
-        properties->add(make<ErrorDescriptionCls>(__s("The number %s$%s)")));
+        properties->add(make<ErrorDescriptionCls>(__sf("The number %s was %s.", as<numCls>(exception), verb)));
     } else {
         DiagnosticsNode errorName;
         if (is<AssertionError>(exception)) {
@@ -169,17 +169,17 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
             errorName = make<ErrorDescriptionCls>(__s("message"));
         } else {
             if (is<Error>(exception) || is<Exception>(exception)) {
-            errorName = make<ErrorDescriptionCls>(__s("%s)"));
+            errorName = make<ErrorDescriptionCls>(__sf("%s", exception->runtimeType()));
         } else {
-            errorName = make<ErrorDescriptionCls>(__s("%s)"));
+            errorName = make<ErrorDescriptionCls>(__sf("%s object", exception->runtimeType()));
         }
 ;
         };
-        }        properties->add(make<ErrorDescriptionCls>(__s("The following %s$%s)")));
+        }        properties->add(make<ErrorDescriptionCls>(__sf("The following %s was %s:", errorName, verb)));
         if (diagnosticable != nullptr) {
             diagnosticable->debugFillProperties(properties);
         } else {
-            String prefix = __s("%s;");
+            String prefix = __sf("%s: ", exception->runtimeType());
             String message = exceptionAsString();
             if (message->startsWith(prefix)) {
                 message = message->substring(prefix->length());
@@ -209,7 +209,7 @@ void FlutterErrorDetailsCls::debugFillProperties(DiagnosticPropertiesBuilder pro
 }
 
 String FlutterErrorDetailsCls::toStringShort() {
-    return library != nullptr? __s("Exception caught by %s:") : __s("Exception caught");
+    return library != nullptr? __sf("Exception caught by %s", library) : __s("Exception caught");
 }
 
 String FlutterErrorDetailsCls::toString(DiagnosticLevel minLevel) {
@@ -248,7 +248,7 @@ void FlutterErrorCls::fromParts(List<DiagnosticsNode> diagnostics) {
             List<DiagnosticsNode> message = makeList(ArrayItem, ArrayItem, ArrayItem, ArrayItem);
             int i = 1;
             for (DiagnosticsNode summary : summaries) {
-                message->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__s("Summary %s,"), summary, true));
+                message->add(<DiagnosticsNode>make<DiagnosticsPropertyCls>(__sf("Summary %s", i), summary, true));
                 i += 1;
             }
             message->add(make<ErrorDescriptionCls>(__s("\nThis error should still help you solve your problem, however please also report this malformed error in the framework by filing a bug on GitHub:\n  https://github.com/flutter/flutter/issues/new?template=2_bug.md")));
@@ -285,7 +285,7 @@ void FlutterErrorCls::dumpErrorToConsole(FlutterErrorDetails details, bool force
             debugPrintStack(details->stack, details->exception->toString(), 100);
         }
     } else {
-        debugPrint(__s("Another exception was thrown: %s)"));
+        debugPrint(__sf("Another exception was thrown: %s", details->summary()));
     }
     _errorCount += 1;
 }
@@ -300,8 +300,8 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
     List<StackFrame> parsedFrames = StackFrameCls->fromStackString(frames->join(__s("\n")));
     for (;  < parsedFrames->length(); index += 1) {
         StackFrame frame = parsedFrames[index];
-        String className = __s("class %s;");
-        String package = __s("%s$%s;");
+        String className = __sf("class %s", frame->className);
+        String package = __sf("%s:%s", frame->packageScheme, frame->package);
         if (removedPackagesAndClasses->containsKey(className)) {
             skipped += 1;
             removedPackagesAndClasses->update(className, [=] (int value) {
@@ -333,26 +333,26 @@ Iterable<String> FlutterErrorCls::defaultStackFilter(Iterable<String> frames) {
         String suffix = __s("");
         if (reasons[index] != nullptr) {
             if (index != start) {
-                suffix = __s(" (%s;");
+                suffix = __sf(" (%s frames)", index - start + 2);
             } else {
                 suffix = __s(" (1 frame)");
             }
         }
-        String resultLine = __s("%s$%s;");
+        String resultLine = __sf("%s%s", reasons[index] | parsedFrames[index]->source, suffix);
         result->add(resultLine);
     }
     auto _c2 = List<String> list3 = make<ListCls<>>();for (MapEntry<String, int> entry : removedPackagesAndClasses->entries()) {    ;}{    list3.add(ArrayItem);}list3;_c2.sort();List<String> where = _c2;
     if (skipped == 1) {
-        result->add(__s("(elided one frame from %s)"));
+        result->add(__sf("(elided one frame from %s)", where->single()));
     } else {
         if (skipped > 1) {
         if (where->length() > 1) {
-            where[where->length() - 1] = __s("and %s;");
+            where[where->length() - 1] = __sf("and %s", where->last);
         }
         if (where->length() > 2) {
-            result->add(__s("(elided %s$%s)"));
+            result->add(__sf("(elided %s frames from %s)", skipped, where->join(__s(", "))));
         } else {
-            result->add(__s("(elided %s$%s)"));
+            result->add(__sf("(elided %s frames from %s)", skipped, where->join(__s(" "))));
         }
     }
 ;
@@ -423,7 +423,7 @@ List<DiagnosticsNode> DiagnosticsStackTraceCls::_applyStackFilter(StackTrace sta
         return makeList();
     }
     IterableFilter<String> filter = stackFilter | FlutterErrorCls::defaultStackFilter;
-    Iterable<String> frames = filter(__s("%s.")->trimRight()->split(__s("\n")));
+    Iterable<String> frames = filter(__sf("%s", FlutterErrorCls->demangleStackTrace(stack))->trimRight()->split(__s("\n")));
     return frames-><DiagnosticsNode>map(_createStackFrame)->toList();
 }
 

@@ -397,7 +397,7 @@ void _NestedScrollCoordinatorCls::dispose() {
 }
 
 String _NestedScrollCoordinatorCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(outer=%s; inner=%s)", objectRuntimeType(this, __s("_NestedScrollCoordinator")), _outerController, _innerController);
 }
 
 _NestedScrollCoordinatorCls::_NestedScrollCoordinatorCls(NestedScrollViewState _state, ScrollController _parent, VoidCallback _onHasScrolledBodyChanged, bool _floatHeaderSlivers) {
@@ -735,7 +735,7 @@ bool _NestedOuterBallisticScrollActivityCls::applyMoveTo(double value) {
 }
 
 String _NestedOuterBallisticScrollActivityCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s(%s .. %s; correcting by %s)", objectRuntimeType(this, __s("_NestedOuterBallisticScrollActivity")), metrics->minRange, metrics->maxRange, metrics->correctionOffset);
 }
 
 _NestedOuterBallisticScrollActivityCls::_NestedOuterBallisticScrollActivityCls(_NestedScrollCoordinator coordinator, _NestedScrollPosition position, _NestedScrollMetrics metrics, Simulation simulation, TickerProvider vsync) : BallisticScrollActivity(position, simulation, vsync) {
@@ -756,7 +756,7 @@ double SliverOverlapAbsorberHandleCls::scrollExtent() {
 String SliverOverlapAbsorberHandleCls::toString() {
     String extra;
     ;
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s%s)", objectRuntimeType(this, __s("SliverOverlapAbsorberHandle")), layoutExtent(), extra);
 }
 
 void SliverOverlapAbsorberHandleCls::_setExtents(double layoutValue, double scrollValue) {

@@ -1,6 +1,6 @@
 #include "scale.hpp"
 String _PointerPanZoomDataCls::toString() {
-    return __s("_PointerPanZoomData(focalPoint: %s$%s$%s;");
+    return __sf("_PointerPanZoomData(focalPoint: %s, scale: %s, angle: %s)", focalPoint, scale, rotation);
 }
 
 ScaleStartDetailsCls::ScaleStartDetailsCls(Offset focalPoint, Offset localFocalPoint, int pointerCount) {
@@ -11,7 +11,7 @@ ScaleStartDetailsCls::ScaleStartDetailsCls(Offset focalPoint, Offset localFocalP
 }
 
 String ScaleStartDetailsCls::toString() {
-    return __s("ScaleStartDetails(focalPoint: %s$%s$%s;");
+    return __sf("ScaleStartDetails(focalPoint: %s, localFocalPoint: %s, pointersCount: %s)", focalPoint, localFocalPoint, pointerCount);
 }
 
 ScaleUpdateDetailsCls::ScaleUpdateDetailsCls(Offset focalPoint, Offset focalPointDelta, double horizontalScale, Offset localFocalPoint, int pointerCount, double rotation, double scale, double verticalScale) {
@@ -27,7 +27,7 @@ ScaleUpdateDetailsCls::ScaleUpdateDetailsCls(Offset focalPoint, Offset focalPoin
 }
 
 String ScaleUpdateDetailsCls::toString() {
-    return __s("ScaleUpdateDetails(focalPoint: %s localFocalPoint: $%s scale: $%s horizontalScale: $%s verticalScale: $%s rotation: $%s pointerCount: $%s focalPointDelta: $%s;");
+    return __sf("ScaleUpdateDetails(focalPoint: %s, localFocalPoint: %s, scale: %s, horizontalScale: %s, verticalScale: %s, rotation: %s, pointerCount: %s, focalPointDelta: %s)", focalPoint, localFocalPoint, scale, horizontalScale, verticalScale, rotation, pointerCount, focalPointDelta);
 }
 
 ScaleEndDetailsCls::ScaleEndDetailsCls(int pointerCount, Velocity velocity) {
@@ -37,7 +37,7 @@ ScaleEndDetailsCls::ScaleEndDetailsCls(int pointerCount, Velocity velocity) {
 }
 
 String ScaleEndDetailsCls::toString() {
-    return __s("ScaleEndDetails(velocity: %s$%s;");
+    return __sf("ScaleEndDetails(velocity: %s, pointerCount: %s)", velocity, pointerCount);
 }
 
 bool _isFlingGesture(Velocity velocity) {

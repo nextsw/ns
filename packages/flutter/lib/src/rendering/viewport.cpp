@@ -17,7 +17,7 @@ RevealedOffsetCls::RevealedOffsetCls(double offset, Rect rect) {
 }
 
 String RevealedOffsetCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(offset: %s, rect: %s)", objectRuntimeType(this, __s("RevealedOffset")), offset, rect);
 }
 
 template<typename ParentDataClass>
@@ -344,7 +344,7 @@ RevealedOffset RenderViewportBaseCls<ParentDataClass>::getOffsetToReveal(RenderO
     bool onlySlivers = is<RenderSliver>(target);
     while (child->parent() != this) {
         RenderObject parent = as<RenderObject>(child->parent()!);
-        assert(parent != nullptr, __s("%s$%s)"));
+        assert(parent != nullptr, __sf("%s must be a descendant of %s", target, this));
         if (is<RenderBox>(child)) {
             pivot = as<RenderBoxCls>(child);
         }
@@ -588,7 +588,7 @@ void RenderViewportCls::performLayout() {
     assert([=] () {
         if (count >= _maxLayoutCycles) {
             assert(count != 1);
-            throw make<FlutterErrorCls>(__s("A RenderViewport exceeded its maximum number of layout cycles.\nRenderViewport render objects, during layout, can retry if either their slivers or their ViewportOffset decide that the offset should be corrected to take into account information collected during that layout.\nIn the case of this RenderViewport object, however, this happened %stimes and still there was no consensus on the scroll offset. This usually indicates a bug. Specifically, it means that one of the following three problems is being experienced by the RenderViewport object:\n * One of the RenderSliver children or the ViewportOffset have a bug such that they always think that they need to correct the offset regardless.\n * Some combination of the RenderSliver children and the ViewportOffset have a bad interaction such that one applies a correction then another applies a reverse correction, leading to an infinite loop of corrections.\n * There is a pathological case that would eventually resolve, but it is so complicated that it cannot be resolved in any reasonable number of layout passes.,"));
+            throw make<FlutterErrorCls>(__sf("A RenderViewport exceeded its maximum number of layout cycles.\nRenderViewport render objects, during layout, can retry if either their slivers or their ViewportOffset decide that the offset should be corrected to take into account information collected during that layout.\nIn the case of this RenderViewport object, however, this happened %s times and still there was no consensus on the scroll offset. This usually indicates a bug. Specifically, it means that one of the following three problems is being experienced by the RenderViewport object:\n * One of the RenderSliver children or the ViewportOffset have a bug such that they always think that they need to correct the offset regardless.\n * Some combination of the RenderSliver children and the ViewportOffset have a bad interaction such that one applies a correction then another applies a reverse correction, leading to an infinite loop of corrections.\n * There is a pathological case that would eventually resolve, but it is so complicated that it cannot be resolved in any reasonable number of layout passes.", count));
         }
         return true;
     }());
@@ -659,7 +659,7 @@ String RenderViewportCls::labelForChild(int index) {
     if (index == 0) {
         return __s("center child");
     }
-    return __s("child %s;");
+    return __sf("child %s", index);
 }
 
 Iterable<RenderSliver> RenderViewportCls::childrenInPaintOrder() {
@@ -854,7 +854,7 @@ int RenderShrinkWrappingViewportCls::indexOfFirstChild() {
 }
 
 String RenderShrinkWrappingViewportCls::labelForChild(int index) {
-    return __s("child %s;");
+    return __sf("child %s", index);
 }
 
 Iterable<RenderSliver> RenderShrinkWrappingViewportCls::childrenInPaintOrder() {

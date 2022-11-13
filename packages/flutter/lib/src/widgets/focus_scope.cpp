@@ -49,13 +49,13 @@ FocusNode FocusCls::of(BuildContext context, bool scopeOk) {
     FocusNode node = marker?->notifier;
     assert([=] () {
         if (node == nullptr) {
-            throw make<FlutterErrorCls>(__s("Focus.of() was called with a context that does not contain a Focus widget.\nNo Focus widget ancestor could be found starting from the context that was passed to Focus.of(). This can happen because you are using a widget that looks for a Focus ancestor, and do not have a Focus widget descendant in the nearest FocusScope.\nThe context used was:\n  %s,"));
+            throw make<FlutterErrorCls>(__sf("Focus.of() was called with a context that does not contain a Focus widget.\nNo Focus widget ancestor could be found starting from the context that was passed to Focus.of(). This can happen because you are using a widget that looks for a Focus ancestor, and do not have a Focus widget descendant in the nearest FocusScope.\nThe context used was:\n  %s", context));
         }
         return true;
     }());
     assert([=] () {
         if (!scopeOk && is<FocusScopeNode>(node)) {
-            throw make<FlutterErrorCls>(__s("Focus.of() was called with a context that does not contain a Focus between the given context and the nearest FocusScope widget.\nNo Focus ancestor could be found starting from the context that was passed to Focus.of() to the point where it found the nearest FocusScope widget. This can happen because you are using a widget that looks for a Focus ancestor, and do not have a Focus widget ancestor in the current FocusScope.\nThe context used was:\n  %s,"));
+            throw make<FlutterErrorCls>(__sf("Focus.of() was called with a context that does not contain a Focus between the given context and the nearest FocusScope widget.\nNo Focus ancestor could be found starting from the context that was passed to Focus.of() to the point where it found the nearest FocusScope widget. This can happen because you are using a widget that looks for a Focus ancestor, and do not have a Focus widget ancestor in the current FocusScope.\nThe context used was:\n  %s", context));
         }
         return true;
     }());

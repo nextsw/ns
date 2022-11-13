@@ -15,9 +15,9 @@ String _GestureArenaCls::toString() {
     } else {
         buffer->write(members-><String>map([=] (GestureArenaMember member) {
             if (member == eagerWinner) {
-                return __s("%s;");
+                return __sf("%s (eager winner)", member);
             }
-            return __s("%s;");
+            return __sf("%s", member);
         })->join(__s(", ")));
     }
     if (isOpen) {
@@ -38,7 +38,7 @@ GestureArenaEntry GestureArenaManagerCls::add(int pointer, GestureArenaMember me
     return make<_GestureArenaCls>();
 });
     state->add(member);
-    assert(_debugLogDiagnostic(pointer, __s("Adding: %s)")));
+    assert(_debugLogDiagnostic(pointer, __sf("Adding: %s", member)));
     return GestureArenaEntryCls->_(this, pointer, member);
 }
 
@@ -66,7 +66,7 @@ void GestureArenaManagerCls::sweep(int pointer) {
     assert(_debugLogDiagnostic(pointer, __s("Sweeping"), state));
     _arenas->remove(pointer);
     if (state->members->isNotEmpty()) {
-        assert(_debugLogDiagnostic(pointer, __s("Winner: %s)")));
+        assert(_debugLogDiagnostic(pointer, __sf("Winner: %s", state->members->first)));
         state->members->first->acceptGesture(pointer);
         for (;  < state->members->length(); i++) {
             state->members[i]->rejectGesture(pointer);
@@ -100,7 +100,7 @@ void GestureArenaManagerCls::_resolve(int pointer, GestureArenaMember member, Ge
     if (state == nullptr) {
         return;
     }
-    assert(_debugLogDiagnostic(pointer, __s("%s")));
+    assert(_debugLogDiagnostic(pointer, __sf("%s", disposition == GestureDispositionCls::accepted? __s("Accepting") : __sf("Rejecting: %s", member))));
     assert(state->members->contains(member));
     if (disposition == GestureDispositionCls::rejected) {
         state->members->remove(member);
@@ -113,7 +113,7 @@ void GestureArenaManagerCls::_resolve(int pointer, GestureArenaMember member, Ge
         if (state->isOpen) {
             state->eagerWinner |= member;
         } else {
-            assert(_debugLogDiagnostic(pointer, __s("Self-declared winner: %s)")));
+            assert(_debugLogDiagnostic(pointer, __sf("Self-declared winner: %s", member)));
             _resolveInFavorOf(pointer, state, member);
         }
     }
@@ -132,7 +132,7 @@ void GestureArenaManagerCls::_tryToResolveArena(int pointer, _GestureArena state
         assert(_debugLogDiagnostic(pointer, __s("Arena empty.")));
     } else {
         if (state->eagerWinner != nullptr) {
-        assert(_debugLogDiagnostic(pointer, __s("Eager winner: %s)")));
+        assert(_debugLogDiagnostic(pointer, __sf("Eager winner: %s", state->eagerWinner)));
         _resolveInFavorOf(pointer, state, state->eagerWinner!);
     }
 ;
@@ -148,7 +148,7 @@ void GestureArenaManagerCls::_resolveByDefault(int pointer, _GestureArena state)
     List<GestureArenaMember> members = state->members;
     assert(members->length() == 1);
     _arenas->remove(pointer);
-    assert(_debugLogDiagnostic(pointer, __s("Default winner: %s)")));
+    assert(_debugLogDiagnostic(pointer, __sf("Default winner: %s", state->members->first)));
     state->members->first->acceptGesture(pointer);
 }
 
@@ -171,7 +171,7 @@ bool GestureArenaManagerCls::_debugLogDiagnostic(int pointer, String message, _G
         if (debugPrintGestureArenaDiagnostics) {
             int count = state?->members->length();
             String s = count != 1? __s("s") : __s("");
-            debugPrint(__s("Gesture arena %s$%s$%s"));
+            debugPrint(__sf("Gesture arena %s ❙ %s%s", pointer->toString()->padRight(4), message, count != nullptr? __sf(" with %s member%s.", count, s) : __s("")));
         }
         return true;
     }());

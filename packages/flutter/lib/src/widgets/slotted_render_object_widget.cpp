@@ -132,7 +132,7 @@ void SlottedRenderObjectElementCls<S>::_updateChildren() {
     assert([=] () {
         _debugPreviousSlots |= slottedMultiChildRenderObjectWidgetMixin->slots()->toList();
         return listEquals(_debugPreviousSlots, slottedMultiChildRenderObjectWidgetMixin->slots()->toList());
-    }(), __s("%s)"));
+    }(), __sf("%s.slots must not change.", widget()->runtimeType));
     assert(slottedMultiChildRenderObjectWidgetMixin->slots()->toSet()->length() == slottedMultiChildRenderObjectWidgetMixin->slots()->length(), __s("slots must be unique"));
     for (S slot : slottedMultiChildRenderObjectWidgetMixin->slots()) {
         _updateChild(slottedMultiChildRenderObjectWidgetMixin->childForSlot(slot()), slot());

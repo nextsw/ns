@@ -94,9 +94,9 @@ int BorderSideCls::hashCode() {
 
 String BorderSideCls::toString() {
     if (strokeAlign == StrokeAlignCls::inside) {
-        return __s("%s$%s$%s$%s;");
+        return __sf("%s(%s, %s, %s)", objectRuntimeType(this, __s("BorderSide")), color, width->toStringAsFixed(1), style);
     }
-    return __s("%s$%s$%s$%s$%s;");
+    return __sf("%s(%s, %s, %s, %s)", objectRuntimeType(this, __s("BorderSide")), color, width->toStringAsFixed(1), style, strokeAlign);
 }
 
 ShapeBorder ShapeBorderCls::add(ShapeBorder other, bool reversed) {
@@ -134,7 +134,7 @@ ShapeBorder ShapeBorderCls::lerp(ShapeBorder a, ShapeBorder b, double t) {
 }
 
 String ShapeBorderCls::toString() {
-    return __s("%s;");
+    return __sf("%s()", objectRuntimeType(this, __s("ShapeBorder")));
 }
 
 OutlinedBorderCls::OutlinedBorderCls(BorderSide side) {

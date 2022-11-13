@@ -32,12 +32,12 @@ T TweenSequenceCls<T>::transform(double t) {
             return _evaluateAt(t, index);
         }
     }
-    throw make<StateErrorCls>(__s("TweenSequence.evaluate() could not find an interval for %s)"));
+    throw make<StateErrorCls>(__sf("TweenSequence.evaluate() could not find an interval for %s", t));
 }
 
 template<typename T>
 String TweenSequenceCls<T>::toString() {
-    return __s("TweenSequence(%s;");
+    return __sf("TweenSequence(%s items)", _items->length());
 }
 
 template<typename T>
@@ -75,7 +75,7 @@ double _IntervalCls::value(double t) {
 }
 
 String _IntervalCls::toString() {
-    return __s("<%s$%s;");
+    return __sf("<%s, %s>", start, end);
 }
 
 _IntervalCls::_IntervalCls(double start, double end) {

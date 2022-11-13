@@ -411,7 +411,7 @@ List<String> WidgetInspectorServiceCls::pubRootDirectories() {
 }
 
 void WidgetInspectorServiceCls::registerServiceExtension(ServiceExtensionCallback callback, String name) {
-    _registerServiceExtensionCallback(__s("inspector.%s,"), callback);
+    _registerServiceExtensionCallback(__sf("inspector.%s", name), callback);
 }
 
 Future<void> WidgetInspectorServiceCls::forceRebuild() {
@@ -584,7 +584,7 @@ String WidgetInspectorServiceCls::toId(Object object, String groupName) {
     String id = _objectToId[object];
     _InspectorReferenceData referenceData;
     if (id == nullptr) {
-        id = __s("inspector-%s;");
+        id = __sf("inspector-%s", _nextId);
         _nextId += 1;
         _objectToId[object] = id;
         referenceData = make<_InspectorReferenceDataCls>(object);
@@ -708,7 +708,7 @@ String WidgetInspectorServiceCls::devToolsInspectorUri(String inspectorRef) {
     String devToolsInspectorUri = uri->toString();
     int startQueryParamIndex = devToolsInspectorUri->indexOf(__s("?"));
     assert(startQueryParamIndex != -1);
-    return __s("%s/#/inspector$%s;");
+    return __sf("%s/#/inspector%s", devToolsInspectorUri->substring(0, startQueryParamIndex), devToolsInspectorUri->substring(startQueryParamIndex));
 }
 
 String WidgetInspectorServiceCls::getParentChain(String id, String groupName) {
@@ -828,7 +828,7 @@ void WidgetInspectorServiceCls::_registerBoolServiceExtension(AsyncValueGetter<b
 }
 
 void WidgetInspectorServiceCls::_postExtensionStateChangedEvent(String name, Object value) {
-    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("extension"), __s("ext.flutter.inspector.%s,"));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
+    Map<String, Object> map1 = make<MapCls<>>();map1.set(__s("extension"), __sf("ext.flutter.inspector.%s", name));map1.set(__s("value"), value);postEvent(__s("Flutter.ServiceExtensionStateChanged"), list1);
 }
 
 void WidgetInspectorServiceCls::_registerServiceExtensionWithArg(std::function<FutureOr<Object>(String objectId, String objectGroup)> callback, String name) {
@@ -843,7 +843,7 @@ void WidgetInspectorServiceCls::_registerServiceExtensionVarArgs(std::function<F
         List<String> args = makeList();
         int index = 0;
         while (true) {
-            String name = __s("arg%s;");
+            String name = __sf("arg%s", index);
             if (parameters->containsKey(name)) {
                 args->add(parameters[name]!);
             } else {
@@ -862,7 +862,7 @@ void WidgetInspectorServiceCls::_reportStructuredError(FlutterErrorDetails detai
     if (_errorsSinceReload == 0) {
         errorJson[__s("renderedErrorText")] = make<TextTreeRendererCls>(FlutterErrorCls::wrapWidth, 5)->render(details->toDiagnosticsNode(DiagnosticsTreeStyleCls::error))->trimRight();
     } else {
-        errorJson[__s("renderedErrorText")] = __s("Another exception was thrown: %s;");
+        errorJson[__s("renderedErrorText")] = __sf("Another exception was thrown: %s", details->summary());
     }
     _errorsSinceReload += 1;
     postEvent(__s("Flutter.Error"), errorJson);
@@ -1630,7 +1630,7 @@ String _LocationCls::toString() {
         parts->add(name!);
     }
     parts->add(file);
-    auto _c1 = parts;_c1.auto _c2 = add(__s("%s)"));_c2.add(__s("%s)"));_c2;_c1;
+    auto _c1 = parts;_c1.auto _c2 = add(__sf("%s", line));_c2.add(__sf("%s", column));_c2;_c1;
     return parts->join(__s(":"));
 }
 

@@ -488,7 +488,7 @@ ViewConfiguration ViewConfigurationCls::copyWith(double devicePixelRatio, List<D
 }
 
 String ViewConfigurationCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s[window: %s, geometry: %s]", runtimeType, window, geometry);
 }
 
 FrameTimingCls::FrameTimingCls(int buildFinish, int buildStart, int frameNumber, int layerCacheBytes, int layerCacheCount, int pictureCacheBytes, int pictureCacheCount, int rasterFinish, int rasterFinishWallTime, int rasterStart, int vsyncStart) {
@@ -546,7 +546,7 @@ int FrameTimingCls::frameNumber() {
 }
 
 String FrameTimingCls::toString() {
-    return __s("%s$%srasterDuration: $%svsyncOverhead: $%stotalSpan: $%slayerCacheCount: $%slayerCacheBytes: $%spictureCacheCount: $%spictureCacheBytes: $%sframeNumber: $%s;");
+    return __sf("%s(buildDuration: %s, rasterDuration: %s, vsyncOverhead: %s, totalSpan: %s, layerCacheCount: %s, layerCacheBytes: %s, pictureCacheCount: %s, pictureCacheBytes: %s, frameNumber: %s)", runtimeType, _formatMS(buildDuration()), _formatMS(rasterDuration()), _formatMS(vsyncOverhead()), _formatMS(totalSpan()), layerCacheCount(), layerCacheBytes(), pictureCacheCount(), pictureCacheBytes(), _data->last);
 }
 
 void FrameTimingCls::_(List<int> _data)
@@ -560,11 +560,11 @@ int FrameTimingCls::_rawInfo(_FrameTimingInfo info) {
 }
 
 String FrameTimingCls::_formatMS(Duration duration) {
-    return __s("%s;");
+    return __sf("%sms", duration->inMicroseconds() * 0.001);
 }
 
 String WindowPaddingCls::toString() {
-    return __s("WindowPadding(left: %s$%s$%s$%s;");
+    return __sf("WindowPadding(left: %s, top: %s, right: %s, bottom: %s)", left, top, right, bottom);
 }
 
 DisplayFeatureCls::DisplayFeatureCls(Rect bounds, DisplayFeatureState state, DisplayFeatureType type) {
@@ -588,7 +588,7 @@ int DisplayFeatureCls::hashCode() {
 }
 
 String DisplayFeatureCls::toString() {
-    return __s("DisplayFeature(rect: %s$%s$%s;");
+    return __sf("DisplayFeature(rect: %s, type: %s, state: %s)", bounds, type, state);
 }
 
 LocaleCls::LocaleCls(String _languageCode, String _countryCode) {
@@ -640,10 +640,10 @@ String LocaleCls::toLanguageTag() {
 String LocaleCls::_rawToString(String separator) {
     StringBuffer out = make<StringBufferCls>(languageCode());
     if (scriptCode != nullptr && scriptCode!->isNotEmpty()) {
-        out->write(__s("%s$%s)"));
+        out->write(__sf("%s%s", separator, scriptCode));
     }
     if (_countryCode != nullptr && _countryCode!->isNotEmpty()) {
-        out->write(__s("%s$%s)"));
+        out->write(__sf("%s%s", separator, countryCode()));
     }
     return out->toString();
 }

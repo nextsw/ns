@@ -172,7 +172,7 @@ String _SemanticsDebuggerPainterCls::getMessage(SemanticsNode node) {
     } else {
         String effectivelabel;
         if (data->textDirection == nullptr) {
-            effectivelabel = __s("%s$%s$%s;");
+            effectivelabel = __sf("%s%s%s", UnicodeCls::FSI, tooltipAndLabel, UnicodeCls::PDI);
             annotations->insert(0, __s("MISSING TEXT DIRECTION"));
         } else {
             ;
@@ -180,7 +180,7 @@ String _SemanticsDebuggerPainterCls::getMessage(SemanticsNode node) {
         if (annotations->isEmpty()) {
             message = effectivelabel;
         } else {
-            message = __s("%s$%s;");
+            message = __sf("%s (%s)", effectivelabel, annotations->join(__s("; ")));
         }
     }
     return message->trim();

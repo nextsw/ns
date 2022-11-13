@@ -83,7 +83,7 @@ void OverlayEntryCls::dispose() {
 }
 
 String OverlayEntryCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(opaque: %s; maintainState: %s)", describeIdentity(this), opaque(), maintainState());
 }
 
 void OverlayEntryCls::_didUnmount() {
@@ -268,8 +268,8 @@ int OverlayStateCls::_insertionIndex(OverlayEntry below, OverlayEntry above) {
 
 bool OverlayStateCls::_debugVerifyInsertPosition(OverlayEntry above, OverlayEntry below, Iterable<OverlayEntry> newEntries) {
     assert(above == nullptr || below == nullptr, __s("Only one of `above` and `below` may be specified."));
-    assert(above == nullptr || (above->_overlay == this && _entries->contains(above) && (newEntries?->contains(above) | true)), __s("The provided entry used for `above` must be present in the Overlay%s"));
-    assert(below == nullptr || (below->_overlay == this && _entries->contains(below) && (newEntries?->contains(below) | true)), __s("The provided entry used for `below` must be present in the Overlay%s"));
+    assert(above == nullptr || (above->_overlay == this && _entries->contains(above) && (newEntries?->contains(above) | true)), __sf("The provided entry used for `above` must be present in the Overlay%s", newEntries != nullptr? __s(" and in the `newEntriesList`") : __s(".")));
+    assert(below == nullptr || (below->_overlay == this && _entries->contains(below) && (newEntries?->contains(below) | true)), __sf("The provided entry used for `below` must be present in the Overlay%s", newEntries != nullptr? __s(" and in the `newEntriesList`") : __s(".")));
     return true;
 }
 
@@ -513,9 +513,9 @@ List<DiagnosticsNode> _RenderTheatreCls::debugDescribeChildren() {
             count = 1;
         }
         if (onstage) {
-            onstageChildren->add(child->toDiagnosticsNode(__s("onstage %s,")));
+            onstageChildren->add(child->toDiagnosticsNode(__sf("onstage %s", count)));
         } else {
-            offstageChildren->add(child->toDiagnosticsNode(__s("offstage %s,"), DiagnosticsTreeStyleCls::offstage));
+            offstageChildren->add(child->toDiagnosticsNode(__sf("offstage %s", count), DiagnosticsTreeStyleCls::offstage));
         }
         StackParentData childParentData = as<StackParentData>(child->parentData!);
         child = childParentData->nextSibling;

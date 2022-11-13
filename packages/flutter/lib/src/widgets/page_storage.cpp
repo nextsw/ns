@@ -15,7 +15,7 @@ int _StorageEntryIdentifierCls::hashCode() {
 }
 
 String _StorageEntryIdentifierCls::toString() {
-    return __s("StorageEntryIdentifier(%s;");
+    return __sf("StorageEntryIdentifier(%s)", keys->join(__s(":")));
 }
 
 _StorageEntryIdentifierCls::_StorageEntryIdentifierCls(List<PageStorageKey<dynamic>> keys) {

@@ -21,12 +21,12 @@ T _AnimatedEvaluationCls<T>::value() {
 
 template<typename T>
 String _AnimatedEvaluationCls<T>::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s\u27A9%s\u27A9%s", parent, _evaluatable, value());
 }
 
 template<typename T>
 String _AnimatedEvaluationCls<T>::toStringDetails() {
-    return __s("%s$%s;");
+    return __sf("%s %s", super->toStringDetails(), _evaluatable);
 }
 
 template<typename T>
@@ -36,7 +36,7 @@ T _ChainedEvaluationCls<T>::transform(double t) {
 
 template<typename T>
 String _ChainedEvaluationCls<T>::toString() {
-    return __s("%s$%s;");
+    return __sf("%s\u27A9%s", _parent, _evaluatable);
 }
 
 template<typename T>
@@ -71,7 +71,7 @@ T TweenCls<T>::transform(double t) {
 
 template<typename T>
 String TweenCls<T>::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s \u2192 %s)", objectRuntimeType(this, __s("Animatable")), begin, end);
 }
 
 template<typename T>
@@ -117,7 +117,7 @@ T ConstantTweenCls<T>::lerp(double t) {
 
 template<typename T>
 String ConstantTweenCls<T>::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(value: %s)", objectRuntimeType(this, __s("ConstantTween")), begin);
 }
 
 CurveTweenCls::CurveTweenCls(Curve curve) {
@@ -135,5 +135,5 @@ double CurveTweenCls::transform(double t) {
 }
 
 String CurveTweenCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(curve: %s)", objectRuntimeType(this, __s("CurveTween")), curve);
 }

@@ -97,11 +97,11 @@ IOSink StdoutCls::nonBlocking() {
 void StdoutCls::_(IOSink sink, int _fd)
 
 String StdoutExceptionCls::toString() {
-    return __s("StdoutException: %s$%s");
+    return __sf("StdoutException: %s%s", message, osError == nullptr? __s("") : __sf(", %s", osError));
 }
 
 String StdinExceptionCls::toString() {
-    return __s("StdinException: %s$%s");
+    return __sf("StdinException: %s%s", message, osError == nullptr? __s("") : __sf(", %s", osError));
 }
 
 Future<any> _StdConsumerCls::addStream(Stream<List<int>> stream) {
@@ -178,7 +178,7 @@ Future<any> _StdSinkCls::done() {
 }
 
 String StdioTypeCls::toString() {
-    return __s("StdioType: %s;");
+    return __sf("StdioType: %s", name);
 }
 
 void _setStdioFDs(int stdin, int stdout, int stderr) {
@@ -207,7 +207,7 @@ StdioType stdioType(object ) {
         int stdiofd = object == stdout? _stdoutFD : _stderrFD;
         Unknown type = _StdIOUtilsCls->_getStdioHandleType(stdiofd);
         if (is<OSError>(type)) {
-            throw make<FileSystemExceptionCls>(__s("Failed to get type of stdio handle (fd %s,"), __s(""), as<OSErrorCls>(type));
+            throw make<FileSystemExceptionCls>(__sf("Failed to get type of stdio handle (fd %s)", stdiofd), __s(""), as<OSErrorCls>(type));
         }
         ;
     }

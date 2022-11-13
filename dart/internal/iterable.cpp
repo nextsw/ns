@@ -159,7 +159,7 @@ String ListIterableCls<E>::join(String separator) {
         if (length == 0) {
             return __s("");
         }
-        String first = __s("%s;");
+        String first = __sf("%s", elementAt(0));
         if (length != this->length) {
             throw make<ConcurrentModificationErrorCls>(this);
         }

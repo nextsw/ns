@@ -8,7 +8,7 @@ AnnotationEntryCls<T>::AnnotationEntryCls(T annotation, Offset localPosition) {
 
 template<typename T>
 String AnnotationEntryCls<T>::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(annotation: %s, localPosition: %s)", objectRuntimeType(this, __s("AnnotationEntry")), annotation, localPosition);
 }
 
 template<typename T>
@@ -79,7 +79,7 @@ void LayerCls::dispose() {
     assert(!_debugMutationsLocked);
     assert(!_debugDisposed, __s("Layers must only be disposed once. This is typically handled by LayerHandle and createHandle. Subclasses should not directly call dispose, except to call super.dispose() in an overridden dispose  method. Tests must only call dispose once."));
     assert([=] () {
-        assert(_refCount == 0, __s("Do not directly call dispose on a %suse createHandle and LayerHandle.dispose.,"));
+        assert(_refCount == 0, __sf("Do not directly call dispose on a %s. Instead, use createHandle and LayerHandle.dispose.", runtimeType));
         _debugDisposed = true;
         return true;
     }());
@@ -93,7 +93,7 @@ ContainerLayer LayerCls::parent() {
 
 void LayerCls::markNeedsAddToScene() {
     assert(!_debugMutationsLocked);
-    assert(!alwaysNeedsAddToScene(), __s("%sThe layer's alwaysNeedsAddToScene is set to true, and therefore it should not call markNeedsAddToScene.,"));
+    assert(!alwaysNeedsAddToScene(), __sf("%s with alwaysNeedsAddToScene set called markNeedsAddToScene.\nThe layer's alwaysNeedsAddToScene is set to true, and therefore it should not call markNeedsAddToScene.", runtimeType));
     assert(!_debugDisposed);
     if (_needsAddToScene) {
         return;
@@ -198,7 +198,7 @@ AnnotationResult<S> LayerCls::findAllAnnotations(Offset localPosition) {
 }
 
 String LayerCls::toStringShort() {
-    return __s("%s$%s");
+    return __sf("%s%s", super->toStringShort(), owner() == nullptr? __s(" DETACHED") : __s(""));
 }
 
 void LayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
@@ -261,7 +261,7 @@ T LayerHandleCls<T>::layer() {
 
 template<typename T>
 void LayerHandleCls<T>::layer(T layer) {
-    assert(layer?->debugDisposed != true, __s("Attempted to create a handle to an already disposed layer: %s,"));
+    assert(layer?->debugDisposed != true, __sf("Attempted to create a handle to an already disposed layer: %s.", layer));
     if (identical(layer, _layer)) {
         return;
     }
@@ -274,7 +274,7 @@ void LayerHandleCls<T>::layer(T layer) {
 
 template<typename T>
 String LayerHandleCls<T>::toString() {
-    return __s("LayerHandle(%s");
+    return __sf("LayerHandle(%s", _layer != nullptr? _layer->toString() : __s("DISPOSED)"));
 }
 
 Picture PictureLayerCls::picture() {
@@ -324,7 +324,7 @@ void PictureLayerCls::debugFillProperties(DiagnosticPropertiesBuilder properties
     super->debugFillProperties(properties);
     properties->add(<Rect>make<DiagnosticsPropertyCls>(__s("paint bounds"), canvasBounds));
     properties->add(<String>make<DiagnosticsPropertyCls>(__s("picture"), describeIdentity(_picture)));
-    properties->add(<String>make<DiagnosticsPropertyCls>(__s("raster cache hints"), __s("isComplex = %s$%s,")));
+    properties->add(<String>make<DiagnosticsPropertyCls>(__s("raster cache hints"), __sf("isComplex = %s, willChange = %s", isComplexHint(), willChangeHint())));
 }
 
 template<typename S>
@@ -550,7 +550,7 @@ List<DiagnosticsNode> ContainerLayerCls::debugDescribeChildren() {
     Layer child = firstChild();
     int count = 1;
     while (true) {
-        children->add(child!->toDiagnosticsNode(__s("child %s)")));
+        children->add(child!->toDiagnosticsNode(__sf("child %s", count)));
         if (child == lastChild()) {
             break;
         }
@@ -1270,7 +1270,7 @@ LeaderLayer LayerLinkCls::leader() {
 }
 
 String LayerLinkCls::toString() {
-    return __s("%s$%s");
+    return __sf("%s(%s", describeIdentity(this), _leader != nullptr? __s("<linked>") : __s("<dangling>)"));
 }
 
 void LayerLinkCls::_registerLeader(LeaderLayer leader) {

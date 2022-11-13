@@ -172,7 +172,7 @@ void RenderSliverIgnorePointerCls::visitChildrenForSemantics(RenderObjectVisitor
 void RenderSliverIgnorePointerCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoring"), ignoring()));
-    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __s("implicitly %s:") : nullptr));
+    properties->add(<bool>make<DiagnosticsPropertyCls>(__s("ignoringSemantics"), _effectiveIgnoringSemantics(), ignoringSemantics() == nullptr? __sf("implicitly %s", _effectiveIgnoringSemantics()) : nullptr));
 }
 
 bool RenderSliverIgnorePointerCls::_effectiveIgnoringSemantics() {

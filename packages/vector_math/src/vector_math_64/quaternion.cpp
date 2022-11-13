@@ -392,7 +392,7 @@ Matrix3 QuaternionCls::copyRotationInto(Matrix3 rotationMatrix) {
 }
 
 String QuaternionCls::toString() {
-    return __s("%s$%s $%s$%s;");
+    return __sf("%s, %s, %s @ %s", _qStorage[0], _qStorage[1], _qStorage[2], _qStorage[3]);
 }
 
 double QuaternionCls::relativeError(Quaternion correct) {

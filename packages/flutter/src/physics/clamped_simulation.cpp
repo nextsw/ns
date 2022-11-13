@@ -20,5 +20,5 @@ bool ClampedSimulationCls::isDone(double time) {
 }
 
 String ClampedSimulationCls::toString() {
-    return __s("%s$%s$%s$%s$%s$%s;");
+    return __sf("%s(simulation: %s, x: %s..%s, dx: %s..%s)", objectRuntimeType(this, __s("ClampedSimulation")), simulation, xMin->toStringAsFixed(1), xMax->toStringAsFixed(1), dxMin->toStringAsFixed(1), dxMax->toStringAsFixed(1));
 }

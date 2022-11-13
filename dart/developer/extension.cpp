@@ -41,7 +41,7 @@ void registerExtension(String method, ServiceExtensionHandler handler) {
         throw ArgumentErrorCls->value(method, __s("method"), __s("Must begin with ext."));
     }
     if (_lookupExtension(method) != nullptr) {
-        throw make<ArgumentErrorCls>(__s("Extension already registered: %s)"));
+        throw make<ArgumentErrorCls>(__sf("Extension already registered: %s", method));
     }
     checkNotNullable(handler, __s("handler"));
     _registerExtension(method, handler);

@@ -100,7 +100,7 @@ void ChannelBuffersCls::push(String name, ByteData data, PlatformMessageResponse
     make<_ChannelCls>();
 });
     if (channel->push(make<_StoredMessageCls>(data, callback))) {
-        _printDebug(__s("A message on the %sThis happens when a plugin sends messages to the framework side before the framework has had an opportunity to register a listener. See the ChannelBuffers API documentation for details on how to configure the channel to expect more messages, or to expect messages to get discarded:\n  https://api.flutter.dev/flutter/dart-ui/ChannelBuffers-class.html)"));
+        _printDebug(__sf("A message on the %s channel was discarded before it could be handled.\nThis happens when a plugin sends messages to the framework side before the framework has had an opportunity to register a listener. See the ChannelBuffers API documentation for details on how to configure the channel to expect more messages, or to expect messages to get discarded:\n  https://api.flutter.dev/flutter/dart-ui/ChannelBuffers-class.html", name));
     }
 }
 
@@ -131,7 +131,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
     if (bytes[0] == 0x07) {
         int methodNameLength = bytes[1];
         if (methodNameLength >= 254) {
-            throw make<ExceptionCls>(__s("Unrecognized message sent to %s)"));
+            throw make<ExceptionCls>(__sf("Unrecognized message sent to %s (method name too long)", kControlChannelName));
         }
         int index = 2;
         String methodName = utf8->decode(bytes->sublist(index, index + methodNameLength));
@@ -142,7 +142,7 @@ void ChannelBuffersCls::handleMessage(ByteData data) {
         if (parts->length() == 1 + 2 && parts[0] == __s("resize")) {
             resize(parts[1], intValue->parse(parts[2]));
         } else {
-            throw make<ExceptionCls>(__s("Unrecognized message %s$%s)"));
+            throw make<ExceptionCls>(__sf("Unrecognized message %s sent to %s.", parts, kControlChannelName));
         }
     }
 }

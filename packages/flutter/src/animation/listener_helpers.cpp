@@ -59,7 +59,7 @@ void AnimationLocalListenersMixinCls::notifyListeners() {
                 listener();
             }
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("animation library"), make<ErrorDescriptionCls>(__s("while notifying listeners for %s)")), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("animation library"), make<ErrorDescriptionCls>(__sf("while notifying listeners for %s", runtimeType)), collector));
         };
     }
 }
@@ -95,7 +95,7 @@ void AnimationLocalStatusListenersMixinCls::notifyStatusListeners(AnimationStatu
                 };
                 return true;
             }());
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("animation library"), make<ErrorDescriptionCls>(__s("while notifying status listeners for %s)")), collector));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("animation library"), make<ErrorDescriptionCls>(__sf("while notifying status listeners for %s", runtimeType)), collector));
         };
     }
 }

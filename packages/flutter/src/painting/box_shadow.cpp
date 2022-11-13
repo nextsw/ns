@@ -54,5 +54,5 @@ int BoxShadowCls::hashCode() {
 }
 
 String BoxShadowCls::toString() {
-    return __s("BoxShadow(%s$%s$%s$%s$%s;");
+    return __sf("BoxShadow(%s, %s, %s, %s, %s)", color, offset, debugFormatDouble(blurRadius), debugFormatDouble(spreadRadius), blurStyle);
 }

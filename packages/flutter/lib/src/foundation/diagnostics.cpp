@@ -166,7 +166,7 @@ void _PrefixedStringBuilderCls::_updatePrefix() {
 }
 
 void _PrefixedStringBuilderCls::_writeLine(String line, bool firstLine, bool includeLineBreak) {
-    line = __s("%s$%s;");
+    line = __sf("%s%s", _getCurrentPrefix(firstLine), line);
     _buffer->write(line->trimRight());
     if (includeLineBreak) {
         _buffer->write(__s("\n"));
@@ -226,12 +226,12 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         visitor(node);
         StringBuffer information = make<StringBufferCls>(prefixLineOne);
         if (lines > 1) {
-            information->writeln(__s("This %s$%s)"));
+            information->writeln(__sf("This %s had the following descendants (showing up to depth %s):", node->name, maxDepth));
         } else {
             if (descendants->length() == 1) {
-            information->writeln(__s("This %s)"));
+            information->writeln(__sf("This %s had the following child:", node->name));
         } else {
-            information->writeln(__s("This %s)"));
+            information->writeln(__sf("This %s has no descendants.", node->name));
         }
 ;
         }        information->writeAll(descendants, __s("\n"));
@@ -322,7 +322,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         }
         TextTreeConfiguration propertyStyle = property->textTreeConfiguration()!;
         if (_isSingleLine(property->style)) {
-            String propertyRender = render(property, propertyStyle->prefixLineOne, __s("%s$%s,"), config);
+            String propertyRender = render(property, propertyStyle->prefixLineOne, __sf("%s%s", propertyStyle->childLinkSpace, propertyStyle->prefixOtherLines), config);
             List<String> propertyLines = propertyRender->split(__s("\n"));
             if (propertyLines->length() == 1 && !config->lineBreakProperties) {
                 builder->write(propertyLines->first);
@@ -333,7 +333,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
                 }
             }
         } else {
-            String propertyRender = render(property, __s("%s$%s,"), __s("%s$%s$%s,"), config);
+            String propertyRender = render(property, __sf("%s%s", builder->prefixOtherLines, propertyStyle->prefixLineOne), __sf("%s%s%s", builder->prefixOtherLines, propertyStyle->childLinkSpace, propertyStyle->prefixOtherLines), config);
             builder->writeRawLines(propertyRender);
         }
     }
@@ -345,7 +345,7 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
         builder->write(config->lineBreak);
     }
     String prefixChildren = config->bodyIndent;
-    String prefixChildrenRaw = __s("%s$%s;");
+    String prefixChildrenRaw = __sf("%s%s", prefixOtherLines, prefixChildren);
     if (children->isEmpty() && config->addBlankLineIfNoChildren && builder->requiresMultipleLines() && builder->prefixOtherLines!->trimRight()->isNotEmpty()) {
         builder->write(config->lineBreak);
     }
@@ -359,12 +359,12 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
             assert(child != nullptr);
             TextTreeConfiguration childConfig = _childTextConfiguration(child, config)!;
             if (i == children->length() - 1) {
-                String lastChildPrefixLineOne = __s("%s$%s;");
-                String childPrefixOtherLines = __s("%s$%s$%s;");
+                String lastChildPrefixLineOne = __sf("%s%s", prefixChildrenRaw, childConfig->prefixLastChildLineOne);
+                String childPrefixOtherLines = __sf("%s%s%s", prefixChildrenRaw, childConfig->childLinkSpace, childConfig->prefixOtherLines);
                 builder->writeRawLines(render(child, lastChildPrefixLineOne, childPrefixOtherLines, config));
                 if (childConfig->footer->isNotEmpty()) {
                     builder->prefixOtherLines = prefixChildrenRaw;
-                    builder->write(__s("%s$%s)"));
+                    builder->write(__sf("%s%s", childConfig->childLinkSpace, childConfig->footer));
                     if (childConfig->mandatoryFooter->isNotEmpty()) {
                         builder->writeStretched(childConfig->mandatoryFooter, math->max(builder->wrapWidth!, _wrapWidthProperties + childPrefixOtherLines->length()));
                     }
@@ -372,12 +372,12 @@ String TextTreeRendererCls::_debugRender(DiagnosticsNode node, TextTreeConfigura
                 }
             } else {
                 TextTreeConfiguration nextChildStyle = _childTextConfiguration(children[i + 1], config)!;
-                String childPrefixLineOne = __s("%s$%s;");
-                String childPrefixOtherLines = __s("%s$%s$%s;");
+                String childPrefixLineOne = __sf("%s%s", prefixChildrenRaw, childConfig->prefixLineOne);
+                String childPrefixOtherLines = __sf("%s%s%s", prefixChildrenRaw, nextChildStyle->linkCharacter, childConfig->prefixOtherLines);
                 builder->writeRawLines(render(child, childPrefixLineOne, childPrefixOtherLines, config));
                 if (childConfig->footer->isNotEmpty()) {
                     builder->prefixOtherLines = prefixChildrenRaw;
-                    builder->write(__s("%s$%s)"));
+                    builder->write(__sf("%s%s", childConfig->linkCharacter, childConfig->footer));
                     if (childConfig->mandatoryFooter->isNotEmpty()) {
                         builder->writeStretched(childConfig->mandatoryFooter, math->max(builder->wrapWidth!, _wrapWidthProperties + childPrefixOtherLines->length()));
                     }
@@ -397,7 +397,7 @@ DiagnosticsNodeCls::DiagnosticsNodeCls(String linePrefix, String name, bool show
     {
         assert(showName != nullptr);
         assert(showSeparator != nullptr);
-        assert(name == nullptr || !name->endsWith(__s(":")), __s("Names of diagnostic nodes must not end with colons.\nname:\n  "%s,"));
+        assert(name == nullptr || !name->endsWith(__s(":")), __sf("Names of diagnostic nodes must not end with colons.\nname:\n  "%s"", name));
     }
 }
 
@@ -434,7 +434,7 @@ bool DiagnosticsNodeCls::allowTruncate() {
 Map<String, String> DiagnosticsNodeCls::toTimelineArguments() {
     if (!kReleaseMode) {
         if (kProfileMode) {
-            throw make<FlutterErrorCls>(__s("%sThe $%sto be non-representative. As such, it should not be used in profile builds. However, this application is compiled in profile mode and yet still invoked the method.)"));
+            throw make<FlutterErrorCls>(__sf("%s.toTimelineArguments used in non-debug build.\nThe %s.toTimelineArguments API is expensive and causes timeline traces to be non-representative. As such, it should not be used in profile builds. However, this application is compiled in profile mode and yet still invoked the method.", DiagnosticsNodeCls, DiagnosticsNodeCls));
         }
         Map<String, String> result = makeMap(makeList(), makeList();
         for (DiagnosticsNode property : getProperties()) {
@@ -489,7 +489,7 @@ String DiagnosticsNodeCls::toString(DiagnosticLevel minLevel, TextTreeConfigurat
             if (name == nullptr || name!->isEmpty() || !showName) {
                 result = description;
             } else {
-                result = description->contains(__s("\n"))? __s("%s$%s$%s:") : __s("%s$%s$%s;");
+                result = description->contains(__s("\n"))? __sf("%s%s\n%s", name, _separator(), description) : __sf("%s%s %s", name, _separator(), description);
             }
         }
         return true;
@@ -548,7 +548,7 @@ String StringPropertyCls::valueToString(TextTreeConfiguration parentConfiguratio
         if (ifEmpty != nullptr && text->isEmpty()) {
             return ifEmpty!;
         }
-        return __s(""%s;");
+        return __sf(""%s"", text);
     }
     return text->toString();
 }
@@ -571,7 +571,7 @@ String _NumPropertyCls<T>::valueToString(TextTreeConfiguration parentConfigurati
     if (value() == nullptr) {
         return value()->toString();
     }
-    return unit != nullptr? __s("%s$%s:") : numberToString();
+    return unit != nullptr? __sf("%s%s", numberToString(), unit) : numberToString();
 }
 
 DoublePropertyCls::DoublePropertyCls(String name, Unknown value, Object defaultValue, String ifNull, Unknown level, bool showName, DiagnosticsTreeStyle style, String tooltip, String unit) {
@@ -611,7 +611,7 @@ String PercentPropertyCls::valueToString(TextTreeConfiguration parentConfigurati
     if (value() == nullptr) {
         return value()->toString();
     }
-    return unit != nullptr? __s("%s$%s:") : numberToString();
+    return unit != nullptr? __sf("%s %s", numberToString(), unit) : numberToString();
 }
 
 String PercentPropertyCls::numberToString() {
@@ -619,7 +619,7 @@ String PercentPropertyCls::numberToString() {
     if (v == nullptr) {
         return value()->toString();
     }
-    return __s("%s;");
+    return __sf("%s%", (clampDouble(v, 0.0, 1.0) * 100.0)->toStringAsFixed(1));
 }
 
 FlagPropertyCls::FlagPropertyCls(String name, Object defaultValue, String ifFalse, String ifTrue, DiagnosticLevel level, bool showName, bool value) : DiagnosticsProperty<bool>(name, valueshowName, defaultValue, level) {
@@ -703,7 +703,7 @@ String IterablePropertyCls<T>::valueToString(TextTreeConfiguration parentConfigu
     }
 });
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
-        return __s("[%s;");
+        return __sf("[%s]", formattedValues->join(__s(", ")));
     }
     return formattedValues->join(_isSingleLine(style)? __s(", ") : __s("\n"));
 }
@@ -822,7 +822,7 @@ String FlagsSummaryCls<T>::valueToString(TextTreeConfiguration parentConfigurati
     }
     Iterable<String> formattedValues = _formattedValues();
     if (parentConfiguration != nullptr && !parentConfiguration->lineBreakProperties) {
-        return __s("[%s;");
+        return __sf("[%s]", formattedValues->join(__s(", ")));
     }
     return formattedValues->join(_isSingleLine(style)? __s(", ") : __s("\n"));
 }
@@ -933,7 +933,7 @@ String DiagnosticsPropertyCls<T>::toDescription(TextTreeConfiguration parentConf
         return _addTooltip(_description!);
     }
     if (exception() != nullptr) {
-        return __s("EXCEPTION (%s;");
+        return __sf("EXCEPTION (%s)", exception()->runtimeType());
     }
     if (ifNull != nullptr && value() == nullptr) {
         return _addTooltip(ifNull!);
@@ -1015,7 +1015,7 @@ List<DiagnosticsNode> DiagnosticsPropertyCls<T>::getChildren() {
 template<typename T>
 String DiagnosticsPropertyCls<T>::_addTooltip(String text) {
     assert(text != nullptr);
-    return tooltip == nullptr? text : __s("%s$%s;");
+    return tooltip == nullptr? text : __sf("%s (%s)", text, tooltip);
 }
 
 template<typename T>
@@ -1095,7 +1095,7 @@ String shortHash(Object object) {
 }
 
 String describeIdentity(Object object) {
-    return __s("%s$%s;");
+    return __sf("%s#%s", objectRuntimeType(object, __s("<optimized out>")), shortHash(object));
 }
 
 String describeEnum(Object enumEntry) {
@@ -1104,7 +1104,7 @@ String describeEnum(Object enumEntry) {
     }
     String description = enumEntry->toString();
     int indexOfDot = description->indexOf(__s("."));
-    assert(indexOfDot != -1 &&  < description->length() - 1, __s("The provided object "%s,"));
+    assert(indexOfDot != -1 &&  < description->length() - 1, __sf("The provided object "%s" is not an enum.", enumEntry));
     return description->substring(indexOfDot + 1);
 }
 

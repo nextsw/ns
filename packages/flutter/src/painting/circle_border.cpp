@@ -58,5 +58,5 @@ int CircleBorderCls::hashCode() {
 }
 
 String CircleBorderCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("CircleBorder")), side);
 }

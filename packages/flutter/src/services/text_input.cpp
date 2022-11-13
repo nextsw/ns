@@ -6,7 +6,7 @@ Map<String, dynamic> TextInputTypeCls::toJson() {
 }
 
 String TextInputTypeCls::toString() {
-    return __s("%sname: $%ssigned: $%sdecimal: $%s;");
+    return __sf("%s(name: %s, signed: %s, decimal: %s)", objectRuntimeType(this, __s("TextInputType")), _name(), signed, decimal);
 }
 
 bool TextInputTypeCls::==(Object other) {
@@ -20,7 +20,7 @@ int TextInputTypeCls::hashCode() {
 void TextInputTypeCls::_(int index)
 
 String TextInputTypeCls::_name() {
-    return __s("TextInputType.%s;");
+    return __sf("TextInputType.%s", _names[index]);
 }
 
 TextInputConfigurationCls::TextInputConfigurationCls(String actionLabel, bool autocorrect, AutofillConfiguration autofillConfiguration, bool enableDeltaModel, bool enableIMEPersonalizedLearning, bool enableInteractiveSelection, bool enableSuggestions, TextInputAction inputAction, TextInputType inputType, Brightness keyboardAppearance, bool obscureText, bool readOnly, SmartDashesType smartDashesType, SmartQuotesType smartQuotesType, TextCapitalization textCapitalization) {
@@ -108,7 +108,7 @@ Map<String, dynamic> TextEditingValueCls::toJSON() {
 }
 
 String TextEditingValueCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s(text: \u2524%s\u251C, selection: %s, composing: %s)", objectRuntimeType(this, __s("TextEditingValue")), text, selection, composing);
 }
 
 bool TextEditingValueCls::==(Object other) {
@@ -126,8 +126,8 @@ bool TextEditingValueCls::_textRangeIsValid(TextRange range, String text) {
     if (range->start == -1 && range->end == -1) {
         return true;
     }
-    assert(range->start >= 0 && range->start <= text->length(), __s("Range start %s$%s)"));
-    assert(range->end >= 0 && range->end <= text->length(), __s("Range end %s$%s)"));
+    assert(range->start >= 0 && range->start <= text->length(), __sf("Range start %s is out of text of length %s", range->start, text->length()));
+    assert(range->end >= 0 && range->end <= text->length(), __sf("Range end %s is out of text of length %s", range->end, text->length()));
     return true;
 }
 
@@ -171,7 +171,7 @@ int SelectionRectCls::hashCode() {
 }
 
 String SelectionRectCls::toString() {
-    return __s("SelectionRect(%s$%s;");
+    return __sf("SelectionRect(%s, %s)", position, bounds);
 }
 
 void TextInputConnectionCls::debugResetId(int to) {
@@ -345,10 +345,10 @@ bool TextInputCls::_debugEnsureInputActionWorksOnPlatform(TextInputAction inputA
             return true;
         }
         if (PlatformCls::isIOS) {
-            assert(_iOSSupportedInputActions->contains(inputAction), __s("The requested TextInputAction "%s,"));
+            assert(_iOSSupportedInputActions->contains(inputAction), __sf("The requested TextInputAction "%s" is not supported on iOS.", inputAction));
         } else {
             if (PlatformCls::isAndroid) {
-            assert(_androidSupportedInputActions->contains(inputAction), __s("The requested TextInputAction "%s,"));
+            assert(_androidSupportedInputActions->contains(inputAction), __sf("The requested TextInputAction "%s" is not supported on Android.", inputAction));
         }
 ;
         }        return true;
@@ -360,7 +360,7 @@ Future<dynamic> TextInputCls::_loudlyHandleTextInputInvocation(MethodCall call) 
     try {
         return await _handleTextInputInvocation(call);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("during method call %s)")), [=] () {
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__sf("during method call %s", call->method)), [=] () {
             makeList(ArrayItem);
         }));
         throw;

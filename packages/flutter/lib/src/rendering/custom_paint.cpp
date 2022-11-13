@@ -26,7 +26,7 @@ bool CustomPainterCls::hitTest(Offset position) {
 }
 
 String CustomPainterCls::toString() {
-    return __s("%s$%s");
+    return __sf("%s(%s", describeIdentity(this), _repaint?->toString() | __s(")"));
 }
 
 CustomPainterSemanticsCls::CustomPainterSemanticsCls(Key key, SemanticsProperties properties, Rect rect, Set<SemanticsTag> tags, Matrix4 transform) {
@@ -188,8 +188,8 @@ void RenderCustomPaintCls::clearSemantics() {
 
 void RenderCustomPaintCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<MessagePropertyCls>(__s("painter"), __s("%s)")));
-    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __s("%s,"), foregroundPainter() != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
+    properties->add(make<MessagePropertyCls>(__s("painter"), __sf("%s", painter())));
+    properties->add(make<MessagePropertyCls>(__s("foregroundPainter"), __sf("%s", foregroundPainter()), foregroundPainter() != nullptr? DiagnosticLevelCls::info : DiagnosticLevelCls::fine));
     properties->add(<Size>make<DiagnosticsPropertyCls>(__s("preferredSize"), preferredSize(), SizeCls::zero));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("isComplex"), isComplex, false));
     properties->add(<bool>make<DiagnosticsPropertyCls>(__s("willChange"), willChange, false));
@@ -263,7 +263,7 @@ List<SemanticsNode> RenderCustomPaintCls::_updateSemanticsChildren(List<Semantic
             CustomPainterSemantics child = newChildSemantics[i];
             if (child->key != nullptr) {
                 if (keys->containsKey(child->key)) {
-                    information->add(make<ErrorDescriptionCls>(__s("- duplicate key %s$%s)")));
+                    information->add(make<ErrorDescriptionCls>(__sf("- duplicate key %s found at position %s", child->key, i)));
                 }
                 keys[child->key!] = i;
             }

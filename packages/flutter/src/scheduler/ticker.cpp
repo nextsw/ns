@@ -140,7 +140,7 @@ void TickerCls::dispose() {
 
 String TickerCls::toString(bool debugIncludeStack) {
     StringBuffer buffer = make<StringBufferCls>();
-    buffer->write(__s("%s)"));
+    buffer->write(__sf("%s(", objectRuntimeType(this, __s("Ticker"))));
     assert([=] () {
         buffer->write(debugLabel | __s(""));
         return true;
@@ -149,7 +149,7 @@ String TickerCls::toString(bool debugIncludeStack) {
     assert([=] () {
         if (debugIncludeStack) {
             buffer->writeln();
-            buffer->writeln(__s("The stack trace when the %s)"));
+            buffer->writeln(__sf("The stack trace when the %s was actually created was:", runtimeType));
             FlutterErrorCls->defaultStackFilter(_debugCreationStack->toString()->trimRight()->split(__s("\n")))->forEach(buffer->writeln);
         }
         return true;
@@ -213,7 +213,7 @@ Future<void> TickerFutureCls::whenComplete(std::function<dynamic()> action) {
 }
 
 String TickerFutureCls::toString() {
-    return __s("%s$%s");
+    return __sf("%s(%s", describeIdentity(this), _completed == nullptr? __s("active") : _completed!? __s("complete") : __s("canceled)"));
 }
 
 void TickerFutureCls::_complete() {
@@ -231,7 +231,7 @@ void TickerFutureCls::_cancel(Ticker ticker) {
 
 String TickerCanceledCls::toString() {
     if (ticker != nullptr) {
-        return __s("This ticker was canceled: %s;");
+        return __sf("This ticker was canceled: %s", ticker);
     }
     return __s("The ticker was canceled before the "orCancel" property was first used.");
 }

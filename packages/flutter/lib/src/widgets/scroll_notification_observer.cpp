@@ -57,7 +57,7 @@ void ScrollNotificationObserverStateCls::dispose() {
 bool ScrollNotificationObserverStateCls::_debugAssertNotDisposed() {
     assert([=] () {
         if (_listeners == nullptr) {
-            throw make<FlutterErrorCls>(__s("A %sOnce you have called dispose() on a $%s,"));
+            throw make<FlutterErrorCls>(__sf("A %s was used after being disposed.\nOnce you have called dispose() on a %s, it can no longer be used.", runtimeType, runtimeType));
         }
         return true;
     }());
@@ -76,7 +76,7 @@ void ScrollNotificationObserverStateCls::_notifyListeners(ScrollNotification not
                 entry->listener(notification);
             }
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__s("while dispatching notifications for %s)")), [=] () {
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widget library"), make<ErrorDescriptionCls>(__sf("while dispatching notifications for %s", runtimeType)), [=] () {
                 makeList(ArrayItem);
             }));
         };

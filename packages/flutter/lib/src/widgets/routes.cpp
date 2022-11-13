@@ -64,7 +64,7 @@ Animation<double> TransitionRouteCls<T>::secondaryAnimation() {
 
 template<typename T>
 AnimationController TransitionRouteCls<T>::createAnimationController() {
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     Duration duration = transitionDuration();
     Duration reverseDuration = reverseTransitionDuration();
     assert(duration != nullptr && duration >= DurationCls::zero);
@@ -73,18 +73,18 @@ AnimationController TransitionRouteCls<T>::createAnimationController() {
 
 template<typename T>
 Animation<double> TransitionRouteCls<T>::createAnimation() {
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     assert(_controller != nullptr);
     return _controller!->view();
 }
 
 template<typename T>
 void TransitionRouteCls<T>::install() {
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot install a %s)"));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot install a %s after disposing it.", runtimeType));
     _controller = createAnimationController();
-    assert(_controller != nullptr, __s("%s)"));
+    assert(_controller != nullptr, __sf("%s.createAnimationController() returned null.", runtimeType));
     auto _c1 = createAnimation();_c1.addStatusListener(_handleStatusChanged);_animation = _c1;
-    assert(_animation != nullptr, __s("%s)"));
+    assert(_animation != nullptr, __sf("%s.createAnimation() returned null.", runtimeType));
     super->install();
     if (_animation!->isCompleted() && overlayEntries()->isNotEmpty()) {
         overlayEntries()->first->opaque = opaque();
@@ -93,24 +93,24 @@ void TransitionRouteCls<T>::install() {
 
 template<typename T>
 TickerFuture TransitionRouteCls<T>::didPush() {
-    assert(_controller != nullptr, __s("%s)"));
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(_controller != nullptr, __sf("%s.didPush called before calling install() or after calling dispose().", runtimeType));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     super->didPush();
     return _controller!->forward();
 }
 
 template<typename T>
 void TransitionRouteCls<T>::didAdd() {
-    assert(_controller != nullptr, __s("%s)"));
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(_controller != nullptr, __sf("%s.didPush called before calling install() or after calling dispose().", runtimeType));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     super->didAdd();
     _controller!->value() = _controller!->upperBound;
 }
 
 template<typename T>
 void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
-    assert(_controller != nullptr, __s("%s)"));
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(_controller != nullptr, __sf("%s.didReplace called before calling install() or after calling dispose().", runtimeType));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     if (is<TransitionRoute<any>>(oldRoute)) {
         _controller!->value() = as<TransitionRouteCls>(oldRoute)->_controller!->value();
     }
@@ -119,8 +119,8 @@ void TransitionRouteCls<T>::didReplace(Route<dynamic> oldRoute) {
 
 template<typename T>
 bool TransitionRouteCls<T>::didPop(T result) {
-    assert(_controller != nullptr, __s("%s)"));
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(_controller != nullptr, __sf("%s.didPop called before calling install() or after calling dispose().", runtimeType));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     _result = result;
     _controller!->reverse();
     return super->didPop(result);
@@ -128,16 +128,16 @@ bool TransitionRouteCls<T>::didPop(T result) {
 
 template<typename T>
 void TransitionRouteCls<T>::didPopNext(Route<dynamic> nextRoute) {
-    assert(_controller != nullptr, __s("%s)"));
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(_controller != nullptr, __sf("%s.didPopNext called before calling install() or after calling dispose().", runtimeType));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     _updateSecondaryAnimation(nextRoute);
     super->didPopNext(nextRoute);
 }
 
 template<typename T>
 void TransitionRouteCls<T>::didChangeNext(Route<dynamic> nextRoute) {
-    assert(_controller != nullptr, __s("%s)"));
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot reuse a %s)"));
+    assert(_controller != nullptr, __sf("%s.didChangeNext called before calling install() or after calling dispose().", runtimeType));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot reuse a %s after disposing it.", runtimeType));
     _updateSecondaryAnimation(nextRoute);
     super->didChangeNext(nextRoute);
 }
@@ -154,7 +154,7 @@ bool TransitionRouteCls<T>::canTransitionFrom(TransitionRoute<dynamic> previousR
 
 template<typename T>
 void TransitionRouteCls<T>::dispose() {
-    assert(!_transitionCompleter->isCompleted(), __s("Cannot dispose a %s)"));
+    assert(!_transitionCompleter->isCompleted(), __sf("Cannot dispose a %s twice.", runtimeType));
     _animation?->removeStatusListener(_handleStatusChanged);
     if (willDisposeAnimationController) {
         _controller?->dispose();
@@ -170,7 +170,7 @@ String TransitionRouteCls<T>::debugLabel() {
 
 template<typename T>
 String TransitionRouteCls<T>::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(animation: %s)", objectRuntimeType(this, __s("TransitionRoute")), _controller);
 }
 
 template<typename T>
@@ -587,7 +587,7 @@ Iterable<OverlayEntry> ModalRouteCls<T>::createOverlayEntries() {
 
 template<typename T>
 String ModalRouteCls<T>::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s, animation: %s)", objectRuntimeType(this, __s("ModalRoute")), settings(), _animation);
 }
 
 template<typename T>

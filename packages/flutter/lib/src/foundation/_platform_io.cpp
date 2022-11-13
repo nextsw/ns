@@ -34,7 +34,7 @@ TargetPlatform defaultTargetPlatform() {
         result = platform->debugDefaultTargetPlatformOverride;
     }
     if (result == nullptr) {
-        throw make<FlutterErrorCls>(__s("Unknown platform.\n%sConsider updating the list of TargetPlatforms to include this platform.,"));
+        throw make<FlutterErrorCls>(__sf("Unknown platform.\n%s was not recognized as a target platform. Consider updating the list of TargetPlatforms to include this platform.", PlatformCls::operatingSystem));
     }
     return result!;
 }

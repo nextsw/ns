@@ -78,7 +78,7 @@ void _ResamplerCls::_onSampleTimeChanged() {
     assert([=] () {
         if (debugPrintResamplingMargin) {
             Duration resamplingMargin = _lastEventTime - _lastSampleTime;
-            debugPrint(__s("%s)"));
+            debugPrint(__sf("%s", resamplingMargin));
         }
         return true;
     }());
@@ -194,7 +194,7 @@ void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
         }
         assert([=] () {
             if (debugPrintHitTestResults) {
-                debugPrint(__s("%s$%s)"));
+                debugPrint(__sf("%s: %s", event, hitTestResult));
             }
             return true;
         }());
@@ -209,7 +209,7 @@ void GestureBindingCls::_handlePointerEventImmediately(PointerEvent event) {
     };
     }    assert([=] () {
         if (debugPrintMouseHoverEvents && is<PointerHoverEvent>(event)) {
-            debugPrint(__s("%s)"));
+            debugPrint(__sf("%s", event));
         }
         return true;
     }());

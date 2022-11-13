@@ -10,9 +10,9 @@ String LogicalKeyboardKeyCls::debugName() {
         if (result == nullptr) {
             String unicodeKeyLabel = _unicodeKeyLabel(keyId);
             if (unicodeKeyLabel != nullptr) {
-                result = __s("Key %s;");
+                result = __sf("Key %s", unicodeKeyLabel);
             } else {
-                result = __s("Key with ID 0x%s;");
+                result = __sf("Key with ID 0x%s", keyId->toRadixString(16)->padLeft(11, __s("0")));
             }
         }
         return true;
@@ -66,7 +66,7 @@ Set<LogicalKeyboardKey> LogicalKeyboardKeyCls::collapseSynonyms(Set<LogicalKeybo
 
 void LogicalKeyboardKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("keyId"), __s("0x%s)")));
+    properties->add(make<StringPropertyCls>(__s("keyId"), __sf("0x%s", keyId->toRadixString(16)->padLeft(8, __s("0")))));
     properties->add(make<StringPropertyCls>(__s("keyLabel"), keyLabel()));
     properties->add(make<StringPropertyCls>(__s("debugName"), debugName(), nullptr));
 }
@@ -99,7 +99,7 @@ String LogicalKeyboardKeyCls::_unicodeKeyLabel(int keyId) {
 String PhysicalKeyboardKeyCls::debugName() {
     String result;
     assert([=] () {
-        result = _debugNames[usbHidUsage] | __s("Key with ID 0x%s;");
+        result = _debugNames[usbHidUsage] | __sf("Key with ID 0x%s", usbHidUsage->toRadixString(16)->padLeft(8, __s("0")));
         return true;
     }());
     return result;
@@ -125,7 +125,7 @@ PhysicalKeyboardKey PhysicalKeyboardKeyCls::findKeyByCode(int usageCode) {
 
 void PhysicalKeyboardKeyCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(make<StringPropertyCls>(__s("usbHidUsage"), __s("0x%s)")));
+    properties->add(make<StringPropertyCls>(__s("usbHidUsage"), __sf("0x%s", usbHidUsage->toRadixString(16)->padLeft(8, __s("0")))));
     properties->add(make<StringPropertyCls>(__s("debugName"), debugName(), nullptr));
 }
 

@@ -82,9 +82,9 @@ String DateTimeCls::toString() {
     String ms = _threeDigits(millisecond());
     String us = microsecond() == 0? __s("") : _threeDigits(microsecond());
     if (isUtc) {
-        return __s("%s$%s$%s$%s$%s$%s$%s$%s;");
+        return __sf("%s-%s-%s %s:%s:%s.%s%sZ", y, m, d, h, min, sec, ms, us);
     } else {
-        return __s("%s$%s$%s$%s$%s$%s$%s$%s;");
+        return __sf("%s-%s-%s %s:%s:%s.%s%s", y, m, d, h, min, sec, ms, us);
     }
 }
 
@@ -98,15 +98,15 @@ String DateTimeCls::toIso8601String() {
     String ms = _threeDigits(millisecond());
     String us = microsecond() == 0? __s("") : _threeDigits(microsecond());
     if (isUtc) {
-        return __s("%s$%s$%s$%s$%s$%s$%s$%s;");
+        return __sf("%s-%s-%sT%s:%s:%s.%s%sZ", y, m, d, h, min, sec, ms, us);
     } else {
-        return __s("%s$%s$%s$%s$%s$%s$%s$%s;");
+        return __sf("%s-%s-%sT%s:%s:%s.%s%s", y, m, d, h, min, sec, ms, us);
     }
 }
 
 void DateTimeCls::_withValue(int _value, bool isUtc) {
     if (millisecondsSinceEpoch()->abs() > _maxMillisecondsSinceEpoch || (millisecondsSinceEpoch()->abs() == _maxMillisecondsSinceEpoch && microsecond() != 0)) {
-        throw make<ArgumentErrorCls>(__s("DateTime is outside valid range: %s)"));
+        throw make<ArgumentErrorCls>(__sf("DateTime is outside valid range: %s", millisecondsSinceEpoch()));
     }
     checkNotNullable(isUtc, __s("isUtc"));
 }
@@ -115,15 +115,15 @@ String DateTimeCls::_fourDigits(int n) {
     int absN = n->abs();
     String sign =  < 0? __s("-") : __s("");
     if (absN >= 1000) {
-        return __s("%s;");
+        return __sf("%s", n);
     }
     if (absN >= 100) {
-        return __s("%s$%s;");
+        return __sf("%s0%s", sign, absN);
     }
     if (absN >= 10) {
-        return __s("%s$%s;");
+        return __sf("%s00%s", sign, absN);
     }
-    return __s("%s$%s;");
+    return __sf("%s000%s", sign, absN);
 }
 
 String DateTimeCls::_sixDigits(int n) {
@@ -131,24 +131,24 @@ String DateTimeCls::_sixDigits(int n) {
     int absN = n->abs();
     String sign =  < 0? __s("-") : __s("+");
     if (absN >= 100000) {
-        return __s("%s$%s;");
+        return __sf("%s%s", sign, absN);
     }
-    return __s("%s$%s;");
+    return __sf("%s0%s", sign, absN);
 }
 
 String DateTimeCls::_threeDigits(int n) {
     if (n >= 100) {
-        return __s("%s;");
+        return __sf("%s", n);
     }
     if (n >= 10) {
-        return __s("0%s;");
+        return __sf("0%s", n);
     }
-    return __s("00%s;");
+    return __sf("00%s", n);
 }
 
 String DateTimeCls::_twoDigits(int n) {
     if (n >= 10) {
-        return __s("%s;");
+        return __sf("%s", n);
     }
-    return __s("0%s;");
+    return __sf("0%s", n);
 }

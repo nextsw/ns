@@ -89,7 +89,7 @@ void FlutterLogoDecorationCls::debugFillProperties(DiagnosticPropertiesBuilder p
     properties->add(make<ColorPropertyCls>(__s("textColor"), textColor));
     properties->add(<FlutterLogoStyle>make<EnumPropertyCls>(__s("style"), style));
     if (_inTransition()) {
-        properties->add(DiagnosticsNodeCls->message(__s("transition %s$%s)")));
+        properties->add(DiagnosticsNodeCls->message(__sf("transition %s:%s", debugFormatDouble(_position), debugFormatDouble(_opacity))));
     }
 }
 

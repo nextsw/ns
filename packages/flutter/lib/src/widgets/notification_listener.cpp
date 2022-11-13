@@ -6,7 +6,7 @@ void NotificationCls::dispatch(BuildContext target) {
 String NotificationCls::toString() {
     List<String> description = makeList();
     debugFillDescription(description);
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("Notification")), description->join(__s(", ")));
 }
 
 void NotificationCls::debugFillDescription(List<String> description) {

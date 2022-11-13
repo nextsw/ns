@@ -24,7 +24,7 @@ String _LinkCls::path() {
 }
 
 String _LinkCls::toString() {
-    return __s("Link: '%s;");
+    return __sf("Link: '%s'", path());
 }
 
 Future<bool> _LinkCls::exists() {
@@ -45,7 +45,7 @@ Future<Link> _LinkCls::create(String target, bool recursive) {
         _FileCls->_dispatchWithNamespace(_IOServiceCls::fileCreateLink, makeList(ArrayItem, ArrayItem, ArrayItem));
     })->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot create link to target '%s,"), path());
+            throw _exceptionFromResponse(response, __sf("Cannot create link to target '%s'", target), path());
         }
         return this;
     });
@@ -73,7 +73,7 @@ Future<Link> _LinkCls::update(String target) {
 Future<Link> _LinkCls::rename(String newPath) {
     return _FileCls->_dispatchWithNamespace(_IOServiceCls::fileRenameLink, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot rename link to '%s,"), path());
+            throw _exceptionFromResponse(response, __sf("Cannot rename link to '%s'", newPath), path());
         }
         return make<LinkCls>(newPath);
     });
@@ -81,7 +81,7 @@ Future<Link> _LinkCls::rename(String newPath) {
 
 Link _LinkCls::renameSync(String newPath) {
     auto result = _FileCls->_renameLink(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot rename link '%s$%s)"));
+    throwIfError(result, __sf("Cannot rename link '%s' to '%s'", path(), newPath));
     return make<LinkCls>(newPath);
 }
 

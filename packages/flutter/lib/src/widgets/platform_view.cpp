@@ -105,7 +105,7 @@ void _AndroidViewStateCls::_initializeOnce() {
     }
     _initialized = true;
     _createNewAndroidView();
-    _focusNode = make<FocusNodeCls>(__s("AndroidView(id: %s)"));
+    _focusNode = make<FocusNodeCls>(__sf("AndroidView(id: %s)", _id));
 }
 
 TextDirection _AndroidViewStateCls::_findLayoutDirection() {
@@ -208,7 +208,7 @@ Future<void> _UiKitViewStateCls::_createNewUiKitView() {
     widget()->onPlatformViewCreated?->call(id);
     setState([=] () {
         _controller = controller;
-        _focusNode = make<FocusNodeCls>(__s("UiKitView(id: %s)"));
+        _focusNode = make<FocusNodeCls>(__sf("UiKitView(id: %s)", id));
     });
 }
 
@@ -290,7 +290,7 @@ Widget _PlatformViewLinkStateCls::build(BuildContext context) {
 }
 
 void _PlatformViewLinkStateCls::initState() {
-    _focusNode = make<FocusNodeCls>(__s("PlatformView(id: %s)"));
+    _focusNode = make<FocusNodeCls>(__sf("PlatformView(id: %s)", _id));
     _initialize();
     super->initState();
 }

@@ -376,7 +376,7 @@ void runApp(Widget app) {
 String _debugDumpAppString() {
     String mode = kDebugMode? __s("DEBUG MODE") : kReleaseMode? __s("RELEASE MODE") : __s("PROFILE MODE");
     StringBuffer buffer = make<StringBufferCls>();
-    buffer->writeln(__s("%s$%s)"));
+    buffer->writeln(__sf("%s - %s", WidgetsBindingCls::instance->runtimeType(), mode));
     if (WidgetsBindingCls::instance->renderViewElement != nullptr) {
         buffer->writeln(WidgetsBindingCls::instance->renderViewElement!->toStringDeep());
     } else {

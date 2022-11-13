@@ -262,7 +262,7 @@ void RestorationBucketCls::dispose() {
 }
 
 String RestorationBucketCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(restorationId: %s, owner: %s)", objectRuntimeType(this, __s("RestorationBucket")), restorationId(), debugOwner());
 }
 
 Map<Object, Object> RestorationBucketCls::_rawChildren() {
@@ -325,7 +325,7 @@ bool RestorationBucketCls::_debugAssertIntegrity() {
             List<RestorationBucket> buckets = child->value;
             assert(buckets->isNotEmpty());
             assert(_claimedChildren->containsKey(id));
-                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : buckets->map([=] (RestorationBucket bucket) {                        make<ErrorDescriptionCls>(__s("   * %s)"));                    })) {        {            list1.add(_x1);        }list1.add(ArrayItem);error->addAll(list1);
+                    List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        for (auto _x1 : buckets->map([=] (RestorationBucket bucket) {                        make<ErrorDescriptionCls>(__sf("   * %s", bucket->debugOwner));                    })) {        {            list1.add(_x1);        }list1.add(ArrayItem);error->addAll(list1);
         }
         throw FlutterErrorCls->fromParts(error);
     }());
@@ -391,7 +391,7 @@ void RestorationBucketCls::_visitChildren(_BucketVisitor visitor, bool concurren
 bool RestorationBucketCls::_debugAssertNotDisposed() {
     assert([=] () {
         if (_debugDisposed) {
-            throw make<FlutterErrorCls>(__s("A %sOnce you have called dispose() on a $%s,"));
+            throw make<FlutterErrorCls>(__sf("A %s was used after being disposed.\nOnce you have called dispose() on a %s, it can no longer be used.", runtimeType, runtimeType));
         }
         return true;
     }());

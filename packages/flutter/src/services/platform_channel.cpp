@@ -5,15 +5,15 @@ Future<void> _ProfiledBinaryMessengerCls::handlePlatformMessage(String channel, 
 
 Future<ByteData> _ProfiledBinaryMessengerCls::sendWithPostfix(String channel, String postfix, ByteData message) {
     TimelineTask task = make<TimelineTaskCls>();
-    _debugRecordUpStream(channelTypeName, __s("%s$%s,"), codecTypeName, message);
-    task->start(__s("Platform Channel send %s$%s)"));
+    _debugRecordUpStream(channelTypeName, __sf("%s%s", channel, postfix), codecTypeName, message);
+    task->start(__sf("Platform Channel send %s%s", channel, postfix));
     ByteData result;
     try {
         result = await proxy->send(channel, message);
     } finally {
         task->finish();
     };
-    _debugRecordDownStream(channelTypeName, __s("%s$%s,"), codecTypeName, result);
+    _debugRecordDownStream(channelTypeName, __sf("%s%s", channel, postfix), codecTypeName, result);
     return result;
 }
 
@@ -63,7 +63,7 @@ Future<void> _debugLaunchProfilePlatformChannels() {
             (y->upBytes + y->downBytes) - (x->upBytes + x->downBytes);
         });
         for (_PlatformChannelStats stats : allStats) {
-            log->writeln(__s("  (name:"%s$%s$%s$%s$%s$%s$%s)"));
+            log->writeln(__sf("  (name:"%s" type:"%s" codec:"%s" upBytes:%s upBytes_avg:%s downBytes:%s downBytes_avg:%s)", stats->channel, stats->type, stats->codec, stats->upBytes, stats->averageUpPayload->toStringAsFixed(1), stats->downBytes, stats->averageDownPayload->toStringAsFixed(1)));
         }
         debugPrint(log->toString());
         _debugProfilePlatformChannelsStats->clear();
@@ -154,12 +154,12 @@ template<typename T>
 Future<T> MethodChannelCls::_invokeMethod(String method, dynamic arguments, bool missingOk) {
     assert(method != nullptr);
     ByteData input = codec->encodeMethodCall(make<MethodCallCls>(method, arguments));
-    ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger()))->sendWithPostfix(name, __s("#%s,"), input) : await binaryMessenger()->send(name, input);
+    ByteData result = !kReleaseMode && debugProfilePlatformChannels? await (as<_ProfiledBinaryMessenger>(binaryMessenger()))->sendWithPostfix(name, __sf("#%s", method), input) : await binaryMessenger()->send(name, input);
     if (result == nullptr) {
         if (missingOk) {
             return nullptr;
         }
-        throw make<MissingPluginExceptionCls>(__s("No implementation found for method %s$%s)"));
+        throw make<MissingPluginExceptionCls>(__sf("No implementation found for method %s on channel %s", method, name));
     }
     return as<T>(codec->decodeEnvelope(result));
 }
@@ -213,14 +213,14 @@ Stream<dynamic> EventChannelCls::receiveBroadcastStream(dynamic arguments) {
         try {
             await await methodChannel-><void>invokeMethod(__s("listen"), arguments);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("while activating platform stream on channel %s)"))));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__sf("while activating platform stream on channel %s", name))));
         };
     }, [=] () {
         binaryMessenger()->setMessageHandler(name, nullptr);
         try {
             await await methodChannel-><void>invokeMethod(__s("cancel"), arguments);
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__s("while de-activating platform stream on channel %s)"))));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("services library"), make<ErrorDescriptionCls>(__sf("while de-activating platform stream on channel %s", name))));
         };
     });
     return controller->stream();

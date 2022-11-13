@@ -9,9 +9,9 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
     Map<String, Locale> languageLocales = <String, Locale>make<HashMapCls>();
     Map<String, Locale> countryLocales = <String, Locale>make<HashMapCls>();
     for (Locale locale : supportedLocales) {
-        allSupportedLocales[__s("%s$%s$%s]")] |= locale;
-        languageAndScriptLocales[__s("%s$%s]")] |= locale;
-        languageAndCountryLocales[__s("%s$%s]")] |= locale;
+        allSupportedLocales[__sf("%s_%s_%s", locale->languageCode, locale->scriptCode, locale->countryCode)] |= locale;
+        languageAndScriptLocales[__sf("%s_%s", locale->languageCode, locale->scriptCode)] |= locale;
+        languageAndCountryLocales[__sf("%s_%s", locale->languageCode, locale->countryCode)] |= locale;
         languageLocales[locale->languageCode] |= locale;
         countryLocales[locale->countryCode] |= locale;
     }
@@ -19,17 +19,17 @@ Locale basicLocaleListResolution(List<Locale> preferredLocales, Iterable<Locale>
     Locale matchesCountryCode;
     for (;  < preferredLocales->length(); localeIndex += 1) {
         Locale userLocale = preferredLocales[localeIndex];
-        if (allSupportedLocales->containsKey(__s("%s$%s$%s)"))) {
+        if (allSupportedLocales->containsKey(__sf("%s_%s_%s", userLocale->languageCode(), userLocale->scriptCode, userLocale->countryCode()))) {
             return userLocale;
         }
         if (userLocale->scriptCode != nullptr) {
-            Locale match = languageAndScriptLocales[__s("%s$%s]")];
+            Locale match = languageAndScriptLocales[__sf("%s_%s", userLocale->languageCode(), userLocale->scriptCode)];
             if (match != nullptr) {
                 return match;
             }
         }
         if (userLocale->countryCode() != nullptr) {
-            Locale match = languageAndCountryLocales[__s("%s$%s]")];
+            Locale match = languageAndCountryLocales[__sf("%s_%s", userLocale->languageCode(), userLocale->countryCode())];
             if (match != nullptr) {
                 return match;
             }
@@ -302,14 +302,14 @@ Route<dynamic> _WidgetsAppStateCls::_onGenerateRoute(RouteSettings settings) {
 Route<dynamic> _WidgetsAppStateCls::_onUnknownRoute(RouteSettings settings) {
     assert([=] () {
         if (widget()->onUnknownRoute == nullptr) {
-            throw make<FlutterErrorCls>(__s("Could not find a generator for route %s$%sMake sure your root app widget has provided a way to generate \nthis route.\nGenerators for routes are searched for in the following order:\n 1. For the "/" route, the "home" property, if non-null, is used.\n 2. Otherwise, the "routes" table is used, if it has an entry for the route.\n 3. Otherwise, onGenerateRoute is called. It should return a non-null value for any valid route not handled by "home" and "routes".\n 4. Finally if all else fails onUnknownRoute is called.\nUnfortunately, onUnknownRoute was not set.,"));
+            throw make<FlutterErrorCls>(__sf("Could not find a generator for route %s in the %s.\nMake sure your root app widget has provided a way to generate \nthis route.\nGenerators for routes are searched for in the following order:\n 1. For the "/" route, the "home" property, if non-null, is used.\n 2. Otherwise, the "routes" table is used, if it has an entry for the route.\n 3. Otherwise, onGenerateRoute is called. It should return a non-null value for any valid route not handled by "home" and "routes".\n 4. Finally if all else fails onUnknownRoute is called.\nUnfortunately, onUnknownRoute was not set.", settings, runtimeType));
         }
         return true;
     }());
     Route<dynamic> result = widget()->onUnknownRoute!(settings);
     assert([=] () {
         if (result == nullptr) {
-            throw make<FlutterErrorCls>(__s("The onUnknownRoute callback returned null.\nWhen the %s$%sonUnknownRoute callback, the callback returned null. Such callbacks must never return null.,"));
+            throw make<FlutterErrorCls>(__sf("The onUnknownRoute callback returned null.\nWhen the %s requested the route %s from its onUnknownRoute callback, the callback returned null. Such callbacks must never return null.", runtimeType, settings));
         }
         return true;
     }());
@@ -352,7 +352,7 @@ bool _WidgetsAppStateCls::_debugCheckLocalizations(Locale appLocale) {
         if (unsupportedTypes->isEmpty()) {
             return true;
         }
-            List<DiagnosticsNode> list1 = make<ListCls<>>();    for (Type unsupportedType : unsupportedTypes) {                ;            }    {        list1.add(ArrayItem);    }list1.add(ArrayItem);    if (unsupportedTypes->length() == 1 && unsupportedTypes->single()->toString() == __s("CupertinoLocalizations")) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Warning: This application's locale, %s,"), __s("widgets"), [=] () {
+            List<DiagnosticsNode> list1 = make<ListCls<>>();    for (Type unsupportedType : unsupportedTypes) {                ;            }    {        list1.add(ArrayItem);    }list1.add(ArrayItem);    if (unsupportedTypes->length() == 1 && unsupportedTypes->single()->toString() == __s("CupertinoLocalizations")) {        list1.add(ArrayItem);    }list1.add(ArrayItem);    list1.add(ArrayItem);    list1.add(ArrayItem);FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__sf("Warning: This application's locale, %s, is not supported by all of its localization delegates.", appLocale), __s("widgets"), [=] () {
             list1;
         }));
         return true;

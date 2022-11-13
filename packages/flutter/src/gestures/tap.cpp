@@ -146,7 +146,7 @@ void TapGestureRecognizerCls::handleTapUp(PointerDownEvent down, PointerUpEvent 
 }
 
 void TapGestureRecognizerCls::handleTapCancel(PointerCancelEvent cancel, PointerDownEvent down, String reason) {
-    String note = reason == __s("")? reason : __s("%s;");
+    String note = reason == __s("")? reason : __sf("%s ", reason);
     ;
 }
 

@@ -17,7 +17,7 @@ bool debugChildrenHaveDuplicateKeys(Widget parent, Iterable<Widget> children) {
     assert([=] () {
         Key nonUniqueKey = _firstNonUniqueKey(children);
         if (nonUniqueKey != nullptr) {
-            throw make<FlutterErrorCls>(__s("Duplicate keys found.\nIf multiple keyed nodes exist as children of another node, they must have unique keys.\n%s$%s,"));
+            throw make<FlutterErrorCls>(__sf("Duplicate keys found.\nIf multiple keyed nodes exist as children of another node, they must have unique keys.\n%s has multiple children with key %s.", parent, nonUniqueKey));
         }
         return true;
     }());
@@ -28,7 +28,7 @@ bool debugItemsHaveDuplicateKeys(Iterable<Widget> items) {
     assert([=] () {
         Key nonUniqueKey = _firstNonUniqueKey(items);
         if (nonUniqueKey != nullptr) {
-            throw make<FlutterErrorCls>(__s("Duplicate key found: %s)"));
+            throw make<FlutterErrorCls>(__sf("Duplicate key found: %s.", nonUniqueKey));
         }
         return true;
     }());
@@ -58,7 +58,7 @@ bool debugCheckHasMediaQuery(BuildContext context) {
 bool debugCheckHasDirectionality(BuildContext context, String alternative, String hint, String why) {
     assert([=] () {
         if (!is<Directionality>(context->widget()) && context-><Directionality>getElementForInheritedWidgetOfExactType() == nullptr) {
-            why = why == nullptr? __s("") : __s(" %s;");
+            why = why == nullptr? __s("") : __sf(" %s", why);
                     List<DiagnosticsNode> list1 = make<ListCls<>>();        list1.add(ArrayItem);        list1.add(ArrayItem);        if (hint != nullptr) {            list1.add(ArrayItem);        }list1.add(ArrayItem);        list1.add(ArrayItem);        list1.add(ArrayItem);        if (alternative != nullptr) {            list1.add(ArrayItem);        }throw FlutterErrorCls->fromParts(list1);
         }
         return true;

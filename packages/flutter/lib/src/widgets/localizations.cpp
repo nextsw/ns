@@ -48,7 +48,7 @@ Type LocalizationsDelegateCls<T>::type() {
 
 template<typename T>
 String LocalizationsDelegateCls<T>::toString() {
-    return __s("%s$%s;");
+    return __sf("%s[%s]", objectRuntimeType(this, __s("LocalizationsDelegate")), type());
 }
 
 WidgetsLocalizations WidgetsLocalizationsCls::of(BuildContext context) {

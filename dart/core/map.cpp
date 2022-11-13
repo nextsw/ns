@@ -12,5 +12,5 @@ void MapCls<K, V>::fromEntries(Iterable<MapEntry<K, V>> entries) {
 
 template<typename K, typename V>
 String MapEntryCls<K, V>::toString() {
-    return __s("MapEntry(%s$%s;");
+    return __sf("MapEntry(%s: %s)", key, value);
 }

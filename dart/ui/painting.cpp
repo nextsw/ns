@@ -148,7 +148,7 @@ int ColorCls::hashCode() {
 }
 
 String ColorCls::toString() {
-    return __s("Color(0x%s;");
+    return __sf("Color(0x%s)", value->toRadixString(16)->padLeft(8, __s("0")));
 }
 
 double ColorCls::_linearizeColorComponent(double component) {
@@ -333,61 +333,61 @@ String PaintCls::toString() {
     String semicolon = __s("");
     result->write(__s("Paint("));
     if (style() == PaintingStyleCls::stroke) {
-        result->write(__s("%s)"));
+        result->write(__sf("%s", style()));
         if (strokeWidth() != 0.0) {
-            result->write(__s(" %s)"));
+            result->write(__sf(" %s", strokeWidth()->toStringAsFixed(1)));
         } else {
             result->write(__s(" hairline"));
         }
         if (strokeCap() != StrokeCapCls::butt) {
-            result->write(__s(" %s)"));
+            result->write(__sf(" %s", strokeCap()));
         }
         if (strokeJoin() == StrokeJoinCls::miter) {
             if (strokeMiterLimit() != _kStrokeMiterLimitDefault) {
-                result->write(__s(" %s$%s)"));
+                result->write(__sf(" %s up to %s", strokeJoin(), strokeMiterLimit()->toStringAsFixed(1)));
             }
         } else {
-            result->write(__s(" %s)"));
+            result->write(__sf(" %s", strokeJoin()));
         }
         semicolon = __s("; ");
     }
     if (isAntiAlias() != true) {
-        result->write(__s("%s)"));
+        result->write(__sf("%santialias off", semicolon));
         semicolon = __s("; ");
     }
     if (color() != make<ColorCls>(_kColorDefault)) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%s%s", semicolon, color()));
         semicolon = __s("; ");
     }
     if (blendMode()->index != _kBlendModeDefault) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%s%s", semicolon, blendMode()));
         semicolon = __s("; ");
     }
     if (colorFilter() != nullptr) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%scolorFilter: %s", semicolon, colorFilter()));
         semicolon = __s("; ");
     }
     if (maskFilter() != nullptr) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%smaskFilter: %s", semicolon, maskFilter()));
         semicolon = __s("; ");
     }
     if (filterQuality() != FilterQualityCls::none) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%sfilterQuality: %s", semicolon, filterQuality()));
         semicolon = __s("; ");
     }
     if (shader() != nullptr) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%sshader: %s", semicolon, shader()));
         semicolon = __s("; ");
     }
     if (imageFilter() != nullptr) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%simageFilter: %s", semicolon, imageFilter()));
         semicolon = __s("; ");
     }
     if (invertColors()) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%sinvert: %s", semicolon, invertColors()));
     }
     if (_dither()) {
-        result->write(__s("%s$%s)"));
+        result->write(__sf("%sdither: %s", semicolon, _dither()));
     }
     result->write(__s(")"));
     return result->toString();
@@ -475,13 +475,13 @@ Future<ByteData> _ImageCls::toByteData(ImageByteFormat format) {
 
 void _ImageCls::dispose() {
     assert(!_disposed);
-    assert(_handles->isEmpty(), __s("Attempted to dispose of an Image object that has %sopen handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new.,"));
+    assert(_handles->isEmpty(), __sf("Attempted to dispose of an Image object that has %s open handles.\nIf you see this, it is a bug in dart:ui. Please file an issue at https://github.com/flutter/flutter/issues/new.", _handles->length()));
     _disposed = true;
     _dispose();
 }
 
 String _ImageCls::toString() {
-    return __s("[%s$%s;");
+    return __sf("[%s\u00D7%s]", width(), height());
 }
 
 int CodecCls::frameCount() {
@@ -736,18 +736,18 @@ Path PathMetricCls::extractPath(double start, double end, bool startWithMoveTo) 
 }
 
 String PathMetricCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s{length: %s, isClosed: %s, contourIndex:%s}", runtimeType, length, isClosed, contourIndex);
 }
 
 void PathMetricCls::_(_PathMeasure _measure)
 
 double _PathMeasureCls::length(int contourIndex) {
-    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index %s)"));
+    assert(contourIndex <= currentContourIndex, __sf("Iterator must be advanced before index %s can be used.", contourIndex));
     return _length(contourIndex);
 }
 
 Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) {
-    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index %s)"));
+    assert(contourIndex <= currentContourIndex, __sf("Iterator must be advanced before index %s can be used.", contourIndex));
     Float32List posTan = _getPosTan(contourIndex, distance);
     if (posTan[0] == 0.0) {
         return nullptr;
@@ -757,14 +757,14 @@ Tangent _PathMeasureCls::getTangentForOffset(int contourIndex, double distance) 
 }
 
 Path _PathMeasureCls::extractPath(int contourIndex, double start, double end, bool startWithMoveTo) {
-    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index %s)"));
+    assert(contourIndex <= currentContourIndex, __sf("Iterator must be advanced before index %s can be used.", contourIndex));
     Path path = PathCls->_();
     _extractPath(path, contourIndex, start, end, startWithMoveTo);
     return path;
 }
 
 bool _PathMeasureCls::isClosed(int contourIndex) {
-    assert(contourIndex <= currentContourIndex, __s("Iterator must be advanced before index %s)"));
+    assert(contourIndex <= currentContourIndex, __sf("Iterator must be advanced before index %s can be used.", contourIndex));
     return _isClosed(contourIndex);
 }
 
@@ -793,7 +793,7 @@ int MaskFilterCls::hashCode() {
 }
 
 String MaskFilterCls::toString() {
-    return __s("MaskFilter.blur(%s$%s;");
+    return __sf("MaskFilter.blur(%s, %s)", _style, _sigma->toStringAsFixed(1));
 }
 
 void ColorFilterCls::mode(Color color, BlendMode blendMode)
@@ -885,7 +885,7 @@ void ImageFilterCls::compose(ImageFilter inner, ImageFilter outer) {
 }
 
 String _MatrixImageFilterCls::toString() {
-    return __s("ImageFilter.matrix(%s$%s;");
+    return __sf("ImageFilter.matrix(%s, %s)", data, filterQuality);
 }
 
 bool _MatrixImageFilterCls::==(Object other) {
@@ -904,11 +904,11 @@ _ImageFilter _MatrixImageFilterCls::_toNativeImageFilter() {
 }
 
 String _MatrixImageFilterCls::_shortDescription() {
-    return __s("matrix(%s$%s;");
+    return __sf("matrix(%s, %s)", data, filterQuality);
 }
 
 String _GaussianBlurImageFilterCls::toString() {
-    return __s("ImageFilter.blur(%s$%s$%s;");
+    return __sf("ImageFilter.blur(%s, %s, %s)", sigmaX, sigmaY, _modeString());
 }
 
 bool _GaussianBlurImageFilterCls::==(Object other) {
@@ -931,11 +931,11 @@ String _GaussianBlurImageFilterCls::_modeString() {
 }
 
 String _GaussianBlurImageFilterCls::_shortDescription() {
-    return __s("blur(%s$%s$%s;");
+    return __sf("blur(%s, %s, %s)", sigmaX, sigmaY, _modeString());
 }
 
 String _DilateImageFilterCls::toString() {
-    return __s("ImageFilter.dilate(%s$%s;");
+    return __sf("ImageFilter.dilate(%s, %s)", radiusX, radiusY);
 }
 
 bool _DilateImageFilterCls::==(Object other) {
@@ -954,11 +954,11 @@ _ImageFilter _DilateImageFilterCls::_toNativeImageFilter() {
 }
 
 String _DilateImageFilterCls::_shortDescription() {
-    return __s("dilate(%s$%s;");
+    return __sf("dilate(%s, %s)", radiusX, radiusY);
 }
 
 String _ErodeImageFilterCls::toString() {
-    return __s("ImageFilter.erode(%s$%s;");
+    return __sf("ImageFilter.erode(%s, %s)", radiusX, radiusY);
 }
 
 bool _ErodeImageFilterCls::==(Object other) {
@@ -977,11 +977,11 @@ _ImageFilter _ErodeImageFilterCls::_toNativeImageFilter() {
 }
 
 String _ErodeImageFilterCls::_shortDescription() {
-    return __s("erode(%s$%s;");
+    return __sf("erode(%s, %s)", radiusX, radiusY);
 }
 
 String _ComposeImageFilterCls::toString() {
-    return __s("ImageFilter.compose(source -> %s;");
+    return __sf("ImageFilter.compose(source -> %s -> result)", _shortDescription());
 }
 
 bool _ComposeImageFilterCls::==(Object other) {
@@ -1000,7 +1000,7 @@ _ImageFilter _ComposeImageFilterCls::_toNativeImageFilter() {
 }
 
 String _ComposeImageFilterCls::_shortDescription() {
-    return __s("%s$%s;");
+    return __sf("%s -> %s", innerFilter->_shortDescription(), outerFilter->_shortDescription());
 }
 
 void _ImageFilterCls::blur(_GaussianBlurImageFilter filter) {
@@ -1148,10 +1148,10 @@ Shader FragmentProgramCls::shader(Float32List floatUniforms, List<ImageShader> s
         floatUniforms = make<Float32ListCls>(_uniformFloatCount);
     }
     if (floatUniforms->length() != _uniformFloatCount) {
-        throw make<ArgumentErrorCls>(__s("floatUniforms size: %s$%s)"));
+        throw make<ArgumentErrorCls>(__sf("floatUniforms size: %s must match given shader uniform count: %s.", floatUniforms->length(), _uniformFloatCount));
     }
     if (_samplerCount > 0 && (samplerUniforms == nullptr || samplerUniforms->length() != _samplerCount)) {
-        throw make<ArgumentErrorCls>(__s("samplerUniforms must have length %s)"));
+        throw make<ArgumentErrorCls>(__sf("samplerUniforms must have length %s", _samplerCount));
     }
     if (samplerUniforms == nullptr) {
         samplerUniforms = makeList();
@@ -1638,7 +1638,7 @@ int ShadowCls::hashCode() {
 }
 
 String ShadowCls::toString() {
-    return __s("TextShadow(%s$%s$%s;");
+    return __sf("TextShadow(%s, %s, %s)", color, offset, blurRadius);
 }
 
 ByteData ShadowCls::_encodeShadows(List<Shadow> shadows) {
@@ -1782,7 +1782,7 @@ Future<T> _futurize(_Callbacker<T> callbacker) {
 }
 
 String PictureRasterizationExceptionCls::toString() {
-    StringBuffer buffer = make<StringBufferCls>(__s("Failed to rasterize a picture: %s)"));
+    StringBuffer buffer = make<StringBufferCls>(__sf("Failed to rasterize a picture: %s.", message));
     if (stack != nullptr) {
         buffer->writeln();
         buffer->writeln(__s("The callstack when the image was created was:"));

@@ -33,11 +33,11 @@ String _success() {
 }
 
 String _invalidArgument(String argument, dynamic value) {
-    return __s("Value for parameter '%s$%s;");
+    return __sf("Value for parameter '%s' is not valid: %s", argument, value);
 }
 
 String _missingArgument(String argument) {
-    return __s("Parameter '%s;");
+    return __sf("Parameter '%s' is required", argument);
 }
 
 String _getHttpEnableTimelineLogging() {
@@ -67,7 +67,7 @@ String _getHttpProfileRequest(Map<String, String> parameters) {
     }
     Unknown request = HttpProfilerCls->getHttpProfileRequest(id);
     if (request == nullptr) {
-        throw __s("Unable to find request with id: '%s;");
+        throw __sf("Unable to find request with id: '%s'", id);
     }
     return json->encode(request->toJson(false));
 }

@@ -1,7 +1,7 @@
 #include "strut_style.hpp"
 StrutStyleCls::StrutStyleCls(String debugLabel, String fontFamily, List<String> fontFamilyFallback, double fontSize, FontStyle fontStyle, FontWeight fontWeight, bool forceStrutHeight, double height, double leading, TextLeadingDistribution leadingDistribution, String package) {
     {
-        fontFamily = package == nullptr? fontFamily : __s("packages/%s$%s,");
+        fontFamily = package == nullptr? fontFamily : __sf("packages/%s/%s", package, fontFamily);
         _fontFamilyFallback = fontFamilyFallback;
         _package = package;
         assert(fontSize == nullptr || fontSize > 0);
@@ -15,7 +15,7 @@ void StrutStyleCls::fromTextStyle(TextStyle textStyle, String debugLabel, String
 List<String> StrutStyleCls::fontFamilyFallback() {
     if (_package != nullptr && _fontFamilyFallback != nullptr) {
         return _fontFamilyFallback!->map([=] (String family) {
-            __s("packages/%s$%s)");
+            __sf("packages/%s/%s", _package, family);
         })->toList();
     }
     return _fontFamilyFallback;
@@ -59,22 +59,22 @@ String StrutStyleCls::toStringShort() {
 void StrutStyleCls::debugFillProperties(DiagnosticPropertiesBuilder properties, String prefix) {
     super->debugFillProperties(properties);
     if (debugLabel != nullptr) {
-        properties->add(make<MessagePropertyCls>(__s("%s,"), debugLabel!));
+        properties->add(make<MessagePropertyCls>(__sf("%sdebugLabel", prefix), debugLabel!));
     }
     List<DiagnosticsNode> styles = makeList(ArrayItem, ArrayItem, ArrayItem);
     String weightDescription;
     if (fontWeight != nullptr) {
-        weightDescription = __s("w%s;");
+        weightDescription = __sf("w%s00", fontWeight!->index + 1);
     }
-    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__s("%s,"), fontWeight, weightDescription, nullptr));
-    styles->add(<FontStyle>make<EnumPropertyCls>(__s("%s,"), fontStyle, nullptr));
-    styles->add(make<DoublePropertyCls>(__s("%s,"), height, __s("x"), nullptr));
-    styles->add(make<FlagPropertyCls>(__s("%s,"), forceStrutHeight, __s("%s,"), __s("%s)")));
+    styles->add(<FontWeight>make<DiagnosticsPropertyCls>(__sf("%sweight", prefix), fontWeight, weightDescription, nullptr));
+    styles->add(<FontStyle>make<EnumPropertyCls>(__sf("%sstyle", prefix), fontStyle, nullptr));
+    styles->add(make<DoublePropertyCls>(__sf("%sheight", prefix), height, __s("x"), nullptr));
+    styles->add(make<FlagPropertyCls>(__sf("%sforceStrutHeight", prefix), forceStrutHeight, __sf("%s<strut height forced>", prefix), __sf("%s<strut height normal>", prefix)));
     bool styleSpecified = styles->any([=] (DiagnosticsNode n) {
     !n->isFiltered(DiagnosticLevelCls::info);
 });
     styles->forEach(properties->add);
     if (!styleSpecified) {
-        properties->add(make<FlagPropertyCls>(__s("forceStrutHeight"), forceStrutHeight, __s("%s,"), __s("%s)")));
+        properties->add(make<FlagPropertyCls>(__s("forceStrutHeight"), forceStrutHeight, __sf("%s<strut height forced>", prefix), __sf("%s<strut height normal>", prefix)));
     }
 }

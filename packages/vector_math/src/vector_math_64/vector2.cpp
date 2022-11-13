@@ -61,7 +61,7 @@ void Vector2Cls::splat(double arg) {
 }
 
 String Vector2Cls::toString() {
-    return __s("[%s$%s;");
+    return __sf("[%s,%s]", _v2storage[0], _v2storage[1]);
 }
 
 bool Vector2Cls::==(Object other) {

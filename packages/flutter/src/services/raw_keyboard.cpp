@@ -25,9 +25,9 @@ Map<ModifierKey, KeyboardSide> RawKeyEventDataCls::modifiersPressed() {
             }
             assert([=] () {
                 if (side == nullptr) {
-                    debugPrint(__s("Raw key data is returning inconsistent information for pressed modifiers. isModifierPressed returns true for %sbeing pressed, but when getModifierSide is called, it says that no modifiers are pressed.,"));
+                    debugPrint(__sf("Raw key data is returning inconsistent information for pressed modifiers. isModifierPressed returns true for %s being pressed, but when getModifierSide is called, it says that no modifiers are pressed.", key));
                     if (is<RawKeyEventDataAndroid>(this)) {
-                        debugPrint(__s("Android raw key metaState: %s)"));
+                        debugPrint(__sf("Android raw key metaState: %s", (as<RawKeyEventDataAndroid>(as<RawKeyEventDataAndroidCls>(this)))->metaState));
                     }
                 }
                 return true;
@@ -135,7 +135,7 @@ bool RawKeyboardCls::handleRawKeyEvent(RawKeyEvent event) {
     }
 ;
     }    _synchronizeModifiers(event);
-    assert(!is<RawKeyDownEvent>(event) || _keysPressed->isNotEmpty(), __s("Attempted to send a key down event when no keys are in keysPressed. This state can occur if the key event being sent doesn't properly set its modifier flags. This was the event: %s$%s,"));
+    assert(!is<RawKeyDownEvent>(event) || _keysPressed->isNotEmpty(), __sf("Attempted to send a key down event when no keys are in keysPressed. This state can occur if the key event being sent doesn't properly set its modifier flags. This was the event: %s and its data: %s", event, event->data));
     for (ValueChanged<RawKeyEvent> listener : <ValueChanged<RawKeyEvent>>of(_listeners)) {
         try {
             if (_listeners->contains(listener)) {
@@ -194,9 +194,9 @@ void RawKeyboardCls::_synchronizeModifiers(RawKeyEvent event) {
         Set<PhysicalKeyboardKey> mappedKeys = modifiersPressed[key] == nullptr? makeSet() : _modifierKeyMap[make<_ModifierSidePairCls>(key, modifiersPressed[key])];
         assert([=] () {
             if (mappedKeys == nullptr) {
-                debugPrint(__s("Platform key support for %sproducing unsupported modifier combinations for modifier $%s$%s,"));
+                debugPrint(__sf("Platform key support for %s is producing unsupported modifier combinations for modifier %s on side %s.", PlatformCls::operatingSystem, key, modifiersPressed[key]));
                 if (is<RawKeyEventDataAndroid>(event->data)) {
-                    debugPrint(__s("Android raw key metaState: %s)"));
+                    debugPrint(__sf("Android raw key metaState: %s", (as<RawKeyEventDataAndroid>(event->data))->metaState));
                 }
             }
             return true;

@@ -497,7 +497,7 @@ void RenderConstraintsTransformBoxCls::performLayout() {
     if (child != nullptr) {
         BoxConstraints childConstraints = constraintsTransform(constraints);
         assert(childConstraints != nullptr);
-        assert(childConstraints->isNormalized(), __s("%s)"));
+        assert(childConstraints->isNormalized(), __sf("%s is not normalized", childConstraints));
         _childConstraints = childConstraints;
         child->layout(childConstraints, true);
         size() = constraints->constrain(child->size());

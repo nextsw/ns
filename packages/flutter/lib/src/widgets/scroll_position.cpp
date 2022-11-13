@@ -81,7 +81,7 @@ double ScrollPositionCls::setPixels(double newPixels) {
         assert([=] () {
             double delta = newPixels - pixels();
             if (overscroll->abs() > delta->abs()) {
-                throw make<FlutterErrorCls>(__s("%ssetPixels() was called to change the scroll offset from $%s$%sThat is a delta of $%s$%s$%s,"));
+                throw make<FlutterErrorCls>(__sf("%s.applyBoundaryConditions returned invalid overscroll value.\nsetPixels() was called to change the scroll offset from %s to %s.\nThat is a delta of %s units.\n%s.applyBoundaryConditions reported an overscroll of %s units.", runtimeType, pixels(), newPixels, delta, runtimeType, overscroll));
             }
             return true;
         }());
@@ -153,7 +153,7 @@ double ScrollPositionCls::applyBoundaryConditions(double value) {
     assert([=] () {
         double delta = value - pixels();
         if (result->abs() > delta->abs()) {
-            throw make<FlutterErrorCls>(__s("%sThe method was called to consider a change from $%s$%sdelta of $%s$%sThe applyBoundaryConditions method is only supposed to reduce the possible range of movement, not increase it.\nThe scroll extents are $%s$%sviewport dimension is $%s,"));
+            throw make<FlutterErrorCls>(__sf("%s.applyBoundaryConditions returned invalid overscroll value.\nThe method was called to consider a change from %s to %s, which is a delta of %s units. However, it returned an overscroll of %s units, which has a greater magnitude than the delta. The applyBoundaryConditions method is only supposed to reduce the possible range of movement, not increase it.\nThe scroll extents are %s .. %s, and the viewport dimension is %s.", physics->runtimeType, pixels(), value, delta->toStringAsFixed(1), result->toStringAsFixed(1), minScrollExtent(), maxScrollExtent(), viewportDimension()));
         }
         return true;
     }());
@@ -341,8 +341,8 @@ void ScrollPositionCls::debugFillDescription(List<String> description) {
         description->add(debugLabel!);
     }
     super->debugFillDescription(description);
-    description->add(__s("range: %s$%s)"));
-    description->add(__s("viewport: %s)"));
+    description->add(__sf("range: %s..%s", _minScrollExtent?->toStringAsFixed(1), _maxScrollExtent?->toStringAsFixed(1)));
+    description->add(__sf("viewport: %s", _viewportDimension?->toStringAsFixed(1)));
 }
 
 bool ScrollPositionCls::_isMetricsChanged() {
@@ -371,5 +371,5 @@ void ScrollPositionCls::_updateSemanticActions() {
 
 void ScrollMetricsNotificationCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("%s)"));
+    description->add(__sf("%s", metrics));
 }

@@ -46,7 +46,7 @@ bool RawKeyEventDataIosCls::isModifierPressed(ModifierKey key, KeyboardSide side
     int independentModifier = modifiers & deviceIndependentMask;
     bool result;
     ;
-    assert(!result || getModifierSide(key) != nullptr, __s("%s)"));
+    assert(!result || getModifierSide(key) != nullptr, __sf("%s thinks that a modifier is pressed, but can't figure out what side it's on.", runtimeType));
     return result;
 }
 

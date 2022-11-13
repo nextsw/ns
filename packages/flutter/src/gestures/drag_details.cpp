@@ -7,7 +7,7 @@ DragDownDetailsCls::DragDownDetailsCls(Offset globalPosition, Offset localPositi
 }
 
 String DragDownDetailsCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("DragDownDetails")), globalPosition);
 }
 
 DragStartDetailsCls::DragStartDetailsCls(Offset globalPosition, PointerDeviceKind kind, Offset localPosition, Duration sourceTimeStamp) {
@@ -18,7 +18,7 @@ DragStartDetailsCls::DragStartDetailsCls(Offset globalPosition, PointerDeviceKin
 }
 
 String DragStartDetailsCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("DragStartDetails")), globalPosition);
 }
 
 DragUpdateDetailsCls::DragUpdateDetailsCls(Offset delta, Offset globalPosition, Offset localPosition, double primaryDelta, Duration sourceTimeStamp) {
@@ -30,7 +30,7 @@ DragUpdateDetailsCls::DragUpdateDetailsCls(Offset delta, Offset globalPosition, 
 }
 
 String DragUpdateDetailsCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("DragUpdateDetails")), delta);
 }
 
 DragEndDetailsCls::DragEndDetailsCls(double primaryVelocity, Velocity velocity) {
@@ -41,5 +41,5 @@ DragEndDetailsCls::DragEndDetailsCls(double primaryVelocity, Velocity velocity) 
 }
 
 String DragEndDetailsCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("DragEndDetails")), velocity);
 }

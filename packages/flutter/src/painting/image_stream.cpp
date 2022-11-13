@@ -24,7 +24,7 @@ void ImageInfoCls::dispose() {
 }
 
 String ImageInfoCls::toString() {
-    return __s("%s");
+    return __sf("%s", debugLabel != nullptr? __sf("%s ", debugLabel) : __sf("%s @ %sx", image, debugFormatDouble(scale)));
 }
 
 int ImageInfoCls::hashCode() {
@@ -112,7 +112,7 @@ Object ImageStreamCls::key() {
 void ImageStreamCls::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
     properties->add(<ImageStreamCompleter>make<ObjectFlagPropertyCls>(__s("completer"), _completer, _completer?->toStringShort(), __s("unresolved")));
-    properties->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners, __s("%s$%s"), __s("no listeners"), _completer != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
+    properties->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners, __sf("%s listener%s", _listeners?->length(), _listeners?->length() == 1? __s("") : __s("s")), __s("no listeners"), _completer != nullptr? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
     _completer?->debugFillProperties(properties);
 }
 
@@ -243,7 +243,7 @@ void ImageStreamCompleterCls::reportImageChunkEvent(ImageChunkEvent event) {
 void ImageStreamCompleterCls::debugFillProperties(DiagnosticPropertiesBuilder description) {
     super->debugFillProperties(description);
     description->add(<ImageInfo>make<DiagnosticsPropertyCls>(__s("current"), _currentImage, __s("unresolved"), false));
-    description->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners, __s("%s$%s")));
+    description->add(<List<ImageStreamListener>>make<ObjectFlagPropertyCls>(__s("listeners"), _listeners, __sf("%s listener%s", _listeners->length(), _listeners->length() == 1? __s("") : __s("s"))));
     description->add(make<FlagPropertyCls>(__s("disposed"), _disposed, __s("<disposed>")));
 }
 

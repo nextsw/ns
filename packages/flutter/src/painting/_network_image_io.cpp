@@ -36,7 +36,7 @@ int NetworkImageCls::hashCode() {
 }
 
 String NetworkImageCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s("%s", scale: %s)", objectRuntimeType(this, __s("NetworkImage")), url, scale);
 }
 
 HttpClient NetworkImageCls::_httpClient() {
@@ -67,7 +67,7 @@ Future<Codec> NetworkImageCls::_loadAsync(NetworkImage key, StreamController<Ima
     chunkEvents->add(make<ImageChunkEventCls>(cumulative, total));
 });
         if (bytes->lengthInBytes == 0) {
-            throw make<ExceptionCls>(__s("NetworkImage is an empty file: %s)"));
+            throw make<ExceptionCls>(__sf("NetworkImage is an empty file: %s", resolved));
         }
         if (decode != nullptr) {
             ImmutableBuffer buffer = await ui->ImmutableBufferCls->fromUint8List(bytes);

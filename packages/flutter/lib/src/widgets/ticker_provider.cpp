@@ -71,7 +71,7 @@ Ticker SingleTickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick)
         }
         throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));
     }());
-    _ticker = make<TickerCls>(onTick, kDebugMode? __s("created by %s:") : nullptr);
+    _ticker = make<TickerCls>(onTick, kDebugMode? __sf("created by %s", describeIdentity(this)) : nullptr);
     _updateTickerModeNotifier();
     _updateTicker();
     return _ticker!;
@@ -144,7 +144,7 @@ Ticker TickerProviderStateMixinCls<T>::createTicker(TickerCallback onTick) {
     }
     assert(_tickerModeNotifier != nullptr);
     _tickers |= makeSet();
-    auto _c1 = make<_WidgetTickerCls>(onTick, this, kDebugMode? __s("created by %s:") : nullptr);_c1.muted = !_tickerModeNotifier!->value();_WidgetTicker result = _c1;
+    auto _c1 = make<_WidgetTickerCls>(onTick, this, kDebugMode? __sf("created by %s", describeIdentity(this)) : nullptr);_c1.muted = !_tickerModeNotifier!->value();_WidgetTicker result = _c1;
     _tickers!->add(result);
     return result;
 }
@@ -176,7 +176,7 @@ void TickerProviderStateMixinCls<T>::dispose() {
 template<typename T>
 void TickerProviderStateMixinCls<T>::debugFillProperties(DiagnosticPropertiesBuilder properties) {
     super->debugFillProperties(properties);
-    properties->add(<Set<Ticker>>make<DiagnosticsPropertyCls>(__s("tickers"), _tickers, _tickers != nullptr? __s("tracking %s$%s") : nullptr, nullptr));
+    properties->add(<Set<Ticker>>make<DiagnosticsPropertyCls>(__s("tickers"), _tickers, _tickers != nullptr? __sf("tracking %s ticker%s", _tickers!->length(), _tickers!->length() == 1? __s("") : __s("s")) : nullptr, nullptr));
 }
 
 template<typename T>

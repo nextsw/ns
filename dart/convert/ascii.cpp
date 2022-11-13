@@ -64,7 +64,7 @@ void _UnicodeSubsetEncoderSinkCls::addSlice(String source, int start, int end, b
     for (;  < end; i++) {
         auto codeUnit = source->codeUnitAt(i);
         if ((codeUnit & ~_subsetMask) != 0) {
-            throw make<ArgumentErrorCls>(__s("Source contains invalid character with code point: %s)"));
+            throw make<ArgumentErrorCls>(__sf("Source contains invalid character with code point: %s.", codeUnit));
         }
     }
     _sink->add(source->codeUnits()->sublist(start, end));
@@ -79,7 +79,7 @@ String _UnicodeSubsetDecoderCls::convert(List<int> bytes, int start, int end) {
         auto byte = bytes[i];
         if ((byte & ~_subsetMask) != 0) {
             if (!_allowInvalid) {
-                throw make<FormatExceptionCls>(__s("Invalid value in input: %s)"));
+                throw make<FormatExceptionCls>(__sf("Invalid value in input: %s", byte));
             }
             return _convertInvalid(bytes, start, end);
         }

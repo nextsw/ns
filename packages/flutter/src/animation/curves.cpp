@@ -2,7 +2,7 @@
 template<typename T>
 T ParametricCurveCls<T>::transform(double t) {
     assert(t != nullptr);
-    assert(t >= 0.0 && t <= 1.0, __s("parametric value %s)"));
+    assert(t >= 0.0 && t <= 1.0, __sf("parametric value %s is outside of [0, 1] range.", t));
     return transformInternal(t);
 }
 
@@ -43,7 +43,7 @@ double SawToothCls::transformInternal(double t) {
 }
 
 String SawToothCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("SawTooth")), count);
 }
 
 IntervalCls::IntervalCls(double begin, double end, Curve curve) {
@@ -69,9 +69,9 @@ double IntervalCls::transformInternal(double t) {
 
 String IntervalCls::toString() {
     if (!is<_Linear>(curve)) {
-        return __s("%s$%s$%s$%s;");
+        return __sf("%s(%s\u22EF%s)\u27A9%s", objectRuntimeType(this, __s("Interval")), begin, end, as<_LinearCls>(curve));
     }
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s\u22EF%s)", objectRuntimeType(this, __s("Interval")), begin, end);
 }
 
 ThresholdCls::ThresholdCls(double threshold) {
@@ -113,7 +113,7 @@ double CubicCls::transformInternal(double t) {
 }
 
 String CubicCls::toString() {
-    return __s("%s$%s$%s$%s$%s;");
+    return __sf("%s(%s, %s, %s, %s)", objectRuntimeType(this, __s("Cubic")), a->toStringAsFixed(2), b->toStringAsFixed(2), c->toStringAsFixed(2), d->toStringAsFixed(2));
 }
 
 double CubicCls::_evaluateCubic(double a, double b, double m) {
@@ -133,7 +133,7 @@ double ThreePointCubicCls::transformInternal(double t) {
 }
 
 String ThreePointCubicCls::toString() {
-    return __s("%s;");
+    return __sf("%s ", objectRuntimeType(this, __sf("ThreePointCubic(%s, %s, %s, %s, %s)", a1, b1, midpoint, a2, b2)));
 }
 
 Iterable<Curve2DSample> Curve2DCls::generateSamples(double end, double start, double tolerance) {
@@ -185,15 +185,15 @@ Curve2DSampleCls::Curve2DSampleCls(double t, Offset value) {
 }
 
 String Curve2DSampleCls::toString() {
-    return __s("[(%s$%s$%s;");
+    return __sf("[(%s, %s), %s]", value->dx()->toStringAsFixed(2), value->dy()->toStringAsFixed(2), t->toStringAsFixed(2));
 }
 
 CatmullRomSplineCls::CatmullRomSplineCls(List<Offset> controlPoints, Offset endHandle, Offset startHandle, double tension) {
     {
         assert(controlPoints != nullptr);
         assert(tension != nullptr);
-        assert(tension <= 1.0, __s("tension %s)"));
-        assert(tension >= 0.0, __s("tension %s)"));
+        assert(tension <= 1.0, __sf("tension %s must not be greater than 1.0.", tension));
+        assert(tension >= 0.0, __sf("tension %s must not be negative.", tension));
         assert(controlPoints->length() > 3, __s("There must be at least four control points to create a CatmullRomSpline."));
         _controlPoints = controlPoints;
         _startHandle = startHandle;
@@ -267,7 +267,7 @@ CatmullRomCurveCls::CatmullRomCurveCls(List<Offset> controlPoints, double tensio
         assert(tension != nullptr);
         assert([=] () {
                     auto _c1 = _debugAssertReasons;        _c1.clear();return validateControlPoints(controlPoints, tension, _c1);
-        }(), __s("control points %s$%s)"));
+        }(), __sf("control points %s could not be validated:\n  %s", controlPoints, _debugAssertReasons->join(__s("\n  "))));
         _precomputedSamples = makeList();
     }
 }
@@ -298,14 +298,14 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
     for (;  < controlPoints->length(); ++i) {
         if (i > 1 &&  < controlPoints->length() - 2 && (controlPoints[i]->dx() <= 0.0 || controlPoints[i]->dx() >= 1.0)) {
             assert([=] () {
-                reasons?->add(__s("Control points must have X values between 0.0 and 1.0, exclusive. Point %s$%s,"));
+                reasons?->add(__sf("Control points must have X values between 0.0 and 1.0, exclusive. Point %s has an x value (%s) which is outside the range.", i, controlPoints![i]->dx()));
                 return true;
             }());
             return false;
         }
         if (controlPoints[i]->dx() <= lastX) {
             assert([=] () {
-                reasons?->add(__s("Each X coordinate must be greater than the preceding X coordinate (i.e. must be monotonically increasing in X). Point %s$%s$%s,"));
+                reasons?->add(__sf("Each X coordinate must be greater than the preceding X coordinate (i.e. must be monotonically increasing in X). Point %s has an x value of %s, which is not greater than %s", i, controlPoints![i]->dx(), lastX));
                 return true;
             }());
             return false;
@@ -323,7 +323,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
         bool bail = true;
         success = false;
         assert([=] () {
-            reasons?->add(__s("The curve has more than one Y value at X = %sTry moving some control points further away from this value of X, or increasing the tension.,"));
+            reasons?->add(__sf("The curve has more than one Y value at X = %s. Try moving some control points further away from this value of X, or increasing the tension.", samplePoints->first()->value->dx));
             bail = reasons == nullptr;
             return true;
         }());
@@ -339,7 +339,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
             bool bail = true;
             success = false;
             assert([=] () {
-                reasons?->add(__s("The resulting curve has an X value (%sthe range [0.0, 1.0], inclusive.,"));
+                reasons?->add(__sf("The resulting curve has an X value (%s) which is outside the range [0.0, 1.0], inclusive.", x));
                 bail = reasons == nullptr;
                 return true;
             }());
@@ -351,7 +351,7 @@ bool CatmullRomCurveCls::validateControlPoints(List<Offset> controlPoints, List<
             bool bail = true;
             success = false;
             assert([=] () {
-                reasons?->add(__s("The curve has more than one Y value at x = %ssome control points further apart in X, or increasing the tension.,"));
+                reasons?->add(__sf("The curve has more than one Y value at x = %s. Try moving some control points further apart in X, or increasing the tension.", x));
                 bail = reasons == nullptr;
                 return true;
             }());
@@ -404,7 +404,7 @@ double FlippedCurveCls::transformInternal(double t) {
 }
 
 String FlippedCurveCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("FlippedCurve")), curve);
 }
 
 double _DecelerateCurveCls::transformInternal(double t) {
@@ -453,7 +453,7 @@ double ElasticInCurveCls::transformInternal(double t) {
 }
 
 String ElasticInCurveCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("ElasticInCurve")), period);
 }
 
 double ElasticOutCurveCls::transformInternal(double t) {
@@ -462,7 +462,7 @@ double ElasticOutCurveCls::transformInternal(double t) {
 }
 
 String ElasticOutCurveCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("ElasticOutCurve")), period);
 }
 
 double ElasticInOutCurveCls::transformInternal(double t) {
@@ -476,5 +476,5 @@ double ElasticInOutCurveCls::transformInternal(double t) {
 }
 
 String ElasticInOutCurveCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("ElasticInOutCurve")), period);
 }

@@ -5,7 +5,7 @@ _SplayTreeSetNodeCls<K>::_SplayTreeSetNodeCls(K key) : _SplayTreeNode<K, _SplayT
 
 template<typename K, typename V>
 String _SplayTreeMapNodeCls<K, V>::toString() {
-    return __s("MapEntry(%s$%s;");
+    return __sf("MapEntry(%s: %s)", key, value);
 }
 
 template<typename K, typename V>

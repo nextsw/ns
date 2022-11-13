@@ -1,6 +1,6 @@
 #include "animated_switcher.hpp"
 String _ChildEntryCls::toString() {
-    return __s("Entry#%s$%s;");
+    return __sf("Entry#%s(%s)", shortHash(this), widgetChild);
 }
 
 _ChildEntryCls::_ChildEntryCls(Animation<double> animation, AnimationController controller, Widget transition, Widget widgetChild) {

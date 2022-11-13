@@ -285,7 +285,7 @@ String AccessibilityFeaturesCls::toString() {
     if (onOffSwitchLabels()) {
         features->add(__s("onOffSwitchLabels"));
     }
-    return __s("AccessibilityFeatures%s;");
+    return __sf("AccessibilityFeatures%s", features);
 }
 
 bool AccessibilityFeaturesCls::==(Object other) {
@@ -315,5 +315,5 @@ int GestureSettingsCls::hashCode() {
 }
 
 String GestureSettingsCls::toString() {
-    return __s("GestureSettings(physicalTouchSlop: %s$%s;");
+    return __sf("GestureSettings(physicalTouchSlop: %s, physicalDoubleTapSlop: %s)", physicalTouchSlop, physicalDoubleTapSlop);
 }

@@ -347,7 +347,7 @@ String ScrollbarPainterCls::toString() {
 }
 
 void ScrollbarPainterCls::_debugAssertIsValidOrientation(ScrollbarOrientation orientation) {
-    assert((_isVertical() && _isVerticalOrientation(orientation)) || (!_isVertical() && !_isVerticalOrientation(orientation)), __s("The given ScrollbarOrientation: %s$%s)"));
+    assert((_isVertical() && _isVerticalOrientation(orientation)) || (!_isVertical() && !_isVerticalOrientation(orientation)), __sf("The given ScrollbarOrientation: %s is incompatible with the current AxisDirection: %s.", orientation, _lastAxisDirection));
 }
 
 bool ScrollbarPainterCls::_isVerticalOrientation(ScrollbarOrientation orientation) {
@@ -686,7 +686,7 @@ bool RawScrollbarStateCls<T>::_debugCheckHasValidScrollPosition() {
     }
 ;
     };
-    }    assert(scrollController != nullptr, __s("A ScrollController is required when %s$%s"));
+    }    assert(scrollController != nullptr, __sf("A ScrollController is required when %s. %s", when, tryPrimary? __s("The Scrollbar was not provided a ScrollController, and attempted to use the PrimaryScrollController, but none was found.") : __s("")));
     assert([=] () {
         if (!scrollController!->hasClients()) {
             throw FlutterErrorCls->fromParts(makeList(ArrayItem, ArrayItem, ArrayItem));

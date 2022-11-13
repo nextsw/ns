@@ -52,7 +52,7 @@ List<Type> _InvocationCls::_ensureNonNullTypes(Iterable<Type> types) {
     List<Type> typeArguments = <Type>unmodifiable(types);
     for (;  < typeArguments->length(); i++) {
         if (typeArguments[i] == nullptr) {
-            throw ArgumentErrorCls->value(types, __s("types"), __s("Type arguments must be non-null, was null at index %s)"));
+            throw ArgumentErrorCls->value(types, __s("types"), __sf("Type arguments must be non-null, was null at index %s.", i));
         }
     }
     return typeArguments;

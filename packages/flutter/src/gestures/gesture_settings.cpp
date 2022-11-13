@@ -20,5 +20,5 @@ bool DeviceGestureSettingsCls::==(Object other) {
 }
 
 String DeviceGestureSettingsCls::toString() {
-    return __s("DeviceGestureSettings(touchSlop: %s;");
+    return __sf("DeviceGestureSettings(touchSlop: %s)", touchSlop);
 }

@@ -369,7 +369,7 @@ T checkNotNullable(T value, String name) {
 
 template<typename T>
 String NotNullableErrorCls<T>::toString() {
-    return __s("Null is not a valid value for '%s$%s;");
+    return __sf("Null is not a valid value for '%s' of type '%s'", _name, T);
 }
 
 template<typename T>

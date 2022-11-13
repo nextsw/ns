@@ -96,13 +96,13 @@ String IterableMixinCls<E>::join(String separator) {
     StringBuffer buffer = make<StringBufferCls>();
     if (separator == nullptr || separator == __s("")) {
         do {
-            buffer->write(__s("%s)"));
+            buffer->write(__sf("%s", iterator->current()));
         } while (iterator->moveNext());
     } else {
-        buffer->write(__s("%s)"));
+        buffer->write(__sf("%s", iterator->current()));
         while (iterator->moveNext()) {
             buffer->write(separator);
-            buffer->write(__s("%s)"));
+            buffer->write(__sf("%s", iterator->current()));
         }
     }
     return buffer->toString();
@@ -283,7 +283,7 @@ String IterableBaseCls<E>::iterableToShortString(Iterable<any> iterable, String 
         if (leftDelimiter == __s("(") && rightDelimiter == __s(")")) {
             return __s("(...)");
         }
-        return __s("%s$%s;");
+        return __sf("%s...%s", leftDelimiter, rightDelimiter);
     }
     List<String> parts = makeList();
     _toStringVisiting->add(iterable);
@@ -299,7 +299,7 @@ String IterableBaseCls<E>::iterableToShortString(Iterable<any> iterable, String 
 template<typename E>
 String IterableBaseCls<E>::iterableToFullString(Iterable<any> iterable, String leftDelimiter, String rightDelimiter) {
     if (_isToStringVisiting(iterable)) {
-        return __s("%s$%s;");
+        return __sf("%s...%s", leftDelimiter, rightDelimiter);
     }
     StringBuffer buffer = make<StringBufferCls>(leftDelimiter);
     _toStringVisiting->add(iterable);
@@ -336,7 +336,7 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
         if (!it->moveNext()) {
             return;
         }
-        String next = __s("%s;");
+        String next = __sf("%s", it->current());
         parts->add(next);
         length += next->length + overhead;
         count++;
@@ -354,10 +354,10 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
         count++;
         if (!it->moveNext()) {
             if (count <= headCount + 1) {
-                parts->add(__s("%s)"));
+                parts->add(__sf("%s", penultimate));
                 return;
             }
-            ultimateString = __s("%s;");
+            ultimateString = __sf("%s", penultimate);
             penultimateString = parts->removeLast();
             length += ultimateString->length + overhead;
         } else {
@@ -377,8 +377,8 @@ void _iterablePartsToStrings(Iterable<Object> iterable, List<String> parts) {
                     return;
                 }
             }
-            penultimateString = __s("%s;");
-            ultimateString = __s("%s;");
+            penultimateString = __sf("%s", penultimate);
+            ultimateString = __sf("%s", ultimate);
             length += ultimateString->length + penultimateString->length + 2 * overhead;
         }
     }

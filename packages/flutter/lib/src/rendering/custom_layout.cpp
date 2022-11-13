@@ -1,6 +1,6 @@
 #include "custom_layout.hpp"
 String MultiChildLayoutParentDataCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s; id=%s", super->toString(), id);
 }
 
 MultiChildLayoutDelegateCls::MultiChildLayoutDelegateCls(Listenable relayout) {
@@ -17,10 +17,10 @@ Size MultiChildLayoutDelegateCls::layoutChild(Object childId, BoxConstraints con
     RenderBox child = _idToChild![childId];
     assert([=] () {
         if (child == nullptr) {
-            throw make<FlutterErrorCls>(__s("The %sThere is no child with the id "$%s,"));
+            throw make<FlutterErrorCls>(__sf("The %s custom multichild layout delegate tried to lay out a non-existent child.\nThere is no child with the id "%s".", this, childId));
         }
         if (!_debugChildrenNeedingLayout!->remove(child)) {
-            throw make<FlutterErrorCls>(__s("The %s$%sEach child must be laid out exactly once.,"));
+            throw make<FlutterErrorCls>(__sf("The %s custom multichild layout delegate tried to lay out the child with id "%s" more than once.\nEach child must be laid out exactly once.", this, childId));
         }
         try {
             assert(constraints->debugAssertIsValid(true));
@@ -37,10 +37,10 @@ void MultiChildLayoutDelegateCls::positionChild(Object childId, Offset offset) {
     RenderBox child = _idToChild![childId];
     assert([=] () {
         if (child == nullptr) {
-            throw make<FlutterErrorCls>(__s("The %sThere is no child with the id "$%s,"));
+            throw make<FlutterErrorCls>(__sf("The %s custom multichild layout delegate tried to position out a non-existent child:\nThere is no child with the id "%s".", this, childId));
         }
         if (offset == nullptr) {
-            throw make<FlutterErrorCls>(__s("The %s$%s,"));
+            throw make<FlutterErrorCls>(__sf("The %s custom multichild layout delegate provided a null position for the child with id "%s".", this, childId));
         }
         return true;
     }());
@@ -58,7 +58,7 @@ String MultiChildLayoutDelegateCls::toString() {
 
 DiagnosticsNode MultiChildLayoutDelegateCls::_debugDescribeChild(RenderBox child) {
     MultiChildLayoutParentData childParentData = as<MultiChildLayoutParentData>(child->parentData!);
-    return <RenderBox>make<DiagnosticsPropertyCls>(__s("%s,"), child);
+    return <RenderBox>make<DiagnosticsPropertyCls>(__sf("%s", childParentData->id), child);
 }
 
 void MultiChildLayoutDelegateCls::_callPerformLayout(Size size, RenderBox firstChild) {

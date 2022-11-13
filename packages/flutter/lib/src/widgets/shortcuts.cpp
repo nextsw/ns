@@ -120,7 +120,9 @@ Map<ShortcutActivator, Intent> ShortcutMapPropertyCls::value() {
 }
 
 String ShortcutMapPropertyCls::valueToString(TextTreeConfiguration parentConfiguration) {
-    return __s("{%s;");
+    return __sf("{%s}", value()->keys()-><String>map([=] (ShortcutActivator keySet) {
+    __sf("{%s}: %s", keySet->debugDescribeKeys(), value()[keySet]);
+})->join(__s(", ")));
 }
 
 SingleActivatorCls::SingleActivatorCls(LogicalKeyboardKey trigger, bool alt, bool control, bool includeRepeats, bool meta, bool shift) {
@@ -169,7 +171,7 @@ bool CharacterActivatorCls::accepts(RawKeyEvent event, RawKeyboard state) {
 String CharacterActivatorCls::debugDescribeKeys() {
     String result = __s("");
     assert([=] () {
-        result = __s("'%s;");
+        result = __sf("'%s'", character);
         return true;
     }());
     return result;
@@ -317,7 +319,7 @@ void _ShortcutsStateCls::didUpdateWidget(Shortcuts oldWidget) {
 }
 
 Widget _ShortcutsStateCls::build(BuildContext context) {
-    return make<FocusCls>(__s("%s,"), false, _handleOnKey, widget()->child);
+    return make<FocusCls>(__sf("%s", ShortcutsCls), false, _handleOnKey, widget()->child);
 }
 
 KeyEventResult _ShortcutsStateCls::_handleOnKey(FocusNode node, RawKeyEvent event) {
@@ -372,7 +374,7 @@ ShortcutRegistry ShortcutRegistryCls::of(BuildContext context) {
     _ShortcutRegistrarMarker inherited = context-><_ShortcutRegistrarMarker>dependOnInheritedWidgetOfExactType();
     assert([=] () {
         if (inherited == nullptr) {
-            throw make<FlutterErrorCls>(__s("Unable to find a %s$%s$%sNo $%spassed to $%sThe context used was:\n  $%s,"));
+            throw make<FlutterErrorCls>(__sf("Unable to find a %s widget in the context.\n%s.of() was called with a context that does not contain a %s widget.\nNo %s ancestor could be found starting from the context that was passed to %s.of().\nThe context used was:\n  %s", ShortcutRegistrarCls, ShortcutRegistrarCls, ShortcutRegistrarCls, ShortcutRegistrarCls, ShortcutRegistrarCls, context));
         }
         return true;
     }());
@@ -403,9 +405,9 @@ void ShortcutRegistryCls::_disposeToken(ShortcutRegistryEntry entry) {
 bool ShortcutRegistryCls::_debugCheckTokenIsValid(ShortcutRegistryEntry entry) {
     if (!_tokenShortcuts->containsKey(entry)) {
         if (entry->registry == this) {
-            throw make<FlutterErrorCls>(__s("entry %sThe entry has already been disposed of. Tokens are not valid after dispose is called on them, and should no longer be used.)"));
+            throw make<FlutterErrorCls>(__sf("entry %s is invalid.\nThe entry has already been disposed of. Tokens are not valid after dispose is called on them, and should no longer be used.", describeIdentity(entry)));
         } else {
-            throw make<FlutterErrorCls>(__s("Foreign entry %sThis entry was not created by this registry, it was created by $%sregistry instead.)"));
+            throw make<FlutterErrorCls>(__sf("Foreign entry %s used.\nThis entry was not created by this registry, it was created by %s, and should be used with that registry instead.", describeIdentity(entry), describeIdentity(entry->registry)));
         }
     }
     return true;
@@ -416,7 +418,7 @@ bool ShortcutRegistryCls::_debugCheckForDuplicates() {
     for (MapEntry<ShortcutRegistryEntry, Map<ShortcutActivator, Intent>> tokenEntry : _tokenShortcuts->entries()) {
         for (ShortcutActivator shortcut : tokenEntry->value->keys) {
             if (previous->containsKey(shortcut)) {
-                throw make<FlutterErrorCls>(__s("%sshortcut $%s$%s$%s)"));
+                throw make<FlutterErrorCls>(__sf("%s: Received a duplicate registration for the shortcut %s in %s and %s.", ShortcutRegistryCls, shortcut, describeIdentity(tokenEntry->key), previous[shortcut]));
             }
             previous[shortcut] = tokenEntry->key;
         }

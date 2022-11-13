@@ -2,7 +2,7 @@
 void SpringDescriptionCls::withDampingRatio(double mass, double ratio, double stiffness)
 
 String SpringDescriptionCls::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s(mass: %s, stiffness: %s, damping: %s)", objectRuntimeType(this, __s("SpringDescription")), mass->toStringAsFixed(1), stiffness->toStringAsFixed(1), damping->toStringAsFixed(1));
 }
 
 SpringSimulationCls::SpringSimulationCls(SpringDescription spring, double start, double end, double velocity, Tolerance tolerance) {
@@ -29,7 +29,7 @@ bool SpringSimulationCls::isDone(double time) {
 }
 
 String SpringSimulationCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(end: %s, %s)", objectRuntimeType(this, __s("SpringSimulation")), _endPosition->toStringAsFixed(1), type());
 }
 
 double ScrollSpringSimulationCls::x(double time) {

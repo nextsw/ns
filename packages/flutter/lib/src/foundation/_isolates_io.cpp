@@ -3,7 +3,7 @@ template<typename Q, typename R>
 Future<R> compute(ComputeCallback<Q, R> callback, Q message, String debugLabel) {
     debugLabel |= kReleaseMode? __s("compute") : callback->toString();
     Flow flow = FlowCls->begin();
-    TimelineCls->startSync(__s("%s,"), flow);
+    TimelineCls->startSync(__sf("%s: start", debugLabel), flow);
     RawReceivePort port = make<RawReceivePortCls>();
     TimelineCls->finishSync();
     InlineMethod;

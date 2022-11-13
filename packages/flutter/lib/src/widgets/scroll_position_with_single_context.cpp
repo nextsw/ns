@@ -160,8 +160,8 @@ void ScrollPositionWithSingleContextCls::dispose() {
 
 void ScrollPositionWithSingleContextCls::debugFillDescription(List<String> description) {
     super->debugFillDescription(description);
-    description->add(__s("%s)"));
-    description->add(__s("%s)"));
-    description->add(__s("%s)"));
-    description->add(__s("%s)"));
+    description->add(__sf("%s", context->runtimeType));
+    description->add(__sf("%s", physics));
+    description->add(__sf("%s", activity()));
+    description->add(__sf("%s", userScrollDirection()));
 }

@@ -183,7 +183,7 @@ RouteSettings RouteSettingsCls::copyWith(Object arguments, String name) {
 }
 
 String RouteSettingsCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s("%s", %s)", objectRuntimeType(this, __s("RouteSettings")), name, arguments);
 }
 
 template<typename T>
@@ -193,7 +193,7 @@ bool PageCls<T>::canUpdate(Page<dynamic> other) {
 
 template<typename T>
 String PageCls<T>::toString() {
-    return __s("%s$%s$%s$%s;");
+    return __sf("%s("%s", %s, %s)", objectRuntimeType(this, __s("Page")), name, key, arguments);
 }
 
 NavigatorState NavigatorObserverCls::navigator() {
@@ -260,7 +260,7 @@ Iterable<RouteTransitionRecord> TransitionDelegateCls<T>::_transition(Map<RouteT
                 indexOfNextRouteInNewHistory += 1;
             }
         }
-        assert(indexOfNextRouteInNewHistory == newPageRouteHistory->length() && exitingPageRoutes->isEmpty(), __s("The merged result from the %srequired routes. Do you remember to merge all exiting routes?,"));
+        assert(indexOfNextRouteInNewHistory == newPageRouteHistory->length() && exitingPageRoutes->isEmpty(), __sf("The merged result from the %s.resolve does not include all required routes. Do you remember to merge all exiting routes?", runtimeType));
         return true;
     }());
     return results;
@@ -464,7 +464,7 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
         if (initialRouteName->isNotEmpty()) {
             String routeName = __s("");
             for (String part : routeParts) {
-                routeName += __s("/%s;");
+                routeName += __sf("/%s", part);
                 assert([=] () {
                     debugRouteNames!->add(routeName);
                     return true;
@@ -474,7 +474,7 @@ List<Route<dynamic>> NavigatorCls::defaultGenerateInitialRoutes(NavigatorState n
         }
         if (result->last == nullptr) {
             assert([=] () {
-                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__s("Could not navigate to initial route.\nThe requested route name was: "/%sThere was no corresponding route in the app, and therefore the initial route specified will be ignored and "$%s,")));
+                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(__sf("Could not navigate to initial route.\nThe requested route name was: "/%s"\nThere was no corresponding route in the app, and therefore the initial route specified will be ignored and "%s" will be used instead.", initialRouteName, NavigatorCls::defaultRouteName)));
                 return true;
             }());
             result->clear();
@@ -500,10 +500,10 @@ NavigatorState NavigatorCls::createState() {
 String _RouteEntryCls::restorationId() {
     if (hasPage()) {
         Page<Object> page = as<Page<Object>>(route->settings());
-        return page->restorationId != nullptr? __s("p+%s:") : nullptr;
+        return page->restorationId != nullptr? __sf("p+%s", page->restorationId) : nullptr;
     }
     if (restorationInformation != nullptr) {
-        return __s("r+%s;");
+        return __sf("r+%s", restorationInformation!->restorationScopeId());
     }
     return nullptr;
 }
@@ -1342,7 +1342,7 @@ void NavigatorStateCls::_updateHeroController(HeroController newHeroController) 
                             bool hasHeroControllerOwnerShip = _heroControllerFromScope!->_navigator == this;
                             if (!hasHeroControllerOwnerShip || previousOwner->_heroControllerFromScope == newHeroController) {
                                 NavigatorState otherOwner = hasHeroControllerOwnerShip? previousOwner : _heroControllerFromScope!->_navigator!;
-                                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__s("A HeroController can not be shared by multiple Navigators. The Navigators that share the same HeroController are:\n- %s- $%sPlease create a HeroControllerScope for each Navigator or use a HeroControllerScope.none to prevent subtree from receiving a HeroController.,")), __s("widget library"), StackTraceCls::current));
+                                FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(make<FlutterErrorCls>(__sf("A HeroController can not be shared by multiple Navigators. The Navigators that share the same HeroController are:\n- %s\n- %s\nPlease create a HeroControllerScope for each Navigator or use a HeroControllerScope.none to prevent subtree from receiving a HeroController.", this, otherOwner)), __s("widget library"), StackTraceCls::current));
                             }
                         }
                     });
@@ -1678,7 +1678,7 @@ Route<T> NavigatorStateCls::_routeNamed(String name, bool allowNull, Object argu
     }
     assert([=] () {
         if (widget()->onGenerateRoute == nullptr) {
-            throw make<FlutterErrorCls>(__s("Navigator.onGenerateRoute was null, but the route named "%sTo use the Navigator API with named routes (pushNamed, pushReplacementNamed, or pushNamedAndRemoveUntil), the Navigator must be provided with an onGenerateRoute handler.\nThe Navigator was:\n  $%s,"));
+            throw make<FlutterErrorCls>(__sf("Navigator.onGenerateRoute was null, but the route named "%s" was referenced.\nTo use the Navigator API with named routes (pushNamed, pushReplacementNamed, or pushNamedAndRemoveUntil), the Navigator must be provided with an onGenerateRoute handler.\nThe Navigator was:\n  %s", name, this));
         }
         return true;
     }());
@@ -1750,14 +1750,14 @@ void NavigatorStateCls::_afterNavigation(Route<dynamic> route) {
                 TransitionRoute<dynamic> transitionRoute = as<TransitionRouteCls>(route);
                 description = transitionRoute->debugLabel();
             } else {
-                description = __s("%s;");
+                description = __sf("%s", route);
             }
             routeJsonable[__s("description")] = description;
             RouteSettings settings = route->settings();
                     Map<String, dynamic> map1 = make<MapCls<>>();        map1.set(__s("name"), settings->name);Map<String, dynamic> settingsJsonable = list1;
             if (settings->arguments != nullptr) {
                 settingsJsonable[__s("arguments")] = jsonEncode(settings->arguments, [=] (Object object) {
-                    __s("%s,");
+                    __sf("%s", object);
                 });
             }
             routeJsonable[__s("settings")] = settingsJsonable;

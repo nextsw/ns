@@ -137,7 +137,7 @@ void _IOSinkImplCls::encoding(Encoding value) {
 }
 
 void _IOSinkImplCls::write(Object obj) {
-    String string = __s("%s;");
+    String string = __sf("%s", obj);
     if (stringValue->isEmpty()) {
         return;
     }

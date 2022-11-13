@@ -7,7 +7,7 @@ PlaceholderDimensionsCls::PlaceholderDimensionsCls(PlaceholderAlignment alignmen
 }
 
 String PlaceholderDimensionsCls::toString() {
-    return __s("PlaceholderDimensions(%s$%s;");
+    return __sf("PlaceholderDimensions(%s, %s)", size, baseline);
 }
 
 TextPainterCls::TextPainterCls(String ellipsis, Locale locale, int maxLines, StrutStyle strutStyle, InlineSpan text, TextAlign textAlign, TextDirection textDirection, TextHeightBehavior textHeightBehavior, double textScaleFactor, TextWidthBasis textWidthBasis) {

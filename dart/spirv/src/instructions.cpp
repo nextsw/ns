@@ -37,7 +37,7 @@ void _BlockCls::write(_BlockContext ctx) {
             ctx->writeIndent();
             String typeString = transpiler()->resolveType(inst->type);
             String nameString = transpiler()->resolveName(inst->id);
-            ctx->out->write(__s("%s$%s)"));
+            ctx->out->write(__sf("%s %s = ", typeString, nameString));
             inst->write(transpiler(), ctx->out);
             ctx->out->writeln(__s(";"));
         }
@@ -80,10 +80,10 @@ void _BlockCls::_add(_Instruction i) {
 void _BlockCls::_writeContinue(_BlockContext ctx) {
     List<_CompoundAssignment> assignments = instructions-><_CompoundAssignment>whereType()->toList();
     if (assignments->isEmpty()) {
-        throw TranspileExceptionCls->_(_opLoopMerge, __s("loop continue block %s)"));
+        throw TranspileExceptionCls->_(_opLoopMerge, __sf("loop continue block %s has no compound assignments.", id));
     }
     if (assignments->length() > 1) {
-        throw TranspileExceptionCls->_(_opLoopMerge, __s("loop continue block %s)"));
+        throw TranspileExceptionCls->_(_opLoopMerge, __sf("loop continue block %s has multiple compound assignments.", id));
     }
     assignments[0]->write(transpiler(), ctx->out);
 }
@@ -98,13 +98,13 @@ void _BlockCls::_preprocess() {
         if (condition == 0) {
             _Block branchBlock = function->block(branch);
             if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
-                throw TranspileExceptionCls->_(_opBranch, __s("block %sbranch to a single-expression conditional block.)"));
+                throw TranspileExceptionCls->_(_opBranch, __sf("block %s has a loop structure but does not immediately branch to a single-expression conditional block.", id));
             }
             conditionId = branchBlock->condition;
         }
         List<_Variable> deps = function->variableDeps(conditionId);
         if (deps->length() != 1) {
-            throw TranspileExceptionCls->_(_opLoopMerge, __s("block %susing more or fewer than one local variable.)"));
+            throw TranspileExceptionCls->_(_opLoopMerge, __sf("block %s has a loop structure with a condition using more or fewer than one local variable.", id));
         }
         deps[0]->liftToBlock = id;
     }
@@ -128,7 +128,7 @@ void _BlockCls::_writeSelectionStructure(_BlockContext ctx) {
     _BlockContext childCtx = ctx->child(mergeBlock);
     ctx->writeIndent();
     String conditionString = transpiler()->resolveResult(condition);
-    ctx->out->writeln(__s("if (%s)"));
+    ctx->out->writeln(__sf("if (%s) {", conditionString));
     function->block(truthyBlock)->write(childCtx);
     if (falseyBlock != 0 && falseyBlock != mergeBlock) {
         ctx->writeIndent();
@@ -156,7 +156,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
         }    } else {
         _Block branchBlock = function->block(branch);
         if (!branchBlock->_isSimple() || branchBlock->condition == 0) {
-            throw TranspileExceptionCls->_(_opBranch, __s("block %sbranch to a single-expression conditional block.)"));
+            throw TranspileExceptionCls->_(_opBranch, __sf("block %s has a loop structure but does not immediately branch to a single-expression conditional block.", id));
         }
         conditionString = transpiler()->resolveResult(branchBlock->condition);
         if (branchBlock->truthyBlock == mergeBlock) {
@@ -169,7 +169,7 @@ void _BlockCls::_writeLoopStructure(_BlockContext ctx) {
 ;
         }    }
     if (loopBody == 0) {
-        throw TranspileExceptionCls->_(_opLoopMerge, __s("block %sloop merge block.)"));
+        throw TranspileExceptionCls->_(_opLoopMerge, __sf("block %s does not conditionally branch to its loop merge block.", id));
     }
     ctx->writeIndent();
     ctx->out->write(__s("for("));
@@ -218,7 +218,7 @@ List<int> _FunctionCallCls::deps() {
 }
 
 void _FunctionCallCls::write(_Transpiler t, StringBuffer out) {
-    out->write(__s("%s)"));
+    out->write(__sf("%s(", function));
     for (;  < args->length(); i++) {
         out->write(t->resolveResult(args[i]));
         if ( < args->length() - 1) {
@@ -240,14 +240,14 @@ void _SelectCls::write(_Transpiler t, StringBuffer out) {
     String aName = t->resolveResult(a);
     String bName = t->resolveResult(b);
     String conditionName = t->resolveResult(condition);
-    out->write(__s("%s$%s$%s)"));
+    out->write(__sf("%s ? %s : %s", conditionName, aName, bName));
 }
 
 void _CompoundAssignmentCls::write(_Transpiler t, StringBuffer out) {
     String pointerName = t->resolveResult(pointer);
     String objectName = t->resolveResult(object);
     String operatorString = _operatorString(op);
-    out->write(__s("%s$%s$%s)"));
+    out->write(__sf("%s %s= %s", pointerName, operatorString, objectName));
 }
 
 List<int> _StoreCls::deps() {
@@ -258,14 +258,14 @@ void _StoreCls::write(_Transpiler t, StringBuffer out) {
     String pointerName = t->resolveResult(pointer);
     if (selfModifyObject > 0) {
         String objectName = t->resolveResult(selfModifyObject);
-        out->write(__s("%s$%s$%s)"));
+        out->write(__sf("%s %s %s", pointerName, selfModifyOperator, objectName));
     } else {
         String objectName = t->resolveResult(object);
         if (shouldDeclare) {
             String typeString = t->resolveType(declarationType);
-            out->write(__s("%s)"));
+            out->write(__sf("%s ", typeString));
         }
-        out->write(__s("%s$%s)"));
+        out->write(__sf("%s = %s", pointerName, objectName));
     }
 }
 
@@ -277,7 +277,7 @@ void _AccessChainCls::write(_Transpiler t, StringBuffer out) {
     List<int> list1 = make<ListCls<>>();list1.add(ArrayItem);for (auto _x1 : indices) {{    list1.add(_x1);}out->write(t->resolveResult(base));
     for (;  < indices->length(); i++) {
         String indexString = t->resolveResult(indices[i]);
-        out->write(__s("[%s)"));
+        out->write(__sf("[%s]", indexString));
     }
 }
 
@@ -288,10 +288,10 @@ List<int> _VectorShuffleCls::deps() {
 void _VectorShuffleCls::write(_Transpiler t, StringBuffer out) {
     String typeString = t->resolveType(type);
     String vectorString = t->resolveName(vector);
-    out->write(__s("%s)"));
+    out->write(__sf("%s(", typeString));
     for (;  < indices->length(); i++) {
         int index = indices[i];
-        out->write(__s("%s$%s)"));
+        out->write(__sf("%s[%s]", vectorString, index));
         if ( < indices->length() - 1) {
             out->write(__s(", "));
         }
@@ -305,7 +305,7 @@ List<int> _CompositeConstructCls::deps() {
 
 void _CompositeConstructCls::write(_Transpiler t, StringBuffer out) {
     String typeString = t->resolveType(type);
-    out->write(__s("%s)"));
+    out->write(__sf("%s(", typeString));
     for (;  < components->length(); i++) {
         out->write(t->resolveResult(components[i]));
         if ( < components->length() - 1) {
@@ -322,7 +322,7 @@ List<int> _CompositeExtractCls::deps() {
 void _CompositeExtractCls::write(_Transpiler t, StringBuffer out) {
     out->write(t->resolveResult(src));
     for (;  < indices->length(); i++) {
-        out->write(__s("[%s)"));
+        out->write(__sf("[%s]", indices[i]));
     }
 }
 
@@ -334,9 +334,9 @@ void _ImageSampleImplicitLodCls::write(_Transpiler t, StringBuffer out) {
     String sampledImageString = t->resolveName(sampledImage);
     String coordinateString = t->resolveResult(coordinate);
     if (t->target == TargetLanguageCls::sksl) {
-        out->write(__s("%s$%s$%s)"));
+        out->write(__sf("%s.eval(%s_size * %s)", sampledImageString, sampledImageString, coordinateString));
     } else {
-        out->write(__s("texture(%s$%s)"));
+        out->write(__sf("texture(%s, %s)", sampledImageString, coordinateString));
     }
 }
 
@@ -355,7 +355,7 @@ List<int> _ReturnValueCls::deps() {
 
 void _ReturnValueCls::write(_Transpiler t, StringBuffer out) {
     String valueString = t->resolveResult(value);
-    out->write(__s("return %s)"));
+    out->write(__sf("return %s", valueString));
 }
 
 List<int> _BinaryOperatorCls::deps() {
@@ -366,7 +366,7 @@ void _BinaryOperatorCls::write(_Transpiler t, StringBuffer out) {
     String aStr = t->resolveResult(a);
     String bStr = t->resolveResult(b);
     String opString = _operatorString(op);
-    out->write(__s("%s$%s$%s)"));
+    out->write(__sf("%s %s %s", aStr, opString, bStr));
 }
 
 List<int> _BuiltinFunctionCls::deps() {
@@ -374,7 +374,7 @@ List<int> _BuiltinFunctionCls::deps() {
 }
 
 void _BuiltinFunctionCls::write(_Transpiler t, StringBuffer out) {
-    out->write(__s("%s)"));
+    out->write(__sf("%s(", function));
     for (;  < args->length(); i++) {
         out->write(t->resolveResult(args[i]));
         if ( < args->length() - 1) {
@@ -391,5 +391,5 @@ List<int> _TypeCastCls::deps() {
 void _TypeCastCls::write(_Transpiler t, StringBuffer out) {
     String typeString = t->resolveType(type);
     String valueString = t->resolveResult(value);
-    out->write(__s("%s$%s)"));
+    out->write(__sf("%s(%s)", typeString, valueString));
 }

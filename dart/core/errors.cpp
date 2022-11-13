@@ -17,7 +17,7 @@ Never ErrorCls::throwWithStackTrace(Object error, StackTrace stackTrace) {
 
 String AssertionErrorCls::toString() {
     if (message != nullptr) {
-        return __s("Assertion failed: %s;");
+        return __sf("Assertion failed: %s", ErrorCls->safeToString(message));
     }
     return __s("Assertion failed");
 }
@@ -47,20 +47,20 @@ T ArgumentErrorCls::checkNotNull(T argument, String name) {
 
 String ArgumentErrorCls::toString() {
     String name = this->name;
-    String nameString = (name == nullptr)? __s("") : __s(" (%s;");
+    String nameString = (name == nullptr)? __s("") : __sf(" (%s)", name);
     Object message = this->message;
-    auto messageString = (message == nullptr)? __s("") : __s(": %s;");
-    String prefix = __s("%s$%s$%s;");
+    auto messageString = (message == nullptr)? __s("") : __sf(": %s", message);
+    String prefix = __sf("%s%s%s", _errorName(), nameString, messageString);
     if (!_hasValue) {
         return prefix;
     }
     String explanation = _errorExplanation();
     String errorValue = ErrorCls->safeToString(invalidValue);
-    return __s("%s$%s$%s;");
+    return __sf("%s%s: %s", prefix, explanation, errorValue);
 }
 
 String ArgumentErrorCls::_errorName() {
-    return __s("Invalid argument%s");
+    return __sf("Invalid argument%s", !_hasValue? __s("(s)") : __s(""));
 }
 
 String ArgumentErrorCls::_errorExplanation() {
@@ -127,19 +127,19 @@ String RangeErrorCls::_errorExplanation() {
     num end = this->end;
     if (start == nullptr) {
         if (end != nullptr) {
-            explanation = __s(": Not less than or equal to %s;");
+            explanation = __sf(": Not less than or equal to %s", end);
         }
     } else {
         if (end == nullptr) {
-        explanation = __s(": Not greater than or equal to %s;");
+        explanation = __sf(": Not greater than or equal to %s", start);
     } else {
         if (end > start) {
-        explanation = __s(": Not in inclusive range %s$%s;");
+        explanation = __sf(": Not in inclusive range %s..%s", start, end);
     } else {
         if ( < start) {
         explanation = __s(": Valid value range is empty");
     } else {
-        explanation = __s(": Only valid value is %s;");
+        explanation = __sf(": Only valid value is %s", start);
     }
 ;
     };
@@ -176,7 +176,7 @@ String IndexErrorCls::_errorExplanation() {
     if (length == 0) {
         return __s(": no indices are valid");
     }
-    return __s(": index should be less than %s;");
+    return __sf(": index should be less than %s", length);
 }
 
 AbstractClassInstantiationErrorCls::AbstractClassInstantiationErrorCls(String className) {
@@ -186,23 +186,23 @@ AbstractClassInstantiationErrorCls::AbstractClassInstantiationErrorCls(String cl
 }
 
 String UnsupportedErrorCls::toString() {
-    return __s("Unsupported operation: %s;");
+    return __sf("Unsupported operation: %s", message);
 }
 
 String UnimplementedErrorCls::toString() {
     auto message = this->message;
-    return (message != nullptr)? __s("UnimplementedError: %s:") : __s("UnimplementedError");
+    return (message != nullptr)? __sf("UnimplementedError: %s", message) : __s("UnimplementedError");
 }
 
 String StateErrorCls::toString() {
-    return __s("Bad state: %s;");
+    return __sf("Bad state: %s", message);
 }
 
 String ConcurrentModificationErrorCls::toString() {
     if (modifiedObject == nullptr) {
         return __s("Concurrent modification during iteration.");
     }
-    return __s("Concurrent modification during iteration: %s;");
+    return __sf("Concurrent modification during iteration: %s.", ErrorCls->safeToString(modifiedObject));
 }
 
 String OutOfMemoryErrorCls::toString() {
@@ -223,5 +223,5 @@ StackTrace StackOverflowErrorCls::stackTrace() {
 
 String CyclicInitializationErrorCls::toString() {
     auto variableName = this->variableName;
-    return variableName == nullptr? __s("Reading static variable during its initialization") : __s("Reading static variable '%s;");
+    return variableName == nullptr? __s("Reading static variable during its initialization") : __sf("Reading static variable '%s' during its initialization", variableName);
 }

@@ -150,6 +150,6 @@ std::function<void(Uri )> _getHttpConnectionHookClosure(bool mayInsecurelyConnec
         }        if (_isLoopback(uri->host)) {
             return;
         }
-        throw make<UnsupportedErrorCls>(__s("Non-https connection "%sRefer to https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android.)"));
+        throw make<UnsupportedErrorCls>(__sf("Non-https connection "%s" is not supported by the platform. Refer to https://flutter.dev/docs/release/breaking-changes/network-policy-ios-android.", uri));
     };
 }

@@ -228,10 +228,10 @@ void FutureExtensionsCls<T>::_ignore(Object _, Object __) {
 String TimeoutExceptionCls::toString() {
     String result = __s("TimeoutException");
     if (duration != nullptr) {
-        result = __s("TimeoutException after %s;");
+        result = __sf("TimeoutException after %s", duration);
     }
     if (message != nullptr) {
-        result = __s("%s$%s;");
+        result = __sf("%s: %s", result, message);
     }
     return result;
 }

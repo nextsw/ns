@@ -13,7 +13,7 @@ Converter<S, TT> ConverterCls<S, T>::fuse(Converter<T, TT> other) {
 
 template<typename S, typename T>
 Sink<S> ConverterCls<S, T>::startChunkedConversion(Sink<T> sink) {
-    throw make<UnsupportedErrorCls>(__s("This converter does not support chunked conversions: %s)"));
+    throw make<UnsupportedErrorCls>(__sf("This converter does not support chunked conversions: %s", this));
 }
 
 template<typename S, typename T>

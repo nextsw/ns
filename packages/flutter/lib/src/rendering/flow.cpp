@@ -159,7 +159,7 @@ void RenderFlowCls::paintChild(int i, double opacity, Matrix4 transform) {
     FlowParentData childParentData = as<FlowParentData>(child->parentData!);
     assert([=] () {
         if (childParentData->_transform != nullptr) {
-            throw make<FlutterErrorCls>(__s("Cannot call paintChild twice for the same child.\nThe flow delegate of type %spaint child $%s,"));
+            throw make<FlutterErrorCls>(__sf("Cannot call paintChild twice for the same child.\nThe flow delegate of type %s attempted to paint child %s multiple times, which is not permitted.", _delegate->runtimeType, i));
         }
         return true;
     }());

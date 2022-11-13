@@ -48,7 +48,7 @@ void Int16ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asInt16List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -62,7 +62,7 @@ void Uint16ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asUint16List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -76,7 +76,7 @@ void Int32ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asInt32List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -90,7 +90,7 @@ void Uint32ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asUint32List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -104,7 +104,7 @@ void Int64ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asInt64List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -118,7 +118,7 @@ void Uint64ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asUint64List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -132,7 +132,7 @@ void Float32ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asFloat32List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -146,7 +146,7 @@ void Float64ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asFloat64List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -160,7 +160,7 @@ void Float32x4ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asFloat32x4List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -174,7 +174,7 @@ void Int32x4ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asInt32x4List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }
@@ -188,7 +188,7 @@ void Float64x2ListCls::sublistView(TypedData data, int start, int end) {
     end = RangeErrorCls->checkValidRange(start, end, data->lengthInBytes() ~/ elementSize);
     int byteLength = (end - start) * elementSize;
     if (byteLength % bytesPerElement != 0) {
-        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __s("%s)"));
+        throw make<ArgumentErrorCls>(__s("The number of bytes to view must be a multiple of ") + __sf("%s", bytesPerElement));
     }
     return data->buffer()->asFloat64x2List(data->offsetInBytes() + start * elementSize, byteLength ~/ bytesPerElement);
 }

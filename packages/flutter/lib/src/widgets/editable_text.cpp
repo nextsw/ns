@@ -13,7 +13,7 @@ void TextEditingControllerCls::text(String newText) {
 }
 
 void TextEditingControllerCls::value(TextEditingValue newValue) {
-    assert(!newValue->composing->isValid() || newValue->isComposingRangeValid(), __s("New TextEditingValue %s$%seven for readonly text fields,"));
+    assert(!newValue->composing->isValid() || newValue->isComposingRangeValid(), __sf("New TextEditingValue %s has an invalid non-empty composing range %s. It is recommended to use a valid composing range, even for readonly text fields", newValue, newValue->composing));
     super->value = newValue;
 }
 
@@ -32,7 +32,7 @@ TextSelection TextEditingControllerCls::selection() {
 
 void TextEditingControllerCls::selection(TextSelection newSelection) {
     if (!isSelectionWithinTextBounds(newSelection)) {
-        throw make<FlutterErrorCls>(__s("invalid text selection: %s)"));
+        throw make<FlutterErrorCls>(__sf("invalid text selection: %s", newSelection));
     }
     TextRange newComposing = newSelection->isCollapsed() && _isSelectionWithinComposingRange(newSelection)? value->composing : TextRangeCls::empty;
     value = value->copyWith(newSelection, newComposing);
@@ -425,7 +425,7 @@ void EditableTextStateCls::dispose() {
     _clipboardStatus?->dispose();
     _cursorVisibilityNotifier->dispose();
     super->dispose();
-    assert(_batchEditDepth <= 0, __s("unfinished batch edits: %s)"));
+    assert(_batchEditDepth <= 0, __sf("unfinished batch edits: %s", _batchEditDepth));
 }
 
 TextEditingValue EditableTextStateCls::currentTextEditingValue() {
@@ -607,7 +607,7 @@ void EditableTextStateCls::removeTextPlaceholder() {
 }
 
 String EditableTextStateCls::autofillId() {
-    return __s("EditableText-%s;");
+    return __sf("EditableText-%s", hashCode);
 }
 
 TextInputConfiguration EditableTextStateCls::textInputConfiguration() {
@@ -729,7 +729,7 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
         try {
             widget()->onEditingComplete!();
         } catch (Unknown exception) {
-            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onEditingComplete for %s)"))));
+            FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__sf("while calling onEditingComplete for %s", action))));
         };
     } else {
         widget()->controller->clearComposing();
@@ -744,7 +744,7 @@ void EditableTextStateCls::_finalizeEditing(TextInputAction action, bool shouldU
     try {
         onSubmitted(_value()->text);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSubmitted for %s)"))));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__sf("while calling onSubmitted for %s", action))));
     };
     if (shouldUnfocus) {
         _scheduleRestartConnection();
@@ -911,7 +911,7 @@ void EditableTextStateCls::_handleSelectionChanged(TextSelection selection, Sele
     try {
         widget()->onSelectionChanged?->call(selection, cause);
     } catch (Unknown exception) {
-        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__s("while calling onSelectionChanged for %s)"))));
+        FlutterErrorCls->reportError(make<FlutterErrorDetailsCls>(exception, stack, __s("widgets"), make<ErrorDescriptionCls>(__sf("while calling onSelectionChanged for %s", cause))));
     };
     if (_cursorTimer != nullptr) {
         _stopCursorBlink(false);
@@ -1193,7 +1193,7 @@ void EditableTextStateCls::_updateCaretRectIfNeeded() {
 
 TextDirection EditableTextStateCls::_textDirection() {
     TextDirection result = widget()->textDirection | DirectionalityCls->of(context());
-    assert(result != nullptr, __s("%s)"));
+    assert(result != nullptr, __sf("%s created without a textDirection and with no ambient Directionality.", runtimeType));
     return result;
 }
 
@@ -1840,7 +1840,7 @@ void _UndoStackCls<T>::clear() {
 
 template<typename T>
 String _UndoStackCls<T>::toString() {
-    return __s("_UndoStack %s;");
+    return __sf("_UndoStack %s", _list);
 }
 
 template<typename T>

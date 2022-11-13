@@ -1,6 +1,6 @@
 #include "flex.hpp"
 String FlexParentDataCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s; flex=%s; fit=%s", super->toString(), flex, fit);
 }
 
 bool _startIsTopLeft(Axis direction, TextDirection textDirection, VerticalDirection verticalDirection) {
@@ -407,8 +407,8 @@ FlutterError RenderFlexCls::_debugCheckConstraints(BoxConstraints constraints, b
                 DiagnosticsNode error, message;
                 List<DiagnosticsNode> addendum = makeList();
                 if (!canFlex && (mainAxisSize() == MainAxisSizeCls::max || _getFit(child) == FlexFitCls::tight)) {
-                    error = make<ErrorSummaryCls>(__s("RenderFlex children have non-zero flex but incoming %s)"));
-                    message = make<ErrorDescriptionCls>(__s("When a %s$%sif it is in a $%s$%saxis. Setting a flex on a child (e.g. using Expanded) indicates that the child is to expand to fill the remaining space in the $%s,"));
+                    error = make<ErrorSummaryCls>(__sf("RenderFlex children have non-zero flex but incoming %s constraints are unbounded.", dimension));
+                    message = make<ErrorDescriptionCls>(__sf("When a %s is in a parent that does not provide a finite %s constraint, for example if it is in a %s scrollable, it will try to shrink-wrap its children along the %s axis. Setting a flex on a child (e.g. using Expanded) indicates that the child is to expand to fill the remaining space in the %s direction.", identity, dimension, axis, axis, axis));
                     if (reportParentConstraints) {
                         RenderBox node = this;
                         ;

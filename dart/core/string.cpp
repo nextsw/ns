@@ -122,6 +122,6 @@ bool RuneIteratorCls::movePrevious() {
 
 void RuneIteratorCls::_checkSplitSurrogate(int index) {
     if (index > 0 &&  < stringValue->length() && _isLeadSurrogate(stringValue->codeUnitAt(index - 1)) && _isTrailSurrogate(stringValue->codeUnitAt(index))) {
-        throw make<ArgumentErrorCls>(__s("Index inside surrogate pair: %s)"));
+        throw make<ArgumentErrorCls>(__sf("Index inside surrogate pair: %s", index));
     }
 }

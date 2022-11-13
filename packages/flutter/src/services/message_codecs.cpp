@@ -43,20 +43,20 @@ ByteData JSONMethodCodecCls::encodeMethodCall(MethodCall methodCall) {
 MethodCall JSONMethodCodecCls::decodeMethodCall(ByteData methodCall) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(methodCall);
     if (!is<Map<any, any>>(decoded)) {
-        throw make<FormatExceptionCls>(__s("Expected method call Map, got %s)"));
+        throw make<FormatExceptionCls>(__sf("Expected method call Map, got %s", as<MapCls>(decoded)));
     }
     Object method = decoded[__s("method")];
     Object arguments = decoded[__s("args")];
     if (is<String>(method)) {
         return make<MethodCallCls>(as<StringCls>(method), arguments);
     }
-    throw make<FormatExceptionCls>(__s("Invalid method call: %s)"));
+    throw make<FormatExceptionCls>(__sf("Invalid method call: %s", decoded));
 }
 
 dynamic JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
     Object decoded = make<JSONMessageCodecCls>()->decodeMessage(envelope);
     if (!is<List<any>>(decoded)) {
-        throw make<FormatExceptionCls>(__s("Expected envelope List, got %s)"));
+        throw make<FormatExceptionCls>(__sf("Expected envelope List, got %s", as<ListCls>(decoded)));
     }
     if (decoded->length == 1) {
         return decoded[0];
@@ -67,7 +67,7 @@ dynamic JSONMethodCodecCls::decodeEnvelope(ByteData envelope) {
     if (decoded->length == 4 && is<String>(decoded[0]) && (decoded[1] == nullptr || is<String>(decoded[1])) && (decoded[3] == nullptr || is<String>(decoded[3]))) {
         throw make<PlatformExceptionCls>(as<String>(decoded[0]), as<String>(decoded[1]), decoded[2], as<String>(decoded[3]));
     }
-    throw make<FormatExceptionCls>(__s("Invalid envelope: %s)"));
+    throw make<FormatExceptionCls>(__sf("Invalid envelope: %s", decoded));
 }
 
 ByteData JSONMethodCodecCls::encodeSuccessEnvelope(Object result) {

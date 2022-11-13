@@ -6,5 +6,5 @@ DeferredLoadExceptionCls::DeferredLoadExceptionCls(String message) {
 }
 
 String DeferredLoadExceptionCls::toString() {
-    return __s("DeferredLoadException: '%s;");
+    return __sf("DeferredLoadException: '%s'", _s);
 }

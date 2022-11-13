@@ -41,7 +41,7 @@ void _FileStreamCls::_readBlock() {
         if ( < 0) {
             _readInProgress = false;
             if (!_unsubscribed) {
-                _controller->addError(make<RangeErrorCls>(__s("Bad end position: %s)")));
+                _controller->addError(make<RangeErrorCls>(__sf("Bad end position: %s", end)));
                 _closeFile();
                 _unsubscribed = true;
             }
@@ -76,7 +76,7 @@ void _FileStreamCls::_readBlock() {
 
 void _FileStreamCls::_start() {
     if ( < 0) {
-        _controller->addError(make<RangeErrorCls>(__s("Bad start position: %s)")));
+        _controller->addError(make<RangeErrorCls>(__sf("Bad start position: %s", _position)));
         _controller->close();
         _closeCompleter->complete();
         return;
@@ -182,7 +182,7 @@ void _FileCls::createSync(bool recursive) {
 Future<File> _FileCls::rename(String newPath) {
     return _dispatchWithNamespace(_IOServiceCls::fileRename, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot rename file to '%s,"), path());
+            throw _exceptionFromResponse(response, __sf("Cannot rename file to '%s'", newPath), path());
         }
         return make<FileCls>(newPath);
     });
@@ -190,14 +190,14 @@ Future<File> _FileCls::rename(String newPath) {
 
 File _FileCls::renameSync(String newPath) {
     auto result = _rename(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot rename file to '%s,"), path());
+    throwIfError(result, __sf("Cannot rename file to '%s'", newPath), path());
     return make<FileCls>(newPath);
 }
 
 Future<File> _FileCls::copy(String newPath) {
     return _dispatchWithNamespace(_IOServiceCls::fileCopy, makeList(ArrayItem, ArrayItem, ArrayItem))->then([=] (Unknown  response) {
         if (_isErrorResponse(response)) {
-            throw _exceptionFromResponse(response, __s("Cannot copy file to '%s,"), path());
+            throw _exceptionFromResponse(response, __sf("Cannot copy file to '%s'", newPath), path());
         }
         return make<FileCls>(newPath);
     });
@@ -205,7 +205,7 @@ Future<File> _FileCls::copy(String newPath) {
 
 File _FileCls::copySync(String newPath) {
     auto result = _copy(_NamespaceCls::_namespace, _rawPath, newPath);
-    throwIfError(result, __s("Cannot copy file to '%s,"), path());
+    throwIfError(result, __sf("Cannot copy file to '%s'", newPath), path());
     return make<FileCls>(newPath);
 }
 
@@ -419,7 +419,7 @@ void _FileCls::writeAsStringSync(String contents, Encoding encoding, bool flush,
 }
 
 String _FileCls::toString() {
-    return __s("File: '%s;");
+    return __sf("File: '%s'", path());
 }
 
 void _FileCls::throwIfError(Object result, String msg, String path) {
@@ -469,7 +469,7 @@ void _FileCls::_deleteSync(bool recursive) {
 RandomAccessFile _FileCls::_openStdioSync(int fd) {
     auto id = _openStdio(fd);
     if (id == 0) {
-        throw make<FileSystemExceptionCls>(__s("Cannot open stdio file for: %s)"));
+        throw make<FileSystemExceptionCls>(__sf("Cannot open stdio file for: %s", fd));
     }
     return make<_RandomAccessFileCls>(id, __s(""));
 }
@@ -478,7 +478,7 @@ String _FileCls::_tryDecode(List<int> bytes, Encoding encoding) {
     try {
         return encoding->decode(bytes);
     } catch (Unknown _) {
-        throw make<FileSystemExceptionCls>(__s("Failed to decode data using encoding '%s,"), path());
+        throw make<FileSystemExceptionCls>(__sf("Failed to decode data using encoding '%s'", encoding->name()), path());
     };
 }
 

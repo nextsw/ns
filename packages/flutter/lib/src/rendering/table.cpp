@@ -1,6 +1,6 @@
 #include "table.hpp"
 String TableCellParentDataCls::toString() {
-    return __s("%s$%s");
+    return __sf("%s; %s", super->toString(), verticalAlignment == nullptr? __s("default vertical alignment") : __sf("%s", verticalAlignment));
 }
 
 double TableColumnWidthCls::flex(Iterable<RenderBox> cells) {
@@ -38,7 +38,7 @@ double IntrinsicColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String IntrinsicColumnWidthCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(flex: %s)", objectRuntimeType(this, __s("IntrinsicColumnWidth")), _flex?->toStringAsFixed(1));
 }
 
 FixedColumnWidthCls::FixedColumnWidthCls(double value) {
@@ -56,7 +56,7 @@ double FixedColumnWidthCls::maxIntrinsicWidth(Iterable<RenderBox> cells, double 
 }
 
 String FixedColumnWidthCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("FixedColumnWidth")), debugFormatDouble(value));
 }
 
 FractionColumnWidthCls::FractionColumnWidthCls(double value) {
@@ -80,7 +80,7 @@ double FractionColumnWidthCls::maxIntrinsicWidth(Iterable<RenderBox> cells, doub
 }
 
 String FractionColumnWidthCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("FractionColumnWidth")), value);
 }
 
 FlexColumnWidthCls::FlexColumnWidthCls(double value) {
@@ -102,7 +102,7 @@ double FlexColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String FlexColumnWidthCls::toString() {
-    return __s("%s$%s;");
+    return __sf("%s(%s)", objectRuntimeType(this, __s("FlexColumnWidth")), debugFormatDouble(value));
 }
 
 double MaxColumnWidthCls::minIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
@@ -126,7 +126,7 @@ double MaxColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String MaxColumnWidthCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s, %s)", objectRuntimeType(this, __s("MaxColumnWidth")), a, b);
 }
 
 double MinColumnWidthCls::minIntrinsicWidth(Iterable<RenderBox> cells, double containerWidth) {
@@ -150,7 +150,7 @@ double MinColumnWidthCls::flex(Iterable<RenderBox> cells) {
 }
 
 String MinColumnWidthCls::toString() {
-    return __s("%s$%s$%s;");
+    return __sf("%s(%s, %s)", objectRuntimeType(this, __s("MinColumnWidth")), a, b);
 }
 
 RenderTableCls::RenderTableCls(TableBorder border, List<List<RenderBox>> children, Map<int, TableColumnWidth> columnWidths, int columns, ImageConfiguration configuration, TableColumnWidth defaultColumnWidth, TableCellVerticalAlignment defaultVerticalAlignment, List<Decoration> rowDecorations, int rows, TextBaseline textBaseline, TextDirection textDirection) {
@@ -708,7 +708,7 @@ void RenderTableCls::debugFillProperties(DiagnosticPropertiesBuilder properties)
     properties->add(<TableBorder>make<DiagnosticsPropertyCls>(__s("border"), border(), nullptr));
     properties->add(<Map<int, TableColumnWidth>>make<DiagnosticsPropertyCls>(__s("specified column widths"), _columnWidths, _columnWidths->isEmpty()? DiagnosticLevelCls::hidden : DiagnosticLevelCls::info));
     properties->add(<TableColumnWidth>make<DiagnosticsPropertyCls>(__s("default column width"), defaultColumnWidth()));
-    properties->add(make<MessagePropertyCls>(__s("table size"), __s("%s$%s)")));
+    properties->add(make<MessagePropertyCls>(__s("table size"), __sf("%s\u00D7%s", columns(), rows())));
     properties->add(<String>make<IterablePropertyCls>(__s("column offsets"), _columnLefts?->map(debugFormatDouble), __s("unknown")));
     properties->add(<String>make<IterablePropertyCls>(__s("row offsets"), _rowTops->map(debugFormatDouble), __s("unknown")));
 }
@@ -722,7 +722,7 @@ List<DiagnosticsNode> RenderTableCls::debugDescribeChildren() {
         for (;  < columns(); x += 1) {
             int xy = x + y * columns();
             RenderBox child = _children[xy];
-            String name = __s("child (%s$%s;");
+            String name = __sf("child (%s, %s)", x, y);
             if (child != nullptr) {
                 children->add(child->toDiagnosticsNode(name));
             } else {
